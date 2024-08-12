@@ -4002,9 +4002,9 @@
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
-    "@eslint/js": "^9.8.0",
+    "@eslint/js": "^9.9.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.14.14",
+    "@types/node": "^20.14.15",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^2.0.5",
@@ -4013,7 +4013,7 @@
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.23.0",
-    "eslint": "^9.8.0",
+    "eslint": "^9.9.0",
     "eslint-plugin-n": "^17.10.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^55.0.0",
