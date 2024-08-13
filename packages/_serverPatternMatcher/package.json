@@ -46,7 +46,7 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^8.13.2",
+    "@cspell/cspell-types": "^8.13.3",
     "@internal/common-utils": "file:../__utils",
     "cspell-lib": "^8.13.2",
     "regexp-worker": "^3.0.0",
