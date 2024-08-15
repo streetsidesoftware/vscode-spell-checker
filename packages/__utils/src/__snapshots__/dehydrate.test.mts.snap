@@ -92,7 +92,7 @@ exports[`dehydrate > dehydrate [ { a: 'a', b: 'b' }, …(4) ] undefined 1`] = `
   [
     2,
     6,
-    10,
+    2,
     3,
     7,
   ],
@@ -116,10 +116,6 @@ exports[`dehydrate > dehydrate [ { a: 'a', b: 'b' }, …(4) ] undefined 1`] = `
   ],
   "c",
   "d",
-  {
-    "k": 3,
-    "v": 3,
-  },
 ]
 `;
 
@@ -172,6 +168,75 @@ exports[`dehydrate > dehydrate { a: [ 1 ] } undefined 1`] = `
     6,
   ],
   1,
+]
+`;
+
+exports[`dehydrate > dehydrate { a: { a: 'a', b: 'b' }, …(6) } undefined 1`] = `
+[
+  "Dehydrated JSON v1",
+  {
+    "k": 2,
+    "v": 10,
+  },
+  [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+  ],
+  "a",
+  "b",
+  "m",
+  "n",
+  "nn",
+  "nnn",
+  "s",
+  [
+    11,
+    13,
+    17,
+    18,
+    18,
+    18,
+    19,
+  ],
+  {
+    "k": 12,
+    "v": 12,
+  },
+  [
+    3,
+    4,
+  ],
+  {
+    "k": 12,
+    "v": 14,
+  },
+  [
+    15,
+    16,
+  ],
+  "c",
+  "d",
+  {
+    "k": 12,
+    "t": "M",
+    "v": 12,
+  },
+  [
+    11,
+    13,
+    11,
+    12,
+    14,
+  ],
+  {
+    "k": 12,
+    "t": "S",
+  },
 ]
 `;
 
@@ -253,6 +318,38 @@ exports[`dehydrate > dehydrate { a: 1 } undefined 1`] = `
 ]
 `;
 
+exports[`dehydrate > dehydrate { values: [ 'apple', …(2) ], …(1) } undefined 1`] = `
+[
+  "Dehydrated JSON v1",
+  {
+    "k": 2,
+    "v": 5,
+  },
+  [
+    3,
+    4,
+  ],
+  "set",
+  "values",
+  [
+    6,
+    7,
+  ],
+  {
+    "k": 7,
+    "t": "S",
+  },
+  [
+    8,
+    9,
+    10,
+  ],
+  "apple",
+  "banana",
+  "pineapple",
+]
+`;
+
 exports[`dehydrate > dehydrate {} undefined 1`] = `
 [
   "Dehydrated JSON v1",
@@ -271,6 +368,51 @@ exports[`dehydrate > dehydrate 1.1 undefined 1`] = `
 [
   "Dehydrated JSON v1",
   1.1,
+]
+`;
+
+exports[`dehydrate > dehydrate Map{ 'apple' => 1, 'banana' => 2, …(1) } undefined 1`] = `
+[
+  "Dehydrated JSON v1",
+  {
+    "k": 2,
+    "t": "M",
+    "v": 6,
+  },
+  [
+    3,
+    4,
+    5,
+  ],
+  "apple",
+  "banana",
+  "pineapple",
+  [
+    7,
+    8,
+    9,
+  ],
+  1,
+  2,
+  3,
+]
+`;
+
+exports[`dehydrate > dehydrate Set{ 'apple', 'banana', 'pineapple' } undefined 1`] = `
+[
+  "Dehydrated JSON v1",
+  {
+    "k": 2,
+    "t": "S",
+  },
+  [
+    3,
+    4,
+    5,
+  ],
+  "apple",
+  "banana",
+  "pineapple",
 ]
 `;
 
