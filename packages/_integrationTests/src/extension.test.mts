@@ -4,13 +4,14 @@ import { createRequire } from 'node:module';
 import { expect } from 'chai';
 import type { Stream } from 'kefir';
 import { stream } from 'kefir';
-import { type Diagnostic, type languages as vscodeLanguages, type Position, type Uri, type window as vscodeWindow } from 'vscode';
+import type { Diagnostic, languages as vscodeLanguages, Position, Uri, window as vscodeWindow } from 'vscode';
 
 import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.mjs';
 import {
     activateExtension,
     getDocPath,
     getDocUri,
+    getVSCodeCommands,
     getVscodeWorkspace,
     loadDocument,
     loadFolder,
@@ -118,7 +119,6 @@ describe('Launch code spell extension', function () {
         'Verifies that some spelling errors were found',
         logError(async () => {
             logYellow('Verifies that some spelling errors were found');
-            await loadFolder(getDocUri('.'));
             const uri = getDocUri('example.md');
             const config = getVscodeWorkspace().getConfiguration(undefined, uri);
             await config.update('cSpell.diagnosticLevel', 'Information', 3);
@@ -173,6 +173,45 @@ describe('Launch code spell extension', function () {
         // console.error('Result: %o', result);
         expect(result).to.not.be.undefined;
         expect(result.issues).to.be.empty;
+    });
+
+    it('creates a new file with some spelling errors.', async () => {
+        logYellow('Verifies that some spelling errors were found in a new file');
+        const uri = vscode.Uri.parse('untitled:Untitled-1');
+        const config = getVscodeWorkspace().getConfiguration(undefined, getDocUri('example.md'));
+        await config.update('cSpell.diagnosticLevel', 'Information', 3);
+        await config.update('cSpell.useCustomDecorations', false, 1);
+        logYellow('Create new untitled file');
+        await getVSCodeCommands().executeCommand('workbench.action.files.newUntitledFile');
+        await sleep(1000);
+        logYellow('Created new untitled file');
+
+        logYellow('edit start');
+        const r = vscode.window.activeTextEditor?.edit((edit) =>
+            edit.insert(new vscode.Position(0, 0), 'This document has spellling errors.'),
+        );
+        const wait = waitForSpellComplete(uri, 5000);
+        await r;
+        logYellow('edit finished');
+
+        const found = await wait;
+        log('found %o', found);
+
+        const diags = await getDiagsFromVsCode(uri, 2000);
+
+        if (!diags.length) {
+            log('all diags: %o', vscode.languages.getDiagnostics());
+        }
+
+        expect(found).to.not.be.undefined;
+
+        const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
+        log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
+        log('diags: %o', diags);
+
+        // cspell:ignore spellling
+        expect(msgs).contains('spellling');
+        logYellow('Done: Verifies that some spelling errors were found in a new file');
     });
 
     it('Wait a bit', async () => {

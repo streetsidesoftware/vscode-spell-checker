@@ -69,6 +69,10 @@ export async function loadDocument(docUri: Uri): Promise<DocumentContext | undef
     }
 }
 
+export function getVSCodeCommands(): typeof vscode.commands {
+    return vscode.commands;
+}
+
 export async function loadFolder(folderUri: Uri): Promise<void> {
     return await vscode.commands.executeCommand('vscode.openFolder', folderUri, { forceNewWindow: false, forceReuseWindow: true });
 }
