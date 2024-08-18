@@ -177,13 +177,13 @@ describe('Launch code spell extension', function () {
 
     it('creates a new file with some spelling errors.', async () => {
         logYellow('Verifies that some spelling errors were found in a new file');
-        const uri = getDocUri('example.md');
-        const config = getVscodeWorkspace().getConfiguration(undefined, uri);
+        const uri = vscode.Uri.parse('untitled:Untitled-1');
+        const config = getVscodeWorkspace().getConfiguration(undefined, getDocUri('example.md'));
         await config.update('cSpell.diagnosticLevel', 'Information', 3);
         await config.update('cSpell.useCustomDecorations', false, 1);
         logYellow('Create new untitled file');
         await getVSCodeCommands().executeCommand('workbench.action.files.newUntitledFile');
-        await sleep(100);
+        await sleep(1000);
         logYellow('Created new untitled file');
 
         logYellow('edit start');
@@ -211,9 +211,7 @@ describe('Launch code spell extension', function () {
 
         // cspell:ignore spellling
         expect(msgs).contains('spellling');
-        logYellow('Done: Verifies that some spelling errors were found');
-
-        logYellow('Done: Verifies that some spelling errors were found in a new Window');
+        logYellow('Done: Verifies that some spelling errors were found in a new file');
     });
 
     it('Wait a bit', async () => {
