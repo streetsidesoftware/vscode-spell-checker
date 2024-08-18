@@ -805,7 +805,7 @@ const checkScheme: Record<string, boolean | undefined> = {
     gist: false,
     repo: true,
     sftp: true,
-    untitled: true,
+    untitled: false,
     'vscode-notebook-cell': true,
     'vscode-scm': false,
     'vscode-userdata': false,
@@ -814,8 +814,9 @@ const checkScheme: Record<string, boolean | undefined> = {
 };
 
 function canCheckAgainstGlob(uri: Uri): boolean {
-    const r = checkScheme[uri.scheme] ?? false;
-    // console.log('canCheckAgainstGlob %o %o', uri.toString(true), r);
+    let r = checkScheme[uri.scheme] ?? false;
+    // Note: the path must have a leading slash to be a valid path when doing relative path matching.
+    r = r && uri.path.startsWith('/');
     return r;
 }
 
