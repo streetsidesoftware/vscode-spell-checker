@@ -79,6 +79,10 @@ export interface BlockedFileReason {
 }
 
 export interface IsSpellCheckEnabledResult {
+    /** Is the spell checker enabled for file? */
+    enabled?: boolean | undefined;
+    /** cSpell.enabled setting */
+    enabledVSCode?: boolean | undefined;
     languageIdEnabled?: boolean | undefined;
     fileEnabled: boolean;
     fileIsIncluded: boolean;

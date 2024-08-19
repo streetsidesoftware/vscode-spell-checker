@@ -200,6 +200,8 @@ export class CSpellClient implements Disposable {
         const { uri, languageId } = document || {};
 
         const emptyResult: GetConfigurationForDocumentResult<ConfigurationFields> = {
+            enabled: undefined,
+            enabledVSCode: undefined,
             configFiles: [],
             configTargets: [],
             fileEnabled: false,

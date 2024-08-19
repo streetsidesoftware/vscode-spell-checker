@@ -82,6 +82,10 @@ type GitignoreResultInfo = PromiseType<GitignoreResultP>;
 export interface ExcludeIncludeIgnoreInfo {
     /** The requested uri */
     uri: string;
+    /** True if the spell check is enabled */
+    enabled: boolean;
+    /** True if `cSpell.enabled` is `true | undefined` */
+    enabledVSCode: boolean;
     /** The uri used to calculate the response */
     uriUsed: string;
     /** Is included */
@@ -169,11 +173,15 @@ export class DocumentSettings {
     async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
         const _uri = handleSpecialUri(uri, await this.getRootUri());
         const settings = await this.fetchSettingsForUri(_uri.toString());
+        const enabledVSCode = settings.vscodeSettings.cSpell?.enabled ?? true;
+        const enabled = settings.settings.enabled ?? enabledVSCode;
         const ie = calcIncludeExclude(settings, _uri);
         const ignoredEx = await this._isGitIgnoredEx(settings, _uri);
         const schemaAllowed = settings.settings.enabledSchemes?.[uri.scheme];
         return {
             ...ie,
+            enabled,
+            enabledVSCode,
             ignored: ignoredEx?.matched,
             gitignoreInfo: ignoredEx,
             uri: uri.toString(),

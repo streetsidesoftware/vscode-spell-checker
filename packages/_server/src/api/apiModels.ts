@@ -52,6 +52,16 @@ export interface IsSpellCheckEnabledResult {
     workspaceFolderUri: UriString | undefined;
     languageIdEnabled: boolean | undefined;
     languageId: string | undefined;
+    /**
+     * Is the spell checker enabled for the file.
+     * If false, the file is excluded from spell checking.
+     * It might be disabled for multiple reasons.
+     */
+    enabled: boolean | undefined;
+    /**
+     * Is the spell checker enabled in VS Code.
+     */
+    enabledVSCode: boolean | undefined;
     fileEnabled: boolean;
     fileIsIncluded: boolean;
     fileIsExcluded: boolean;
