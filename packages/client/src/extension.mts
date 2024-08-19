@@ -42,6 +42,7 @@ modules.init();
 
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
+    di.set('extensionContext', context);
 
     const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
     const dLogger = bindLoggerToOutput(logOutput);
@@ -58,7 +59,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     context.subscriptions.push(client, logOutput, dLogger);
 
     di.set('client', client);
-    di.set('extensionContext', context);
 
     ExtensionRegEx.activate(context, client);
 

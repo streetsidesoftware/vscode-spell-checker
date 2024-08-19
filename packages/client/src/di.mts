@@ -56,6 +56,10 @@ export function getClient(): CSpellClient {
     return get('client');
 }
 
+export function getExtensionContext(): ExtensionContext {
+    return get('extensionContext');
+}
+
 export function getIssueTracker(): IssueTracker {
     return get('issueTracker');
 }
