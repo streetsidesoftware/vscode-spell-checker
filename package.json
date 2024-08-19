@@ -3850,33 +3850,6 @@
             "title": "Hide Issues While Typing",
             "type": "string"
           },
-          "cSpell.languageStatusFields": {
-            "additionalProperties": false,
-            "default": {
-              "fileType": true,
-              "issues": true,
-              "scheme": true
-            },
-            "markdownDescription": "Select which fields to display in the language status bar.",
-            "properties": {
-              "fileType": {
-                "type": "boolean"
-              },
-              "issues": {
-                "type": "boolean"
-              },
-              "scheme": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "fileType",
-              "scheme",
-              "issues"
-            ],
-            "scope": "application",
-            "type": "object"
-          },
           "cSpell.maxDuplicateProblems": {
             "default": 20,
             "markdownDescription": "The maximum number of times the same word can be flagged as an error in a file.",
@@ -3929,6 +3902,8 @@
           },
           "cSpell.showStatusAlignment": {
             "default": "Right",
+            "deprecated": true,
+            "deprecationMessage": "No longer supported.",
             "enum": [
               "Left",
               "Right"

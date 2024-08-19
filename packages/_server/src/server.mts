@@ -554,6 +554,8 @@ export function run(): void {
         const languageIdEnabled = languageId ? isFileTypeEnabled(languageId, settings) : undefined;
 
         const {
+            enabled = true,
+            enabledVSCode = true,
             include: fileIsIncluded = true,
             exclude: fileIsExcluded = false,
             ignored: gitignored = undefined,
@@ -568,6 +570,8 @@ export function run(): void {
         const workspaceFolder = (uriUsed && (await documentSettings.matchingFoldersForUri(uriUsed))[0]) || undefined;
         log('calcIncludeExcludeInfo done', params.uri);
         return {
+            enabled,
+            enabledVSCode,
             uriUsed,
             workspaceFolderUri: workspaceFolder?.uri,
             excludedBy,

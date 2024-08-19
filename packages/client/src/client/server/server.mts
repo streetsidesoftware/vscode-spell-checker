@@ -42,7 +42,10 @@ export type {
 } from 'code-spell-checker-server/api';
 
 export type GetConfigurationForDocumentResult<F extends ConfigurationFields> = Partial<APIGetConfigurationForDocumentResult<F>> &
-    Pick<APIGetConfigurationForDocumentResult<F>, 'configFiles' | 'configTargets' | 'fileEnabled' | 'fileIsIncluded' | 'fileIsExcluded'>;
+    Pick<
+        APIGetConfigurationForDocumentResult<F>,
+        'enabled' | 'enabledVSCode' | 'configFiles' | 'configTargets' | 'fileEnabled' | 'fileIsIncluded' | 'fileIsExcluded'
+    >;
 
 interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];

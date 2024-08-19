@@ -175,6 +175,8 @@ function extractFileConfig(
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
     const {
+        enabled,
+        enabledVSCode,
         languageIdEnabled,
         docSettings,
         fileEnabled,
@@ -209,6 +211,8 @@ function extractFileConfig(
     }
 
     const cfg: FileConfig = {
+        enabled,
+        enabledVSCode,
         uri: uri.toString(),
         uriActual: uriToUse.toString(),
         fileName,

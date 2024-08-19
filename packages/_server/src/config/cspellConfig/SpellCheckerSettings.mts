@@ -118,15 +118,10 @@ export interface SpellCheckerSettings
      * @enumDescriptions [
      *  "Left Side of Statusbar",
      *  "Right Side of Statusbar"]
+     * @deprecated true
+     * @deprecationMessage No longer supported.
      */
     showStatusAlignment?: 'Left' | 'Right';
-
-    /**
-     * Select which fields to display in the language status bar.
-     * @scope application
-     * @default { "fileType": true, "scheme": true, "issues": true }
-     */
-    languageStatusFields?: LanguageStatusFields;
 
     /**
      * Show CSpell in-document directives as you type.
@@ -493,9 +488,3 @@ export interface AddToTargets extends AddToDictionaryTarget {
 }
 
 export type UnknownWordsReportingLevel = 'all' | 'simple' | 'none';
-
-export interface LanguageStatusFields {
-    fileType: boolean;
-    scheme: boolean;
-    issues: boolean;
-}

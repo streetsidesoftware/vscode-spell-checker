@@ -67,13 +67,15 @@
     const uriActual = fileConfig?.uriActual || fileConfig?.uri;
     const fileUrl = uriActual ? new URL(uriActual) : undefined;
     const blocked = fileConfig?.blockedReason;
-    const enabled = fileConfig?.fileEnabled && fileConfig?.languageIdEnabled && !fileConfig?.fileIsExcluded;
+    const enabled = fileConfig?.enabled && fileConfig?.fileEnabled && fileConfig?.languageIdEnabled && !fileConfig?.fileIsExcluded;
+    const enabledInVSCode = fileConfig?.enabled ?? true;
     const fileIsIncluded = fileConfig?.fileIsIncluded;
     const fileIsExcluded = fileConfig?.fileIsExcluded;
 
     info.push(
       { key: 'Name', value: name },
       { key: 'Enabled', value: (enabled === undefined && 'n/a') || (enabled && 'Yes') || 'No' },
+      enabledInVSCode ? undefined : { key: 'Enabled in VSCode', value: 'No, disabled in settings.' },
       (!fileIsIncluded && { key: 'In Files', value: 'No' }) || undefined,
       (fileIsExcluded && { key: 'Excluded', value: 'Yes' }) || undefined,
       // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },

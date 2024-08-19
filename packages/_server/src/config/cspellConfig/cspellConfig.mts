@@ -154,7 +154,6 @@ type _VSConfigReporting = Pick<
     | 'diagnosticLevel'
     | 'diagnosticLevelFlaggedWords'
     | 'hideAddToDictionaryCodeActions'
-    | 'languageStatusFields'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
     | 'minWordLength'

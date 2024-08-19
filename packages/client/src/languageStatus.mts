@@ -46,8 +46,8 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
 
     function updateIssues(response: ServerResponseIsSpellCheckEnabledForFile | undefined) {
         const id = 'cspell-issues';
-        const { fileEnabled, languageIdEnabled, languageId = '' } = response || {};
-        const enabled = fileEnabled && languageIdEnabled;
+        const { enabled: checkEnabled, fileEnabled, languageIdEnabled, languageId = '' } = response || {};
+        const enabled = checkEnabled && fileEnabled && languageIdEnabled;
         const document = vscode.window.activeTextEditor?.document;
         const issues = document ? getIssueTracker().getSpellingIssues(document.uri) : undefined;
         const stats: Partial<IssuesStats> = issues?.getStats() || {};

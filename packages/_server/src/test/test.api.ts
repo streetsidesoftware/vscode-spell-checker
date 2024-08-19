@@ -38,6 +38,8 @@ export function createMockServerSideApi() {
 
 export function mockHandlers(): ServerSideHandlers {
     const sampleIsSpellCheckEnabledResult: IsSpellCheckEnabledResult = {
+        enabled: undefined,
+        enabledVSCode: undefined,
         uriUsed: undefined,
         workspaceFolderUri: undefined,
         languageIdEnabled: undefined,
