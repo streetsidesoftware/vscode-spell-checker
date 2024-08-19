@@ -605,6 +605,42 @@
         "title": "Show Spell Checker Actions Menu",
         "shortTitle": "Spell Checker Actions",
         "icon": "$(list-unordered)"
+      },
+      {
+        "command": "cSpell.supportRequest",
+        "category": "Spell",
+        "title": "Request Support with the Spell Checker",
+        "icon": "$(github)"
+      },
+      {
+        "command": "cSpell.reportIssue",
+        "category": "Spell",
+        "title": "Report an Issue with the Spell Checker",
+        "icon": "$(github)"
+      },
+      {
+        "command": "cSpell.about",
+        "category": "Spell",
+        "title": "About the Spell Checker",
+        "icon": "$(home)"
+      },
+      {
+        "command": "cSpell.releaseNotes",
+        "category": "Spell",
+        "title": "Show Spell Checker Release Notes",
+        "icon": "$(heart)"
+      },
+      {
+        "command": "cSpell.sponsor",
+        "category": "Spell",
+        "title": "Sponsor the Spell Checker",
+        "icon": "$(heart)"
+      },
+      {
+        "command": "cSpell.sponsorshipRequest",
+        "category": "Spell",
+        "title": "Become a Sponsor of the Spell Checker",
+        "icon": "$(heart)"
       }
     ],
     "languages": [

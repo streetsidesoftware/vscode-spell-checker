@@ -50,6 +50,7 @@ import {
     targetsForUri,
     targetsFromConfigurationTarget,
 } from './settings/targetHelpers.mjs';
+import { about, callForSponsors, releaseNotes, reportIssue, sponsor, supportRequest } from './support/index.mjs';
 import { experimentWithSymbols } from './symbolServer/index.mjs';
 import { findNotebookCell } from './util/documentUri.js';
 import { catchErrors, handleErrors } from './util/errors.js';
@@ -181,6 +182,13 @@ export const commandHandlers = {
 
     'cSpell.restart': handleRestart,
     'cSpell.reload': handleReload,
+
+    'cSpell.supportRequest': supportRequest,
+    'cSpell.reportIssue': reportIssue,
+    'cSpell.about': about,
+    'cSpell.sponsor': sponsor,
+    'cSpell.sponsorshipRequest': callForSponsors,
+    'cSpell.releaseNotes': releaseNotes,
 
     // Deprecated Commands
     'cSpell.enableLanguage': enableLanguageIdCmd,
