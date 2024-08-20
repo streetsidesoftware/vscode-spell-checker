@@ -4043,9 +4043,9 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.14.1",
-    "@cspell/cspell-types": "^8.14.1",
-    "cspell": "^8.14.1",
+    "@cspell/cspell-bundled-dicts": "^8.14.2",
+    "@cspell/cspell-types": "^8.14.2",
+    "cspell": "^8.14.2",
     "regexp-worker": "^3.0.0"
   }
 }
