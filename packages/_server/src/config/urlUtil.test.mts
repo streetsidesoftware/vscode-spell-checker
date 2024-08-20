@@ -2,7 +2,15 @@ import { fileURLToPath } from 'url';
 import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
-import { normalizeWindowsRoot, normalizeWindowsUrl, toDirURL, uriToUrl, urlToFilepath, urlToFilePathOrHref } from './urlUtil.mjs';
+import {
+    normalizeWindowsRoot,
+    normalizeWindowsUrl,
+    toDirURL,
+    toPathURL,
+    uriToUrl,
+    urlToFilepath,
+    urlToFilePathOrHref,
+} from './urlUtil.mjs';
 
 describe('urlUtil', () => {
     test.each`
@@ -11,6 +19,7 @@ describe('urlUtil', () => {
         ${URI.parse('file:///')}              | ${'file:///'}
         ${URI.parse('file:///C:/users/home')} | ${'file:///c:/users/home'}
         ${'file:///C%3a/users/home/'}         | ${'file:///c:/users/home/'}
+        ${'untitled:Untitled-1'}              | ${'untitled:Untitled-1'}
     `('uriToUrl $uri', ({ uri, expected }) => {
         const r = uriToUrl(uri);
         expect(r).toBeInstanceOf(URL);
@@ -23,10 +32,26 @@ describe('urlUtil', () => {
         ${'file:///'}                              | ${'file:///'}
         ${'file:///C:/users/home'}                 | ${'file:///c:/users/home/'}
         ${'file:///C%3a/users/home/'}              | ${'file:///c:/users/home/'}
-        ${'output:my_output'}                      | ${'output:my_output'}
+        ${'output:my_output'}                      | ${'output:/my_output/'}
+        ${'untitled:Untitled-1'}                   | ${'untitled:/Untitled-1/'}
         ${'vscode-vfs://github/vitest-dev/vitest'} | ${'vscode-vfs://github/vitest-dev/vitest/'}
     `('toDirURL $uri', ({ uri, expected }) => {
         const r = toDirURL(uri);
+        expect(r).toBeInstanceOf(URL);
+        expect(r.href).toBe(expected);
+    });
+
+    test.each`
+        uri                                        | expected
+        ${'http://example.com/files'}              | ${'http://example.com/'}
+        ${'file:///'}                              | ${'file:///'}
+        ${'file:///C:/users/home'}                 | ${'file:///c:/users/'}
+        ${'file:///C%3a/users/home/'}              | ${'file:///c:/users/home/'}
+        ${'output:my_output'}                      | ${'output:/'}
+        ${'untitled:Untitled-1'}                   | ${'untitled:/'}
+        ${'vscode-vfs://github/vitest-dev/vitest'} | ${'vscode-vfs://github/vitest-dev/'}
+    `('toPathURL $uri', ({ uri, expected }) => {
+        const r = toPathURL(uri);
         expect(r).toBeInstanceOf(URL);
         expect(r.href).toBe(expected);
     });
@@ -37,6 +62,7 @@ describe('urlUtil', () => {
         ${import.meta.url}                         | ${fileURLToPath(import.meta.url)}
         ${'output:my_output'}                      | ${'output:my_output'}
         ${'vscode-vfs://github/vitest-dev/vitest'} | ${'vscode-vfs://github/vitest-dev/vitest'}
+        ${'untitled:Untitled-1'}                   | ${'untitled:Untitled-1'}
     `('urlToFilePathOrHref $uri', ({ uri, expected }) => {
         const r = urlToFilePathOrHref(uri);
         expect(r).toBe(expected);
