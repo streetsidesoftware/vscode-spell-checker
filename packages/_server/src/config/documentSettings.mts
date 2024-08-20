@@ -45,7 +45,7 @@ import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
 import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
-import { filterUrl, toDirURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
+import { filterUrl, toDirURL, toPathURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
@@ -136,6 +136,7 @@ export class DocumentSettings {
     private isTrusted: boolean | undefined;
     private pIsTrusted: Promise<boolean> | undefined;
     private emitterOnDidUpdateConfiguration = createEmitter<ExtSettings>();
+    #rootHref: string | undefined;
 
     constructor(
         readonly connection: Connection,
@@ -261,9 +262,9 @@ export class DocumentSettings {
 
     async getRootUri(): Promise<Uri> {
         const folders = await this.folders;
-        if (!folders.length) return Uri.parse(defaultRootUri);
         const urls = folders.map((f) => new URL(f.uri)).sort((a, b) => a.pathname.length - b.pathname.length);
-        return Uri.parse(urls[0].href);
+        this.#rootHref = urls[0]?.href || defaultRootUri;
+        return Uri.parse(this.#rootHref);
     }
 
     private async _importSettings() {
@@ -327,8 +328,17 @@ export class DocumentSettings {
      * @returns
      */
     private rootSchemaAndDomainForUri(docUri: string | Uri | undefined) {
-        const uri = Uri.isUri(docUri) ? docUri : Uri.parse(docUri || defaultRootUri);
-        return uri.with({ path: '', query: null, fragment: null });
+        let url = toPathURL(docUri || this.#rootHref || defaultRootUri);
+        // Need to investigate if we should map untitled to the root.
+        // if (url.protocol === 'untitled:') {
+        //     url = toPathURL(this.#rootHref || defaultRootUri);
+        // }
+        if (url.protocol === 'file:') {
+            url = pathToFileURL('/');
+        } else {
+            url = new URL('/', url);
+        }
+        return Uri.parse(url.href);
     }
 
     private rootSchemaAndDomainFolderForUri(docUri: string | Uri | undefined): WorkspaceFolder {
@@ -415,8 +425,8 @@ export class DocumentSettings {
             try {
                 await this.determineIsTrusted();
                 return await this.__fetchSettingsForUri(docUri);
-            } catch {
-                // console.error('fetchSettingsForUri: %s %s', docUri, e);
+            } catch (_e) {
+                console.error('fetchSettingsForUri: %s %s', docUri, _e);
                 return {
                     uri: docUri || '',
                     vscodeSettings: { cSpell: {} },
@@ -459,9 +469,9 @@ export class DocumentSettings {
         );
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(useURLForConfig);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
-        // console.log('__fetchSettingsForUri Root Folder: %o', { rootFolder, docUri });
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
+        // console.log('__fetchSettingsForUri Folder: %o', { folder, folders, docUri, globRootFolder });
 
         const mergedSettingsFromVSCode = mergeSettings(await this.importedSettings(), vscodeCSpellSettings);
         const mergedSettings = mergeSettings(

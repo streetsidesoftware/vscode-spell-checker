@@ -5,7 +5,9 @@ import { URI as Uri } from 'vscode-uri';
 
 import { stat } from '../vfs/vfs.mjs';
 
-export async function filterUrl(uri: Uri | string | URL): Promise<Uri | undefined> {
+type UrlLike = Readonly<Uri | URL | string>;
+
+export async function filterUrl(uri: UrlLike): Promise<Uri | undefined> {
     const url = uriToUrl(uri);
     try {
         const stats = await stat(url);
@@ -18,7 +20,7 @@ export async function filterUrl(uri: Uri | string | URL): Promise<Uri | undefine
 
 const regExpIsUriLike = /^[a-z][\w-]+:/;
 
-export function isUriLike(uri: string | URL | Uri): boolean {
+export function isUriLike(uri: UrlLike): boolean {
     if (typeof uri !== 'string') return true;
     return _isUrlLike(uri) || regExpIsUriLike.test(uri);
 }
@@ -32,7 +34,7 @@ export const isUrlLike = isUriLike;
  * @param base - base URL
  * @returns the joined path or undefined if it is not possible.
  */
-export function tryJoinURL(rel: string, base: URL | string): URL | undefined {
+export function tryJoinURL(rel: string, base: Readonly<URL | string>): URL | undefined {
     try {
         return new URL(rel, base);
     } catch {
@@ -40,17 +42,38 @@ export function tryJoinURL(rel: string, base: URL | string): URL | undefined {
     }
 }
 
-export function toDirURL(url: string | URL | Uri): URL {
-    url = uriToUrl(url);
+/**
+ * Some URL protocols (like `untitled:`) used by VSCode do not have a path that starts with a `/`.
+ * This causes issues with the URL class when trying to resolve relative paths.
+ * This function will fix the URL so that it has a path that starts with a `/`.
+ * @param urlIn
+ * @returns URL
+ */
+function fixUrlRoot(urlIn: UrlLike): Readonly<URL> {
+    const url = uriToUrl(urlIn);
+    if (url.pathname.startsWith('/')) return url;
+    return new URL(url.protocol + '/' + url.pathname);
+}
+
+/**
+ * Remove the base name from a URL if one exists.
+ * @param url - url or url like.
+ * @returns URL
+ */
+export function toPathURL(url: UrlLike): Readonly<URL> {
+    url = fixUrlRoot(url);
     if (url.pathname.endsWith('/')) {
         return url;
     }
-    url = url.href;
-    url = new URL(url);
-    if (!url.pathname.endsWith('/')) {
-        url.pathname += '/';
+    return new URL('.', url);
+}
+
+export function toDirURL(url: UrlLike): Readonly<URL> {
+    url = fixUrlRoot(url);
+    if (url.pathname.endsWith('/')) {
+        return url;
     }
-    return url;
+    return new URL(url.pathname + '/', url);
 }
 
 /**
@@ -59,7 +82,7 @@ export function toDirURL(url: string | URL | Uri): URL {
  * @param url - url
  * @returns path
  */
-export function urlToFilepath(url: string | URL | Uri): string {
+export function urlToFilepath(url: UrlLike): string {
     const u = uriToUrl(url);
     return u.protocol === 'file:' ? normalizeWindowsRoot(fileURLToPath(u)) : u.pathname;
 }
@@ -70,7 +93,7 @@ export function urlToFilepath(url: string | URL | Uri): string {
  * @param url - url
  * @returns path or href
  */
-export function urlToFilePathOrHref(url: string | URL | Uri): string {
+export function urlToFilePathOrHref(url: UrlLike): string {
     const u = uriToUrl(url);
     return u.protocol === 'file:' ? normalizeWindowsRoot(fileURLToPath(u)) : u.href;
 }
@@ -79,7 +102,7 @@ export function normalizeWindowsRoot(path: string): string {
     return path.replace(/^[a-z]:[/\\]/i, (p) => p.toUpperCase());
 }
 
-export function uriToGlobPath(uri: string | URL | Uri): string {
+export function uriToGlobPath(uri: UrlLike): string {
     if (typeof uri === 'string' && !isUriLike(uri)) {
         // console.log(`uriToGlobPath: uri is not a URL: %s`, uri);
         return uri;
@@ -89,13 +112,14 @@ export function uriToGlobPath(uri: string | URL | Uri): string {
     return url.href;
 }
 
-export function uriToGlobRoot(uri: string | URL | Uri): string {
-    const url = toDirURL(uriToUrl(uri));
+export function uriToGlobRoot(uri: UrlLike): string {
+    const url = uriToUrl(uri);
+    const urlDir = toDirURL(url);
     // console.log('uriToGlobRoot:\n\t%s ->\n\t%s', uri.toString(), url.href);
-    return url.href;
+    return urlDir.href;
 }
 
-export function uriToUrl(uri: string | URL | Uri): URL {
+export function uriToUrl(uri: UrlLike): Readonly<URL> {
     if (uri instanceof URL) return uri;
     uri = typeof uri === 'string' && !isUriLike(uri) ? pathToFileURL(uri) : uri;
     const href = typeof uri === 'string' ? uri : uri.toString();
