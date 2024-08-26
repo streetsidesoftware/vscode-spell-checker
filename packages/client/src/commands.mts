@@ -50,7 +50,7 @@ import {
     targetsForUri,
     targetsFromConfigurationTarget,
 } from './settings/targetHelpers.mjs';
-import { about, callForSponsors, releaseNotes, reportIssue, sponsor, supportRequest } from './support/index.mjs';
+import { about, rateTheSpellChecker, releaseNotes, reportIssue, sponsor, supportRequest } from './support/index.mjs';
 import { experimentWithSymbols } from './symbolServer/index.mjs';
 import { findNotebookCell } from './util/documentUri.js';
 import { catchErrors, handleErrors } from './util/errors.js';
@@ -187,7 +187,7 @@ export const commandHandlers = {
     'cSpell.reportIssue': reportIssue,
     'cSpell.about': about,
     'cSpell.sponsor': sponsor,
-    'cSpell.sponsorshipRequest': callForSponsors,
+    'cSpell.rateTheSpellChecker': rateTheSpellChecker,
     'cSpell.releaseNotes': releaseNotes,
 
     // Deprecated Commands
