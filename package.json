@@ -568,7 +568,7 @@
       {
         "command": "cSpell.createCSpellTerminal",
         "category": "Spell",
-        "title": "Create CSpell REPL Terminal",
+        "title": "Open a new CSpell REPL Terminal",
         "icon": "$(terminal)"
       },
       {
@@ -637,10 +637,10 @@
         "icon": "$(heart)"
       },
       {
-        "command": "cSpell.sponsorshipRequest",
+        "command": "cSpell.rateTheSpellChecker",
         "category": "Spell",
-        "title": "Become a Sponsor of the Spell Checker",
-        "icon": "$(heart)"
+        "title": "Rate the Spell Checker",
+        "icon": "$(star)"
       }
     ],
     "languages": [
