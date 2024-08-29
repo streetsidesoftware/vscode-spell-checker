@@ -4015,7 +4015,7 @@
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.16.1",
+    "@types/node": "^20.16.2",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^2.0.5",
@@ -4034,11 +4034,11 @@
     "ovsx": "^0.9.2",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.6",
-    "rollup": "^4.21.0",
+    "rollup": "^4.21.1",
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0",
+    "typescript-eslint": "^8.3.0",
     "vite": "^5.4.2",
     "vitest": "^2.0.5"
   },
