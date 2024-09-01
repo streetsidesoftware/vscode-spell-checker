@@ -14,7 +14,6 @@ import { registerSpellCheckerCodeActionProvider } from './codeAction.mjs';
 import type { InjectableCommandHandlers } from './commands.mjs';
 import * as commands from './commands.mjs';
 import { createConfigWatcher } from './configWatcher.mjs';
-import { updateDocumentRelatedContext } from './context.mjs';
 import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate.mjs';
 import * as di from './di.mjs';
 import { registerDiagWatcher } from './diags.mjs';
@@ -22,13 +21,14 @@ import type { ExtensionApi } from './extensionApi.mjs';
 import * as ExtensionRegEx from './extensionRegEx/index.mjs';
 import { IssueTracker } from './issueTracker.mjs';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
-import { createLanguageStatus } from './languageStatus.mjs';
 import * as modules from './modules.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
 import * as settings from './settings/index.mjs';
 import { sectionCSpell } from './settings/index.mjs';
 import { getSectionName } from './settings/vsConfig.mjs';
+import { createLanguageStatus } from './statusbar/languageStatus.mjs';
+import { createEventLogger, updateDocumentRelatedContext } from './storage/index.mjs';
 import { logErrors, silenceErrors } from './util/errors.js';
 import { performance } from './util/perf.js';
 import { activate as activateWebview } from './webview/index.mjs';
@@ -43,6 +43,9 @@ modules.init();
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
     di.set('extensionContext', context);
+    const eventLogger = createEventLogger(context.globalStorageUri);
+    di.set('eventLogger', eventLogger);
+    eventLogger.logActivate();
 
     const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
     const dLogger = bindLoggerToOutput(logOutput);
@@ -59,6 +62,22 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     context.subscriptions.push(client, logOutput, dLogger);
 
     di.set('client', client);
+
+    if (debugMode) {
+        // const cki = (await vscode.commands.executeCommand('getContextKeyInfo')) as { key: string }[];
+        // const commands = await vscode.commands.getCommands();
+        const dataFileUri = vscode.Uri.joinPath(context.globalStorageUri, 'data.json');
+        console.log('Extension "Code Spell Checker" is now active! %o', {
+            extensionUri: context.extensionUri.toJSON(),
+            globalStorageUri: context.globalStorageUri.toJSON(),
+            dataFileUri: dataFileUri.toJSON(),
+            dataFileDirUri: vscode.Uri.joinPath(dataFileUri, '..').toJSON(),
+            workspaceState: context.workspaceState.keys(),
+            globalState: context.globalState.keys(),
+            // contextKeys: cki.filter((k) => k.key.startsWith('cSpell')),
+            // commands: commands.filter((c) => c.toLowerCase().includes('command')),
+        });
+    }
 
     ExtensionRegEx.activate(context, client);
 

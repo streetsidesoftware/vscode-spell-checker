@@ -3,11 +3,11 @@ import { createDisposableList } from 'utils-disposables';
 import type { Disposable } from 'vscode';
 import vscode from 'vscode';
 
-import type { ServerResponseIsSpellCheckEnabledForFile } from './client/client.mjs';
-import { knownCommands } from './commands.mjs';
-import { getClient, getIssueTracker } from './di.mjs';
-import type { IssuesStats } from './issueTracker.mjs';
-import { handleErrors } from './util/errors.js';
+import type { ServerResponseIsSpellCheckEnabledForFile } from '../client/client.mjs';
+import { knownCommands } from '../commands.mjs';
+import { getClient, getIssueTracker } from '../di.mjs';
+import type { IssuesStats } from '../issueTracker.mjs';
+import { handleErrors } from '../util/errors.js';
 
 const showLanguageStatus = true;
 
