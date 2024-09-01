@@ -5,11 +5,11 @@ import vscode, { ColorThemeKind, MarkdownString, Range, window, workspace } from
 
 import type { PartialCSpellUserSettings } from '../client/index.mjs';
 import { commandUri, createTextEditCommand } from '../commands.mjs';
-import { setContext } from '../context.mjs';
 import type { Disposable } from '../disposable.js';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import type { CSpellSettings } from '../settings/index.mjs';
 import { ConfigFields } from '../settings/index.mjs';
+import { setContext } from '../storage/context.mjs';
 import { findEditor } from '../util/findEditor.js';
 
 const defaultHideIssuesWhileTyping: Required<PartialCSpellUserSettings<'hideIssuesWhileTyping'>>['hideIssuesWhileTyping'] = 'Word';

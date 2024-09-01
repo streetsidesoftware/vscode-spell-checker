@@ -80,8 +80,8 @@ quotemark
 readonly
 restructuredtext
 rfdc
-rmwc
 RGBA
+rmwc
 RRGGBB
 RRGGBBAA
 scminput
@@ -92,6 +92,7 @@ sirv
 sourcemap
 squigglies
 streetsidesoftware
+stringifyable
 stylesheets
 subfolder
 subpath

@@ -296,6 +296,15 @@ async function calcWorkspaceEditsForDocument(doc: TextDocument, edits: TextEdit[
 }
 
 async function applyTextEditsToDocumentWithRename(doc: TextDocument, edits: TextEdit[], refInfo: UseRefInfo): Promise<boolean | undefined> {
+    const eventLogger = di.get('eventLogger');
+
+    for (const edit of edits) {
+        const word = doc.getText(edit.range);
+        if (word !== edit.newText && word && edit.newText) {
+            eventLogger.logReplace(word, edit.newText);
+        }
+    }
+
     const wsEdit = await calcWorkspaceEditsForDocument(doc, edits, refInfo);
     return applyWorkspaceEdit(wsEdit, 'applyTextEditsToDocumentWithRename');
 }

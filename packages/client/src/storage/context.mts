@@ -3,10 +3,10 @@ import assert from 'node:assert';
 import type { TextDocument } from 'vscode';
 import { commands, workspace } from 'vscode';
 
-import type { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from './client/index.mjs';
-import { extensionId } from './constants.js';
-import { getCSpellDiags } from './diags.mjs';
-import { toUri } from './util/uriHelper.mjs';
+import type { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from '../client/index.mjs';
+import { extensionId } from '../constants.js';
+import { getCSpellDiags } from '../diags.mjs';
+import { toUri } from '../util/uriHelper.mjs';
 
 const prefix = extensionId;
 

@@ -4,7 +4,7 @@ export interface Disposable {
 
 export type EventListener<T> = (data: T) => unknown;
 
-export type Event<T> = (listener: EventListener<T>) => Disposable;
+export type EmitterEvent<T> = (listener: EventListener<T>) => Disposable;
 
 export interface EventEmitter<T> {
     /**
@@ -15,7 +15,7 @@ export interface EventEmitter<T> {
     /**
      * The event listeners can subscribe to.
      */
-    event: Event<T>;
+    event: EmitterEvent<T>;
 
     /**
      * Notify all subscribers of the {@link EventEmitter.event event}. Failure
@@ -31,4 +31,4 @@ export interface EventEmitter<T> {
     dispose(): void;
 }
 
-export type EventOperator<T, U> = (source: Event<T>) => Event<U>;
+export type EventOperator<T, U> = (source: EmitterEvent<T>) => EmitterEvent<U>;

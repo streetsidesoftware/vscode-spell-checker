@@ -3,6 +3,7 @@ import type { ExtensionContext } from 'vscode';
 import type { CSpellClient } from './client/index.mjs';
 import type { IssueTracker } from './issueTracker.mjs';
 import type { DictionaryHelper } from './settings/DictionaryHelper.mjs';
+import type { EventLogger } from './storage/index.mjs';
 
 export interface GlobalDependencies {
     name: string;
@@ -10,6 +11,7 @@ export interface GlobalDependencies {
     client: CSpellClient;
     issueTracker: IssueTracker;
     dictionaryHelper: DictionaryHelper;
+    eventLogger: EventLogger;
 }
 
 type KeysForGlobalDependencies = {
@@ -22,6 +24,7 @@ const definedDependencyKeys: KeysForGlobalDependencies = {
     client: undefined,
     dictionaryHelper: undefined,
     issueTracker: undefined,
+    eventLogger: undefined,
 };
 
 type GlobalDependenciesKeys = keyof GlobalDependencies;
