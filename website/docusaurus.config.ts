@@ -62,6 +62,11 @@ const config: Config = {
     themeConfig: {
         // Replace with your project's social card
         //image: 'img/docusaurus-social-card.jpg',
+        colorMode: {
+            defaultMode: 'light',
+            disableSwitch: false,
+            respectPrefersColorScheme: false,
+        },
         navbar: {
             title: 'VS Code Spell Checker',
             logo: {
@@ -78,7 +83,7 @@ const config: Config = {
                 },
                 // {to: '/blog', label: 'Blog', position: 'left'},
                 {
-                    href: 'https://github.com/streetsidesoftware/cspell',
+                    href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
                     label: 'GitHub',
                     position: 'right',
                 },
