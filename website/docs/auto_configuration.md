@@ -94,6 +94,7 @@ toc_max_heading_level: 5
 | [`cSpell.languageSettings`](#cspelllanguagesettings) | resource | Additional settings for individual programming languages and locales. |
 | [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries) | resource | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries… |
 | [`cSpell.suggestWords`](#cspellsuggestwords) |  | A list of suggested replacements for words. Suggested words provide a way to make preferred… |
+| [`cSpell.useLocallyInstalledCSpellDictionaries`](#cspelluselocallyinstalledcspelldictionaries) | resource | Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found. |
 | [`cSpell.userWords`](#cspelluserwords) | resource | Words to add to global dictionary -- should only be in the user config file. |
 | [`cSpell.words`](#cspellwords) | resource | List of words to be considered correct. |
 
@@ -295,7 +296,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Description</dt>
   <dd>
-    Define custom dictionaries..
+    Define custom dictionaries.
     If `addWords` is `true` words will be added to this dictionary.
 
     This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).
@@ -629,6 +630,55 @@ toc_max_heading_level: 5
 ---
 
 
+#### `cSpell.useLocallyInstalledCSpellDictionaries`
+
+<dl>
+  <dt>Name</dt>
+  <dd>
+    `cSpell.useLocallyInstalledCSpellDictionaries`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Type</dt>
+  <dd>
+    `boolean`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Scope</dt>
+  <dd>
+    resource
+  </dd>
+</dl>
+
+<dl>
+  <dt>Description</dt>
+  <dd>
+    Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
+  </dd>
+</dl>
+
+
+
+<dl>
+  <dt>Default</dt>
+  <dd>
+    _`true`_
+  </dd>
+</dl>
+
+<dl>
+  <dt>Since Version</dt>
+  <dd>
+    4.0.0
+  </dd>
+</dl>
+
+---
+
+
 #### `cSpell.userWords`
 
 <dl>
@@ -728,16 +778,15 @@ toc_max_heading_level: 5
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel) | resource | Set Diagnostic Reporting Level |
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords) | resource | Set Diagnostic Reporting Level for Flagged Words |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions) | resource | Hide the options to add words to dictionaries or settings. |
-| [`cSpell.hideIssuesWhileTyping`](#cspellhideissueswhiletyping) | machine | Hide Issues While Typing |
+| [`cSpell.hideIssuesWhileTyping`](#cspellhideissueswhiletyping) | application | Hide Issues While Typing |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems) | resource | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems) | resource | Controls the maximum number of spelling errors per document. |
 | [`cSpell.minWordLength`](#cspellminwordlength) | resource | The minimum length of a word before checking it against a dictionary. |
 | [`cSpell.numSuggestions`](#cspellnumsuggestions) | resource | Controls the number of suggestions shown. |
-| [`cSpell.revealIssuesAfterDelayMS`](#cspellrevealissuesafterdelayms) | machine | Reveal Issues After a Delay in Milliseconds |
+| [`cSpell.revealIssuesAfterDelayMS`](#cspellrevealissuesafterdelayms) | application | Reveal Issues After a Delay in Milliseconds |
 | [`cSpell.showAutocompleteDirectiveSuggestions`](#cspellshowautocompletedirectivesuggestions) | language-overridable | Show CSpell in-document directives as you type. |
 | [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu) | application | Show Spell Checker actions in Editor Context Menu |
 | [`cSpell.showStatus`](#cspellshowstatus) | application | Display the spell checker status on the status bar. |
-| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment) | application | The side of the status bar to display the spell checker status. |
 | [`cSpell.showSuggestionsLinkInEditorContextMenu`](#cspellshowsuggestionslinkineditorcontextmenu) | application | Show Spelling Suggestions link in the top level context menu. |
 | [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype) | resource | The type of menu used to display spelling suggestions. |
 | [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges) | resource | The maximum number of changes allowed on a word to be considered a suggestions. |
@@ -974,7 +1023,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -1200,7 +1249,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -1364,12 +1413,12 @@ toc_max_heading_level: 5
 ---
 
 
-#### `cSpell.showStatusAlignment`
+#### ~~`cSpell.showStatusAlignment`~~
 
 <dl>
   <dt>Name</dt>
   <dd>
-    `cSpell.showStatusAlignment`
+    ~~`cSpell.showStatusAlignment`~~
   </dd>
 </dl>
 
@@ -1398,7 +1447,12 @@ toc_max_heading_level: 5
   </dd>
 </dl>
 
-
+<dl>
+  <dt>Deprecation Message</dt>
+  <dd>
+    No longer supported.
+  </dd>
+</dl>
 
 <dl>
   <dt>Default</dt>
@@ -2823,15 +2877,59 @@ toc_max_heading_level: 5
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
+| [`cSpell.experimental.symbols`](#cspellexperimentalsymbols) | application | Experiment with `executeDocumentSymbolProvider` |
 | [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking. |
-| [`cSpell.languageStatusFields`](#cspelllanguagestatusfields) | machine | Select which fields to display in the language status bar. |
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
-| [`cSpell.useLocallyInstalledCSpellDictionaries`](#cspelluselocallyinstalledcspelldictionaries) | resource | Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found. |
 
 
 ### Definitions
+
+
+#### `cSpell.experimental.symbols`
+
+<dl>
+  <dt>Name</dt>
+  <dd>
+    `cSpell.experimental.symbols` -- Experiment with `executeDocumentSymbolProvider`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Type</dt>
+  <dd>
+    `boolean`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Scope</dt>
+  <dd>
+    application
+  </dd>
+</dl>
+
+<dl>
+  <dt>Description</dt>
+  <dd>
+    Experiment with executeDocumentSymbolProvider.
+    This feature is experimental and will be removed in the future.
+  </dd>
+</dl>
+
+
+
+<dl>
+  <dt>Default</dt>
+  <dd>
+    _`false`_
+  </dd>
+</dl>
+
+
+
+---
 
 
 #### `cSpell.ignoreRegExpList`
@@ -2929,50 +3027,6 @@ toc_max_heading_level: 5
   <dt>Default</dt>
   <dd>
     _- none -_
-  </dd>
-</dl>
-
-
-
----
-
-
-#### `cSpell.languageStatusFields`
-
-<dl>
-  <dt>Name</dt>
-  <dd>
-    `cSpell.languageStatusFields`
-  </dd>
-</dl>
-
-<dl>
-  <dt>Type</dt>
-  <dd>
-    `object`
-  </dd>
-</dl>
-
-<dl>
-  <dt>Scope</dt>
-  <dd>
-    machine
-  </dd>
-</dl>
-
-<dl>
-  <dt>Description</dt>
-  <dd>
-    Select which fields to display in the language status bar.
-  </dd>
-</dl>
-
-
-
-<dl>
-  <dt>Default</dt>
-  <dd>
-    _`{"fileType":true,"issues":true,"scheme":true}`_
   </dd>
 </dl>
 
@@ -3102,55 +3156,6 @@ toc_max_heading_level: 5
 ---
 
 
-#### `cSpell.useLocallyInstalledCSpellDictionaries`
-
-<dl>
-  <dt>Name</dt>
-  <dd>
-    `cSpell.useLocallyInstalledCSpellDictionaries`
-  </dd>
-</dl>
-
-<dl>
-  <dt>Type</dt>
-  <dd>
-    `boolean`
-  </dd>
-</dl>
-
-<dl>
-  <dt>Scope</dt>
-  <dd>
-    resource
-  </dd>
-</dl>
-
-<dl>
-  <dt>Description</dt>
-  <dd>
-    Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
-  </dd>
-</dl>
-
-
-
-<dl>
-  <dt>Default</dt>
-  <dd>
-    _`true`_
-  </dd>
-</dl>
-
-<dl>
-  <dt>Since Version</dt>
-  <dd>
-    4.0.0
-  </dd>
-</dl>
-
----
-
-
 
 
 ## Appearance
@@ -3158,17 +3163,18 @@ toc_max_heading_level: 5
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
-| [`cSpell.dark`](#cspelldark) | machine | Decoration for dark themes. |
-| [`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme) | machine | Use VS Code to Render Spelling Issues |
-| [`cSpell.light`](#cspelllight) | machine | Decoration for light themes. |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | machine | The CSS color used to show issues in the ruler. |
-| [`cSpell.textDecoration`](#cspelltextdecoration) | machine | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
-| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) | machine | The decoration color for normal spelling issues. |
-| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | machine | The decoration color for flagged issues. |
-| [`cSpell.textDecorationLine`](#cspelltextdecorationline) | machine | The CSS line type used to decorate issues. |
-| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle) | machine | The CSS line style used to decorate issues. |
-| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness) | machine | The CSS line thickness used to decorate issues. |
-| [`cSpell.useCustomDecorations`](#cspellusecustomdecorations) | machine | Draw custom decorations on Spelling Issues. |
+| [`cSpell.dark`](#cspelldark) | application | Decoration for dark themes. |
+| [`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme) | application | Use VS Code to Render Spelling Issues |
+| [`cSpell.light`](#cspelllight) | application | Decoration for light themes. |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler. |
+| [`cSpell.textDecoration`](#cspelltextdecoration) | application | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
+| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) | application | The decoration color for normal spelling issues. |
+| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues. |
+| [`cSpell.textDecorationColorSuggestion`](#cspelltextdecorationcolorsuggestion) | application | The decoration color for spelling suggestions. |
+| [`cSpell.textDecorationLine`](#cspelltextdecorationline) | application | The CSS line type used to decorate issues. |
+| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle) | application | The CSS line style used to decorate issues. |
+| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness) | application | The CSS line thickness used to decorate issues. |
+| [`cSpell.useCustomDecorations`](#cspellusecustomdecorations) | application | Draw custom decorations on Spelling Issues. |
 
 
 ### Definitions
@@ -3193,7 +3199,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3246,7 +3252,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3298,7 +3304,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3351,7 +3357,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3412,7 +3418,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3481,7 +3487,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3538,7 +3544,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3576,6 +3582,65 @@ toc_max_heading_level: 5
 ---
 
 
+#### `cSpell.textDecorationColorSuggestion`
+
+<dl>
+  <dt>Name</dt>
+  <dd>
+    `cSpell.textDecorationColorSuggestion`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Type</dt>
+  <dd>
+    `string`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Scope</dt>
+  <dd>
+    application
+  </dd>
+</dl>
+
+<dl>
+  <dt>Description</dt>
+  <dd>
+    The decoration color for spelling suggestions.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+    - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+    Common Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`
+
+    Examples:
+    - `green`
+    - `yellow`
+    - `#ff0c`
+  </dd>
+</dl>
+
+
+
+<dl>
+  <dt>Default</dt>
+  <dd>
+    _`"#8884"`_
+  </dd>
+</dl>
+
+<dl>
+  <dt>Since Version</dt>
+  <dd>
+    4.0.2
+  </dd>
+</dl>
+
+---
+
+
 #### `cSpell.textDecorationLine`
 
 <dl>
@@ -3595,7 +3660,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3647,7 +3712,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3699,7 +3764,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -3758,7 +3823,7 @@ toc_max_heading_level: 5
 <dl>
   <dt>Scope</dt>
   <dd>
-    machine
+    application
   </dd>
 </dl>
 
@@ -4108,6 +4173,7 @@ toc_max_heading_level: 5
 | ------- | ----- | ----------- |
 | [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
 | [`cSpell.experimental.enableSettingsViewerV2`](#cspellexperimentalenablesettingsviewerv2) | application | Enable the Settings Viewer V2 Extension |
+| [`cSpell.reportUnknownWords`](#cspellreportunknownwords) | language-overridable | Strict Spell Checking |
 
 
 ### Definitions
@@ -4197,6 +4263,59 @@ toc_max_heading_level: 5
 </dl>
 
 
+
+---
+
+
+#### `cSpell.reportUnknownWords`
+
+<dl>
+  <dt>Name</dt>
+  <dd>
+    `cSpell.reportUnknownWords` -- Strict Spell Checking
+  </dd>
+</dl>
+
+<dl>
+  <dt>Type</dt>
+  <dd>
+    `boolean`
+  </dd>
+</dl>
+
+<dl>
+  <dt>Scope</dt>
+  <dd>
+    language-overridable
+  </dd>
+</dl>
+
+<dl>
+  <dt>Description</dt>
+  <dd>
+    By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only
+    reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.
+
+    - `true` - report unknown words as misspelled
+    - `false` - report unknown words as suggestions
+  </dd>
+</dl>
+
+
+
+<dl>
+  <dt>Default</dt>
+  <dd>
+    _`true`_
+  </dd>
+</dl>
+
+<dl>
+  <dt>Since Version</dt>
+  <dd>
+    4.0.2
+  </dd>
+</dl>
 
 ---
 

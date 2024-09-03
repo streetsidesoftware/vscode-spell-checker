@@ -10,6 +10,7 @@ slug: commands
 
 | Command | Title |
 | ------- | ----- |
+| `cSpell.about` |  About the Spell Checker |
 | `cSpell.addIgnoreWord` |  Ignore Words |
 | `cSpell.addIgnoreWordsToFolder` |  Ignore Word in Folder Settings |
 | `cSpell.addIgnoreWordsToUser` |  Ignore Words in User Settings |
@@ -25,7 +26,7 @@ slug: commands
 | `cSpell.addWordToWorkspaceSettings` |  Add Words to Workspace Settings |
 | `cSpell.autoFixSpellingIssues` |  Fix all issues with a preferred suggestion in the current document. |
 | `cSpell.createCSpellConfig` |  Create a CSpell Configuration File. |
-| `cSpell.createCSpellTerminal` |  Create CSpell REPL Terminal |
+| `cSpell.createCSpellTerminal` |  Open a new CSpell REPL Terminal |
 | `cSpell.createCustomDictionary` |  Create a Custom Dictionary File. |
 | `cSpell.disableCurrentFileType` |  Disable Spell Checking File Type |
 | `cSpell.disableCurrentLanguage` |  Disable Spell Checking Document Type |
@@ -36,6 +37,7 @@ slug: commands
 | `cSpell.enableCurrentLanguage` |  Enable Spell Checking Document Type |
 | `cSpell.enableForGlobal` |  Enable Spell Checking by Default |
 | `cSpell.enableForWorkspace` |  Enable Spell Checking For Workspace |
+| `cSpell.experimental.executeDocumentSymbolProvider` |  Execute Document Symbol Provider on the current document.<br />**When:**<br />  `config.cSpell.experimental.symbols` |
 | `cSpell.goToNextSpellingIssue` |  Go to Next Spelling Issue |
 | `cSpell.goToNextSpellingIssueAndSuggest` |  Go to Next Spelling Issue and Suggest |
 | `cSpell.goToPreviousSpellingIssue` |  Go to Previous Spelling Issue |
@@ -53,12 +55,18 @@ slug: commands
 | `cSpell.logPerfTimeline` |  Log CSpell performance times to console |
 | `cSpell.openFileInfoView` |  Open Spell Checker File Information View |
 | `cSpell.openIssuesPanel` |  Open Spell Checker Issues Panel |
+| `cSpell.rateTheSpellChecker` |  Rate the Spell Checker |
+| `cSpell.releaseNotes` |  Show Spell Checker Release Notes |
+| `cSpell.reload` |  Reload Spell Checker Configuration and Dictionaries |
 | `cSpell.removeWordFromFolderDictionary` |  Remove Words from the Folder Dictionary |
 | `cSpell.removeWordFromUserDictionary` |  Remove Words from the Global Dictionary |
 | `cSpell.removeWordFromWorkspaceDictionary` |  Remove Words from the Workspace Dictionaries |
+| `cSpell.reportIssue` |  Report an Issue with the Spell Checker |
 | `cSpell.restart` |  Restart Spell Checker Server |
 | `cSpell.show` |  Show Spelling Issues |
+| `cSpell.sponsor` |  Sponsor the Spell Checker |
 | `cSpell.suggestSpellingCorrections` |  Spelling Suggestions...<br />**When:**<br />  `editorTextFocus && cSpell.editorMenuContext.showSuggestions` |
+| `cSpell.supportRequest` |  Request Support with the Spell Checker |
 | `cSpell.toggleEnableForGlobal` |  Toggle Spell Checking in User Settings |
 | `cSpell.toggleEnableForWorkspace` |  Toggle Spell Checking for Workspace |
 | `cSpell.toggleEnableSpellChecker` |  Toggle Spell Checking |
