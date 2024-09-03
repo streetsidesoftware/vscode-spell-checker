@@ -66,7 +66,7 @@ const config: Config = {
             defaultMode: 'light',
             disableSwitch: false,
             respectPrefersColorScheme: false,
-          },
+        },
         navbar: {
             title: 'VS Code Spell Checker',
             logo: {

@@ -3984,7 +3984,7 @@
     "build": "npm run build:workspaces && npm run build:schema",
     "build:docs": "npm run gen-docs",
     "build:all": "npm run build && npm run build:docs",
-    "build:readme": "inject-markdown README.md && prettier -w README.md && inject-markdown docs && prettier -w docs",
+    "build:readme": "inject-markdown README.md && prettier -w README.md && inject-markdown docs website && prettier -w docs website",
     "build:schema": "npm run build-package-schema",
     "build:workspaces": "npm --workspaces --if-present run build",
     "build:extension": "npm run package-extension",
