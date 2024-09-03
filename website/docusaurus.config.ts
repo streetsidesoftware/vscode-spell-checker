@@ -83,7 +83,7 @@ const config: Config = {
                 },
                 // {to: '/blog', label: 'Blog', position: 'left'},
                 {
-                    href: 'https://github.com/streetsidesoftware/cspell',
+                    href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
                     label: 'GitHub',
                     position: 'right',
                 },
