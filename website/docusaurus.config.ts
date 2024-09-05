@@ -99,6 +99,14 @@ const config: Config = {
             additionalLanguages: ['json', 'json5', 'bash'],
         },
     } satisfies Preset.ThemeConfig,
+
+    scripts: [
+        {
+            defer: true,
+            'data-domain': 'streetsidesoftware.com',
+            src: 'https://plausible.io/js/script.js',
+        },
+    ],
 };
 
 export default config;
