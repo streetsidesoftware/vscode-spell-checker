@@ -4015,11 +4015,11 @@
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.16.4",
+    "@types/node": "^20.16.5",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^2.0.5",
-    "@vscode/vsce": "^3.0.0",
+    "@vscode/vsce": "^3.1.0",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
