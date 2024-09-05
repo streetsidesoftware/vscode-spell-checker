@@ -2,12 +2,12 @@ name: 🌐 Deploy Website to GitHub Pages
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'website/**'
-  #     - 'package.json'
+  push:
+    branches:
+      - main
+    paths:
+      - 'website/**'
+      - 'package.json'
 
   # Review gh actions docs if you want to further define triggers, paths, etc
   # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
