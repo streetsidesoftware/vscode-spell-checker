@@ -4024,7 +4024,7 @@
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.23.1",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "eslint-plugin-n": "^17.10.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^55.0.0",
