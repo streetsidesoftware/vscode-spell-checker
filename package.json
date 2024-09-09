@@ -4022,7 +4022,7 @@
     "@vscode/vsce": "^3.1.0",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.0.0",
     "esbuild": "^0.23.1",
     "eslint": "^9.10.0",
     "eslint-plugin-n": "^17.10.2",
