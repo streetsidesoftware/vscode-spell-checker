@@ -2,12 +2,12 @@ name: ' 🧪 Integration Tests'
 on:
   pull_request:
     paths-ignore:
-      - 'docs/**'
+      - 'website/**'
   push:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
+      - 'website/**'
 
 jobs:
   run-integration-tests:

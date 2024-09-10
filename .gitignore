@@ -48,8 +48,7 @@ packages/*/out/
 packages/*/temp/
 tools/*/dist/
 tools/*/temp/
-docs/docsV2/
-
+website/build
 
 !**/server/.vscode
 !**/client/.vscode

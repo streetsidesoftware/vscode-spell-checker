@@ -2,12 +2,12 @@ name: ' 🧪 Build and Test'
 on:
   pull_request:
     paths-ignore:
-      - 'docs/**'
+      - 'website/**'
   push:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
+      - 'website/**'
 
 jobs:
   build-test:

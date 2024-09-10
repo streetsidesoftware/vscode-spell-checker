@@ -1,7 +1,0 @@
-# Custom Dictionary Words
-mswin
-pmarsceill
-streetsidesoftware
-VSIX
-webrick
-zoneinfo
