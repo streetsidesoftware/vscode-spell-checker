@@ -19,4 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx prettier -c "website/**/*.{md,markdown,yaml,yml,json,html,htm}"
+      - run: |
+          npm i
+          npx prettier -c "website/**/*.{md,markdown,yaml,yml,json,html,htm}"
