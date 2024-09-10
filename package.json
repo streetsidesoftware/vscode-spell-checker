@@ -3976,7 +3976,8 @@
     "packages/_server",
     "packages/_serverPatternMatcher",
     "packages/client",
-    "packages/_integrationTests"
+    "packages/_integrationTests",
+    "website"
   ],
   "scripts": {
     "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run prettier:fix-schema",
@@ -3991,7 +3992,7 @@
     "clean": "npm --workspaces --if-present run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
     "build-production": "npm --workspaces --if-present run build-production",
     "build-release": "npm run build && npm run package-extension",
-    "build-website": "cd website && npm i && npm run build",
+    "build-website": "cd website && npm i && npm run build-site",
     "gen-docs": "npm --workspace=@internal/docs run gen-docs",
     "package-extension": "vsce package --pre-release -o ./build",
     "prettier:check": "prettier . -c",
@@ -4037,7 +4038,7 @@
     "rollup": "^4.21.2",
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
-    "typescript": "^5.5.4",
+    "typescript": "~5.5.4",
     "typescript-eslint": "^8.4.0",
     "vite": "^5.4.3",
     "vitest": "^2.0.5"

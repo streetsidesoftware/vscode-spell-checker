@@ -29,7 +29,7 @@ jobs:
         run: |
           cd website
           npm i
-          npm run build
+          npm run build-site
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
