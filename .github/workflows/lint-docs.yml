@@ -6,17 +6,17 @@ on: # rebuild any PRs and main branch changes
     branches:
       - main
     paths:
-      - 'docs/**'
+      - 'website/**'
 
 jobs:
   cspell:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx cspell "docs/**"
+      - run: npx cspell "website/**"
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx prettier -c "docs/**/*.{md,markdown,yaml,yml,json,html,htm}"
+      - run: npx prettier -c "website/**/*.{md,markdown,yaml,yml,json,html,htm}"
