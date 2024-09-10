@@ -39,3 +39,7 @@ $ GIT_USER=<Your GitHub username> yarn deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+## Legacy Website
+
+The Jekyll website was under [/docs](https://github.com/streetsidesoftware/vscode-spell-checker/blob/ca954e048a173f805dbabae4fe2d4f23e213c6ca/docs).

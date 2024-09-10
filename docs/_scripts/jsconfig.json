@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "module": "NodeNext",
-        "target": "ES2022",
-        "types": ["node", "json-schema"]
-    },
-    "exclude": ["node_modules"]
-}

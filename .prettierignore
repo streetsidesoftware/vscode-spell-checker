@@ -8,8 +8,6 @@
 **/yarn.lock
 CHANGELOG.md
 coverage
-docs/_site
-docs/docsV2
 node_modules
 packages/_integrationTests/out/
 packages/*/dist/

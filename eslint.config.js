@@ -33,7 +33,6 @@ export default tsEslint.config(
             '**/scripts/ts-json-schema-generator.cjs',
             '**/temp/**',
             '**/webpack*.js',
-            'docs/docsV2/**',
             'package-lock.json',
             'packages/*/dist/**',
             'packages/*/out/**',
