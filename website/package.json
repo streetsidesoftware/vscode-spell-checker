@@ -34,7 +34,7 @@
     "@docusaurus/tsconfig": "3.3.2",
     "@docusaurus/types": "3.3.2",
     "@types/json-schema": "^7.0.15",
-    "typescript": "~5.5.4"
+    "typescript": "~5.6.2"
   },
   "browserslist": {
     "production": [
