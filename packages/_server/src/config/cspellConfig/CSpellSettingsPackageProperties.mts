@@ -24,9 +24,9 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     /**
      * Current active spelling language.
      *
-     * Example: "en-GB" for British English
+     * Example: `en-GB` for British English
      *
-     * Example: "en,nl" to enable both English and Dutch
+     * Example: `en,nl` to enable both English and Dutch
      * @scope resource
      * @default "en"
      */
