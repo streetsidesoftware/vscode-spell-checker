@@ -60,3 +60,15 @@ h1.hero__title {
 .hero .button {
     color: #282c34;
 }
+
+dt {
+    font-weight: bolder;
+}
+
+dt > :last-child {
+    margin-bottom: 0;
+}
+
+dd > :last-child {
+    margin-bottom: 0;
+}

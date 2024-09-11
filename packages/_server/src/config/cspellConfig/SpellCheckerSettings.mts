@@ -108,6 +108,7 @@ export interface SpellCheckerSettings
      * Display the spell checker status on the status bar.
      * @scope application
      * @default true
+     * @deprecationMessage No longer used.
      */
     showStatus?: boolean;
 

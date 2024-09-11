@@ -178,6 +178,8 @@ interface Appearance extends Decoration {
 export interface AppearanceSettings extends Appearance {
     /**
      * Draw custom decorations on Spelling Issues.
+     * - `true` - Use custom decorations.
+     * - `false` - Use the VS Code Diagnostic Collection to render spelling issues.
      *
      * @scope application
      * @since 4.0.0

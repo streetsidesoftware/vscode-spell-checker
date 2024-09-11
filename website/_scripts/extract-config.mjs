@@ -63,7 +63,7 @@ ${formatSections(configSections)}
         function tocEntry(value) {
             if (!value.title) return '';
             const title = value.title;
-            return `- [${title}](#${title.toLowerCase().replace(/\W+/g, '-')})`;
+            return `- [${title}](${hashRef(title)})`;
         }
 
         return `\n${sections
@@ -88,7 +88,7 @@ function formatSections(sections) {
  */
 function sectionEntry(section) {
     const entries = Object.entries(section.properties || {});
-    entries.sort(([a], [b]) => compare(a, b));
+    entries.sort(compareProperties);
     const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
     return `
@@ -101,6 +101,18 @@ ${configTable(activeEntries)}
 ${configDefinitions(entries)}
 
 `;
+}
+
+/**
+ * Sort properties by name, with deprecated properties last.
+ * @param {[string, JSONSchema4]} a
+ * @param {[string, JSONSchema4]} b
+ * @returns {number}
+ */
+function compareProperties(a, b) {
+    const dA = a[1].deprecationMessage || a[1].deprecated ? 1 : 0;
+    const dB = b[1].deprecationMessage || b[1].deprecated ? 1 : 0;
+    return dA - dB || compare(a[0], b[0]);
 }
 
 /**
@@ -118,10 +130,7 @@ function configTable(entries) {
         const description =
             value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '';
         const scope = value.scope || '';
-        return `| [\`${shorten(key, 60)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
-            description,
-            descriptionWidth,
-        )} |`;
+        return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
     }
 
     return `
@@ -182,13 +191,15 @@ function definition(entry) {
     return `
 #### ${name}
 
+<dl>
+
 ${singleDef('Name', `${name} ${title}`)}
 
 ${singleDef('Type', formatType(value), true)}
 
 ${singleDef('Scope', value.scope || '_- none -_')}
 
-${singleDef('Description', description)}
+${singleDef('Description', fixVSCodeRefs(description))}
 
 ${deprecationMessage}
 
@@ -196,8 +207,19 @@ ${singleDef('Default', defaultValue, true)}
 
 ${since ? singleDef('Since Version', since) : ''}
 
+</dl>
+
 ---
 `;
+}
+
+/**
+ *
+ * @param {string} markdown
+ * @returns {string}
+ */
+function fixVSCodeRefs(markdown) {
+    return markdown.replaceAll(/`#(.*?)#`/g, (match, p1) => `[\`${p1}\`](${hashRef(p1)})`);
 }
 
 /**
@@ -209,8 +231,8 @@ ${since ? singleDef('Since Version', since) : ''}
 function singleDef(term, def, addIgnore = false) {
     const lines = [];
 
-    const defLines = def.replaceAll('`jsonc', '`json5').replace(/\n/g, '\n    ');
-    const termDef = '<dl>\n' + `  <dt>${term}</dt>\n  <dd>\n    ${defLines}\n  </dd>\n</dl>`;
+    const defLines = def.replaceAll('`jsonc', '`json5');
+    const termDef = `<dt>\n${term}\n</dt>\n<dd>\n\n${defLines}\n\n</dd>\n`;
     const termLines = termDef.split('\n').map((line) => line.trimEnd());
 
     lines.push(...termLines);
@@ -245,10 +267,19 @@ function formatDefaultValue(value) {
     const lines = text.split('\n');
     if (lines.length > 1) {
         // console.error('%o', lines);
-        return 'code\n```js\n' + text + '\n```\n';
+        return '\n```json5\n' + text + '\n```\n';
     }
 
     return '_`' + text + '`_';
+}
+
+/**
+ *
+ * @param {string} heading
+ * @returns {string}
+ */
+function hashRef(heading) {
+    return '#' + heading.toLowerCase().replaceAll('.', '').replaceAll(/\W+/g, '-');
 }
 
 /**
@@ -307,7 +338,8 @@ function extractEnumDescriptions(def) {
         .join('\n');
 
     return `
-
+| Value | Description |
+| ----- | ----------- |
 ${defs}
 `;
 }

@@ -2052,8 +2052,8 @@
         },
         "cSpell.language": {
           "default": "en",
-          "description": "Current active spelling language.\n\nExample: \"en-GB\" for British English\n\nExample: \"en,nl\" to enable both English and Dutch",
-          "markdownDescription": "Current active spelling language.\n\nExample: \"en-GB\" for British English\n\nExample: \"en,nl\" to enable both English and Dutch",
+          "description": "Current active spelling language.\n\nExample: `en-GB` for British English\n\nExample: `en,nl` to enable both English and Dutch",
+          "markdownDescription": "Current active spelling language.\n\nExample: `en-GB` for British English\n\nExample: `en,nl` to enable both English and Dutch",
           "scope": "resource",
           "type": "string"
         },
@@ -2883,8 +2883,8 @@
         },
         "cSpell.useCustomDecorations": {
           "default": true,
-          "description": "Draw custom decorations on Spelling Issues.",
-          "markdownDescription": "Draw custom decorations on Spelling Issues.",
+          "description": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.",
+          "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.",
           "scope": "application",
           "since": "4.0.0",
           "type": "boolean"
@@ -3584,6 +3584,7 @@
         },
         "cSpell.showStatus": {
           "default": true,
+          "deprecationMessage": "No longer used.",
           "description": "Display the spell checker status on the status bar.",
           "markdownDescription": "Display the spell checker status on the status bar.",
           "scope": "application",
