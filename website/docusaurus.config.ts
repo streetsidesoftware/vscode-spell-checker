@@ -72,15 +72,16 @@ const config: Config = {
             logo: {
                 alt: 'Street Side Software Logo',
                 src: 'img/logo.png',
+                target: '/',
             },
             items: [
-                { to: '/about', label: 'About', position: 'left' },
                 {
                     type: 'docSidebar',
                     sidebarId: 'tutorialSidebar',
                     position: 'left',
                     label: 'Docs',
                 },
+                { to: '/about', label: 'About', position: 'left' },
                 // {to: '/blog', label: 'Blog', position: 'left'},
                 {
                     href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
