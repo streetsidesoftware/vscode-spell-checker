@@ -17,7 +17,6 @@ jobs:
           # - macos-latest # Disabled because github actions randomly fails on macos
           - ubuntu-latest
           - windows-latest
-        node-version: ['${{ vars.DEFAULT_NODE_VERSION }}']
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -26,7 +25,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: npm
       - run: npm ci
       - run: npm run build
@@ -38,7 +37,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['${{ vars.DEFAULT_NODE_VERSION }}']
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -47,7 +45,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: npm
       - run: npm ci
       - run: npm run test-vsce-build
