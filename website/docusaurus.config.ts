@@ -82,6 +82,7 @@ const config: Config = {
                     label: 'Docs',
                 },
                 { to: '/about', label: 'About', position: 'left' },
+                { label: 'Street Side Software', href: 'https://streetsidesoftware.com', position: 'right', target: '_self' },
                 // {to: '/blog', label: 'Blog', position: 'left'},
                 {
                     href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
