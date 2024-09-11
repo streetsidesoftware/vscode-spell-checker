@@ -31,7 +31,9 @@ export interface SpellCheckerSettings
     extends SpellCheckerShouldCheckDocSettings,
         FileTypesAndSchemeSettings,
         SpellCheckerBehaviorSettings,
-        AppearanceSettings {
+        AppearanceSettings,
+        ExperimentalSettings,
+        AdvancedSettings {
     /**
      * If a `cspell` configuration file is updated, format the configuration file
      * using the VS Code Format Document Provider. This will cause the configuration
@@ -148,31 +150,6 @@ export interface SpellCheckerSettings
     fixSpellingWithRenameProvider?: boolean;
 
     /**
-     * Use the Reference Provider when fixing spelling issues with the Rename Provider.
-     * This feature is used in connection with `#cSpell.fixSpellingWithRenameProvider#`
-     * @title Use Reference Provider During Rename
-     * @scope language-overridable
-     * @default false
-     */
-    'advanced.feature.useReferenceProviderWithRename'?: boolean;
-
-    /**
-     * Used to work around bugs in Reference Providers and Rename Providers.
-     * Anything matching the provided Regular Expression will be removed from the text
-     * before sending it to the Rename Provider.
-     *
-     * See: [Markdown: Fixing spelling issues in Header sections changes the entire line · Issue #1987](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1987)
-     *
-     * It is unlikely that you would need to edit this setting. If you need to, please open an issue at
-     * [Spell Checker Issues](https://github.com/streetsidesoftware/vscode-spell-checker/issues)
-     *
-     * This feature is used in connection with `#cSpell.advanced.feature.useReferenceProviderWithRename#`
-     * @title Remove Matching Characters Before Rename
-     * @scope language-overridable
-     */
-    'advanced.feature.useReferenceProviderRemove'?: RegExpString;
-
-    /**
      * Show Spell Checker actions in Editor Context Menu
      * @scope application
      * @default true
@@ -279,29 +256,6 @@ export interface SpellCheckerSettings
      *  "Suggestions will appear inline near the word, inside the text editor."]
      */
     suggestionMenuType?: 'quickPick' | 'quickFix';
-
-    /**
-     * Show Regular Expression Explorer
-     * @scope application
-     * @default false
-     */
-    'experimental.enableRegexpView'?: boolean;
-
-    /**
-     * Enable the Settings Viewer V2 Extension
-     * @scope application
-     * @default false
-     */
-    'experimental.enableSettingsViewerV2'?: boolean;
-
-    /**
-     * Experiment with executeDocumentSymbolProvider.
-     * This feature is experimental and will be removed in the future.
-     * @title Experiment with `executeDocumentSymbolProvider`
-     * @scope application
-     * @default false
-     */
-    'experimental.symbols'?: boolean;
 
     /**
      * Hide the options to add words to dictionaries or settings.
@@ -412,6 +366,58 @@ export interface SpellCheckerSettings
      * @default true
      */
     reportUnknownWords?: boolean;
+}
+
+export interface ExperimentalSettings {
+    /**
+     * Show Regular Expression Explorer
+     * @scope application
+     * @default false
+     */
+    'experimental.enableRegexpView'?: boolean;
+
+    /**
+     * Enable the Settings Viewer V2 Extension
+     * @scope application
+     * @default false
+     */
+    'experimental.enableSettingsViewerV2'?: boolean;
+
+    /**
+     * Experiment with executeDocumentSymbolProvider.
+     * This feature is experimental and will be removed in the future.
+     * @title Experiment with `executeDocumentSymbolProvider`
+     * @scope application
+     * @default false
+     */
+    'experimental.symbols'?: boolean;
+}
+
+export interface AdvancedSettings {
+    /**
+     * Use the Reference Provider when fixing spelling issues with the Rename Provider.
+     * This feature is used in connection with `#cSpell.fixSpellingWithRenameProvider#`
+     * @title Use Reference Provider During Rename
+     * @scope language-overridable
+     * @default false
+     */
+    'advanced.feature.useReferenceProviderWithRename'?: boolean;
+
+    /**
+     * Used to work around bugs in Reference Providers and Rename Providers.
+     * Anything matching the provided Regular Expression will be removed from the text
+     * before sending it to the Rename Provider.
+     *
+     * See: [Markdown: Fixing spelling issues in Header sections changes the entire line · Issue #1987](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1987)
+     *
+     * It is unlikely that you would need to edit this setting. If you need to, please open an issue at
+     * [Spell Checker Issues](https://github.com/streetsidesoftware/vscode-spell-checker/issues)
+     *
+     * This feature is used in connection with `#cSpell.advanced.feature.useReferenceProviderWithRename#`
+     * @title Remove Matching Characters Before Rename
+     * @scope language-overridable
+     */
+    'advanced.feature.useReferenceProviderRemove'?: RegExpString;
 }
 
 export interface SpellCheckerBehaviorSettings {

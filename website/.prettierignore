@@ -5,3 +5,4 @@ _site/**
 **/auto_*
 build/**
 **/*.mdx
+docs/configuration/index.md

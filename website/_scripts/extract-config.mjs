@@ -1,5 +1,8 @@
 // @ts-check
 import { promises as fs } from 'node:fs';
+import { unindent } from './lib/utils.mjs';
+
+const targetDir = new URL('../docs/configuration/', import.meta.url);
 
 /**
  * JSONSchema4.
@@ -13,6 +16,10 @@ import { promises as fs } from 'node:fs';
 
 /**
  * @typedef {import('json-schema').JSONSchema4TypeName} JSONSchema4TypeName
+ */
+
+/**
+ * @typedef {{[key: string]: string}} TypeSlugRefs
  */
 
 /**
@@ -31,76 +38,115 @@ async function run() {
 
     configSections.sort((a, b) => a.order - b.order || compare(a.title || '', b.title || ''));
 
-    const doc = `\
----
-# AUTO-GENERATED ALL CHANGES WILL BE LOST
-# See \`_scripts/extract-config.js\`
-title: Configuration
-slug: configuration
-toc_max_heading_level: 5
----
+    const refs = extractTypeRefs(configSections);
 
-# Configuration Settings
-
-${sectionTOC(configSections)}
-
-${formatSections(configSections)}
-
-`.replace(/\u200B/g, ''); // remove zero width spaces
-
-    console.log(doc);
-
-    /**
-     * @param {JSONSchema4[]} sections
-     * @returns
-     */
-    function sectionTOC(sections) {
-        /**
-         *
-         * @param {JSONSchema4} value
-         * @returns
-         */
-        function tocEntry(value) {
-            if (!value.title) return '';
-            const title = value.title;
-            return `- [${title}](${hashRef(title)})`;
-        }
-
-        return `\n${sections
-            .map(tocEntry)
-            .filter((a) => !!a)
-            .join('\n')}\n`;
+    await fs.mkdir(targetDir, { recursive: true });
+    await fs.writeFile(new URL('index.md', targetDir), genIndex(configSections));
+    for (const section of formatSections(configSections, refs)) {
+        await fs.writeFile(new URL(`auto_${section.slug}.md`, targetDir), section.content);
     }
 }
 
 /**
  *
+ * @param {JSONSchema4[]} configSections
+ * @returns {string}
+ */
+function genIndex(configSections) {
+    return unindent`\
+        ---
+        # AUTO-GENERATED ALL CHANGES WILL BE LOST
+        # See \`_scripts/extract-config.mjs\`
+        title: Configuration
+        id: configuration
+        ---
+
+        # Configuration Settings
+
+        ${sectionTOC(configSections)}
+    `;
+}
+
+/**
  * @param {JSONSchema4[]} sections
  * @returns
  */
-function formatSections(sections) {
-    return sections.map(sectionEntry).join('\n');
+function sectionTOC(sections) {
+    /**
+     *
+     * @param {JSONSchema4} value
+     * @returns
+     */
+    function tocEntry(value) {
+        if (!value.title) return '';
+        const title = value.title;
+        const description = value.description ? ` - ${value.description}` : '';
+        return `- [${title}](configuration/${slugifyTitle(title)}) ${description}`.trim();
+    }
+
+    return `\n${sections
+        .map(tocEntry)
+        .filter((a) => !!a)
+        .join('\n')}\n`;
+}
+
+/**
+ *
+ * @param {JSONSchema4[]} sections
+ * @param {TypeSlugRefs} refs
+ * @returns {{ title: string; content: string, slug: string }[]}
+ */
+function formatSections(sections, refs) {
+    return sections.map((s) => formatSectionContent(s, refs));
 }
 
 /**
  * @param {JSONSchema4} section
- * @returns
+ * @param {TypeSlugRefs} refs
+ * @returns {{ title: string; content: string, slug: string }}
  */
-function sectionEntry(section) {
+function formatSectionContent(section, refs) {
     const entries = Object.entries(section.properties || {});
     entries.sort(compareProperties);
     const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
-    return `
-## ${section.title}
+    const slug = slugifyTitle(section.title);
+    const content = unindent`\
+        ---
+        # AUTO-GENERATED ALL CHANGES WILL BE LOST
+        # See \`_scripts/extract-config.mjs\`
+        title: ${section.title}
+        id: ${slugify(section.title)}
+        ---
 
-${configTable(activeEntries)}
+        # ${section.title}
 
-### Definitions
+        ${section.description || ''}
 
-${configDefinitions(entries)}
+        ${configTable(activeEntries)}
 
-`;
+        ## Definitions
+
+        ${configDefinitions(entries, refs)}
+
+    `;
+
+    return { title: section.title, content, slug };
+}
+
+/**
+ * @param {JSONSchema4[]} configSections
+ * @returns {TypeSlugRefs}
+ */
+function extractTypeRefs(configSections) {
+    /** @type {TypeSlugRefs} */
+    const refs = {};
+    for (const section of configSections) {
+        for (const key of Object.keys(section.properties || {})) {
+            refs[key] ??= slugifyTitle(section.title) + hashRef(key);
+        }
+    }
+    return refs;
 }
 
 /**
@@ -133,11 +179,11 @@ function configTable(entries) {
         return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
     }
 
-    return `
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-${entries.map(tableEntryConfig).join('\n')}
-`;
+    return unindent`
+        | Setting | Scope | Description |
+        | ------- | ----- | ----------- |
+        ${entries.map(tableEntryConfig).join('\n')}
+    `;
 }
 
 /**
@@ -163,18 +209,20 @@ function shortenLine(line, len) {
 /**
  *
  * @param {[string, JSONSchema4][]} entries
+ * @param {TypeSlugRefs} refs
  * @returns
  */
-function configDefinitions(entries) {
-    return entries.map(definition).join('\n');
+function configDefinitions(entries, refs) {
+    return entries.map((def) => definition(def, refs)).join('\n');
 }
 
 /**
  *
  * @param {[string, JSONSchema4]} entry
+ * @param {TypeSlugRefs} refs
  * @returns
  */
-function definition(entry) {
+function definition(entry, refs) {
     const [key, value] = entry;
     const description = value.markdownDescription || value.description || value.title || '';
     const since = value.since || '';
@@ -188,38 +236,71 @@ function definition(entry) {
 
     const deprecationMessage = value.deprecationMessage ? singleDef('Deprecation Message', value.deprecationMessage) : '';
 
-    return `
-#### ${name}
+    return unindent`
+        ### ${name}
 
-<dl>
+        <dl>
 
-${singleDef('Name', `${name} ${title}`)}
+        ${singleDef('Name', `${name} ${title}`)}
 
-${singleDef('Type', formatType(value), true)}
+        ${singleDef('Description', fixVSCodeRefs(description, refs))}
 
-${singleDef('Scope', value.scope || '_- none -_')}
+        ${singleDef('Type', formatType(value), true)}
 
-${singleDef('Description', fixVSCodeRefs(description))}
+        ${singleDef('Scope', scopeDef(value.scope) || '_- none -_')}
 
-${deprecationMessage}
+        ${deprecationMessage}
 
-${singleDef('Default', defaultValue, true)}
+        ${singleDef('Default', defaultValue, true)}
 
-${since ? singleDef('Since Version', since) : ''}
+        ${since ? singleDef('Since Version', since) : ''}
 
-</dl>
+        </dl>
 
----
-`;
+        ---
+    `;
+}
+
+/**
+ *
+ * @param {string} scope
+ * @returns {string}
+ */
+function scopeDef(scope) {
+    /*
+    A configuration setting can have one of the following possible scopes:
+    application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+    machine - Machine specific settings that can be set only in user settings or only in remote settings. For example, an installation path which shouldn't be shared across machines.
+    machine-overridable - Machine specific settings that can be overridden by workspace or folder settings.
+    window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
+    resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+    language-overridable - Resource settings that can be overridable at a language level.
+    */
+    const scopes = {
+        application: 'Settings that apply to all instances of VS Code and can only be configured in user settings.',
+        machine:
+            'Machine specific settings that can be set only in user settings or only in remote settings.\n' +
+            "For example, an installation path which shouldn't be shared across machines.",
+        'machine-overridable': 'Machine specific settings that can be overridden by workspace or folder settings.',
+        window: 'Windows (instance) specific settings which can be configured in user, workspace, or remote settings.',
+        resource:
+            'Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.',
+        'language-overridable': 'Resource settings that can be overridable at a language level.',
+    };
+
+    const desc = scopes[scope];
+
+    return desc ? `${scope} - ${desc}` : scope;
 }
 
 /**
  *
  * @param {string} markdown
+ * @param {TypeSlugRefs} refs
  * @returns {string}
  */
-function fixVSCodeRefs(markdown) {
-    return markdown.replaceAll(/`#(.*?)#`/g, (match, p1) => `[\`${p1}\`](${hashRef(p1)})`);
+function fixVSCodeRefs(markdown, refs) {
+    return markdown.replaceAll(/`#(.*?)#`/g, (_, p1) => `[\`${p1}\`](${refs[p1] || hashRef(p1)})`);
 }
 
 /**
@@ -275,11 +356,29 @@ function formatDefaultValue(value) {
 
 /**
  *
+ * @param {string} sectionTitle
+ * @returns {string}
+ */
+function slugifyTitle(sectionTitle) {
+    return slugify(sectionTitle);
+}
+
+/**
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function slugify(text) {
+    return text.toLowerCase().replaceAll('.', '').replaceAll(/\W+/g, '-');
+}
+
+/**
+ *
  * @param {string} heading
  * @returns {string}
  */
 function hashRef(heading) {
-    return '#' + heading.toLowerCase().replaceAll('.', '').replaceAll(/\W+/g, '-');
+    return '#' + slugify(heading);
 }
 
 /**
@@ -337,11 +436,11 @@ function extractEnumDescriptions(def) {
         .map(([e, d]) => `| \`${e}\` | ${d.replace(/\n/g, '<br>')} |`)
         .join('\n');
 
-    return `
-| Value | Description |
-| ----- | ----------- |
-${defs}
-`;
+    return unindent`
+        | Value | Description |
+        | ----- | ----------- |
+        ${defs}
+    `;
 }
 
 /**

@@ -15,8 +15,8 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "gen-docs": "npm run gen-commands && npm run gen-config",
-    "gen-commands": "node ./_scripts/extract-commands.mjs > ./docs/auto_commands.md",
-    "gen-config": "node ./_scripts/extract-config.mjs > ./docs/auto_configuration.md",
+    "gen-commands": "node ./_scripts/extract-commands.mjs",
+    "gen-config": "node ./_scripts/extract-config.mjs",
     "typecheck": "tsc",
     "update-packages": "npx npm-check-updates --target semver -u && npm i"
   },
