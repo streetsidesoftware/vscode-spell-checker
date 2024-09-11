@@ -447,9 +447,6 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
     // Enable / Disable the spell checker.
     "cSpell.enabled": true,
 
-    // Display the spell checker status on the status bar.
-    "cSpell.showStatus": true,
-
     // Words to add to dictionary for a workspace.
     "cSpell.words": [],
 
