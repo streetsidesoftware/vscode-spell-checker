@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Release Notes v4.0
-categories: release-notes
-parent: Release Notes
-nav_order: 4
+id: release-notes-v4.0
 ---
 
 # Version 4.0.0 - Prerelease

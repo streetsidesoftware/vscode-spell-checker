@@ -2,7 +2,7 @@
 # AUTO-GENERATED ALL CHANGES WILL BE LOST
 # See `_scripts/extract-commands.js`
 title: Commands
-slug: commands
+id: commands
 ---
 
 # Commands
@@ -72,6 +72,5 @@ slug: commands
 | `cSpell.toggleEnableSpellChecker` |  Toggle Spell Checking |
 | `cSpell.toggleTraceMode` |  Toggle Trace Mode |
 | `cSpell.toggleVisible` |  Toggle Show Spelling Issues |
-
 
 

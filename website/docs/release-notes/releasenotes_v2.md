@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Release Notes v2.0
-categories: release-notes
-parent: Release Notes
-nav_order: 4
+id: release-notes-v2.0
 ---
 
 # Version 2.0
