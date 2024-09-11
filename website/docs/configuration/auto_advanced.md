@@ -20,7 +20,7 @@ Advanced settings that are not commonly used.
 | [`cSpell.trustedWorkspace`](#cspelltrustedworkspace) | window | Enable loading JavaScript CSpell configuration files. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.advanced.feature.useReferenceProviderRemove`

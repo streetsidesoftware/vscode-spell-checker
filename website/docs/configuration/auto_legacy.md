@@ -15,7 +15,7 @@ Legacy settings that have been deprecated or are not commonly used.
 | [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.allowCompoundWords`

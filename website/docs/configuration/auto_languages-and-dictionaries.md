@@ -27,7 +27,7 @@ Settings that control dictionaries and language preferences.
 | [`cSpell.words`](#cspellwords) | resource | List of words to be considered correct. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.caseSensitive`
