@@ -43,7 +43,7 @@ async function run() {
     await fs.mkdir(targetDir, { recursive: true });
     await fs.writeFile(new URL('index.md', targetDir), genIndex(configSections));
     for (const section of formatSections(configSections, refs)) {
-        await fs.writeFile(new URL(`${section.slug}.md`, targetDir), section.content);
+        await fs.writeFile(new URL(`auto_${section.slug}.md`, targetDir), section.content);
     }
 }
 
@@ -81,7 +81,7 @@ function sectionTOC(sections) {
         if (!value.title) return '';
         const title = value.title;
         const description = value.description ? ` - ${value.description}` : '';
-        return `- [${title}](configuration/${slugify(title)}) ${description}`.trim();
+        return `- [${title}](configuration/${slugifyTitle(title)}) ${description}`.trim();
     }
 
     return `\n${sections
@@ -110,13 +110,13 @@ function formatSectionContent(section, refs) {
     entries.sort(compareProperties);
     const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
-    const slug = slugify(section.title);
+    const slug = slugifyTitle(section.title);
     const content = unindent`\
         ---
         # AUTO-GENERATED ALL CHANGES WILL BE LOST
         # See \`_scripts/extract-config.mjs\`
         title: ${section.title}
-        id: ${slug}
+        id: ${slugify(section.title)}
         ---
 
         # ${section.title}
@@ -143,7 +143,7 @@ function extractTypeRefs(configSections) {
     const refs = {};
     for (const section of configSections) {
         for (const key of Object.keys(section.properties || {})) {
-            refs[key] ??= slugify(section.title) + hashRef(key);
+            refs[key] ??= slugifyTitle(section.title) + hashRef(key);
         }
     }
     return refs;
@@ -352,6 +352,15 @@ function formatDefaultValue(value) {
     }
 
     return '_`' + text + '`_';
+}
+
+/**
+ *
+ * @param {string} sectionTitle
+ * @returns {string}
+ */
+function slugifyTitle(sectionTitle) {
+    return slugify(sectionTitle);
 }
 
 /**
