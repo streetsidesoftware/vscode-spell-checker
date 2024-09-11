@@ -82,6 +82,7 @@ const config: Config = {
                     label: 'Docs',
                 },
                 { to: '/about', label: 'About', position: 'left' },
+                { label: 'CSpell', href: 'https://cspell.org', position: 'right' },
                 { label: 'Street Side Software', href: 'https://streetsidesoftware.com', position: 'right' },
                 // {to: '/blog', label: 'Blog', position: 'left'},
                 {
@@ -93,7 +94,35 @@ const config: Config = {
         },
         footer: {
             style: 'dark',
-            copyright: `Copyright © ${new Date().getFullYear()} Street Side Software <img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" />`,
+            links: [
+                {
+                    title: 'Street Side Software',
+                    items: [
+                        { label: 'Home', href: 'https://streetsidesoftware.com' },
+                        { label: 'CSpell', href: 'https://cspell.org' },
+                        { label: 'Sponsor', href: 'https://github.com/sponsors/streetsidesoftware' },
+                    ],
+                },
+                {
+                    title: 'GitHub',
+                    items: [
+                        { label: 'GitHub', href: 'https://github.com/streetsidesoftware/vscode-spell-checker' },
+                        { label: 'Issues', href: 'https://github.com/streetsidesoftware/vscode-spell-checker/issues' },
+                        { label: 'Discussions', href: 'https://github.com/streetsidesoftware/vscode-spell-checker/discussions' },
+                    ],
+                },
+                {
+                    title: 'VS Code Marketplace',
+                    items: [
+                        {
+                            label: 'VS Code Spell Checker Extension',
+                            href: 'https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker',
+                        },
+                        { label: 'Other Extensions', href: 'https://marketplace.visualstudio.com/publishers/streetsidesoftware' },
+                    ],
+                },
+            ],
+            copyright: `Copyright © 2016 - ${new Date().getFullYear()} Street Side Software <img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" />`,
         },
         prism: {
             theme: prismThemes.github,
