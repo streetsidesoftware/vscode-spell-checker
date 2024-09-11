@@ -37,6 +37,7 @@ const sidebars: SidebarsConfig = {
             ],
         },
         'commands',
+        'extensions',
         { type: 'category', label: 'Release Notes', items: ['release-notes/release-notes-v4.0', 'release-notes/release-notes-v2.0'] },
     ],
 };
