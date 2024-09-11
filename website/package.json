@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.3.2",
-    "@docusaurus/tsconfig": "3.3.2",
+    "@docusaurus/tsconfig": "3.5.2",
     "@docusaurus/types": "3.3.2",
     "@types/json-schema": "^7.0.15",
     "typescript": "~5.5.4"
