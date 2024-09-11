@@ -122,10 +122,6 @@ const config: Config = {
                     ],
                 },
             ],
-            // links: [
-            //     { label: 'Home', href: 'https://streetsidesoftware.com' },
-            //     { label: 'CSpell', href: 'https://cspell.org' },
-            // ],
             copyright: `Copyright © 2016 - ${new Date().getFullYear()} Street Side Software <img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" />`,
         },
         prism: {
