@@ -18,7 +18,7 @@ Experimental settings that may change or be removed in the future.
 | [`cSpell.reportUnknownWords`](#cspellreportunknownwords) | language-overridable | Strict Spell Checking |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.experimental.enableRegexpView`

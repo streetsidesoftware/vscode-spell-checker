@@ -125,7 +125,7 @@ function formatSectionContent(section, refs) {
 
         ${configTable(activeEntries)}
 
-        ## Definitions
+        ## Settings
 
         ${configDefinitions(entries, refs)}
 

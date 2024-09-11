@@ -18,7 +18,7 @@ Settings related to CSpell Command Line Tool.
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.ignoreRegExpList`

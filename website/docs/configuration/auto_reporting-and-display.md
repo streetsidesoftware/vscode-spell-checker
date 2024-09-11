@@ -30,7 +30,7 @@ Settings that control how the spell checker reports and displays errors.
 | [`cSpell.validateDirectives`](#cspellvalidatedirectives) | window | Verify that the in-document directives are correct. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.autoFormatConfigFile`

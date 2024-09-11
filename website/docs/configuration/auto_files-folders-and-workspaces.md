@@ -28,7 +28,7 @@ Settings that control which files and folders are spell checked.
 | [`cSpell.workspaceRootPath`](#cspellworkspacerootpath) | resource | Workspace Root Folder Path |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.checkOnlyEnabledFileTypes`

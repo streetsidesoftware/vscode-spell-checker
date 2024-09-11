@@ -20,7 +20,7 @@ Settings that control the performance of the spell checker.
 | [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout) | resource | The maximum amount of time in milliseconds to generate suggestions for a word. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`

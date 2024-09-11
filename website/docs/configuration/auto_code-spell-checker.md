@@ -15,7 +15,7 @@ Settings that control the behavior of the spell checker.
 | [`cSpell.enabled`](#cspellenabled) | resource | Enable / Disable the spell checker. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.enabled`

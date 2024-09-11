@@ -26,7 +26,7 @@ Settings that control the appearance of the spell checker.
 | [`cSpell.useCustomDecorations`](#cspellusecustomdecorations) | application | Draw custom decorations on Spelling Issues. |
 
 
-## Definitions
+## Settings
 
 
 ### `cSpell.dark`
