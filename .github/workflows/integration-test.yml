@@ -18,15 +18,11 @@ jobs:
           # - macos-latest # Disabled because github actions randomly fails on macos
           - ubuntu-latest
           - windows-latest
-        node-version:
-          - ${{ vars.DEFAULT_NODE_VERSION }}
         vscode-version: [stable]
         include:
           - os: ubuntu-latest
-            node-version: ${{ vars.DEFAULT_NODE_VERSION }}
             vscode-version: package.json
           - os: ubuntu-latest
-            node-version: ${{ vars.DEFAULT_NODE_VERSION }}
             vscode-version: insiders
 
     runs-on: ${{ matrix.os }}
@@ -37,7 +33,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: npm
 
       - name: Install and Build

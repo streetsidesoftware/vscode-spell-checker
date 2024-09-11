@@ -41,8 +41,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.REF }}
-      - uses: actions/setup-node@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: npm
       - name: Install
         run: npm i

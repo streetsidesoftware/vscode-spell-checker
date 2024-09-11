@@ -33,6 +33,13 @@ jobs:
         run: |
           npm -v
           node -v
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          cache: npm
+
       - name: Update
         run: |
           npm i
