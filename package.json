@@ -696,6 +696,7 @@
     "configuration": [
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings that control the behavior of the spell checker.",
         "order": 0,
         "properties": {
           "cSpell.enabled": {
@@ -710,6 +711,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Advanced settings that are not commonly used.",
         "order": 18,
         "properties": {
           "cSpell.advanced.feature.useReferenceProviderRemove": {
@@ -771,15 +773,9 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings related to CSpell Command Line Tool.",
         "order": 5,
         "properties": {
-          "cSpell.experimental.symbols": {
-            "default": false,
-            "markdownDescription": "Experiment with executeDocumentSymbolProvider.\nThis feature is experimental and will be removed in the future.",
-            "scope": "application",
-            "title": "Experiment with `executeDocumentSymbolProvider`",
-            "type": "boolean"
-          },
           "cSpell.ignoreRegExpList": {
             "items": {
               "type": "string"
@@ -1872,6 +1868,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Experimental settings that may change or be removed in the future.",
         "order": 19,
         "properties": {
           "cSpell.experimental.enableRegexpView": {
@@ -1884,6 +1881,13 @@
             "default": false,
             "markdownDescription": "Enable the Settings Viewer V2 Extension",
             "scope": "application",
+            "type": "boolean"
+          },
+          "cSpell.experimental.symbols": {
+            "default": false,
+            "markdownDescription": "Experiment with executeDocumentSymbolProvider.\nThis feature is experimental and will be removed in the future.",
+            "scope": "application",
+            "title": "Experiment with `executeDocumentSymbolProvider`",
             "type": "boolean"
           },
           "cSpell.reportUnknownWords": {
@@ -1900,6 +1904,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings that control which files and folders are spell checked.",
         "order": 3,
         "properties": {
           "cSpell.allowedSchemas": {
@@ -2261,6 +2266,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings that control dictionaries and language preferences.",
         "order": 1,
         "properties": {
           "cSpell.caseSensitive": {
@@ -3035,6 +3041,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings that control the appearance of the spell checker.",
         "order": 6,
         "properties": {
           "cSpell.dark": {
@@ -3282,6 +3289,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Legacy settings that have been deprecated or are not commonly used.",
         "order": 20,
         "properties": {
           "cSpell.allowCompoundWords": {
@@ -3726,6 +3734,29 @@
             "title": "Enabled Language Ids",
             "type": "array",
             "uniqueItems": true
+          },
+          "cSpell.showStatus": {
+            "default": true,
+            "deprecationMessage": "No longer used.",
+            "markdownDescription": "Display the spell checker status on the status bar.",
+            "scope": "application",
+            "type": "boolean"
+          },
+          "cSpell.showStatusAlignment": {
+            "default": "Right",
+            "deprecated": true,
+            "deprecationMessage": "No longer supported.",
+            "enum": [
+              "Left",
+              "Right"
+            ],
+            "enumDescriptions": [
+              "Left Side of Statusbar",
+              "Right Side of Statusbar"
+            ],
+            "markdownDescription": "The side of the status bar to display the spell checker status.",
+            "scope": "application",
+            "type": "string"
           }
         },
         "title": "Legacy",
@@ -3733,6 +3764,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings that control the performance of the spell checker.",
         "order": 4,
         "properties": {
           "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
@@ -3777,6 +3809,7 @@
       },
       {
         "additionalProperties": false,
+        "markdownDescription": "Settings that control how the spell checker reports and displays errors.",
         "order": 2,
         "properties": {
           "cSpell.autoFormatConfigFile": {
@@ -3893,29 +3926,6 @@
             "markdownDescription": "Show Spell Checker actions in Editor Context Menu",
             "scope": "application",
             "type": "boolean"
-          },
-          "cSpell.showStatus": {
-            "default": true,
-            "deprecationMessage": "No longer used.",
-            "markdownDescription": "Display the spell checker status on the status bar.",
-            "scope": "application",
-            "type": "boolean"
-          },
-          "cSpell.showStatusAlignment": {
-            "default": "Right",
-            "deprecated": true,
-            "deprecationMessage": "No longer supported.",
-            "enum": [
-              "Left",
-              "Right"
-            ],
-            "enumDescriptions": [
-              "Left Side of Statusbar",
-              "Right Side of Statusbar"
-            ],
-            "markdownDescription": "The side of the status bar to display the spell checker status.",
-            "scope": "application",
-            "type": "string"
           },
           "cSpell.showSuggestionsLinkInEditorContextMenu": {
             "default": true,

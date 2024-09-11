@@ -7,11 +7,14 @@ id: experimental
 
 # Experimental
 
+Experimental settings that may change or be removed in the future.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
 | [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
 | [`cSpell.experimental.enableSettingsViewerV2`](#cspellexperimentalenablesettingsviewerv2) | application | Enable the Settings Viewer V2 Extension |
+| [`cSpell.experimental.symbols`](#cspellexperimentalsymbols) | application | Experiment with `executeDocumentSymbolProvider` |
 | [`cSpell.reportUnknownWords`](#cspellreportunknownwords) | language-overridable | Strict Spell Checking |
 
 
@@ -33,6 +36,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Show Regular Expression Explorer
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -47,17 +60,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Show Regular Expression Explorer
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -96,6 +99,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Enable the Settings Viewer V2 Extension
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -110,7 +123,40 @@ Scope
 </dt>
 <dd>
 
-application
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`false`_
+
+</dd>
+
+
+
+
+</dl>
+
+---
+
+
+### `cSpell.experimental.symbols`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.experimental.symbols` -- Experiment with `executeDocumentSymbolProvider`
 
 </dd>
 
@@ -120,7 +166,28 @@ Description
 </dt>
 <dd>
 
-Enable the Settings Viewer V2 Extension
+Experiment with executeDocumentSymbolProvider.
+This feature is experimental and will be removed in the future.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -159,6 +226,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only
+reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.
+
+- `true` - report unknown words as misspelled
+- `false` - report unknown words as suggestions
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -173,21 +254,7 @@ Scope
 </dt>
 <dd>
 
-language-overridable
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only
-reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.
-
-- `true` - report unknown words as misspelled
-- `false` - report unknown words as suggestions
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 

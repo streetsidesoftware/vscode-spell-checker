@@ -7,6 +7,8 @@ id: reporting-and-display
 
 # Reporting and Display
 
+Settings that control how the spell checker reports and displays errors.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -46,6 +48,18 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+If a `cspell` configuration file is updated, format the configuration file
+using the VS Code Format Document Provider. This will cause the configuration
+file to be saved prior to being updated.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -60,19 +74,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-If a `cspell` configuration file is updated, format the configuration file
-using the VS Code Format Document Provider. This will cause the configuration
-file to be saved prior to being updated.
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -111,6 +113,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
+Set the level to `Hint` to hide the issues from the Problems Pane. Use the [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations)
+to control how issues are displayed in the document.
+
+See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -132,21 +148,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-Set the level to `Hint` to hide the issues from the Problems Pane. Use the [`cSpell.useCustomDecorations`](#cspellusecustomdecorations)
-to control how issues are displayed in the document.
-
-See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -185,6 +187,19 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+
+See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -206,20 +221,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
-By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
-
-See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -266,6 +268,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Hide the options to add words to dictionaries or settings.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -280,17 +292,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Hide the options to add words to dictionaries or settings.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -329,6 +331,17 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Control how spelling issues are displayed while typing.
+See: [`cSpell.revealIssuesAfterMS`](#cspellrevealissuesafterms) to control when issues are revealed.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -350,18 +363,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Control how spelling issues are displayed while typing.
-See: [`cSpell.revealIssuesAfterMS`](#cspellrevealissuesafterms) to control when issues are revealed.
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -408,6 +410,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The maximum number of times the same word can be flagged as an error in a file.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -422,17 +434,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The maximum number of times the same word can be flagged as an error in a file.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -471,6 +473,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Controls the maximum number of spelling errors per document.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -485,17 +497,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Controls the maximum number of spelling errors per document.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -534,6 +536,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The minimum length of a word before checking it against a dictionary.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -548,17 +560,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The minimum length of a word before checking it against a dictionary.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -597,6 +599,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Controls the number of suggestions shown.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -611,17 +623,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Controls the number of suggestions shown.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -660,6 +662,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Reveal hidden issues related to [`cSpell.hideIssuesWhileTyping`](reporting-and-display#cspellhideissueswhiletyping) after a delay in milliseconds.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -674,17 +686,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Reveal hidden issues related to [`cSpell.hideIssuesWhileTyping`](#cspellhideissueswhiletyping) after a delay in milliseconds.
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -731,6 +733,18 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Show CSpell in-document directives as you type.
+
+**Note:** VS Code must be restarted for this setting to take effect.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -745,19 +759,7 @@ Scope
 </dt>
 <dd>
 
-language-overridable
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Show CSpell in-document directives as you type.
-
-**Note:** VS Code must be restarted for this setting to take effect.
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -796,6 +798,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Show Spell Checker actions in Editor Context Menu
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -810,17 +822,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Show Spell Checker actions in Editor Context Menu
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -859,6 +861,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Show Spelling Suggestions link in the top level context menu.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -873,17 +885,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Show Spelling Suggestions link in the top level context menu.
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -922,6 +924,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The type of menu used to display spelling suggestions.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -941,17 +953,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The type of menu used to display spelling suggestions.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -990,6 +992,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The maximum number of changes allowed on a word to be considered a suggestions.
+
+For example, appending an `s` onto `example` -> `examples` is considered 1 change.
+
+Range: between 1 and 5.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1004,21 +1020,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The maximum number of changes allowed on a word to be considered a suggestions.
-
-For example, appending an `s` onto `example` -> `examples` is considered 1 change.
-
-Range: between 1 and 5.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -1057,6 +1059,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Verify that the in-document directives are correct.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1071,17 +1083,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Verify that the in-document directives are correct.
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -1094,153 +1096,6 @@ Default
 <dd>
 
 _- none -_
-
-</dd>
-
-
-
-
-</dl>
-
----
-
-
-### ~~`cSpell.showStatus`~~
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-~~`cSpell.showStatus`~~
-
-</dd>
-
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Display the spell checker status on the status bar.
-
-</dd>
-
-
-<dt>
-Deprecation Message
-</dt>
-<dd>
-
-No longer used.
-
-</dd>
-
-
-<dt>
-Default
-</dt>
-<dd>
-
-_`true`_
-
-</dd>
-
-
-
-
-</dl>
-
----
-
-
-### ~~`cSpell.showStatusAlignment`~~
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-~~`cSpell.showStatusAlignment`~~
-
-</dd>
-
-
-<dt>
-Type
-</dt>
-<dd>
-
-`( "Left" | "Right" )`
-| Value | Description |
-| ----- | ----------- |
-| `Left` | Left Side of Statusbar |
-| `Right` | Right Side of Statusbar |
-
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The side of the status bar to display the spell checker status.
-
-</dd>
-
-
-<dt>
-Deprecation Message
-</dt>
-<dd>
-
-No longer supported.
-
-</dd>
-
-
-<dt>
-Default
-</dt>
-<dd>
-
-_`"Right"`_
 
 </dd>
 

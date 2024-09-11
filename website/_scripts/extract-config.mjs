@@ -19,6 +19,10 @@ const targetDir = new URL('../docs/configuration/', import.meta.url);
  */
 
 /**
+ * @typedef {{[key: string]: string}} TypeSlugRefs
+ */
+
+/**
  * The Schema File URL
  */
 const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.json', import.meta.url);
@@ -34,9 +38,11 @@ async function run() {
 
     configSections.sort((a, b) => a.order - b.order || compare(a.title || '', b.title || ''));
 
+    const refs = extractTypeRefs(configSections);
+
     await fs.mkdir(targetDir, { recursive: true });
     await fs.writeFile(new URL('index.md', targetDir), genIndex(configSections));
-    for (const section of formatSections(configSections)) {
+    for (const section of formatSections(configSections, refs)) {
         await fs.writeFile(new URL(`${section.slug}.md`, targetDir), section.content);
     }
 }
@@ -74,7 +80,8 @@ function sectionTOC(sections) {
     function tocEntry(value) {
         if (!value.title) return '';
         const title = value.title;
-        return `- [${title}](configuration/${slugify(title)})`;
+        const description = value.description ? ` - ${value.description}` : '';
+        return `- [${title}](configuration/${slugify(title)}) ${description}`.trim();
     }
 
     return `\n${sections
@@ -86,17 +93,19 @@ function sectionTOC(sections) {
 /**
  *
  * @param {JSONSchema4[]} sections
+ * @param {TypeSlugRefs} refs
  * @returns {{ title: string; content: string, slug: string }[]}
  */
-function formatSections(sections) {
-    return sections.map(formatSectionContent);
+function formatSections(sections, refs) {
+    return sections.map((s) => formatSectionContent(s, refs));
 }
 
 /**
  * @param {JSONSchema4} section
+ * @param {TypeSlugRefs} refs
  * @returns {{ title: string; content: string, slug: string }}
  */
-function formatSectionContent(section) {
+function formatSectionContent(section, refs) {
     const entries = Object.entries(section.properties || {});
     entries.sort(compareProperties);
     const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
@@ -112,15 +121,32 @@ function formatSectionContent(section) {
 
         # ${section.title}
 
+        ${section.description || ''}
+
         ${configTable(activeEntries)}
 
         ## Definitions
 
-        ${configDefinitions(entries)}
+        ${configDefinitions(entries, refs)}
 
     `;
 
     return { title: section.title, content, slug };
+}
+
+/**
+ * @param {JSONSchema4[]} configSections
+ * @returns {TypeSlugRefs}
+ */
+function extractTypeRefs(configSections) {
+    /** @type {TypeSlugRefs} */
+    const refs = {};
+    for (const section of configSections) {
+        for (const key of Object.keys(section.properties || {})) {
+            refs[key] ??= slugify(section.title) + hashRef(key);
+        }
+    }
+    return refs;
 }
 
 /**
@@ -183,18 +209,20 @@ function shortenLine(line, len) {
 /**
  *
  * @param {[string, JSONSchema4][]} entries
+ * @param {TypeSlugRefs} refs
  * @returns
  */
-function configDefinitions(entries) {
-    return entries.map(definition).join('\n');
+function configDefinitions(entries, refs) {
+    return entries.map((def) => definition(def, refs)).join('\n');
 }
 
 /**
  *
  * @param {[string, JSONSchema4]} entry
+ * @param {TypeSlugRefs} refs
  * @returns
  */
-function definition(entry) {
+function definition(entry, refs) {
     const [key, value] = entry;
     const description = value.markdownDescription || value.description || value.title || '';
     const since = value.since || '';
@@ -215,11 +243,11 @@ function definition(entry) {
 
         ${singleDef('Name', `${name} ${title}`)}
 
+        ${singleDef('Description', fixVSCodeRefs(description, refs))}
+
         ${singleDef('Type', formatType(value), true)}
 
-        ${singleDef('Scope', value.scope || '_- none -_')}
-
-        ${singleDef('Description', fixVSCodeRefs(description))}
+        ${singleDef('Scope', scopeDef(value.scope) || '_- none -_')}
 
         ${deprecationMessage}
 
@@ -235,11 +263,44 @@ function definition(entry) {
 
 /**
  *
- * @param {string} markdown
+ * @param {string} scope
  * @returns {string}
  */
-function fixVSCodeRefs(markdown) {
-    return markdown.replaceAll(/`#(.*?)#`/g, (match, p1) => `[\`${p1}\`](${hashRef(p1)})`);
+function scopeDef(scope) {
+    /*
+    A configuration setting can have one of the following possible scopes:
+    application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+    machine - Machine specific settings that can be set only in user settings or only in remote settings. For example, an installation path which shouldn't be shared across machines.
+    machine-overridable - Machine specific settings that can be overridden by workspace or folder settings.
+    window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
+    resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+    language-overridable - Resource settings that can be overridable at a language level.
+    */
+    const scopes = {
+        application: 'Settings that apply to all instances of VS Code and can only be configured in user settings.',
+        machine:
+            'Machine specific settings that can be set only in user settings or only in remote settings.\n' +
+            "For example, an installation path which shouldn't be shared across machines.",
+        'machine-overridable': 'Machine specific settings that can be overridden by workspace or folder settings.',
+        window: 'Windows (instance) specific settings which can be configured in user, workspace, or remote settings.',
+        resource:
+            'Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.',
+        'language-overridable': 'Resource settings that can be overridable at a language level.',
+    };
+
+    const desc = scopes[scope];
+
+    return desc ? `${scope} - ${desc}` : scope;
+}
+
+/**
+ *
+ * @param {string} markdown
+ * @param {TypeSlugRefs} refs
+ * @returns {string}
+ */
+function fixVSCodeRefs(markdown, refs) {
+    return markdown.replaceAll(/`#(.*?)#`/g, (_, p1) => `[\`${p1}\`](${refs[p1] || hashRef(p1)})`);
 }
 
 /**

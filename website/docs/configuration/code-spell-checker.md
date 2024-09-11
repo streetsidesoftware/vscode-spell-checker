@@ -7,6 +7,8 @@ id: code-spell-checker
 
 # Code Spell Checker
 
+Settings that control the behavior of the spell checker.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -31,6 +33,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable the spell checker.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -45,17 +57,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Enable / Disable the spell checker.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 

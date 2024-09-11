@@ -7,6 +7,8 @@ id: appearance
 
 # Appearance
 
+Settings that control the appearance of the spell checker.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -42,6 +44,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Decoration for dark themes.
+
+See:
+- [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor)
+- [`cSpell.textDecoration`](appearance#cspelltextdecoration)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -56,21 +72,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Decoration for dark themes.
-
-See:
-- [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)
-- [`cSpell.textDecoration`](#cspelltextdecoration)
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -117,6 +119,19 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Use the VS Code Diagnostic Collection to render spelling issues.
+
+With some edit boxes, like the source control message box, the custom decorations do not show up.
+This setting allows the use of the VS Code Diagnostic Collection to render spelling issues.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -131,20 +146,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Use the VS Code Diagnostic Collection to render spelling issues.
-
-With some edit boxes, like the source control message box, the custom decorations do not show up.
-This setting allows the use of the VS Code Diagnostic Collection to render spelling issues.
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -191,6 +193,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Decoration for light themes.
+
+See:
+- [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor)
+- [`cSpell.textDecoration`](appearance#cspelltextdecoration)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -205,21 +221,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Decoration for light themes.
-
-See:
-- [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)
-- [`cSpell.textDecoration`](#cspelltextdecoration)
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -266,26 +268,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -303,6 +285,26 @@ Examples:
 - `DarkYellow`
 - `#ffff0080` - semi-transparent yellow.
 - `rgb(255 153 0 / 80%)`
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -349,37 +351,17 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
 
-The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](#cspellusecustomdecorations).
+The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
 
 This setting is used to manually configure the text decoration. If it is not set, the following settings are used:
-- [`cSpell.textDecorationLine`](#cspelltextdecorationline) to pick the line type
-- [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle) to pick the style
-- [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) to set the color
-- [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness) to set the thickness.
+- [`cSpell.textDecorationLine`](appearance#cspelltextdecorationline) to pick the line type
+- [`cSpell.textDecorationStyle`](appearance#cspelltextdecorationstyle) to pick the style
+- [`cSpell.textDecorationColor`](appearance#cspelltextdecorationcolor) to set the color
+- [`cSpell.textDecorationThickness`](appearance#cspelltextdecorationthickness) to set the thickness.
 
 See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
 
@@ -394,6 +376,26 @@ Examples:
 - `underline green`
 - `underline dotted yellow 0.2rem`
 - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -440,6 +442,24 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The decoration color for normal spelling issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -454,25 +474,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The decoration color for normal spelling issues.
-
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
-
-Examples:
-- `green`
-- `yellow`
-- `#ff0c`
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -519,6 +521,24 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The decoration color for flagged issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -533,25 +553,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The decoration color for flagged issues.
-
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
-
-Examples:
-- `green`
-- `yellow`
-- `#ff0c`
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -598,26 +600,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -633,6 +615,26 @@ Examples:
 - `green`
 - `yellow`
 - `#ff0c`
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -679,6 +681,19 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The CSS line type used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -693,20 +708,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The CSS line type used to decorate issues.
-
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -753,6 +755,19 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The CSS line style used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -767,20 +782,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The CSS line style used to decorate issues.
-
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -827,26 +829,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -862,6 +844,26 @@ Examples:
 - `0.2rem`
 - `1.5px`
 - `10%`
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -908,6 +910,18 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Draw custom decorations on Spelling Issues.
+- `true` - Use custom decorations.
+- `false` - Use the VS Code Diagnostic Collection to render spelling issues.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -922,19 +936,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Draw custom decorations on Spelling Issues.
-- `true` - Use custom decorations.
-- `false` - Use the VS Code Diagnostic Collection to render spelling issues.
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 

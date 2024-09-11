@@ -7,6 +7,8 @@ id: languages-and-dictionaries
 
 # Languages and Dictionaries
 
+Settings that control dictionaries and language preferences.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -43,6 +45,22 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Determines if words must match case and accent rules.
+
+- `false` - Case is ignored and accents can be missing on the entire word.
+  Incorrect accents or partially missing accents will be marked as incorrect.
+  Note: Some languages like Portuguese have case sensitivity turned on by default.
+  You must use [`cSpell.languageSettings`](languages-and-dictionaries#cspelllanguagesettings) to turn it off.
+- `true` - Case and accents are enforced by default.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -57,23 +75,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Determines if words must match case and accent rules.
-
-- `false` - Case is ignored and accents can be missing on the entire word.
-  Incorrect accents or partially missing accents will be marked as incorrect.
-  Note: Some languages like Portuguese have case sensitivity turned on by default.
-  You must use [`cSpell.languageSettings`](#cspelllanguagesettings) to turn it off.
-- `true` - Case and accents are enforced by default.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -112,26 +114,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`object`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-resource
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -154,6 +136,26 @@ If `addWords` is `true` words will be added to this dictionary.
   "internal-terms": false // Disable the `internal-terms` dictionary
 }
 ```
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`object`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -192,26 +194,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-resource
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -230,6 +212,26 @@ Example:
 // Enable `lorem-ipsum` and disable `typescript`
 "cSpell.dictionaries": ["lorem-ipsum", "!typescript"]
 ```
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -268,6 +270,34 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Define custom dictionaries.
+If `addWords` is `true` words will be added to this dictionary.
+
+This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).
+
+It is better to use [`cSpell.customDictionaries`](languages-and-dictionaries#cspellcustomdictionaries)
+
+**Example:**
+
+```js
+"cSpell.dictionaryDefinitions": [
+  {
+    "name": "project-words",
+    "path": "${workspaceRoot}/project-words.txt",
+    "description": "Words used in this project",
+    "addWords": true
+  }
+]
+```
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -282,35 +312,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Define custom dictionaries.
-If `addWords` is `true` words will be added to this dictionary.
-
-This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).
-
-It is better to use [`cSpell.customDictionaries`](#cspellcustomdictionaries)
-
-**Example:**
-
-```js
-"cSpell.dictionaryDefinitions": [
-  {
-    "name": "project-words",
-    "path": "${workspaceRoot}/project-words.txt",
-    "description": "Words used in this project",
-    "addWords": true
-  }
-]
-```
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -349,26 +351,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-resource
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -388,6 +370,26 @@ Example:
   "cancelled->canceled"
 ]
 ```
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -426,6 +428,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+A list of words to be ignored by the spell checker.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -440,17 +452,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-A list of words to be ignored by the spell checker.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -489,6 +491,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Current active spelling language.
+
+Example: `en-GB` for British English
+
+Example: `en,nl` to enable both English and Dutch
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -503,21 +519,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Current active spelling language.
-
-Example: `en-GB` for British English
-
-Example: `en,nl` to enable both English and Dutch
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -556,6 +558,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Additional settings for individual programming languages and locales.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -570,17 +582,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Additional settings for individual programming languages and locales.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -619,6 +621,22 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Optional list of dictionaries that will not be used for suggestions.
+Words in these dictionaries are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+one of these dictionaries, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -633,23 +651,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Optional list of dictionaries that will not be used for suggestions.
-Words in these dictionaries are considered correct, but will not be
-used when making spell correction suggestions.
-
-Note: if a word is suggested by another dictionary, but found in
-one of these dictionaries, it will be removed from the set of
-possible suggestions.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -688,26 +690,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-_- none -_
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -723,6 +705,26 @@ Format of `suggestWords`
 - Multiple suggestions (not auto fixable)
    - `word: first, second, third`
    - `word->first, second, third`
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
 
 </dd>
 
@@ -761,6 +763,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -775,17 +787,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -832,6 +834,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Words to add to global dictionary -- should only be in the user config file.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -846,17 +858,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Words to add to global dictionary -- should only be in the user config file.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -895,6 +897,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+List of words to be considered correct.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -909,17 +921,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-List of words to be considered correct.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 

@@ -7,6 +7,8 @@ id: files-folders-and-workspaces
 
 # Files, Folders, and Workspaces
 
+Settings that control which files and folders are spell checked.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -44,6 +46,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+By default, the spell checker checks only enabled file types. Use [`cSpell.enableFiletypes`](files-folders-and-workspaces#cspellenablefiletypes)
+to turn on / off various file types.
+
+When this setting is `false`, all file types are checked except for the ones disabled by [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes).
+See [`cSpell.enableFiletypes`](files-folders-and-workspaces#cspellenablefiletypes) on how to disable a file type.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -58,21 +74,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-By default, the spell checker checks only enabled file types. Use [`cSpell.enableFiletypes`](#cspellenablefiletypes)
-to turn on / off various file types.
-
-When this setting is `false`, all file types are checked except for the ones disabled by [`cSpell.enabledFileTypes`](#cspellenabledfiletypes).
-See [`cSpell.enableFiletypes`](#cspellenablefiletypes) on how to disable a file type.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -111,6 +113,31 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable checking file types (languageIds).
+
+This setting replaces: [`cSpell.enabledLanguageIds`](legacy#cspellenabledlanguageids) and [`cSpell.enableFiletypes`](files-folders-and-workspaces#cspellenablefiletypes).
+
+A Value of:
+- `true` - enable checking for the file type
+- `false` - disable checking for the file type
+
+A file type of `*` is a wildcard that enables all file types.
+
+**Example: enable all file types**
+
+| File Type | Enabled | Comment |
+| --------- | ------- | ------- |
+| `*`       | `true`  | Enable all file types. |
+| `json`    | `false` | Disable checking for json files. |
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -125,32 +152,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Enable / Disable checking file types (languageIds).
-
-This setting replaces: [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids) and [`cSpell.enableFiletypes`](#cspellenablefiletypes).
-
-A Value of:
-- `true` - enable checking for the file type
-- `false` - disable checking for the file type
-
-A file type of `*` is a wildcard that enables all file types.
-
-**Example: enable all file types**
-
-| File Type | Enabled | Comment |
-| --------- | ------- | ------- |
-| `*`       | `true`  | Enable all file types. |
-| `json`    | `false` | Disable checking for json files. |
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -209,6 +211,24 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
+
+
+Some schemes have special meaning like:
+- `untitled` - Used for new documents that have not yet been saved
+- `vscode-notebook-cell` - Used for validating segments of a Notebook.
+- `vscode-userdata` - Needed to spell check `.code-snippets`
+- `vscode-scm` - Needed to spell check Source Control commit messages.
+- `comment` - Used for new comment editors.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -223,25 +243,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
-
-
-Some schemes have special meaning like:
-- `untitled` - Used for new documents that have not yet been saved
-- `vscode-notebook-cell` - Used for validating segments of a Notebook.
-- `vscode-userdata` - Needed to spell check `.code-snippets`
-- `vscode-scm` - Needed to spell check Source Control commit messages.
-- `comment` - Used for new comment editors.
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -288,6 +290,17 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Glob patterns of files to be checked.
+Glob patterns are relative to the [`cSpell.globRoot`](files-folders-and-workspaces#cspellglobroot) of the configuration file that defines them.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -302,18 +315,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Glob patterns of files to be checked.
-Glob patterns are relative to the [`cSpell.globRoot`](#cspellglobroot) of the configuration file that defines them.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -352,6 +354,24 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The root to use for glob patterns found in this configuration.
+Default: The current workspace folder.
+Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
+Defining globRoot, does not impact imported configurations.
+
+Special Values:
+
+- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder
+- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -366,25 +386,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The root to use for glob patterns found in this configuration.
-Default: The current workspace folder.
-Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
-Defining globRoot, does not impact imported configurations.
-
-Special Values:
-
-- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder
-- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -423,6 +425,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Glob patterns of files to be ignored. The patterns are relative to the [`cSpell.globRoot`](files-folders-and-workspaces#cspellglobroot) of the configuration file that defines them.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -437,17 +449,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Glob patterns of files to be ignored. The patterns are relative to the [`cSpell.globRoot`](#cspellglobroot) of the configuration file that defines them.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -494,6 +496,18 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Allows this configuration to inherit configuration for one or more other files.
+
+See [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -508,19 +522,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Allows this configuration to inherit configuration for one or more other files.
-
-See [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -559,6 +561,26 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Specify if fields from `.vscode/settings.json` are passed to the spell checker.
+This only applies when there is a CSpell configuration file in the workspace.
+
+The purpose of this setting to help provide a consistent result compared to the
+CSpell spell checker command line tool.
+
+Values:
+- `true` - all settings will be merged based upon [`cSpell.mergeCSpellSettingsFields`](files-folders-and-workspaces#cspellmergecspellsettingsfields).
+- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.
+
+Note: this setting is used in conjunction with [`cSpell.mergeCSpellSettingsFields`](files-folders-and-workspaces#cspellmergecspellsettingsfields).
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -573,27 +595,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Specify if fields from `.vscode/settings.json` are passed to the spell checker.
-This only applies when there is a CSpell configuration file in the workspace.
-
-The purpose of this setting to help provide a consistent result compared to the
-CSpell spell checker command line tool.
-
-Values:
-- `true` - all settings will be merged based upon [`cSpell.mergeCSpellSettingsFields`](#cspellmergecspellsettingsfields).
-- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.
-
-Note: this setting is used in conjunction with [`cSpell.mergeCSpellSettingsFields`](#cspellmergecspellsettingsfields).
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -640,6 +642,26 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+This only applies when there is a CSpell configuration file in the workspace and
+[`cSpell.mergeCSpellSettings`](files-folders-and-workspaces#cspellmergecspellsettings) is `true`.
+
+Values:
+- `{ flagWords: true, userWords: false }` - Always allow `flagWords`, but never allow `userWords`.
+
+Example:
+```json5
+"cSpell.mergeCSpellSettingsFields": { "userWords": false }
+```
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -654,27 +676,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Specify which fields from `.vscode/settings.json` are passed to the spell checker.
-This only applies when there is a CSpell configuration file in the workspace and
-[`cSpell.mergeCSpellSettings`](#cspellmergecspellsettings) is `true`.
-
-Values:
-- `{ flagWords: true, userWords: false }` - Always allow `flagWords`, but never allow `userWords`.
-
-Example:
-```json5
-"cSpell.mergeCSpellSettingsFields": { "userWords": false }
-```
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -736,6 +738,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Prevents searching for local configuration when checking individual documents.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -750,17 +762,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Prevents searching for local configuration when checking individual documents.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -799,6 +801,22 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Only spell check files that are in the currently open workspace.
+This same effect can be achieved using the [`cSpell.files`](files-folders-and-workspaces#cspellfiles) setting.
+
+
+```js
+"cSpell.files": ["/**"]
+```
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -813,23 +831,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Only spell check files that are in the currently open workspace.
-This same effect can be achieved using the [`cSpell.files`](#cspellfiles) setting.
-
-
-```js
-"cSpell.files": ["/**"]
-```
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -868,6 +870,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -882,17 +894,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -931,6 +933,20 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading
+packages stored in the repository.
+
+When true, the spell checker will search up the directory structure for the existence
+of a PnP file and load it.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -945,21 +961,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading
-packages stored in the repository.
-
-When true, the spell checker will search up the directory structure for the existence
-of a PnP file and load it.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -998,26 +1000,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-resource
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1032,6 +1014,26 @@ This is used to find the `cspell.json` file for the workspace.
 ```
 ${workspaceFolder:client}
 ```
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -1070,6 +1072,24 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
+
+
+Some schemes have special meaning like:
+- `untitled` - Used for new documents that have not yet been saved
+- `vscode-notebook-cell` - Used for validating segments of a Notebook.
+- `vscode-userdata` - Needed to spell check `.code-snippets`
+- `vscode-scm` - Needed to spell check Source Control commit messages.
+- `comment` - Used for new comment editors.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1084,25 +1104,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
-
-
-Some schemes have special meaning like:
-- `untitled` - Used for new documents that have not yet been saved
-- `vscode-notebook-cell` - Used for validating segments of a Notebook.
-- `vscode-userdata` - Needed to spell check `.code-snippets`
-- `vscode-scm` - Needed to spell check Source Control commit messages.
-- `comment` - Used for new comment editors.
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -1149,33 +1151,13 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-resource
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
 
 Enable / Disable checking file types (languageIds).
 
-These are in additional to the file types specified by [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids).
+These are in additional to the file types specified by [`cSpell.enabledLanguageIds`](legacy#cspellenabledlanguageids).
 To disable a language, prefix with `!` as in `!json`,
 
 
@@ -1193,6 +1175,26 @@ kotlin      // enable checking for kotlin
 *           // enable checking for all file types
 !json       // except for json
 ```
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 

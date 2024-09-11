@@ -7,6 +7,8 @@ id: advanced
 
 # Advanced
 
+Advanced settings that are not commonly used.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -36,6 +38,25 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Used to work around bugs in Reference Providers and Rename Providers.
+Anything matching the provided Regular Expression will be removed from the text
+before sending it to the Rename Provider.
+
+See: [Markdown: Fixing spelling issues in Header sections changes the entire line · Issue #1987](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1987)
+
+It is unlikely that you would need to edit this setting. If you need to, please open an issue at
+[Spell Checker Issues](https://github.com/streetsidesoftware/vscode-spell-checker/issues)
+
+This feature is used in connection with [`cSpell.advanced.feature.useReferenceProviderWithRename`](advanced#cspelladvancedfeatureusereferenceproviderwithrename)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -50,26 +71,7 @@ Scope
 </dt>
 <dd>
 
-language-overridable
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Used to work around bugs in Reference Providers and Rename Providers.
-Anything matching the provided Regular Expression will be removed from the text
-before sending it to the Rename Provider.
-
-See: [Markdown: Fixing spelling issues in Header sections changes the entire line · Issue #1987](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1987)
-
-It is unlikely that you would need to edit this setting. If you need to, please open an issue at
-[Spell Checker Issues](https://github.com/streetsidesoftware/vscode-spell-checker/issues)
-
-This feature is used in connection with [`cSpell.advanced.feature.useReferenceProviderWithRename`](#cspelladvancedfeatureusereferenceproviderwithrename)
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -108,6 +110,17 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Use the Reference Provider when fixing spelling issues with the Rename Provider.
+This feature is used in connection with [`cSpell.fixSpellingWithRenameProvider`](advanced#cspellfixspellingwithrenameprovider)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -122,18 +135,7 @@ Scope
 </dt>
 <dd>
 
-language-overridable
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Use the Reference Provider when fixing spelling issues with the Rename Provider.
-This feature is used in connection with [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -172,6 +174,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Use Rename Provider when fixing spelling issues.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -186,17 +198,7 @@ Scope
 </dt>
 <dd>
 
-language-overridable
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Use Rename Provider when fixing spelling issues.
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -235,6 +237,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Have the logs written to a file instead of to VS Code.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -249,17 +261,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Have the logs written to a file instead of to VS Code.
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -298,6 +300,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Set the Debug Level for logging messages.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -320,17 +332,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Set the Debug Level for logging messages.
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 
@@ -369,6 +371,23 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Enable loading JavaScript CSpell configuration files.
+
+This setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,
+but a setting of `true` in an untrusted workspace will be ignored.
+
+See:
+- [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)
+- [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -383,24 +402,7 @@ Scope
 </dt>
 <dd>
 
-window
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Enable loading JavaScript CSpell configuration files.
-
-This setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,
-but a setting of `true` in an untrusted workspace will be ignored.
-
-See:
-- [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)
-- [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
 
 </dd>
 

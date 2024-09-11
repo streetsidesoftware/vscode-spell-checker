@@ -8,7 +8,12 @@ import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackagePro
 import type { DictionaryDef } from './CustomDictionary.mjs';
 import type { FileTypesAndSchemeSettings } from './FileTypesAndSchemeSettings.mjs';
 import type { PrefixWithCspell } from './Generics.mjs';
-import type { SpellCheckerBehaviorSettings, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
+import type {
+    AdvancedSettings,
+    ExperimentalSettings,
+    SpellCheckerBehaviorSettings,
+    SpellCheckerSettings,
+} from './SpellCheckerSettings.mjs';
 
 type InternalSettings = object;
 
@@ -115,6 +120,7 @@ export type AllSpellCheckerSettingsInVSCodeWithPrefix = PrefixWithCspell<AllSpel
 
 /**
  * @title Code Spell Checker
+ * @description Settings that control the behavior of the spell checker.
  * @order 0
  */
 type VSConfigRoot = PrefixWithCspell<_VSConfigRoot>;
@@ -122,6 +128,7 @@ type _VSConfigRoot = Pick<SpellCheckerSettingsVSCodeBase, 'enabled'>;
 
 /**
  * @title Languages and Dictionaries
+ * @description Settings that control dictionaries and language preferences.
  * @order 1
  */
 type VSConfigLanguageAndDictionaries = PrefixWithCspell<_VSConfigLanguageAndDictionaries>;
@@ -145,6 +152,7 @@ type _VSConfigLanguageAndDictionaries = Pick<
 
 /**
  * @title Reporting and Display
+ * @description Settings that control how the spell checker reports and displays errors.
  * @order 2
  */
 type VSConfigReporting = PrefixWithCspell<_VSConfigReporting>;
@@ -161,8 +169,6 @@ type _VSConfigReporting = Pick<
     // | 'reportUnknownWords' // to ba added when it has been finalized.
     | 'showAutocompleteDirectiveSuggestions'
     | 'showCommandsInEditorContextMenu'
-    | 'showStatus'
-    | 'showStatusAlignment'
     | 'showSuggestionsLinkInEditorContextMenu'
     | 'suggestionMenuType'
     | 'suggestionNumChanges'
@@ -172,6 +178,7 @@ type _VSConfigReporting = Pick<
 
 /**
  * @title Performance
+ * @description Settings that control the performance of the spell checker.
  * @order 4
  */
 type VSConfigPerf = PrefixWithCspell<_VSConfigPerf>;
@@ -187,6 +194,7 @@ type _VSConfigPerf = Pick<
 
 /**
  * @title CSpell
+ * @description Settings related to CSpell Command Line Tool.
  * @order 5
  */
 type VSConfigCSpell = PrefixWithCspell<_VSConfigCSpell>;
@@ -205,6 +213,7 @@ type _VSConfigCSpell = Omit<
 
 /**
  * @title Files, Folders, and Workspaces
+ * @description Settings that control which files and folders are spell checked.
  * @order 3
  */
 type VSConfigFilesAndFolders = PrefixWithCspell<_VSConfigFilesAndFolders>;
@@ -229,6 +238,7 @@ type _VSConfigFilesAndFolders = Pick<
 
 /**
  * @title Appearance
+ * @description Settings that control the appearance of the spell checker.
  * @order 6
  */
 type VSConfigAppearance = PrefixWithCspell<_VSConfigAppearance>;
@@ -236,21 +246,30 @@ type _VSConfigAppearance = Pick<SpellCheckerSettingsVSCodeBase, keyof Appearance
 
 /**
  * @title Legacy
+ * @description Legacy settings that have been deprecated or are not commonly used.
  * @order 20
  */
 type VSConfigLegacy = PrefixWithCspell<_VSConfigLegacy>;
 type _VSConfigLegacy = Pick<
     SpellCheckerSettingsVSCodeBase,
-    'enabledLanguageIds' | 'allowCompoundWords' | 'customFolderDictionaries' | 'customUserDictionaries' | 'customWorkspaceDictionaries'
+    | 'allowCompoundWords'
+    | 'customFolderDictionaries'
+    | 'customUserDictionaries'
+    | 'customWorkspaceDictionaries'
+    | 'enabledLanguageIds'
+    | 'showStatus'
+    | 'showStatusAlignment'
 >;
 
 /**
  * @title Advanced
+ * @description Advanced settings that are not commonly used.
  * @order 18
  */
 export type VSConfigAdvanced = PrefixWithCspell<_VSConfigAdvanced>;
 type _VSConfigAdvanced = Pick<
     SpellCheckerSettingsVSCodeBase,
+    | keyof AdvancedSettings
     | 'advanced.feature.useReferenceProviderWithRename'
     | 'advanced.feature.useReferenceProviderRemove'
     | 'fixSpellingWithRenameProvider'
@@ -261,13 +280,13 @@ type _VSConfigAdvanced = Pick<
 
 /**
  * @title Experimental
+ * @description Experimental settings that may change or be removed in the future.
  * @order 19
  */
 type VSConfigExperimental = PrefixWithCspell<_VSConfigExperimental>;
 type _VSConfigExperimental = Pick<
     SpellCheckerSettingsVSCodeBase,
-    | 'experimental.enableRegexpView'
-    | 'experimental.enableSettingsViewerV2'
+    | keyof ExperimentalSettings
     // The plan is to move `reportUnknownWords` to the reporting section.
     | 'reportUnknownWords'
 >;

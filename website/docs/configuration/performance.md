@@ -7,6 +7,8 @@ id: performance
 
 # Performance
 
+Settings that control the performance of the spell checker.
+
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
@@ -36,26 +38,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`number`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-language-overridable
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -72,6 +54,26 @@ Absolute word breaks match: `/[\s,{}[\]]/`
 
 If you are seeing this message, it means that the file contains mostly long lines
 without many word breaks.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -110,6 +112,23 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The maximum line length.
+
+
+Block spell checking if lines are longer than the value given.
+This is used to prevent spell checking generated files.
+
+
+**Error Message:** _Lines are too long._
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -124,24 +143,7 @@ Scope
 </dt>
 <dd>
 
-language-overridable
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The maximum line length.
-
-
-Block spell checking if lines are longer than the value given.
-This is used to prevent spell checking generated files.
-
-
-**Error Message:** _Lines are too long._
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -180,26 +182,6 @@ Name
 
 
 <dt>
-Type
-</dt>
-<dd>
-
-`number`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-language-overridable
-
-</dd>
-
-
-<dt>
 Description
 </dt>
 <dd>
@@ -219,6 +201,26 @@ Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
 
 If you are seeing this message, it means that the file contains a very long line
 without many word breaks.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+language-overridable - Resource settings that can be overridable at a language level.
 
 </dd>
 
@@ -257,6 +259,17 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Set the maximum number of bocks of text to check.
+Each block is 1024 characters.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -271,18 +284,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Set the maximum number of bocks of text to check.
-Each block is 1024 characters.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -321,6 +323,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+Delay in ms after a document has changed before checking it for spelling errors.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -335,17 +347,7 @@ Scope
 </dt>
 <dd>
 
-application
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Delay in ms after a document has changed before checking it for spelling errors.
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
 
@@ -384,6 +386,16 @@ Name
 
 
 <dt>
+Description
+</dt>
+<dd>
+
+The maximum amount of time in milliseconds to generate suggestions for a word.
+
+</dd>
+
+
+<dt>
 Type
 </dt>
 <dd>
@@ -398,17 +410,7 @@ Scope
 </dt>
 <dd>
 
-resource
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-The maximum amount of time in milliseconds to generate suggestions for a word.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
