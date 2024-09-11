@@ -26,4 +26,5 @@ website/**/auto_*
 website/**/commands.md
 website/**/configuration.md
 website/build/**
+website/docs/configuration/index.md
 website/node_modules
