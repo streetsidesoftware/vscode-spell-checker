@@ -60,4 +60,5 @@ id: extensions
 -   [Win32](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-win32) - Win32 dictionary extension for VS Code.
 
 <!--- @@inject-end: https://github.com/streetsidesoftware/vscode-cspell-dict-extensions/blob/main/static/generated/marketplace_language_extensions.md --->
+
 <!--- cspell:enable --->
