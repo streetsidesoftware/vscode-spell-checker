@@ -440,7 +440,7 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
         "plaintext",
         "typescript",
         "typescriptreact",
-        "yml",
+        "yaml",
         "sql"
     ],
 
