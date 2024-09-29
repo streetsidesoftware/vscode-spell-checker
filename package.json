@@ -4040,7 +4040,7 @@
     "eslint-plugin-unicorn": "^55.0.0",
     "globals": "^15.9.0",
     "inject-markdown": "^3.1.0",
-    "jest-mock-vscode": "^4.0.1",
+    "jest-mock-vscode": "^4.0.2",
     "ovsx": "^0.9.5",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.7",
