@@ -4023,18 +4023,18 @@
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
+    "@eslint/js": "^9.12.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.16.10",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "^2.1.1",
+    "@vitest/coverage-istanbul": "^2.1.2",
     "@vscode/vsce": "^3.1.1",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.0.1",
     "esbuild": "^0.24.0",
-    "eslint": "^9.11.1",
+    "eslint": "^9.12.0",
     "eslint-plugin-n": "^17.10.3",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^56.0.0",
@@ -4044,13 +4044,13 @@
     "ovsx": "^0.9.5",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.7",
-    "rollup": "^4.23.0",
+    "rollup": "^4.24.0",
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
     "typescript": "~5.5.4",
     "typescript-eslint": "^8.8.0",
     "vite": "^5.4.8",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.2"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.14.4",
