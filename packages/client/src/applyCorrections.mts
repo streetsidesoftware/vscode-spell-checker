@@ -282,7 +282,9 @@ async function calcWorkspaceEditsForDocument(doc: TextDocument, edits: TextEdit[
 
     while (editsToProcess.size) {
         const startSize = editsToProcess.size;
-        const edit = editsToProcess.values().next().value;
+        const next = editsToProcess.values().next();
+        if (next.done) break;
+        const edit = next.value;
         const ws = await calcWorkspaceEditWithRename(doc, [edit], refInfo);
         injectEditsIntoWorkspaceEdit(wsEdit, ws.entries());
         const matchingEdits = filterEditsMatchingWorkspaceEdit(ws, doc, edits);
