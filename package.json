@@ -4035,7 +4035,7 @@
     "concurrently": "^9.0.1",
     "esbuild": "^0.24.0",
     "eslint": "^9.12.0",
-    "eslint-plugin-n": "^17.11.0",
+    "eslint-plugin-n": "^17.11.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^56.0.0",
     "globals": "^15.11.0",
@@ -4053,9 +4053,9 @@
     "vitest": "^2.1.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.14.4",
-    "@cspell/cspell-types": "^8.14.4",
-    "cspell": "^8.14.4",
+    "@cspell/cspell-bundled-dicts": "^8.15.1",
+    "@cspell/cspell-types": "^8.15.1",
+    "cspell": "^8.15.1",
     "regexp-worker": "^3.0.0"
   }
 }
