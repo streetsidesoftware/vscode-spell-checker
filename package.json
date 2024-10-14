@@ -4053,8 +4053,8 @@
     "vitest": "^2.1.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.15.1",
-    "@cspell/cspell-types": "^8.15.1",
+    "@cspell/cspell-bundled-dicts": "^8.15.2",
+    "@cspell/cspell-types": "^8.15.2",
     "cspell": "^8.15.2",
     "regexp-worker": "^3.0.0"
   }
