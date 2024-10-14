@@ -39,7 +39,7 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.15.1",
+    "@cspell/cspell-bundled-dicts": "^8.15.2",
     "@cspell/cspell-pipe": "^8.15.1",
     "@cspell/cspell-types": "^8.15.1",
     "@internal/common-utils": "file:../__utils",
