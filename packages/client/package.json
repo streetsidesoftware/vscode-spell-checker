@@ -53,7 +53,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@cspell/cspell-pipe": "^8.15.1",
+    "@cspell/cspell-pipe": "^8.15.2",
     "@cspell/cspell-types": "^8.15.1",
     "@internal/common-utils": "file:../__utils",
     "@internal/locale-resolver": "file:../__locale-resolver",
