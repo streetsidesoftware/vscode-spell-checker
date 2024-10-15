@@ -17,7 +17,7 @@
     "@tanstack/svelte-query": "^5.59.13",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "fast-equals": "^5.0.1",
-    "sirv-cli": "^2.0.2",
+    "sirv-cli": "^3.0.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-webview-rpc": "file:../webview-rpc",
