@@ -24,10 +24,10 @@
     "webview-api": "file:../webview-api"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.0",
+    "@rollup/plugin-typescript": "^12.1.1",
     "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.36",
@@ -38,7 +38,7 @@
     "svelte": "^4.2.19",
     "svelte-check": "^4.0.5",
     "svelte-preprocess": "^6.0.3",
-    "tslib": "^2.7.0",
+    "tslib": "^2.8.0",
     "typescript": "^5.6.3"
   },
   "engines": {
