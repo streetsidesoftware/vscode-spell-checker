@@ -29,7 +29,7 @@
     "@types/chai": "^5.0.0",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.9",
-    "@types/node": "^20.16.12",
+    "@types/node": "^20.16.13",
     "chai": "^5.1.1",
     "cross-env": "^7.0.3"
   },
