@@ -1945,6 +1945,7 @@
               "type": "boolean"
             },
             "default": {
+              "al": true,
               "asciidoc": true,
               "bat": true,
               "c": true,
