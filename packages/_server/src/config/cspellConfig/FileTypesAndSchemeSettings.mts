@@ -89,7 +89,7 @@ export interface FileTypesAndSchemeSettings {
      *
      * @title Enabled File Types to Check
      * @scope resource
-     * @default { "asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript": true, "cpp": true, "csharp": true, "css": true,
+     * @default { "al": true, "asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript": true, "cpp": true, "csharp": true, "css": true,
      *      "dart": true, "diff": true, "dockerfile": true, "elixir": true, "erlang": true, "fsharp": true, "git-commit": true,
      *      "git-rebase": true, "github-actions-workflow": true, "go": true, "graphql": true, "groovy": true, "handlebars": true,
      *      "haskell": true, "html": true, "ini": true, "jade": true, "java": true, "javascript": true, "javascriptreact": true,

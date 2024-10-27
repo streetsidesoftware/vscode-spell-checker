@@ -167,7 +167,7 @@ Default
 
 ```json5
 {
-"asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript":
+"al": true, "asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript":
 true, "cpp": true, "csharp": true, "css": true, "dart": true, "diff": true,
 "dockerfile": true, "elixir": true, "erlang": true, "fsharp": true,
 "git-commit": true, "git-rebase": true, "github-actions-workflow": true, "go":
