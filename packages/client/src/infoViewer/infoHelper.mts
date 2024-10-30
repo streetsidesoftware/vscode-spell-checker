@@ -81,7 +81,7 @@ export async function calcSettings(
 }
 
 type InspectKeys = keyof InspectValues<SelectedCSpellUserSettings>;
-const keyMap: { [k in InspectKeys]: ConfigSource } = {
+const keyMap: Record<InspectKeys, ConfigSource> = {
     defaultValue: 'default',
     globalValue: 'user',
     workspaceValue: 'workspace',

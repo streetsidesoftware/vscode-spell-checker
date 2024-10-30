@@ -14,9 +14,7 @@ type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompoun
 
 export type DictionaryDef = CustomDictionary | DictionaryDefPreferred | DictionaryDefCustom;
 
-export type CustomDictionaries = {
-    [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
-};
+export type CustomDictionaries = Record<DictionaryId, EnableCustomDictionary | CustomDictionariesDictionary>;
 
 export type CustomDictionaryEntry = CustomDictionaryAugmentExistingDictionary | CustomDictionary | DictionaryId;
 type OptionalField<T, K extends keyof T> = {

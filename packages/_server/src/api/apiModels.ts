@@ -226,9 +226,7 @@ export interface WorkspaceConfigForDocument {
 
 export type WorkspaceConfigForDocumentResponse = WorkspaceConfigForDocument;
 
-export type FieldExistsInTarget = {
-    [key in ConfigurationTarget]?: boolean;
-};
+export type FieldExistsInTarget = Partial<Record<ConfigurationTarget, boolean>>;
 
 export type ConfigurationTarget = ConfigScopeVScode;
 
@@ -247,9 +245,7 @@ export type {
     SpellCheckerSettingsProperties,
 } from '../config/cspellConfig/index.mjs';
 
-export type VSCodeSettingsCspell = {
-    [key in ExtensionId]?: CSpellUserSettings;
-};
+export type VSCodeSettingsCspell = Partial<Record<ExtensionId, CSpellUserSettings>>;
 
 export type PublishDiagnostics = Required<PublishDiagnosticsParams>;
 

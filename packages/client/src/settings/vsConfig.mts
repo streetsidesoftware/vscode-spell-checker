@@ -239,9 +239,7 @@ const targetToScopeMap: TargetToScopeMap = {
     [ConfigurationTarget.WorkspaceFolder]: 'workspaceFolderValue',
 };
 
-type ConfigTargetToName = {
-    [key in ConfigurationTarget]: string;
-};
+type ConfigTargetToName = Record<ConfigurationTarget, string>;
 
 const configTargetToName: ConfigTargetToName = {
     [ConfigurationTarget.Global]: 'user',

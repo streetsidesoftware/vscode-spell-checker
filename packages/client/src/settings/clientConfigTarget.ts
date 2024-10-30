@@ -99,9 +99,7 @@ export const isClientConfigTargetDictionary = isA<ClientConfigTargetDictionary>(
 export const isClientConfigTargetCSpell = isA<ClientConfigTargetCSpell>(ConfigKinds.Cspell);
 export const isClientConfigTargetVSCode = isA<ClientConfigTargetVSCode>(ConfigKinds.Vscode);
 
-type ScopeToOrder = {
-    [K in ClientConfigScope]: number;
-};
+type ScopeToOrder = Record<ClientConfigScope, number>;
 
 const scopeOrderGlobalToLocal: ScopeToOrder = {
     user: 1,

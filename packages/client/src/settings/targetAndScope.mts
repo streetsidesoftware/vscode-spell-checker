@@ -5,13 +5,9 @@ import type { ClientConfigScope } from './clientConfigTarget.js';
 
 type ConfigScopeVScode = ConfigTargetVSCode['scope'];
 
-type TargetToConfigScope = {
-    [key in ConfigurationTarget]: ConfigScopeVScode;
-};
+type TargetToConfigScope = Record<ConfigurationTarget, ConfigScopeVScode>;
 
-type ConfigScopeToTarget = {
-    [key in ConfigScopeVScode]: ConfigurationTarget;
-};
+type ConfigScopeToTarget = Record<ConfigScopeVScode, ConfigurationTarget>;
 
 const targetToScope: TargetToConfigScope = {
     [ConfigurationTarget.Global]: 'user',

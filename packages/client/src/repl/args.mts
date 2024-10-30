@@ -400,11 +400,9 @@ export type TypeToTypeName<T> = T extends boolean
               ? 'number[]'
               : never;
 
-export type ArgsDefinitions = {
-    [k in string]: ArgDef<ArgTypeNames>;
-};
+export type ArgsDefinitions = Record<string, ArgDef<ArgTypeNames>>;
 
-type ArgInlineDef<N extends string, T extends ArgTypeNames> = { [k in N]: ArgDef<T> };
+type ArgInlineDef<N extends string, T extends ArgTypeNames> = Record<N, ArgDef<T>>;
 
 /**
  * Define an argument
@@ -423,7 +421,7 @@ export function defArg<N extends string, T extends ArgTypeNames>(
     return { [name]: { type, description, required } } as ArgInlineDef<N, T>;
 }
 
-type OptInlineDef<N extends string, T extends OptionTypeNames> = { [k in N]: OptionDef<T> };
+type OptInlineDef<N extends string, T extends OptionTypeNames> = Record<N, OptionDef<T>>;
 
 /**
  * Define an option
@@ -446,9 +444,7 @@ type ArgDefsToArgs<T extends ArgsDefinitions> = {
     [k in keyof T]?: TypeNameToType<T[k]['type']>;
 } & { _: string[] };
 
-export type OptionDefinitions = {
-    [k in string]: OptionDef<OptionTypeNames>;
-};
+export type OptionDefinitions = Record<string, OptionDef<OptionTypeNames>>;
 
 type OptDefsToOpts<T extends OptionDefinitions> = {
     [k in keyof T]: TypeNameToType<T[k]['type']>;
