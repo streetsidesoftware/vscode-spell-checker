@@ -108,9 +108,7 @@ function dictionariesToTargets(dicts: DictionaryDefinitionCustom[]): ConfigTarge
     return dicts.map(dictToT).flatMap((x) => [...x]);
 }
 
-type DictScopeMapKnown = {
-    [key in ConfigScope]: number;
-};
+type DictScopeMapKnown = Record<ConfigScope, number>;
 interface DictScopeMap extends DictScopeMapKnown {
     unknown: number;
 }

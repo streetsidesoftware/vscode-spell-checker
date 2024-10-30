@@ -246,17 +246,11 @@ async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocu
 
 type ConfigTargetKindAndScope = ConfigKind | ConfigScope;
 
-type ConfigAggregates = {
-    [key in ConfigTargetKindAndScope]?: number;
-};
+type ConfigAggregates = Partial<Record<ConfigTargetKindAndScope, number>>;
 
-type ConfigScopeCnt = {
-    [key in ConfigScope]?: number;
-};
+type ConfigScopeCnt = Partial<Record<ConfigScope, number>>;
 
-type ConfigMatrix = {
-    [key in ConfigKind]: ConfigScopeCnt;
-};
+type ConfigMatrix = Record<ConfigKind, ConfigScopeCnt>;
 
 interface CalcTargetAggregates {
     agg: ConfigAggregates;

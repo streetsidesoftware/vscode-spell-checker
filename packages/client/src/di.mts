@@ -14,9 +14,7 @@ export interface GlobalDependencies {
     eventLogger: EventLogger;
 }
 
-type KeysForGlobalDependencies = {
-    [K in GlobalDependenciesKeys]: undefined;
-};
+type KeysForGlobalDependencies = Record<GlobalDependenciesKeys, undefined>;
 
 const definedDependencyKeys: KeysForGlobalDependencies = {
     name: undefined,

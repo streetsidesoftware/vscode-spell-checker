@@ -73,10 +73,14 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
     },
 };
 
-type CommandHandler = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-invalid-void-type
-    [key in string]: (...params: any[]) => void | Promise<void> | Promise<unknown>;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ExplicitAny = any;
+
+type CommandHandler =
+    | ((...params: ExplicitAny[]) => void)
+    | ((...params: ExplicitAny[]) => undefined)
+    | ((...params: ExplicitAny[]) => Promise<unknown>);
+type CommandHandlers = Record<string, CommandHandler>;
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
 const tsFCfg = (configTarget: ConfigurationTarget, limitToTarget = false) =>
@@ -195,7 +199,7 @@ export const commandHandlers = {
     'cSpell.disableLanguage': disableLanguageIdCmd,
     'cSpell.enableCurrentLanguage': enableCurrentFileType, // legacy
     'cSpell.disableCurrentLanguage': disableCurrentFileType, // legacy
-} as const satisfies CommandHandler;
+} as const satisfies CommandHandlers;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
 type ImplementedCommandNames = keyof ImplementedCommandHandlers;

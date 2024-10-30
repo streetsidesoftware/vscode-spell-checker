@@ -2,9 +2,7 @@ import { DiagnosticSeverity } from 'vscode';
 import type { DiagnosticSeverity as DiagnosticSeverityNum } from 'vscode-languageclient/node';
 import { DiagnosticSeverity as LcDiagnosticSeverity } from 'vscode-languageclient/node';
 
-type MapDiagnosticSeverity = {
-    [key in DiagnosticSeverity]: DiagnosticSeverityNum;
-};
+type MapDiagnosticSeverity = Record<DiagnosticSeverity, DiagnosticSeverityNum>;
 
 export const diagSeverityMap: MapDiagnosticSeverity = {
     [DiagnosticSeverity.Error]: LcDiagnosticSeverity.Error,

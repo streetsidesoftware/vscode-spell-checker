@@ -12,9 +12,7 @@ interface Contributes {
 
 type MenuTypes = 'editor/context' | 'commandPalette' | 'view/item/context';
 
-type Menus = {
-    [key in MenuTypes]?: MenuItem[];
-};
+type Menus = Partial<Record<MenuTypes, MenuItem[]>>;
 
 interface MenuItem {
     command: string;

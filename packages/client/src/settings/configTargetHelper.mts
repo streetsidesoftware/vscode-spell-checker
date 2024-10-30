@@ -20,17 +20,11 @@ import { ConfigKinds } from './clientConfigTarget.js';
 import { CSpellConfigFields } from './configFields.mjs';
 import { configurationTargetToDictionaryScope } from './targetAndScope.mjs';
 
-type ConfigKindMask = {
-    [key in ClientConfigKind]?: boolean;
-};
+type ConfigKindMask = Partial<Record<ClientConfigKind, boolean>>;
 
-type ConfigScopeMask = {
-    [key in ClientConfigScope]?: boolean;
-};
+type ConfigScopeMask = Partial<Record<ClientConfigScope, boolean>>;
 
-export type ConfigTargetMatchPattern = {
-    [key in ClientConfigKind | ClientConfigScope]?: boolean;
-};
+export type ConfigTargetMatchPattern = Partial<Record<ClientConfigKind | ClientConfigScope, boolean>>;
 
 export type ConfigTargetMatchPatternKey = keyof ConfigTargetMatchPattern;
 
