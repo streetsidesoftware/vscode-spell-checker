@@ -177,6 +177,7 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.parse(import.meta.url).toString() });
         expect(settings.enabledLanguageIds).toBeUndefined();
         expect(settings.enabledFileTypes).toEqual({
+            al: true,
             dart: true,
             fsharp: true,
             javascript: false,
