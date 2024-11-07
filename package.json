@@ -4036,7 +4036,7 @@
     "concurrently": "^9.1.0",
     "esbuild": "^0.24.0",
     "eslint": "^9.14.0",
-    "eslint-plugin-n": "^17.12.0",
+    "eslint-plugin-n": "^17.13.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^56.0.0",
     "globals": "^15.12.0",
