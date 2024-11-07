@@ -53,8 +53,8 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@cspell/cspell-pipe": "^8.15.7",
-    "@cspell/cspell-types": "^8.15.7",
+    "@cspell/cspell-pipe": "^8.16.0",
+    "@cspell/cspell-types": "^8.16.0",
     "@internal/common-utils": "file:../__utils",
     "@internal/locale-resolver": "file:../__locale-resolver",
     "@internal/server-pattern-matcher": "file:../_serverPatternMatcher",
@@ -64,7 +64,7 @@
     "camelize": "^1.0.1",
     "code-spell-checker-server": "file:../_server",
     "comment-json": "^4.2.5",
-    "cspell-lib": "^8.15.7",
+    "cspell-lib": "^8.16.0",
     "fast-deep-equal": "^3.1.3",
     "kefir": "^3.8.8",
     "optionator": "^0.9.4",
