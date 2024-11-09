@@ -1,0 +1,14 @@
+{
+  "name": "@internal/scripts",
+  "version": "1.0.0",
+  "description": "Internal Scripts",
+  "bin": {
+    "set-preview": "./set-preview-mode.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo test"
+  },
+  "author": "Street Side Software",
+  "license": "MIT"
+}

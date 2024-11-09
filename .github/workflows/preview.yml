@@ -1,0 +1,32 @@
+name: ' 👀 Set Preview'
+on: # rebuild any PRs and main branch changes
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        type: boolean
+        description: Is prerelease / preview?
+
+jobs:
+  set-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+
+      - run: node ./scripts/set-preview-mode.js ${{ inputs.prerelease }}
+
+      - name: PR
+        uses: streetsidesoftware/actions/.github/actions/pr@v1
+        with:
+          commit-message: 'fix: Set Preview Mode ${{ inputs.prerelease }}'
+          branch: update-preview-mode
+          base: main
+          title: 'fix: Set Preview Mode ${{ inputs.prerelease }}'
+          body: |
+            Set Preview Mode to ${{ inputs.prerelease }}
+          app_id: ${{ secrets.AUTOMATION_APP_ID }}
+          app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}

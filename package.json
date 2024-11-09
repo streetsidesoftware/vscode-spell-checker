@@ -3987,6 +3987,7 @@
     "packages/_serverPatternMatcher",
     "packages/client",
     "packages/_integrationTests",
+    "scripts",
     "website"
   ],
   "scripts": {
