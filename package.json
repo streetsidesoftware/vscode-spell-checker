@@ -4010,7 +4010,7 @@
     "prettier:fix": "npm run prettier:check -- -w",
     "prettier:fix-schema": "prettier -w \"**/*.schema.json\"",
     "test-vsce-build": "shx mkdir -p temp && vsce package -o ./temp/code-spell-checker.vsix",
-    "remove-test-files": "shx rm -rf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
+    "remove-test-files": "shx rm -rf \"packages/*/{out,dist,settingsViewer}/**/*.test.*js\"",
     "vscode:prepublish": "npm run build-production && npm run remove-test-files",
     "lint": "npm run lint:eslint && npm run prettier:fix",
     "lint:eslint": "eslint . --fix --cache",
