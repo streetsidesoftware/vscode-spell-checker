@@ -5,6 +5,7 @@ on: # rebuild any PRs and main branch changes
       prerelease:
         type: boolean
         description: Is prerelease / preview?
+        default: true
 
 jobs:
   set-preview:
