@@ -7,7 +7,7 @@
   "license": "GPL-3.0-or-later",
   "version": "4.0.15",
   "publisher": "streetsidesoftware",
-  "preview": true,
+  "preview": false,
   "private": true,
   "type": "module",
   "main": "./packages/client/dist/extension.cjs",
