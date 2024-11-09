@@ -23,11 +23,11 @@ jobs:
       - name: PR
         uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
-          commit-message: 'fix: Set Preview Mode ${{ inputs.prerelease }}'
+          commit-message: 'fix: Set Preview Mode to `${{ inputs.prerelease }}`'
           branch: update-preview-mode
           base: main
-          title: 'fix: Set Preview Mode ${{ inputs.prerelease }}'
+          title: 'fix: Set Preview Mode to `${{ inputs.prerelease }}`'
           body: |
-            Set Preview Mode to ${{ inputs.prerelease }}
+            Set Preview Mode to `${{ inputs.prerelease }}`
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
