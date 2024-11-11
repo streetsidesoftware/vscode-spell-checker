@@ -10,20 +10,20 @@ export const ReasonLineLength: MinifiedReason = {
     code: 'Lines_too_long.',
     message: 'Lines are too long.',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhenlinelengthgreaterthan',
+        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenlinelengthgreaterthan',
 };
 
 export const ReasonAverageWordsSize: MinifiedReason = {
     code: 'Word_Size_Too_High.',
     message: 'Average Word Size is Too High.',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhenaveragechunksizegreaterthan',
+        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenaveragechunksizegreaterthan',
 };
 export const ReasonMaxWordsSize: MinifiedReason = {
     code: 'Maximum_Word_Length_Exceeded',
     message: 'Maximum Word Length Exceeded.',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhentextchunksizegreaterthan',
+        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhentextchunksizegreaterthan',
 };
 
 export interface IsTextLikelyMinifiedOptions {
