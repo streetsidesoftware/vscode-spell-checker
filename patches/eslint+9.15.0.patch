@@ -1,0 +1,39 @@
+diff --git a/node_modules/eslint/lib/rules/no-empty-function.js b/node_modules/eslint/lib/rules/no-empty-function.js
+index 16e611b..1a39313 100644
+--- a/node_modules/eslint/lib/rules/no-empty-function.js
++++ b/node_modules/eslint/lib/rules/no-empty-function.js
+@@ -122,7 +122,7 @@ module.exports = {
+     },
+ 
+     create(context) {
+-        const [{ allow }] = context.options;
++        const [{ allow } = this.meta.defaultOptions[0]] = context.options;
+         const sourceCode = context.sourceCode;
+ 
+         /**
+diff --git a/node_modules/eslint/lib/rules/no-unused-expressions.js b/node_modules/eslint/lib/rules/no-unused-expressions.js
+index fd1437c..1ac2d6e 100644
+--- a/node_modules/eslint/lib/rules/no-unused-expressions.js
++++ b/node_modules/eslint/lib/rules/no-unused-expressions.js
+@@ -76,7 +76,7 @@ module.exports = {
+             allowTernary,
+             allowTaggedTemplates,
+             enforceForJSX
+-        }] = context.options;
++        } = {}] = context.options;
+ 
+         /**
+          * Has AST suggesting a directive.
+diff --git a/node_modules/eslint/lib/rules/no-warning-comments.js b/node_modules/eslint/lib/rules/no-warning-comments.js
+index 628f5a2..a42e831 100644
+--- a/node_modules/eslint/lib/rules/no-warning-comments.js
++++ b/node_modules/eslint/lib/rules/no-warning-comments.js
+@@ -64,7 +64,7 @@ module.exports = {
+ 
+     create(context) {
+         const sourceCode = context.sourceCode;
+-        const [{ decoration, location, terms: warningTerms }] = context.options;
++        const [{ decoration, location, terms: warningTerms } = this.meta.defaultOptions[0]] = context.options;
+         const escapedDecoration = escapeRegExp(decoration ? decoration.join("") : "");
+         const selfConfigRegEx = /\bno-warning-comments\b/u;
+ 

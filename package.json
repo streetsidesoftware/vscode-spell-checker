@@ -3992,7 +3992,6 @@
   ],
   "scripts": {
     "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run prettier:fix-schema",
-    "postinstall": "echo postinstall",
     "build": "npm run build:workspaces && npm run build:schema",
     "build:docs": "npm run gen-docs",
     "build:all": "npm run build && npm run build:docs",
@@ -4022,6 +4021,7 @@
     "update-packages": "npm run update:packages:root && npm run update:packages:website",
     "update:packages:root": "npx npm-check-updates --root -ws --target semver -u && npm i",
     "update:packages:website": "cd website && npm run update-packages",
+    "postinstall": "patch-package",
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
@@ -4044,6 +4044,7 @@
     "inject-markdown": "^3.1.4",
     "jest-mock-vscode": "^4.0.3",
     "ovsx": "^0.10.0",
+    "patch-package": "^8.0.0",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.8",
     "rollup": "^4.27.2",
