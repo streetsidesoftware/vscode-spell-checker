@@ -71,7 +71,7 @@ interface Decoration {
      *
      * @scope application
      * @since 4.0.0
-     * @default "wavy"
+     * @default "dotted"
      */
     textDecorationStyle?: 'solid' | 'wavy' | 'dotted' | 'dashed' | 'double';
 
@@ -107,7 +107,7 @@ interface Decoration {
      *
      * @scope application
      * @since 4.0.0
-     * @default "#fc4"
+     * @default "#348feb"
      */
     textDecorationColor?: string;
 
