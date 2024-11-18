@@ -4003,7 +4003,7 @@
     "build-release": "npm run build && npm run package-extension",
     "build-website": "cd website && npm i && npm run build-site",
     "gen-docs": "npm --if-present run gen-docs",
-    "package-extension": "vsce package --pre-release -o ./build",
+    "package-extension": "vsce package -o ./build",
     "prettier:check": "prettier . -c",
     "prettier:fix": "npm run prettier:check -- -w",
     "prettier:fix-schema": "prettier -w \"**/*.schema.json\"",
