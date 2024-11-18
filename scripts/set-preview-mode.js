@@ -17,7 +17,10 @@ async function run() {
 
     const content = await fs.readFile(pkgUrl, 'utf-8');
 
-    const updatedContent = content.replace(isPreviewMode ? '"preview": false' : '"preview": true', `"preview": ${isPreviewMode}`);
+    const updatedContent = content.replace(
+        isPreviewMode ? '"pre-release": false' : '"pre-release": true',
+        `"pre-release": ${isPreviewMode}`,
+    );
 
     if (content === updatedContent) {
         console.log('Nothing to update');

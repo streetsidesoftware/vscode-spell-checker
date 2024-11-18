@@ -1,10 +1,10 @@
-name: ' 👀 Set Preview'
+name: ' 👀 Set Pre-Release'
 on: # rebuild any PRs and main branch changes
   workflow_dispatch:
     inputs:
       prerelease:
         type: boolean
-        description: Is prerelease / preview?
+        description: Is prerelease?
         default: true
 
 jobs:
