@@ -3062,7 +3062,7 @@
                 "type": "string"
               },
               "textDecorationColor": {
-                "default": "#fc4",
+                "default": "#348feb",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
                 "since": "4.0.0",
@@ -3095,7 +3095,7 @@
                 "type": "string"
               },
               "textDecorationStyle": {
-                "default": "wavy",
+                "default": "dotted",
                 "enum": [
                   "solid",
                   "wavy",
@@ -3151,7 +3151,7 @@
                 "type": "string"
               },
               "textDecorationColor": {
-                "default": "#fc4",
+                "default": "#348feb",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
                 "since": "4.0.0",
@@ -3184,7 +3184,7 @@
                 "type": "string"
               },
               "textDecorationStyle": {
-                "default": "wavy",
+                "default": "dotted",
                 "enum": [
                   "solid",
                   "wavy",
@@ -3223,7 +3223,7 @@
             "type": "string"
           },
           "cSpell.textDecorationColor": {
-            "default": "#fc4",
+            "default": "#348feb",
             "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
             "scope": "application",
             "since": "4.0.0",
@@ -3256,7 +3256,7 @@
             "type": "string"
           },
           "cSpell.textDecorationStyle": {
-            "default": "wavy",
+            "default": "dotted",
             "enum": [
               "solid",
               "wavy",
