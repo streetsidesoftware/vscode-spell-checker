@@ -3095,7 +3095,7 @@
                 "type": "string"
               },
               "textDecorationStyle": {
-                "default": "dotted",
+                "default": "wavy",
                 "enum": [
                   "solid",
                   "wavy",
@@ -3184,7 +3184,7 @@
                 "type": "string"
               },
               "textDecorationStyle": {
-                "default": "dotted",
+                "default": "wavy",
                 "enum": [
                   "solid",
                   "wavy",
@@ -3256,7 +3256,7 @@
             "type": "string"
           },
           "cSpell.textDecorationStyle": {
-            "default": "dotted",
+            "default": "wavy",
             "enum": [
               "solid",
               "wavy",
@@ -3277,7 +3277,7 @@
             "type": "string"
           },
           "cSpell.useCustomDecorations": {
-            "default": true,
+            "default": false,
             "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.",
             "scope": "application",
             "since": "4.0.0",
