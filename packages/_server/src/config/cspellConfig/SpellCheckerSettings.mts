@@ -54,8 +54,9 @@ export interface SpellCheckerSettings
 
     /**
      * The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-     * Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`
-     * to control how issues are displayed in the document.
+     * Set the level to `Hint` to hide the issues from the Problems Pane.
+     *
+     * Note: `#cSpell.useCustomDecorations#` must be `false` to use VS Code Diagnostic Severity Levels.
      *
      * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
      * @title Set Diagnostic Reporting Level
