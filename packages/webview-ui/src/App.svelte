@@ -29,8 +29,12 @@
   // provideVSCodeDesignSystem().register(allComponents);
   provideVSCodeDesignSystem().register(allComponents);
 
-  export let name: string;
-  export let view: string | undefined | null;
+  interface Props {
+    name: string;
+    view: string | undefined | null;
+  }
+
+  let { name, view }: Props = $props();
 
   const disposable = createDisposableList();
 

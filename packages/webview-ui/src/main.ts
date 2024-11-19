@@ -1,3 +1,5 @@
+import { mount } from 'svelte';
+
 import App from './App.svelte';
 
 // setLogLevel(LogLevel.debug);
@@ -11,7 +13,7 @@ function getView() {
     }
 }
 
-const app = new App({
+const app = mount(App, {
     target: document.body,
     props: {
         name: 'web world',

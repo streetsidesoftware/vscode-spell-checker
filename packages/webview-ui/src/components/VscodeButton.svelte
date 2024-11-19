@@ -3,42 +3,62 @@
 
   const dispatch = createEventDispatcher();
 
-  /**
-   * Determines the visual appearance (primary, secondary, icon) of the button.
-   */
-  export let appearance: 'primary' | 'secondary' | 'icon' | undefined = undefined;
-  /**
-   * Defines a label for buttons that screen readers can use.
-   */
-  export let ariaLabel: string | undefined = undefined;
-  /**
-   * Determines if the element should receive document focus on page load.
-   */
-  export let autofocus: boolean | undefined = undefined;
-  /**
-   * Prevents the user from interacting with the button––it cannot be pressed or focused.
-   */
-  export let disabled: boolean | undefined = undefined;
-  /** See MDN. */
-  export let form: string | undefined = undefined;
-  /** See MDN. */
-  export let formaction: string | undefined = undefined;
-  /** See MDN. */
-  export let formenctype: string | undefined = undefined;
-  /** See MDN. */
-  export let formmethod: string | undefined = undefined;
-  /** See MDN. */
-  export let formnovalidate: string | undefined = undefined;
-  /** See MDN. */
-  export let formtarget: string | undefined = undefined;
-  /** See MDN. */
-  export let name: string | undefined = undefined;
-  /** See MDN. */
-  export let inputType: string | undefined = undefined;
-  /** See MDN. */
-  export let value: string | undefined = undefined;
+  interface Props {
+    /**
+     * Determines the visual appearance (primary, secondary, icon) of the button.
+     */
+    appearance?: 'primary' | 'secondary' | 'icon' | undefined;
+    /**
+     * Defines a label for buttons that screen readers can use.
+     */
+    ariaLabel?: string | undefined;
+    /**
+     * Determines if the element should receive document focus on page load.
+     */
+    autofocus?: boolean | undefined;
+    /**
+     * Prevents the user from interacting with the button––it cannot be pressed or focused.
+     */
+    disabled?: boolean | undefined;
+    /** See MDN. */
+    form?: string | undefined;
+    /** See MDN. */
+    formaction?: string | undefined;
+    /** See MDN. */
+    formenctype?: string | undefined;
+    /** See MDN. */
+    formmethod?: string | undefined;
+    /** See MDN. */
+    formnovalidate?: string | undefined;
+    /** See MDN. */
+    formtarget?: string | undefined;
+    /** See MDN. */
+    name?: string | undefined;
+    /** See MDN. */
+    inputType?: string | undefined;
+    /** See MDN. */
+    value?: string | undefined;
+    children?: import('svelte').Snippet;
+  }
 
-  $: extraProps = {
+  let {
+    appearance = undefined,
+    ariaLabel = undefined,
+    autofocus = undefined,
+    disabled = undefined,
+    form = undefined,
+    formaction = undefined,
+    formenctype = undefined,
+    formmethod = undefined,
+    formnovalidate = undefined,
+    formtarget = undefined,
+    name = undefined,
+    inputType = undefined,
+    value = undefined,
+    children,
+  }: Props = $props();
+
+  let extraProps = $derived({
     appearance,
     autofocus,
     disabled,
@@ -52,16 +72,16 @@
     formnovalidate,
     formtarget,
     value,
-  };
-  $: props = Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined'));
+  });
+  let itemProps = $derived(Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined')));
 
   function click(e: Event) {
     return dispatch('click', e);
   }
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-<vscode-button {...props} on:click={click}><slot /></vscode-button>
+<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+<vscode-button {...itemProps} onclick={click}>{@render children?.()}</vscode-button>
 
 <style>
 </style>

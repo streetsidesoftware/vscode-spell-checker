@@ -14,7 +14,7 @@
     <ul>
       <li>Link: <vscode-link href="#">Link Text</vscode-link></li>
       <li>Checkbox: <VscodeCheckbox>Label</VscodeCheckbox></li>
-      <li>Divider: <vscode-divider /></li>
+      <li>Divider: <vscode-divider></vscode-divider></li>
       <li>
         <div class="dropdown-container">
           <label for="my-dropdown">Choose an option:</label>
@@ -42,7 +42,7 @@
           <VscodeButton appearance="primary">Primary</VscodeButton>
           <VscodeButton appearance="secondary">Secondary</VscodeButton>
           Icon: <VscodeButton appearance="icon" ariaLabel="Use Regular Expression">
-            <span class="codicon codicon-regex" />
+            <span class="codicon codicon-regex"></span>
           </VscodeButton>
         </section>
       </vscode-panel-view>
@@ -52,17 +52,19 @@
 
           <VscodeTextField>
             Text Field Label
-            <section slot="end" style="display:flex; align-items: center;">
-              <VscodeButton appearance="icon" ariaLabel="Match Case">
-                <span class="codicon codicon-case-sensitive" />
-              </VscodeButton>
-              <VscodeButton appearance="icon" ariaLabel="Match Whole Word">
-                <span class="codicon codicon-whole-word" />
-              </VscodeButton>
-              <VscodeButton appearance="icon" ariaLabel="Use Regular Expression">
-                <span class="codicon codicon-regex" />
-              </VscodeButton>
-            </section>
+            {#snippet end()}
+              <section style="display:flex; align-items: center;">
+                <VscodeButton appearance="icon" ariaLabel="Match Case">
+                  <span class="codicon codicon-case-sensitive"></span>
+                </VscodeButton>
+                <VscodeButton appearance="icon" ariaLabel="Match Whole Word">
+                  <span class="codicon codicon-whole-word"></span>
+                </VscodeButton>
+                <VscodeButton appearance="icon" ariaLabel="Use Regular Expression">
+                  <span class="codicon codicon-regex"></span>
+                </VscodeButton>
+              </section>
+            {/snippet}
           </VscodeTextField>
         </section>
       </vscode-panel-view>
@@ -114,21 +116,21 @@
 
           <!-- Text field with autofocus -->
           <p>With autofocus</p>
-          <!-- svelte-ignore a11y-autofocus -->
+          <!-- svelte-ignore a11y_autofocus -->
           <vscode-text-field autofocus> Text Field Label </vscode-text-field>
 
           <!-- Text field with start icon -->
           <p>With start icon</p>
           <vscode-text-field>
             Text Field Label
-            <span slot="start" class="codicon codicon-search" />
+            <span slot="start" class="codicon codicon-search"></span>
           </vscode-text-field>
 
           <!-- Text field with end icon -->
           <p>With end icon</p>
           <vscode-text-field>
             Text Field Label
-            <span slot="end" class="codicon codicon-text-size" />
+            <span slot="end" class="codicon codicon-text-size"></span>
           </vscode-text-field>
 
           <!-- Text field with multiple icons -->
@@ -145,13 +147,13 @@
           "
             >
               <vscode-button appearance="icon" aria-label="Match Case">
-                <span class="codicon codicon-case-sensitive" />
+                <span class="codicon codicon-case-sensitive"></span>
               </vscode-button>
               <vscode-button appearance="icon" aria-label="Match Whole Word">
-                <span class="codicon codicon-whole-word" />
+                <span class="codicon codicon-whole-word"></span>
               </vscode-button>
               <vscode-button appearance="icon" aria-label="Use Regular Expression">
-                <span class="codicon codicon-regex" />
+                <span class="codicon codicon-regex"></span>
               </vscode-button>
             </section>
           </vscode-text-field>
