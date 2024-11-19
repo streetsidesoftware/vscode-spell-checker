@@ -184,8 +184,10 @@ interface Appearance extends Decoration {
 export interface AppearanceSettings extends Appearance {
     /**
      * Draw custom decorations on Spelling Issues.
-     * - `true` - Use custom decorations.
+     * - `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.
      * - `false` - Use the VS Code Diagnostic Collection to render spelling issues.
+     *
+     * Note: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.
      *
      * @scope application
      * @since 4.0.0
