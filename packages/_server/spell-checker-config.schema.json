@@ -2623,7 +2623,7 @@
               "type": "string"
             },
             "textDecorationStyle": {
-              "default": "wavy",
+              "default": "dashed",
               "description": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
               "enum": [
                 "solid",
@@ -2722,7 +2722,7 @@
               "type": "string"
             },
             "textDecorationStyle": {
-              "default": "wavy",
+              "default": "dashed",
               "description": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
               "enum": [
                 "solid",
@@ -2802,7 +2802,7 @@
           "type": "string"
         },
         "cSpell.textDecorationStyle": {
-          "default": "wavy",
+          "default": "dashed",
           "description": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
           "enum": [
             "solid",
@@ -2825,7 +2825,7 @@
           "type": "string"
         },
         "cSpell.useCustomDecorations": {
-          "default": true,
+          "default": false,
           "description": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.\n\nNote: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.",
           "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.\n\nNote: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.",
           "scope": "application",

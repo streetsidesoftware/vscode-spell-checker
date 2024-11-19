@@ -75,7 +75,7 @@ interface Decoration {
      *
      * @scope application
      * @since 4.0.0
-     * @default "wavy"
+     * @default "dashed"
      */
     textDecorationStyle?: 'solid' | 'wavy' | 'dotted' | 'dashed' | 'double';
 
@@ -191,7 +191,7 @@ export interface AppearanceSettings extends Appearance {
      *
      * @scope application
      * @since 4.0.0
-     * @default true
+     * @default false
      */
     useCustomDecorations?: boolean;
 

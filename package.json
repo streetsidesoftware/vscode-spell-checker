@@ -3030,7 +3030,7 @@
                 "type": "string"
               },
               "textDecorationStyle": {
-                "default": "wavy",
+                "default": "dashed",
                 "enum": [
                   "solid",
                   "wavy",
@@ -3119,7 +3119,7 @@
                 "type": "string"
               },
               "textDecorationStyle": {
-                "default": "wavy",
+                "default": "dashed",
                 "enum": [
                   "solid",
                   "wavy",
@@ -3191,7 +3191,7 @@
             "type": "string"
           },
           "cSpell.textDecorationStyle": {
-            "default": "wavy",
+            "default": "dashed",
             "enum": [
               "solid",
               "wavy",
@@ -3212,7 +3212,7 @@
             "type": "string"
           },
           "cSpell.useCustomDecorations": {
-            "default": true,
+            "default": false,
             "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.\n\nNote: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.",
             "scope": "application",
             "since": "4.0.0",
