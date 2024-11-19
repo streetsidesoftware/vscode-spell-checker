@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.20](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.19...code-spell-checker-v4.0.20) (2024-11-19)
+
+
+### Updates and Bug Fixes
+
+* Change the description of `diagnosticLevel` ([#3808](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3808)) ([77e3c10](https://github.com/streetsidesoftware/vscode-spell-checker/commit/77e3c10cf65fb0bbd22226ee1aba5a89b87fc7d3))
+* Fix Info Pane ([#3815](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3815)) ([551c779](https://github.com/streetsidesoftware/vscode-spell-checker/commit/551c779d433f6e92279def24fb3d10c49ea91a83))
+* Turn off custom rendering by default. ([#3817](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3817)) ([7f7906b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7f7906b17def045a821a9145126e6358d715ebc6))
+
 ## [4.0.19](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.18...code-spell-checker-v4.0.19) (2024-11-19)
 
 
