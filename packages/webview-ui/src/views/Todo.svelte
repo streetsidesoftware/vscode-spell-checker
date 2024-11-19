@@ -81,7 +81,7 @@
               on:input={onInput}
               focus={todo === focusTodo}
               >{#snippet start()}
-                            <section class="slot" >
+                <section class="slot">
                   <VscodeCheckbox
                     bind:checked={todo.done}
                     on:blur={() => selectTodo(todo, false)}
@@ -89,7 +89,7 @@
                     on:change={onInput}
                   />
                 </section>
-                          {/snippet}</VscodeTextField
+              {/snippet}</VscodeTextField
             >
             {#if todo === currTodo}
               <span>*</span>
