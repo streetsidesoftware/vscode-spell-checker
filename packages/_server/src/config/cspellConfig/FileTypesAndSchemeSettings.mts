@@ -89,16 +89,7 @@ export interface FileTypesAndSchemeSettings {
      *
      * @title Enabled File Types to Check
      * @scope resource
-     * @default { "al": true, "asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript": true, "cpp": true, "csharp": true, "css": true,
-     *      "dart": true, "diff": true, "dockerfile": true, "elixir": true, "erlang": true, "fsharp": true, "git-commit": true,
-     *      "git-rebase": true, "github-actions-workflow": true, "go": true, "graphql": true, "groovy": true, "handlebars": true,
-     *      "haskell": true, "html": true, "ini": true, "jade": true, "java": true, "javascript": true, "javascriptreact": true,
-     *      "json": true, "jsonc": true, "julia": true, "jupyter": true, "latex": true, "less": true, "lua": true, "makefile": true,
-     *      "markdown": true, "objective-c": true, "perl": true, "perl6": true, "php": true, "plaintext": true, "powershell": true,
-     *      "properties": true, "pug": true, "python": true, "r": true, "razor": true, "restructuredtext": true, "ruby": true,
-     *      "rust": true, "scala": true, "scminput": true, "scss": true, "shaderlab": true, "shellscript": true, "sql": true, "swift": true,
-     *      "text": true, "typescript": true, "typescriptreact": true, "vb": true, "vue": true, "xml": true, "xsl": true, "yaml": true
-     * }
+     * @default { "*" : true, "markdown": true }
      */
     enabledFileTypes?: EnabledFileTypes;
 
