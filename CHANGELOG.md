@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.19](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.18...code-spell-checker-v4.0.19) (2024-11-19)
+
+
+### Updates and Bug Fixes
+
+* Adjust ruler color and underline color ([#3806](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3806)) ([212526a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/212526a85ab93ba50fb6727d49d7a1b0cacbe1fd))
+* Adjust the default color of custom decorations ([5a4ae24](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5a4ae24e7818672491501b00e622f5f47f6ac429))
+* Do not use custom decorations by default ([5a4ae24](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5a4ae24e7818672491501b00e622f5f47f6ac429))
+* Remove dot from title ([#3803](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3803)) ([c72f34d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c72f34d1621caa5b6f61e40b77402cfdcde2a66d))
+* Set enabledFileTypes default to be easier to extend ([#3807](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3807)) ([c740c4e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c740c4ecd96add9ff44ab2a3eec3b4d8317d50dd))
+
 ## [4.0.18](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.17...code-spell-checker-v4.0.18) (2024-11-18)
 
 
