@@ -5,6 +5,8 @@ interface Decoration {
     /**
      * The CSS color used to show issues in the ruler.
      *
+     * Depends upon `#cSpell.useCustomDecorations#`.
+     *
      * See:
      * - [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
      * - [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
@@ -19,7 +21,7 @@ interface Decoration {
      *
      * @scope application
      * @since 4.0.0
-     * @default "#fc4c"
+     * @default "#348feb80"
      */
     overviewRulerColor?: string;
 
@@ -45,6 +47,8 @@ interface Decoration {
      * - `underline green`
      * - `underline dotted yellow 0.2rem`
      * - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
+     *
+     * To change the ruler color, use `#cSpell.overviewRulerColor#`.
      *
      * @scope application
      * @since 4.0.0
@@ -99,6 +103,8 @@ interface Decoration {
      *
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      * - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+     *
+     * To change the ruler color, use `#cSpell.overviewRulerColor#`.
      *
      * Examples:
      * - `green`
@@ -183,7 +189,7 @@ export interface AppearanceSettings extends Appearance {
      *
      * @scope application
      * @since 4.0.0
-     * @default false
+     * @default true
      */
     useCustomDecorations?: boolean;
 
