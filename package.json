@@ -247,7 +247,7 @@
           "type": "tree",
           "id": "cSpellIssuesViewByFile",
           "name": "File Issues",
-          "contextualTitle": "Spell Checker issues by file.",
+          "contextualTitle": "Spell Checker issues by file",
           "icon": "$(lightbulb)",
           "initialSize": 4,
           "visibility": "visible"
