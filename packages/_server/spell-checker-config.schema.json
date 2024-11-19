@@ -133,7 +133,7 @@
               },
               "diagnosticLevel": {
                 "default": "Information",
-                "description": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document. Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#` to control how issues are displayed in the document.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
+                "description": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document. Set the level to `Hint` to hide the issues from the Problems Pane.\n\nNote: `#cSpell.useCustomDecorations#` must be `false` to use VS Code Diagnostic Severity Levels.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
                 "enum": [
                   "Error",
                   "Warning",
@@ -146,7 +146,7 @@
                   "Report Spelling Issues as Information",
                   "Report Spelling Issues as Hints, will not show up in Problems"
                 ],
-                "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`\nto control how issues are displayed in the document.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
+                "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane.\n\nNote: `#cSpell.useCustomDecorations#` must be `false` to use VS Code Diagnostic Severity Levels.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
                 "scope": "resource",
                 "title": "Set Diagnostic Reporting Level",
                 "type": "string"
@@ -2826,8 +2826,8 @@
         },
         "cSpell.useCustomDecorations": {
           "default": true,
-          "description": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.",
-          "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.",
+          "description": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.\n\nNote: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.",
+          "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.\n\nNote: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.",
           "scope": "application",
           "since": "4.0.0",
           "type": "boolean"
@@ -3436,7 +3436,7 @@
         },
         "cSpell.diagnosticLevel": {
           "default": "Information",
-          "description": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document. Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#` to control how issues are displayed in the document.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
+          "description": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document. Set the level to `Hint` to hide the issues from the Problems Pane.\n\nNote: `#cSpell.useCustomDecorations#` must be `false` to use VS Code Diagnostic Severity Levels.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
           "enum": [
             "Error",
             "Warning",
@@ -3449,7 +3449,7 @@
             "Report Spelling Issues as Information",
             "Report Spelling Issues as Hints, will not show up in Problems"
           ],
-          "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`\nto control how issues are displayed in the document.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
+          "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane.\n\nNote: `#cSpell.useCustomDecorations#` must be `false` to use VS Code Diagnostic Severity Levels.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
           "scope": "resource",
           "title": "Set Diagnostic Reporting Level",
           "type": "string"
