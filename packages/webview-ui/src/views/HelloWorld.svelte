@@ -6,17 +6,21 @@
   import { appState } from '../state/appState';
   import CheckboxLogDebug from '../components/CheckboxLogDebug.svelte';
 
-  export let showVsCodeComponents = getLocalState()?.showVsCodeComponents || false;
-  export let name: string;
+  interface Props {
+    showVsCodeComponents?: any;
+    name: string;
+  }
+
+  let { showVsCodeComponents = $bindable(getLocalState()?.showVsCodeComponents || false), name }: Props = $props();
 
   const api = getClientApi();
 
   const sTodos = appState.todos();
-  $: todos = $sTodos;
+  let todos = $derived($sTodos);
 
-  let messages: string[] = [];
+  let messages: string[] = $state([]);
 
-  $: reversed = [...messages].reverse();
+  let reversed = $derived([...messages].reverse());
 
   function handleHowdyClick() {
     api.serverNotification.showInformationMessage('Hey There.');

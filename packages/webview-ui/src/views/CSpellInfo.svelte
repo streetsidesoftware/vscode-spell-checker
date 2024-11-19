@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { appState } from '../state/appState';
   import { createMutation, createQuery, getQueryClientContext } from '@tanstack/svelte-query';
   import { getServerApi, getServerNotificationApi } from '../api';
@@ -20,34 +22,8 @@
 
   const maxDelay = 10000;
   const initialDelay = 1000;
-  let fileInfo: DisplayInfo[] = [];
-  let delay = initialDelay;
-
-  $: currentDoc = appState.currentDocument();
-  $: docUrl = $currentDoc?.url ? new URL($currentDoc.url) : undefined;
-  $: queryResult = createQuery({
-    queryKey: ['docSettings', docUrl?.toString()],
-    queryFn: (ctx) => getDocSettings(ctx.queryKey[1]),
-    refetchInterval: delay,
-  });
-  $: mutation = createMutation({
-    mutationFn: mutateEnabledFileType,
-    onSettled: async () => {
-      await queryClient.resetQueries({ queryKey: ['docSettings'] });
-      delay = initialDelay;
-      // await $queryResult.refetch();
-      setTimeout(() => $queryResult.refetch().catch(() => undefined), 300);
-    },
-  });
-  $: settings = $queryResult.data;
-  $: configFiles = settings?.configs.file?.configFiles;
-  $: excludedBy = settings?.configs.file?.excludedBy;
-  $: dictionaries = settings?.configs.file?.dictionaries;
-  $: dictionariesInUse = new Set(dictionaries?.map((d) => d.name) || []);
-  $: unusedDictionaries = settings?.dictionaries.filter((d) => !dictionariesInUse.has(d.name));
-  $: fileInfo = calcDisplayInfo($currentDoc || undefined, settings);
-  $: languageIdEnabled = settings?.configs.file?.languageIdEnabled;
-  $: languageId = settings?.configs.file?.languageId;
+  let fileInfo: DisplayInfo[] = $state([]);
+  let delay = $state(initialDelay);
 
   function openTextDocument(uri: string) {
     getServerNotificationApi().openTextDocument(uri);
@@ -93,6 +69,37 @@
 
     return info.filter((a): a is DisplayInfo => !!a?.value);
   }
+  let currentDoc = $derived(appState.currentDocument());
+  let docUrl = $derived($currentDoc?.url ? new URL($currentDoc.url) : undefined);
+  let mutation = $derived(
+    createMutation({
+      mutationFn: mutateEnabledFileType,
+      onSettled: async () => {
+        await queryClient.resetQueries({ queryKey: ['docSettings'] });
+        delay = initialDelay;
+        // await $queryResult.refetch();
+        setTimeout(() => $queryResult.refetch().catch(() => undefined), 300);
+      },
+    }),
+  );
+  let queryResult = $derived(
+    createQuery({
+      queryKey: ['docSettings', docUrl?.toString()],
+      queryFn: (ctx) => getDocSettings(ctx.queryKey[1]),
+      refetchInterval: delay,
+    }),
+  );
+  let settings = $derived($queryResult.data);
+  let configFiles = $derived(settings?.configs.file?.configFiles);
+  let excludedBy = $derived(settings?.configs.file?.excludedBy);
+  let dictionaries = $derived(settings?.configs.file?.dictionaries);
+  let dictionariesInUse = $derived(new Set(dictionaries?.map((d) => d.name) || []));
+  let unusedDictionaries = $derived(settings?.dictionaries.filter((d) => !dictionariesInUse.has(d.name)));
+  run(() => {
+    fileInfo = calcDisplayInfo($currentDoc || undefined, settings);
+  });
+  let languageIdEnabled = $derived(settings?.configs.file?.languageIdEnabled);
+  let languageId = $derived(settings?.configs.file?.languageId);
 </script>
 
 <section>
@@ -112,7 +119,7 @@
         <ul>
           {#each configFiles as configFile}
             <li>
-              <VscodeLink href={configFile.uri} on:click={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
+              <VscodeLink href={configFile.uri} click={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
             </li>
           {/each}
         </ul>
@@ -130,7 +137,7 @@
                 {#if excluded.configUri}
                   <dd>
                     Config File:
-                    <VscodeLink href={excluded.configUri} on:click={() => openTextDocument(excluded.configUri || '')}
+                    <VscodeLink href={excluded.configUri} click={() => openTextDocument(excluded.configUri || '')}
                       >{excluded.configUri?.split('/').slice(-2).join('/')}</VscodeLink
                     >
                   </dd>
@@ -165,7 +172,7 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <VscodeLink href={dictionary.uri} on:click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                  <VscodeLink href={dictionary.uri} click={() => dictionary.uri && openTextDocument(dictionary.uri)}
                     >{dictionary.uriName}</VscodeLink
                   >
                 {:else}
@@ -190,7 +197,7 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <VscodeLink href={dictionary.uri} on:click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                  <VscodeLink href={dictionary.uri} click={() => dictionary.uri && openTextDocument(dictionary.uri)}
                     >{dictionary.uriName}</VscodeLink
                   >
                 {:else}

@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { createBubbler, preventDefault } from 'svelte/legacy';
+
+  const bubble = createBubbler();
   import type { Todo } from '../api';
   import { getClientApi } from '../api';
   import VscodeButton from '../components/VscodeButton.svelte';
@@ -8,15 +11,15 @@
 
   const api = getClientApi();
   const sTodos = appState.todos();
-  let updates = 0;
+  let updates = $state(0);
 
-  $: todos = $sTodos;
-  $: remaining = todos.filter((t) => !t.done).length || 0;
-  $: logDebug = appState.logDebug();
+  let todos = $derived($sTodos);
+  let remaining = $derived(todos.filter((t) => !t.done).length || 0);
+  let logDebug = $derived(appState.logDebug());
 
-  let focusTodo: Todo | undefined;
+  let focusTodo: Todo | undefined = $state();
 
-  let currTodo: Todo | undefined = undefined;
+  let currTodo: Todo | undefined = $state(undefined);
 
   sTodos.subscribe(() => (console.log('subscribe todos.'), (updates = updates + 1)));
 
@@ -63,7 +66,7 @@
 
   <p>Updates: {updates}</p>
 
-  <form on:submit|preventDefault>
+  <form onsubmit={preventDefault(bubble('submit'))}>
     {#if todos.length}
       <ul class="todos">
         {#each todos as todo, index (todo.uuid)}
@@ -77,14 +80,16 @@
               on:focus={() => selectTodo(todo, true)}
               on:input={onInput}
               focus={todo === focusTodo}
-              ><section class="slot" slot="start">
-                <VscodeCheckbox
-                  bind:checked={todo.done}
-                  on:blur={() => selectTodo(todo, false)}
-                  on:focus={() => selectTodo(todo, true)}
-                  on:change={onInput}
-                />
-              </section></VscodeTextField
+              >{#snippet start()}
+                            <section class="slot" >
+                  <VscodeCheckbox
+                    bind:checked={todo.done}
+                    on:blur={() => selectTodo(todo, false)}
+                    on:focus={() => selectTodo(todo, true)}
+                    on:change={onInput}
+                  />
+                </section>
+                          {/snippet}</VscodeTextField
             >
             {#if todo === currTodo}
               <span>*</span>
@@ -100,13 +105,13 @@
     <p>Log Debug: {$logDebug}</p>
 
     <div class="todo-actions">
-      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <VscodeButton on:click={add}>Add New</VscodeButton>
 
-      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <VscodeButton on:click={clear}>Clear Completed</VscodeButton>
 
-      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <VscodeButton on:click={reset}>Reset the List</VscodeButton>
     </div>
   </form>
