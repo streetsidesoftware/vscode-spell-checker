@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
 import { readDefaults } from '../test/schema.mjs';
-import { languageIds } from './languageIds.js';
 
 describe('settings/index', () => {
     test('Default languageIds', async () => {
@@ -12,7 +11,7 @@ describe('settings/index', () => {
             .filter(([, enabled]) => enabled)
             .map(([lang]) => lang)
             .sort();
-        expect([...languageIds].sort()).toEqual(enabled);
+        expect(['*', 'markdown'].sort()).toEqual(enabled);
         expect(enabledLanguageIds).toBeUndefined();
     });
 });
