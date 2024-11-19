@@ -107,7 +107,7 @@ interface Decoration {
      *
      * @scope application
      * @since 4.0.0
-     * @default "#fc4"
+     * @default "#348feb"
      */
     textDecorationColor?: string;
 
@@ -183,7 +183,7 @@ export interface AppearanceSettings extends Appearance {
      *
      * @scope application
      * @since 4.0.0
-     * @default true
+     * @default false
      */
     useCustomDecorations?: boolean;
 

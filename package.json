@@ -3062,7 +3062,7 @@
                 "type": "string"
               },
               "textDecorationColor": {
-                "default": "#fc4",
+                "default": "#348feb",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
                 "since": "4.0.0",
@@ -3151,7 +3151,7 @@
                 "type": "string"
               },
               "textDecorationColor": {
-                "default": "#fc4",
+                "default": "#348feb",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
                 "since": "4.0.0",
@@ -3223,7 +3223,7 @@
             "type": "string"
           },
           "cSpell.textDecorationColor": {
-            "default": "#fc4",
+            "default": "#348feb",
             "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
             "scope": "application",
             "since": "4.0.0",
@@ -3277,7 +3277,7 @@
             "type": "string"
           },
           "cSpell.useCustomDecorations": {
-            "default": true,
+            "default": false,
             "markdownDescription": "Draw custom decorations on Spelling Issues.\n- `true` - Use custom decorations.\n- `false` - Use the VS Code Diagnostic Collection to render spelling issues.",
             "scope": "application",
             "since": "4.0.0",
