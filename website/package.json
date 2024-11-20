@@ -21,7 +21,7 @@
     "update-packages": "npx npm-check-updates --target semver -u && npm i"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.6.1",
+    "@docusaurus/core": "^3.6.2",
     "@docusaurus/preset-classic": "^3.6.1",
     "@mdx-js/react": "^3.1.0",
     "clsx": "^2.1.1",
