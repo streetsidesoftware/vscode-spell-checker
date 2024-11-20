@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.21](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.20...code-spell-checker-v4.0.21) (2024-11-20)
+
+
+### Updates and Bug Fixes
+
+* Support vscode-notebook-cell in containers ([#3826](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3826)) ([b6cdfc7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b6cdfc7425063174e4472b3a2995d97963b66e51))
+
 ## [4.0.20](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.19...code-spell-checker-v4.0.20) (2024-11-19)
 
 
