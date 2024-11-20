@@ -26,10 +26,8 @@ export function handleSpecialUri(uri: Uri, rootUri: Uri): Uri {
 export function forceToFileUri(uri: Uri, rootUri: Uri): Uri {
     if (uri.scheme === 'file') return uri;
 
-    return uri.with({
-        scheme: rootUri.scheme,
-        query: '',
-        fragment: '',
+    return rootUri.with({
+        path: uri.path,
     });
 }
 
