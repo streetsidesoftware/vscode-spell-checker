@@ -2,8 +2,8 @@
 
 github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
   - streetsidesoftware
-patreon: streetsidesoftware
-open_collective: code-spell-checker
+# patreon: streetsidesoftware
+# open_collective: code-spell-checker
 ko_fi: # Replace with a single Ko-fi username
 tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
 community_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry
