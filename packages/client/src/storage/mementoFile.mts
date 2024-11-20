@@ -90,7 +90,9 @@ export class MementoFile<T> implements Memento<T>, Disposable {
     #handleFileChange(uri: Uri) {
         const a = uri.path;
         const b = this.uri.path;
-        assert(a === b, `Invalid file change: ${a} !== ${b}`);
+        if (a !== b) {
+            console.error(`Invalid file change: '${a}' !== '${b}'`);
+        }
         this.#loadData().catch(() => undefined);
     }
 
