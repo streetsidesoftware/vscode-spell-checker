@@ -28,8 +28,8 @@
     "@cspell/dict-de-de": "^4.0.3",
     "@types/chai": "^5.0.1",
     "@types/decompress": "^4.2.7",
-    "@types/mocha": "^10.0.9",
-    "@types/node": "^20.17.6",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.17.7",
     "chai": "^5.1.2",
     "cross-env": "^7.0.3"
   },
