@@ -75,6 +75,7 @@ const config: Config = {
                 target: '/',
             },
             items: [
+                { label: 'Home', href: 'https://streetsidesoftware.com', position: 'left' },
                 {
                     type: 'docSidebar',
                     sidebarId: 'docs',
@@ -82,8 +83,8 @@ const config: Config = {
                     label: 'Docs',
                 },
                 { to: '/about', label: 'About', position: 'left' },
-                { label: 'CSpell', href: 'https://cspell.org', position: 'right' },
-                { label: 'Street Side Software', href: 'https://streetsidesoftware.com', position: 'right' },
+                { label: 'Sponsor', href: 'https://streetsidesoftware.com/sponsor', position: 'right' },
+                // { label: 'CSpell', href: 'https://cspell.org', position: 'right' },
                 // {to: '/blog', label: 'Blog', position: 'left'},
                 {
                     href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
@@ -100,7 +101,7 @@ const config: Config = {
                     items: [
                         { label: 'Home', href: 'https://streetsidesoftware.com' },
                         { label: 'CSpell', href: 'https://cspell.org' },
-                        { label: 'Sponsor', href: 'https://github.com/sponsors/streetsidesoftware' },
+                        { label: 'Sponsor', href: 'https://streetsidesoftware.com/sponsor/' },
                     ],
                 },
                 {
@@ -109,6 +110,7 @@ const config: Config = {
                         { label: 'GitHub', href: 'https://github.com/streetsidesoftware/vscode-spell-checker' },
                         { label: 'Issues', href: 'https://github.com/streetsidesoftware/vscode-spell-checker/issues' },
                         { label: 'Discussions', href: 'https://github.com/streetsidesoftware/vscode-spell-checker/discussions' },
+                        { label: 'Sponsor through GitHub', href: 'https://github.com/sponsors/streetsidesoftware' },
                     ],
                 },
                 {

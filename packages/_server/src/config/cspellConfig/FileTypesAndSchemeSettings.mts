@@ -94,14 +94,6 @@ export interface FileTypesAndSchemeSettings {
     enabledFileTypes?: EnabledFileTypes;
 
     /**
-     * Map of known and enabled file types.
-     * `true` - enabled
-     * `false` - disabled
-     * @hidden
-     */
-    // mapOfEnabledFileTypes?: Map<string, boolean>; // replaced by `#cSpell.enabledFileTypes#`
-
-    /**
      * By default, the spell checker checks only enabled file types. Use `#cSpell.enableFiletypes#`
      * to turn on / off various file types.
      *
