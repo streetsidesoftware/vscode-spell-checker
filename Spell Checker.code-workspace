@@ -34,7 +34,6 @@
         { "path": "packages/webview-api" },
         { "path": "packages/webview-rpc" },
         { "path": "packages/webview-ui" },
-        { "name": "Docs", "path": "docs" },
         { "path": "website" }
     ],
     "settings": {
