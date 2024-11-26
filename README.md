@@ -6,10 +6,10 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   [![GitHub Sponsors](https://img.shields.io/badge/-black?style=social&logo=githubsponsors&label=GitHub%20Sponsor%3A%20Street%20Side%20Software)](https://github.com/sponsors/streetsidesoftware)
--   [![Patreon](https://img.shields.io/badge/-black?style=social&logo=patreon&label=Patreon%3A%20Street%20Side%20Software)](https://patreon.com/streetsidesoftware)
--   [![PayPal](https://img.shields.io/badge/-black?style=social&logo=paypal&label=PayPal%20Donate%3A%20Street%20Side%20Software)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
--   [![Open Collective](https://img.shields.io/badge/-black?style=social&logo=opencollective&label=Open%20Collective%3A%20Code%20Spell%20Checker)](https://opencollective.com/code-spell-checker)
+- [![GitHub Sponsors](https://img.shields.io/badge/-black?style=social&logo=githubsponsors&label=GitHub%20Sponsor%3A%20Street%20Side%20Software)](https://github.com/sponsors/streetsidesoftware)
+- [![Patreon](https://img.shields.io/badge/-black?style=social&logo=patreon&label=Patreon%3A%20Street%20Side%20Software)](https://patreon.com/streetsidesoftware)
+- [![PayPal](https://img.shields.io/badge/-black?style=social&logo=paypal&label=PayPal%20Donate%3A%20Street%20Side%20Software)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+- [![Open Collective](https://img.shields.io/badge/-black?style=social&logo=opencollective&label=Open%20Collective%3A%20Code%20Spell%20Checker)](https://opencollective.com/code-spell-checker)
 
 ## Functionality
 
@@ -28,10 +28,10 @@ To see the list of suggestions:
 
 After positioning the cursor in the word, any of the following should display the list of suggestions:
 
--   Click on the 💡 (lightbulb) in the left hand margin.
--   [`Quick Fix`](https://code.visualstudio.com/docs/getstarted/keybindings#_rich-languages-editing) Editor action command:
-    -   Mac: `⌘`+`.` or `Cmd`+`.`
-    -   PC: `Ctrl`+`.`
+- Click on the 💡 (lightbulb) in the left hand margin.
+- [`Quick Fix`](https://code.visualstudio.com/docs/getstarted/keybindings#_rich-languages-editing) Editor action command:
+    - Mac: `⌘`+`.` or `Cmd`+`.`
+    - PC: `Ctrl`+`.`
 
 ## Install
 
@@ -39,8 +39,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 ## Supported Languages
 
--   English (US)
--   English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
+- English (US)
+- English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
 ## Add-On Dictionaries
 
@@ -50,56 +50,56 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 ### Language Dictionaries
 
--   [Ancient Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ancient-greek) - Ancient Greek dictionary extension for VS Code.
--   [Arabic](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-arabic) - Arabic dictionary extension for VS Code.
--   [Australian English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-australian-english) - Australian English dictionary extension for VS Code.
--   [Austrian German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-austrian-german) - Austrian German dictionary extension for VS Code.
--   [Basque](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-basque) - Basque dictionary extension for VS Code.
--   [British English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-british-english) - British English dictionary extension for VS Code.
--   [Bulgarian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-bulgarian) - Bulgarian dictionary extension for VS Code.
--   [Canadian English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-canadian-english) - Canadian English dictionary extension for VS Code.
--   [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan) - Catalan dictionary extension for VS Code.
--   [Croatian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-croatian) - Croatian dictionary extension for VS Code.
--   [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech) - Czech dictionary extension for VS Code.
--   [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish) - Danish dictionary extension for VS Code.
--   [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch) - Dutch / Nederlands dictionary extension for VS Code.
--   [Esperanto](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-esperanto) - Esperanto dictionary extension for VS Code.
--   [Estonian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-estonian) - Estonian dictionary extension for VS Code.
--   [Finnish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-finnish) - Finnish dictionary extension for VS Code.
--   [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french) - French dictionary extension for VS Code.
--   [French Réforme 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme) - French Réforme 90 dictionary extension for VS Code.
--   [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german) - German dictionary extension for VS Code.
--   [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek) - Greek dictionary extension for VS Code.
--   [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew) - Hebrew dictionary extension for VS Code.
--   [Hungarian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hungarian) - Hungarian dictionary extension for VS Code.
--   [Indonesian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-indonesian) - Indonesian dictionary extension for VS Code.
--   [Italian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-italian) - Italian dictionary extension for VS Code.
--   [Latin](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-latin) - Latin dictionary extension for VS Code.
--   [Latvian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-latvian) - Latvian dictionary extension for VS Code.
--   [Lithuanian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-lithuanian) - Lithuanian dictionary extension for VS Code.
--   [Macedonian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-macedonian) - Macedonian dictionary extension for VS Code.
--   [Norwegian Bokmål](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-norwegian-bokmal) - Norwegian Bokmål dictionary extension for VS Code.
--   [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian) - Persian dictionary extension for VS Code.
--   [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish) - Polish dictionary extension for VS Code.
--   [Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese) - Portuguese dictionary extension for VS Code.
--   [Brazilian Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian) - Brazilian Portuguese dictionary extension for VS Code.
--   [Romanian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-romanian) - Romanian dictionary extension for VS Code.
--   [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian) - Russian dictionary extension for VS Code.
--   [Serbian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-serbian) - Serbian dictionary extension for VS Code.
--   [Slovak](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-slovak) - Slovak dictionary extension for VS Code.
--   [Slovenian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-slovenian) - Slovenian dictionary extension for VS Code.
--   [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish) - Spanish Add-On for Code Spell Checker
--   [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish) - Swedish dictionary extension for VS Code.
--   [Swiss German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swiss-german) - Swiss German dictionary extension for VS Code.
--   [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish) - Turkish dictionary extension for VS Code.
--   [Ukrainian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ukrainian) - Ukrainian dictionary extension for VS Code.
--   [Vietnamese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-vietnamese) - Vietnamese dictionary extension for VS Code.
+- [Ancient Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ancient-greek) - Ancient Greek dictionary extension for VS Code.
+- [Arabic](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-arabic) - Arabic dictionary extension for VS Code.
+- [Australian English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-australian-english) - Australian English dictionary extension for VS Code.
+- [Austrian German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-austrian-german) - Austrian German dictionary extension for VS Code.
+- [Basque](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-basque) - Basque dictionary extension for VS Code.
+- [British English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-british-english) - British English dictionary extension for VS Code.
+- [Bulgarian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-bulgarian) - Bulgarian dictionary extension for VS Code.
+- [Canadian English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-canadian-english) - Canadian English dictionary extension for VS Code.
+- [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan) - Catalan dictionary extension for VS Code.
+- [Croatian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-croatian) - Croatian dictionary extension for VS Code.
+- [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech) - Czech dictionary extension for VS Code.
+- [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish) - Danish dictionary extension for VS Code.
+- [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch) - Dutch / Nederlands dictionary extension for VS Code.
+- [Esperanto](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-esperanto) - Esperanto dictionary extension for VS Code.
+- [Estonian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-estonian) - Estonian dictionary extension for VS Code.
+- [Finnish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-finnish) - Finnish dictionary extension for VS Code.
+- [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french) - French dictionary extension for VS Code.
+- [French Réforme 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme) - French Réforme 90 dictionary extension for VS Code.
+- [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german) - German dictionary extension for VS Code.
+- [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek) - Greek dictionary extension for VS Code.
+- [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew) - Hebrew dictionary extension for VS Code.
+- [Hungarian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hungarian) - Hungarian dictionary extension for VS Code.
+- [Indonesian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-indonesian) - Indonesian dictionary extension for VS Code.
+- [Italian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-italian) - Italian dictionary extension for VS Code.
+- [Latin](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-latin) - Latin dictionary extension for VS Code.
+- [Latvian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-latvian) - Latvian dictionary extension for VS Code.
+- [Lithuanian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-lithuanian) - Lithuanian dictionary extension for VS Code.
+- [Macedonian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-macedonian) - Macedonian dictionary extension for VS Code.
+- [Norwegian Bokmål](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-norwegian-bokmal) - Norwegian Bokmål dictionary extension for VS Code.
+- [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian) - Persian dictionary extension for VS Code.
+- [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish) - Polish dictionary extension for VS Code.
+- [Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese) - Portuguese dictionary extension for VS Code.
+- [Brazilian Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian) - Brazilian Portuguese dictionary extension for VS Code.
+- [Romanian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-romanian) - Romanian dictionary extension for VS Code.
+- [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian) - Russian dictionary extension for VS Code.
+- [Serbian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-serbian) - Serbian dictionary extension for VS Code.
+- [Slovak](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-slovak) - Slovak dictionary extension for VS Code.
+- [Slovenian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-slovenian) - Slovenian dictionary extension for VS Code.
+- [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish) - Spanish Add-On for Code Spell Checker
+- [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish) - Swedish dictionary extension for VS Code.
+- [Swiss German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swiss-german) - Swiss German dictionary extension for VS Code.
+- [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish) - Turkish dictionary extension for VS Code.
+- [Ukrainian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ukrainian) - Ukrainian dictionary extension for VS Code.
+- [Vietnamese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-vietnamese) - Vietnamese dictionary extension for VS Code.
 
 ### Technical Dictionaries
 
--   [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms) - Medical Terms Add-On for Code Spell Checker
--   [Scientific Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-scientific-terms) - Scientific Terms dictionary extension for VS Code.
--   [Win32](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-win32) - Win32 dictionary extension for VS Code.
+- [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms) - Medical Terms Add-On for Code Spell Checker
+- [Scientific Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-scientific-terms) - Scientific Terms dictionary extension for VS Code.
+- [Win32](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-win32) - Win32 dictionary extension for VS Code.
 
 <!--- @@inject-end: https://github.com/streetsidesoftware/vscode-cspell-dict-extensions/blob/main/static/generated/marketplace_language_extensions.md --->
 
@@ -107,31 +107,31 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 ## Enabled File Types
 
--   AsciiDoc
--   C, C++
--   C#
--   css, less, scss
--   Dart
--   Elixir
--   Go
--   Html
--   Java
--   JavaScript
--   JSON / JSONC
--   LaTeX
--   Markdown
--   PHP
--   PowerShell
--   Pug / Jade
--   Python
--   reStructuredText
--   Ruby
--   Rust
--   Scala
--   Text
--   TypeScript
--   YAML
--   SQL
+- AsciiDoc
+- C, C++
+- C#
+- css, less, scss
+- Dart
+- Elixir
+- Go
+- Html
+- Java
+- JavaScript
+- JSON / JSONC
+- LaTeX
+- Markdown
+- PHP
+- PowerShell
+- Pug / Jade
+- Python
+- reStructuredText
+- Ruby
+- Rust
+- Scala
+- Text
+- TypeScript
+- YAML
+- SQL
 
 ### Enable / Disable File Types
 
@@ -149,10 +149,10 @@ To _Enable_ or _Disable_ spell checking for a file type:
 
 The concept is simple, split camelCase words before checking them against a list of known English words.
 
--   camelCase -> camel case
--   HTMLInput -> html input -- Notice that the `I` is associated with `Input` and not `HTML`
--   snake_case_words -> snake case words
--   camel2snake -> camel snake -- (the 2 is ignored)
+- camelCase -> camel case
+- HTMLInput -> html input -- Notice that the `I` is associated with `Input` and not `HTML`
+- snake_case_words -> snake case words
+- camel2snake -> camel snake -- (the 2 is ignored)
 
 ### Special case with ALL CAPS words
 
@@ -160,17 +160,17 @@ There are a few special cases to help with common spelling practices for ALL CAP
 
 Trailing `s`, `ing`, `ies`, `es`, `ed` are kept with the previous word.
 
--   CURLs -> curls -- trailing `s`
--   CURLedRequest -> curled request -- trailing `ed`
+- CURLs -> curls -- trailing `s`
+- CURLedRequest -> curled request -- trailing `ed`
 
 ## Things to note
 
--   This spellchecker is case insensitive. It will not catch errors like english which should be English.
--   The spellchecker uses a local word dictionary. It does not send anything outside your machine.
--   The words in the dictionary can and do contain errors.
--   There are missing words.
--   Only words longer than 3 characters are checked. "jsj" is not checked, while "jsja" is checked and will be marked as incorrect because it does not exist in any of the dictionaries.
--   All symbols and punctuation are ignored.
+- This spellchecker is case insensitive. It will not catch errors like english which should be English.
+- The spellchecker uses a local word dictionary. It does not send anything outside your machine.
+- The words in the dictionary can and do contain errors.
+- There are missing words.
+- Only words longer than 3 characters are checked. "jsj" is not checked, while "jsja" is checked and will be marked as incorrect because it does not exist in any of the dictionaries.
+- All symbols and punctuation are ignored.
 
 ## In Document Settings
 
@@ -179,14 +179,14 @@ This is to help with file specific issues that may not be applicable to the enti
 
 All settings are prefixed with `cSpell:` or `spell-checker:`.
 
--   `disable` -- turn off the spell checker for a section of code.
--   `enable` -- turn the spell checker back on after it has been turned off.
--   `ignore` -- specify a list of words to be ignored.
--   `words` -- specify a list of words to be considered correct and will appear in the suggestions list.
--   `locale` -- set locale (example: `cSpell:locale fr,en` to use French and English languages)
--   `ignoreRegExp` -- Any text matching the regular expression will NOT be checked for spelling.
--   `includeRegExp` -- Only text matching the collection of includeRegExp will be checked.
--   `enableCompoundWords` / `disableCompoundWords` -- Allow / disallow words like: "stringlength".
+- `disable` -- turn off the spell checker for a section of code.
+- `enable` -- turn the spell checker back on after it has been turned off.
+- `ignore` -- specify a list of words to be ignored.
+- `words` -- specify a list of words to be considered correct and will appear in the suggestions list.
+- `locale` -- set locale (example: `cSpell:locale fr,en` to use French and English languages)
+- `ignoreRegExp` -- Any text matching the regular expression will NOT be checked for spelling.
+- `includeRegExp` -- Only text matching the collection of includeRegExp will be checked.
+- `enableCompoundWords` / `disableCompoundWords` -- Allow / disallow words like: "stringlength".
 
 ### Enable / Disable checking sections of code
 
@@ -194,19 +194,19 @@ It is possible to disable / enable the spell checker by adding comments to your 
 
 #### Disable Checking
 
--   `cSpell:disable`
--   `spell-checker: disable`
--   `spellchecker: disable`
--   `cspell: disable-line`
--   `cspell: disable-next-line`
+- `cSpell:disable`
+- `spell-checker: disable`
+- `spellchecker: disable`
+- `cspell: disable-line`
+- `cspell: disable-next-line`
 
 <!--- cSpell:enable -->
 
 #### Enable Checking
 
--   `cSpell:enable`
--   `spell-checker: enable`
--   `spellchecker: enable`
+- `cSpell:enable`
+- `spell-checker: enable`
+- `spellchecker: enable`
 
 #### JavaScript Example
 
@@ -344,18 +344,18 @@ def sum_it(self, seq):
 
 ### Exclude patterns
 
--   `Urls`<sup>1</sup> -- Matches urls
--   `HexValues` -- Matches common hex format like `#aaa`, `0xfeef`, `\u0134`
--   `EscapeCharacters`<sup>1</sup> -- matches special characters: `\n`, `\t` etc.
--   `Base64`<sup>1</sup> -- matches base64 blocks of text longer than 40 characters.
--   `Email` -- matches most email addresses.
+- `Urls`<sup>1</sup> -- Matches urls
+- `HexValues` -- Matches common hex format like `#aaa`, `0xfeef`, `\u0134`
+- `EscapeCharacters`<sup>1</sup> -- matches special characters: `\n`, `\t` etc.
+- `Base64`<sup>1</sup> -- matches base64 blocks of text longer than 40 characters.
+- `Email` -- matches most email addresses.
 
 ### Include Patterns
 
--   `Everything`<sup>1</sup> -- By default we match an entire document and remove the excludes.
--   `string` -- This matches common string formats like '...', "...", and \`...\`
--   `CStyleComment` -- These are C Style comments /\* \*/ and //
--   `PhpHereDoc` -- This matches PHPHereDoc strings.
+- `Everything`<sup>1</sup> -- By default we match an entire document and remove the excludes.
+- `string` -- This matches common string formats like '...', "...", and \`...\`
+- `CStyleComment` -- These are C Style comments /\* \*/ and //
+- `PhpHereDoc` -- This matches PHPHereDoc strings.
 
 <sup>1.</sup> These patterns are part of the default include/exclude list for every file.
 
@@ -489,33 +489,33 @@ The spell checker includes a set of default dictionaries.
 
 ### General Dictionaries
 
--   **wordsEn** - Derived from Hunspell US English words.
--   **wordsEnGb** - Derived from Hunspell GB English words.
--   **companies** - List of well known companies
--   **softwareTerms** - Software Terms and concepts like "coroutine", "debounce", "tree", etc.
--   **misc** - Terms that do not belong in the other dictionaries.
+- **wordsEn** - Derived from Hunspell US English words.
+- **wordsEnGb** - Derived from Hunspell GB English words.
+- **companies** - List of well known companies
+- **softwareTerms** - Software Terms and concepts like "coroutine", "debounce", "tree", etc.
+- **misc** - Terms that do not belong in the other dictionaries.
 
 ### Programming Language Dictionaries
 
--   **typescript** - keywords for Typescript and Javascript
--   **node** - terms related to using nodejs.
--   **php** - _php_ keywords and library methods
--   **go** - _go_ keywords and library methods
--   **python** - _python_ keywords
--   **powershell** - _powershell_ keywords
--   **html** - _html_ related keywords
--   **css** - _css_, _less_, and _scss_ related keywords
+- **typescript** - keywords for Typescript and Javascript
+- **node** - terms related to using nodejs.
+- **php** - _php_ keywords and library methods
+- **go** - _go_ keywords and library methods
+- **python** - _python_ keywords
+- **powershell** - _powershell_ keywords
+- **html** - _html_ related keywords
+- **css** - _css_, _less_, and _scss_ related keywords
 
 ### Miscellaneous Dictionaries
 
--   **fonts** - long list of fonts - to assist with _css_
+- **fonts** - long list of fonts - to assist with _css_
 
 Based upon the programming language, different dictionaries will be loaded.
 
 Here are some of the default rules:
 
--   `"*"` matches any programming language / file type.
--   `"locale"` is used to filter based upon the `"cSpell.language"` setting.
+- `"*"` matches any programming language / file type.
+- `"locale"` is used to filter based upon the `"cSpell.language"` setting.
 
 ```javascript
 {
@@ -656,10 +656,10 @@ Example adding medical terms, so words like _acanthopterygious_ can be found.
 
 **Explained:** In this example, we have told the spell checker where to find our personal dictionary called `myWords`.
 
--   `name` - this is the name of the dictionary, all references to this dictionary is done by the name.
--   `path` - this the path to the dictionary file. Since it is in the user settings, we have to use absolute paths or paths relative to the user directory by using `~/`.
--   `scope` - (Optional) this is used to "scope" a dictionary to `user`, `workspace`, or `folder`. Scope is used to help communicate the intended use of the dictionary.
--   `addWords` - (Optional) default - `true` - is used to show / hide the dictionary as a possible target for adding words.
+- `name` - this is the name of the dictionary, all references to this dictionary is done by the name.
+- `path` - this the path to the dictionary file. Since it is in the user settings, we have to use absolute paths or paths relative to the user directory by using `~/`.
+- `scope` - (Optional) this is used to "scope" a dictionary to `user`, `workspace`, or `folder`. Scope is used to help communicate the intended use of the dictionary.
+- `addWords` - (Optional) default - `true` - is used to show / hide the dictionary as a possible target for adding words.
 
 #### Project / Workspace Dictionary using `cspell.json`
 

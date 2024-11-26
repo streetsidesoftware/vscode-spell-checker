@@ -132,5 +132,5 @@ Priority should be strongly towards local (_folder_) over global (_user_).
 
 Notes:
 
--   if a CSpell configuration file contains a custom dictionary definition it should not be part of the selection.
--   Adding words should not create a CSpell configuration file or a VS Code `settings.json` file is avoidable.
+- if a CSpell configuration file contains a custom dictionary definition it should not be part of the selection.
+- Adding words should not create a CSpell configuration file or a VS Code `settings.json` file is avoidable.

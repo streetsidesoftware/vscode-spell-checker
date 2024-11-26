@@ -4,8 +4,8 @@ This library is to help with creating Disposables that support both VSCode Dispo
 
 See:
 
--   [TypeScript 5.2 Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-5-2/#using-declarations-and-explicit-resource-management)
--   [tc39/proposal: ECMAScript Explicit Resource Management](https://github.com/tc39/proposal-explicit-resource-management)
+- [TypeScript 5.2 Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-5-2/#using-declarations-and-explicit-resource-management)
+- [tc39/proposal: ECMAScript Explicit Resource Management](https://github.com/tc39/proposal-explicit-resource-management)
 
 This module will polyfill `Symbol.dispose` if necessary.
 

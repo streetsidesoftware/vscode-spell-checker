@@ -54,10 +54,10 @@ If anything shows up, then the port is still locked.
 
 ## Packages
 
--   `client` - the actual extension running in VS Code.
--   `_server` - the extension server that processes spell checker requests
--   `_settingsViewer` - a webapp that provides a visual interface to the configuration files.
--   `_integrationTests` - a test suite that launches the extension in VS Code.
+- `client` - the actual extension running in VS Code.
+- `_server` - the extension server that processes spell checker requests
+- `_settingsViewer` - a webapp that provides a visual interface to the configuration files.
+- `_integrationTests` - a test suite that launches the extension in VS Code.
 
 ## Adding configurations
 
