@@ -10,14 +10,14 @@ A resource level setting that specifies the location of the `cspell.json` file.
 
 ## Raw Notes
 
--   need setting to indicate that settings should use `cspell.json` by default.
--   need to be able to specify the location of user words, words, ignore words, and forbid words.
--   would like to have a format for a single list of words that represents words / ignore / forbid.
-    -   Use the format for cspell 5
-        -   `!` indicates forbidden
-        -   `+` indicates compound required
-        -   `*` indicates optional compound
-        -   ` ` (don't know yet) indicates do not suggest.
+- need setting to indicate that settings should use `cspell.json` by default.
+- need to be able to specify the location of user words, words, ignore words, and forbid words.
+- would like to have a format for a single list of words that represents words / ignore / forbid.
+    - Use the format for cspell 5
+        - `!` indicates forbidden
+        - `+` indicates compound required
+        - `*` indicates optional compound
+        - ` ` (don't know yet) indicates do not suggest.
 
 # Add Remove Locale
 
@@ -29,8 +29,8 @@ When adding / removing locales, the scope is either Global or Workspace.
 Global - means it is possible to adjust any configuration.
 Workspaces - means it is possible to adjust any configuration that is not Global.
 
--   Targets are presented from Locale to Global.
--   Targets _Inherit_ their values from Global to Local.
+- Targets are presented from Locale to Global.
+- Targets _Inherit_ their values from Global to Local.
 
 ### Adding Locale
 
@@ -56,7 +56,7 @@ The goal of the Toggle is to turn on / off the spell checker in a intuitive and 
 
 The logic to the Toggler is as follows:
 
--   Find the most local configuration with the `enable` value set.
--   Remove it if it will become the same as the inherited value otherwise set it to the negation.
+- Find the most local configuration with the `enable` value set.
+- Remove it if it will become the same as the inherited value otherwise set it to the negation.
 
 Having a scope of Workspace prevents the Global value from being updated, but the rest of the logic is the same.

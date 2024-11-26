@@ -15,5 +15,5 @@ These are cause because we are running the test runner from a different copy of 
 
 ## Environment Variables
 
--   `VSIX_LOCATION` - tell the test runner to use a pre-made .vsix file.
--   `VSCODE_VERSION` - tell the test runner which version of vscode to download.
+- `VSIX_LOCATION` - tell the test runner to use a pre-made .vsix file.
+- `VSCODE_VERSION` - tell the test runner which version of vscode to download.
