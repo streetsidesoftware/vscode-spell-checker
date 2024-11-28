@@ -75,7 +75,8 @@ export interface GitignoreInfo {
 export interface BlockedFileReason {
     code: string;
     message: string;
-    documentationRefUri?: string;
+    documentationRefUri: string;
+    settingsUri: string;
 }
 
 export interface IsSpellCheckEnabledResult {

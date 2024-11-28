@@ -20,7 +20,8 @@ export type { Position, Range } from 'vscode-languageserver-types';
 export interface BlockedFileReason {
     code: string;
     message: string;
-    documentationRefUri?: UriString;
+    documentationRefUri: UriString;
+    settingsUri: string;
 }
 
 export type UriString = string;

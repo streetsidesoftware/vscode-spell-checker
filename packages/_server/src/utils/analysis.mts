@@ -4,26 +4,30 @@ import type { BlockedFileReason } from '../api.js';
 
 export interface MinifiedReason extends BlockedFileReason {
     documentationRefUri: string;
+    settingsUri: string;
 }
 
 export const ReasonLineLength: MinifiedReason = {
     code: 'Lines_too_long.',
     message: 'Lines are too long.',
+    settingsUri: 'vscode://settings/cSpell.blockCheckingWhenLineLengthGreaterThan',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenlinelengthgreaterthan',
+        'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenlinelengthgreaterthan',
 };
 
 export const ReasonAverageWordsSize: MinifiedReason = {
     code: 'Word_Size_Too_High.',
-    message: 'Average Word Size is Too High.',
+    message: 'Average word length is too long.',
+    settingsUri: 'vscode://settings/cSpell.blockCheckingWhenAverageChunkSizeGreaterThan',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenaveragechunksizegreaterthan',
+        'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenaveragechunksizegreaterthan',
 };
 export const ReasonMaxWordsSize: MinifiedReason = {
     code: 'Maximum_Word_Length_Exceeded',
-    message: 'Maximum Word Length Exceeded.',
+    message: 'Maximum word length exceeded.',
+    settingsUri: 'vscode://settings/cSpell.blockCheckingWhenTextChunkSizeGreaterThan',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhentextchunksizegreaterthan',
+        'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhentextchunksizegreaterthan',
 };
 
 export interface IsTextLikelyMinifiedOptions {

@@ -18,6 +18,7 @@
   interface DisplayInfo {
     key: string;
     value: string | undefined;
+    url?: string;
   }
 
   const maxDelay = 10000;
@@ -64,7 +65,8 @@
       (fileConfig?.fileIsInWorkspace === false && { key: 'In Workspace', value: 'No' }) || undefined,
       (blocked && { key: 'Blocked Message', value: blocked.message }) || undefined,
       (blocked && { key: 'Blocked Code', value: blocked.code }) || undefined,
-      (blocked && { key: 'Blocked Dock Ref Uri', value: blocked.documentationRefUri }) || undefined,
+      (blocked && { key: 'Blocked Help', value: 'See Documentation', url: blocked.documentationRefUri }) || undefined,
+      (blocked && { key: 'Blocked Settings', value: 'VS Code Settings', url: blocked.settingsUri }) || undefined,
     );
 
     return info.filter((a): a is DisplayInfo => !!a?.value);
@@ -109,7 +111,13 @@
   <dl class="file-info">
     {#each fileInfo as entry}
       <dt>{entry.key}:</dt>
-      <dd>{entry.value}</dd>
+      <dd>
+        {#if entry.url}
+          <VscodeLink href={entry.url}>{entry.value}</VscodeLink>
+        {:else}
+          {entry.value}
+        {/if}
+      </dd>
     {/each}
   </dl>
   <dl>
