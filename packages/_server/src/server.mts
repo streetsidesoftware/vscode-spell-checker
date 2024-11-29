@@ -524,10 +524,6 @@ export function run(): void {
             blockCheckingWhenAverageChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreaterThan,
             blockCheckingWhenTextChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenTextChunkSizeGreaterThan,
         } = settings;
-        if (blockedFiles.has(uri)) {
-            log(`File is blocked ${blockedFiles.get(uri)?.message}`, uri);
-            return true;
-        }
         const isMiniReason =
             textDocument.getText &&
             isTextLikelyMinified(textDocument.getText(), {
@@ -540,6 +536,8 @@ export function run(): void {
             blockedFiles.set(uri, isMiniReason);
             // connection.window.showInformationMessage(`File not spell checked:\n${isMiniReason}\n\"${uriToName(toUri(uri))}"`);
             log(`File is blocked: ${isMiniReason.message}`, uri);
+        } else {
+            blockedFiles.delete(uri);
         }
 
         return !!isMiniReason;

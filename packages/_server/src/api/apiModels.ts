@@ -21,7 +21,9 @@ export interface BlockedFileReason {
     code: string;
     message: string;
     documentationRefUri: UriString;
-    settingsUri: string;
+    settingsUri: UriString;
+    settingsID: string;
+    notificationMessage: string;
 }
 
 export type UriString = string;

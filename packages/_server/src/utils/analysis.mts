@@ -1,16 +1,16 @@
-import { genSequence } from 'gensequence';
+import { opFilter, opMap, opTake, pipe } from '@cspell/cspell-pipe/sync';
 
 import type { BlockedFileReason } from '../api.js';
 
-export interface MinifiedReason extends BlockedFileReason {
-    documentationRefUri: string;
-    settingsUri: string;
-}
+export type MinifiedReason = BlockedFileReason;
 
 export const ReasonLineLength: MinifiedReason = {
     code: 'Lines_too_long.',
     message: 'Lines are too long.',
+    notificationMessage:
+        'For performance reasons, the spell checker does not check documents where the line length is greater than ${limit}.',
     settingsUri: 'vscode://settings/cSpell.blockCheckingWhenLineLengthGreaterThan',
+    settingsID: 'cSpell.blockCheckingWhenLineLengthGreaterThan',
     documentationRefUri:
         'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenlinelengthgreaterthan',
 };
@@ -18,14 +18,22 @@ export const ReasonLineLength: MinifiedReason = {
 export const ReasonAverageWordsSize: MinifiedReason = {
     code: 'Word_Size_Too_High.',
     message: 'Average word length is too long.',
+    notificationMessage:
+        'For performance reasons, the spell checker does not check documents where the average block ' +
+        'of text without spaces or word breaks is greater than ${limit}.',
     settingsUri: 'vscode://settings/cSpell.blockCheckingWhenAverageChunkSizeGreaterThan',
+    settingsID: 'cSpell.blockCheckingWhenAverageChunkSizeGreaterThan',
     documentationRefUri:
         'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenaveragechunksizegreaterthan',
 };
 export const ReasonMaxWordsSize: MinifiedReason = {
     code: 'Maximum_Word_Length_Exceeded',
     message: 'Maximum word length exceeded.',
+    notificationMessage:
+        'For performance reasons, the spell checker does not check documents with very long blocks ot text ' +
+        'without spaces or word breaks. The limit is currently ${limit}.',
     settingsUri: 'vscode://settings/cSpell.blockCheckingWhenTextChunkSizeGreaterThan',
+    settingsID: 'cSpell.blockCheckingWhenTextChunkSizeGreaterThan',
     documentationRefUri:
         'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhentextchunksizegreaterthan',
 };
@@ -49,6 +57,15 @@ export const defaultIsTextLikelyMinifiedOptions: IsTextLikelyMinifiedOptions = {
     blockCheckingWhenAverageChunkSizeGreaterThan: 80,
 };
 
+export function hydrateReason(reason: MinifiedReason, limit: number): MinifiedReason {
+    return {
+        ...reason,
+        notificationMessage: reason.notificationMessage.replaceAll('${limit}', limit.toString()),
+    };
+}
+
+const ignoreUrls = /\b[a-z]{3,}:\/[-/a-z0-9@:%._+~#=?&]+/gi;
+
 /**
  * Check if a document is minified making spell checking difficult and slow.
  *
@@ -56,32 +73,37 @@ export const defaultIsTextLikelyMinifiedOptions: IsTextLikelyMinifiedOptions = {
  * @returns true - if the file might be minified.
  */
 export function isTextLikelyMinified(text: string, options: IsTextLikelyMinifiedOptions): MinifiedReason | false {
-    const lineBreaks = [0].concat(
-        genSequence(text.matchAll(/\n/g))
-            .map((a) => a.index || 0)
-            .take(100)
-            .toArray(),
-    );
-    if (lineBreaks.length < 100) lineBreaks.push(text.length);
+    const first100 = getFirstNLinesWithText(text, 100).map((a) => a.replace(ignoreUrls, ''));
 
-    const first100 = genSequence(lineBreaks)
-        .scan((a, b) => [a[1], b], [0, 0])
-        .map(([a, b]) => text.slice(a, b).trim())
-        .filter((a) => !!a)
-        .toArray();
-
-    const over1k = genSequence(first100).first((a) => a.length > options.blockCheckingWhenLineLengthGreaterThan);
-    if (over1k) return ReasonLineLength;
+    const over1k = first100.find((a) => a.length > options.blockCheckingWhenLineLengthGreaterThan);
+    if (over1k) {
+        return hydrateReason(ReasonLineLength, options.blockCheckingWhenLineLengthGreaterThan);
+    }
 
     const sampleText = first100.join('\n');
-    const chunks = [...sampleText.matchAll(/[\s,{}[\]]+/g)].map((a) => a.index || 0);
+    const chunks = [...sampleText.matchAll(/[\s,{}[\]/]+/g)].map((a) => a.index || 0);
     chunks.push(sampleText.length);
     const wordCount = chunks.length;
     const avgChunkSize = sampleText.length / wordCount;
-    if (avgChunkSize > options.blockCheckingWhenAverageChunkSizeGreaterThan) return ReasonAverageWordsSize;
+    if (avgChunkSize > options.blockCheckingWhenAverageChunkSizeGreaterThan) {
+        return hydrateReason(ReasonAverageWordsSize, options.blockCheckingWhenAverageChunkSizeGreaterThan);
+    }
 
     const maxChunkSize = chunks.reduce((a, b) => [b, Math.max(a[1], b - a[0])], [0, 0])[1];
-    if (maxChunkSize > options.blockCheckingWhenTextChunkSizeGreaterThan) return ReasonMaxWordsSize;
+    if (maxChunkSize > options.blockCheckingWhenTextChunkSizeGreaterThan) {
+        return hydrateReason(ReasonMaxWordsSize, options.blockCheckingWhenTextChunkSizeGreaterThan);
+    }
 
     return false;
+}
+
+export function getFirstNLinesWithText(text: string, n: number): string[] {
+    return [
+        ...pipe(
+            text.matchAll(/^.*$/gm),
+            opMap((a) => a[0].trim()),
+            opFilter((a) => !!a),
+            opTake(n),
+        ),
+    ];
 }

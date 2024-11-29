@@ -3,7 +3,7 @@ import * as Path from 'path';
 import { describe, expect, test } from 'vitest';
 
 import type { IsTextLikelyMinifiedOptions } from './analysis.mjs';
-import { isTextLikelyMinified, ReasonAverageWordsSize, ReasonLineLength, ReasonMaxWordsSize } from './analysis.mjs';
+import { hydrateReason, isTextLikelyMinified, ReasonAverageWordsSize, ReasonLineLength, ReasonMaxWordsSize } from './analysis.mjs';
 
 const sampleWebpack = FS.readFileSync(Path.join(__dirname, '../../dist/main.cjs'), 'utf8').replace(/\n/g, ' ');
 
@@ -25,6 +25,11 @@ const lines = [
     'reprehenderit. eu nulla do Lorem mollit ut incididunt excepteur. Labore voluptate ex est occaecat. Proident laborum incididunt',
     'Adipisicing irure nisi enim ipsum mollit culpa officia do pariatur adipisicing. In sint esse quis do velit sint commodo sit labore',
     'commodo quis. Dolore Lorem quis ullamco incididunt cupidatat ex duis dolore officia.',
+    'Image: [long url](https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/29e25571-eb24-4381-9a2d-bde0ba52be2e/df3uxma-90078aec-' +
+        'f043-423b-8adf-68b0db323607.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQ' +
+        'xNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI5ZTI1NTcxLWViM' +
+        'jQtNDM4MS05YTJkLWJkZTBiYTUyYmUyZVwvZGYzdXhtYS05MDA3OGFlYy1mMDQzLTQyM2ItOGFkZi02OGIwZGIzMjM2MDcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ' +
+        '2aWNlOmZpbGUuZG93bmxvYWQiXX0.Pap7EkIxDlgZ1dFLyEK_MOlPIQGjvJVm5T8adKtnAn0)',
 ];
 
 const longLine = lines.slice(0, 5).join(' ');
@@ -41,6 +46,19 @@ function sampleLongLine() {
 function sampleLines200() {
     return genLines(200);
 }
+
+const sampleText = `
+# Weekly Report
+
+Image: [long url](https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/29e25571-eb24-4381-9a2d-bde0ba52be2e/df3uxma-90078aec-f043-423b-8adf-68b0db323607.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI5ZTI1NTcxLWViMjQtNDM4MS05YTJkLWJkZTBiYTUyYmUyZVwvZGYzdXhtYS05MDA3OGFlYy1mMDQzLTQyM2ItOGFkZi02OGIwZGIzMjM2MDcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Pap7EkIxDlgZ1dFLyEK_MOlPIQGjvJVm5T8adKtnAn0)
+
+See VS Code Setting: [cSpell.blockCheckingWhenTextChunkSizeGreaterThan](vscode://settings/cSpell.blockCheckingWhenTextChunkSizeGreaterThan)
+
+This file is expected to be checked.
+
+Possible very long word:
+token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI5ZTI1NTcxLWViMjQtNDM4MS05YTJkLWJkZTBiYTUyYmUyZVwvZGYzdXhtYS05MDA3OGFlYy1mMDQzLTQyM2ItOGFkZi02OGIwZGIzMjM2MDcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Pap7EkIxDlgZ1dFLyEK_MOlPIQGjvJVm5T8adKtnAn0
+`;
 
 function genSampleParagraphs(count: number) {
     const paragraph1 = lines.slice(0, 3).join(' ');
@@ -76,15 +94,16 @@ describe('analysis', () => {
         ${'{}\n'}                                                        | ${{}} | ${false}
         ${sampleText50()}                                                | ${{}} | ${false}
         ${sampleLines200()}                                              | ${{}} | ${false}
-        ${sampleText50().replace(/ /g, '-')}                             | ${{}} | ${ReasonAverageWordsSize}
-        ${sampleText50().replace(/\s/g, ',')}                            | ${{}} | ${ReasonLineLength}
+        ${sampleText50().replace(/ /g, '-')}                             | ${{}} | ${hydrateReason(ReasonAverageWordsSize, 40)}
+        ${sampleText50().replace(/\s/g, ',')}                            | ${{}} | ${hydrateReason(ReasonLineLength, 1000)}
         ${sampleText200()}                                               | ${{}} | ${false}
-        ${sampleText200().replace(/ /g, '-')}                            | ${{}} | ${ReasonAverageWordsSize}
-        ${sampleText200().replace(/\s/g, ',')}                           | ${{}} | ${ReasonLineLength}
-        ${sampleWebpack}                                                 | ${{}} | ${ReasonLineLength}
-        ${[sampleText50(), sampleLongLine(), sampleText50()].join('\n')} | ${{}} | ${ReasonMaxWordsSize}
-    `('isTextLikelyMinified $#', ({ text, opts, expected }) => {
+        ${sampleText200().replace(/ /g, '-')}                            | ${{}} | ${hydrateReason(ReasonAverageWordsSize, 40)}
+        ${sampleText200().replace(/\s/g, ',')}                           | ${{}} | ${hydrateReason(ReasonLineLength, 1000)}
+        ${sampleWebpack}                                                 | ${{}} | ${hydrateReason(ReasonLineLength, 1000)}
+        ${[sampleText50(), sampleLongLine(), sampleText50()].join('\n')} | ${{}} | ${hydrateReason(ReasonMaxWordsSize, 180)}
+        ${sampleText}                                                    | ${{}} | ${hydrateReason(ReasonMaxWordsSize, 180)}
+    `('isTextLikelyMinified $text', ({ text, opts, expected }) => {
         const options = Object.assign({}, defaultOptions, opts);
-        expect(isTextLikelyMinified(text, options)).toBe(expected);
+        expect(isTextLikelyMinified(text, options)).toEqual(expected);
     });
 });
