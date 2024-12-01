@@ -6,7 +6,7 @@ import { extractMatchingDiagRanges, getCSpellDiags } from '../diags.mjs';
 import { toRange } from '../languageServer/clientHelpers.js';
 import type { RangeLike } from '../languageServer/models.js';
 import { ConfigFields, getSettingFromVSConfig } from '../settings/index.mjs';
-import { findEditor } from '../util/findEditor.js';
+import { findEditor } from '../vscode/findEditor.js';
 import { pVoid } from '../util/pVoid.js';
 
 interface SuggestionQuickPickItem extends QuickPickItem {

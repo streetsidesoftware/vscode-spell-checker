@@ -8,7 +8,7 @@ import { workspace } from 'vscode';
 
 import type { CSpellClient, DiagnosticsFromServer, SpellCheckerDiagnosticData } from './client/index.mjs';
 import { createEmitter } from './Subscribables/index.js';
-import { findTextDocument } from './util/findEditor.js';
+import { findTextDocument } from './vscode/findEditor.js';
 
 type UriString = string;
 
