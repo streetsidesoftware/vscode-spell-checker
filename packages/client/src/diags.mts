@@ -10,7 +10,7 @@ import type { CSpellSettings } from './settings/CSpellSettings.mjs';
 import { isWordLike } from './settings/CSpellSettings.mjs';
 import { ConfigFields } from './settings/index.mjs';
 import { isDefined, uniqueFilter } from './util/index.mjs';
-import { findAllOpenUrisInTabs } from './vscode/tabs.mjs';
+import { createIsUriVisibleFilter } from './vscode/createIsUriVisibleFilter.mjs';
 
 /**
  * Return cspell diags for a given uri.
@@ -122,14 +122,14 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
             }
         });
 
-        const visibleUris = getOpenUriSet();
+        const isUriInUse = createIsUriVisibleFilter(true);
 
         for (const uri of uris) {
             if (!useDiagnosticsCollectionForScheme(uri)) {
                 collection.set(uri, undefined);
                 continue;
             }
-            const diags = (visibleUris.has(uri.toString()) && issueTracker.getSpellingIssues(uri)) || undefined;
+            const diags = (isUriInUse(uri) && issueTracker.getSpellingIssues(uri)) || undefined;
             collection.set(
                 uri,
                 diags?.map((issue) => issue.diag),
@@ -137,7 +137,7 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
         }
 
         for (const [uri] of collection) {
-            if (useDiagnosticsCollectionForScheme(uri) || visibleUris.has(uri.toString())) continue;
+            if (useDiagnosticsCollectionForScheme(uri) || isUriInUse(uri)) continue;
             collection.set(uri, undefined);
         }
     }
@@ -161,11 +161,6 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
 
     updateConfig();
     return dList;
-}
-
-function getOpenUriSet() {
-    const s = new Set(findAllOpenUrisInTabs().map((uri) => uri.toString()));
-    return s;
 }
 
 export const __testing__ = {
