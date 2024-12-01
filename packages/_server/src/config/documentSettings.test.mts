@@ -188,7 +188,6 @@ describe('Validate DocumentSettings', () => {
             pug: true,
             r: true,
             sql: true,
-            svelte: true,
             terraform: true,
             typescript: false,
         });
