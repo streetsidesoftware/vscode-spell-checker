@@ -7,8 +7,8 @@ import * as di from './di.mjs';
 import { toRegExp } from './extensionRegEx/evaluateRegExp.js';
 import * as Settings from './settings/index.mjs';
 import { logErrors, showErrors } from './util/errors.js';
-import { findEditor, findTextDocument } from './vscode/findEditor.js';
 import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers.js';
+import { findEditor, findTextDocument } from './vscode/findEditor.js';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
 const propertyUseReferenceProviderWithRename = Settings.ConfigFields['advanced.feature.useReferenceProviderWithRename'];
