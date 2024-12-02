@@ -10,7 +10,7 @@ import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import type { CSpellSettings } from '../settings/index.mjs';
 import { ConfigFields } from '../settings/index.mjs';
 import { setContext } from '../storage/context.mjs';
-import { findEditor } from '../util/findEditor.js';
+import { findEditor } from '../vscode/findEditor.js';
 
 const defaultHideIssuesWhileTyping: Required<PartialCSpellUserSettings<'hideIssuesWhileTyping'>>['hideIssuesWhileTyping'] = 'Word';
 const defaultRevealIssuesAfterDelayMS: Required<PartialCSpellUserSettings<'revealIssuesAfterDelayMS'>>['revealIssuesAfterDelayMS'] = 1000;

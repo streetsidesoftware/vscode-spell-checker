@@ -122,6 +122,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         this.disposeList.push(
             this.emitOnDidChange,
             vscode.window.onDidChangeVisibleTextEditors(() => this.refresh()),
+            vscode.window.tabGroups.onDidChangeTabs(() => this.refresh()),
         );
         if (this.options.issueTracker) {
             this.setIssuesTracker(this.options.issueTracker);

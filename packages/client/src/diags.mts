@@ -1,6 +1,6 @@
 import type { IssueType } from '@cspell/cspell-types';
 import { createDisposableList } from 'utils-disposables';
-import type { Diagnostic, Disposable, Event, Range, Selection, TextDocument, Uri } from 'vscode';
+import type { Diagnostic, Disposable, Event, Range, Selection, TabChangeEvent, TextDocument, TextEditor, Uri } from 'vscode';
 import vscode from 'vscode';
 
 import { diagnosticSource } from './constants.js';
@@ -10,6 +10,7 @@ import type { CSpellSettings } from './settings/CSpellSettings.mjs';
 import { isWordLike } from './settings/CSpellSettings.mjs';
 import { ConfigFields } from './settings/index.mjs';
 import { isDefined, uniqueFilter } from './util/index.mjs';
+import { createIsUriVisibleFilter } from './vscode/createIsUriVisibleFilter.mjs';
 
 /**
  * Return cspell diags for a given uri.
@@ -121,14 +122,29 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
             }
         });
 
+        const isUriInUse = createIsUriVisibleFilter(true);
+
         for (const uri of uris) {
-            if (!useDiagnosticsCollectionForScheme(uri)) continue;
-            const diags = issueTracker.getSpellingIssues(uri);
+            if (!useDiagnosticsCollectionForScheme(uri)) {
+                collection.set(uri, undefined);
+                continue;
+            }
+            const diags = (isUriInUse(uri) && issueTracker.getSpellingIssues(uri)) || undefined;
             collection.set(
                 uri,
                 diags?.map((issue) => issue.diag),
             );
         }
+
+        for (const [uri] of collection) {
+            if (useDiagnosticsCollectionForScheme(uri) || isUriInUse(uri)) continue;
+            collection.set(uri, undefined);
+        }
+    }
+
+    function onDidChange(_event: TabChangeEvent | readonly TextEditor[]) {
+        // console.log('OnDidChange: %o', _event);
+        updateDiags();
     }
 
     dList.push(
@@ -138,6 +154,8 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
             updateDiags();
         }),
         vscode.workspace.onDidChangeConfiguration(updateConfig),
+        vscode.window.onDidChangeVisibleTextEditors(onDidChange),
+        vscode.window.tabGroups.onDidChangeTabs(onDidChange),
         issueTracker.onDidChangeDiagnostics(({ uris }) => updateDiags(uris)),
     );
 

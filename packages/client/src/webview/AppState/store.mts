@@ -2,7 +2,7 @@ import type { DisposableClassic, DisposableHybrid, DisposableLike } from 'utils-
 import { createDisposable, createDisposableFromList, disposeOf, injectDisposable } from 'utils-disposables';
 import { LogLevelMasks } from 'utils-logger';
 import type { TextDocument, TextEditor, Uri } from 'vscode';
-import { window } from 'vscode';
+import { window, workspace } from 'vscode';
 import type { WatchFieldList, WatchFields } from 'webview-api';
 
 import { getDependencies } from '../../di.mjs';
@@ -130,12 +130,8 @@ export function watchFieldList(fieldsToWatch: Set<WatchFields>, onChange: (chang
 }
 
 function findMatchTextDocument(url: UrlLike): TextDocument | undefined {
-    return findMatchingEditor(url)?.document;
-}
-
-function findMatchingEditor(url: UrlLike): TextEditor | undefined {
-    for (const editor of window.visibleTextEditors) {
-        if (!compareUrl(editor.document.uri, url)) return editor;
+    for (const doc of workspace.textDocuments) {
+        if (!compareUrl(doc.uri, url)) return doc;
     }
     return undefined;
 }

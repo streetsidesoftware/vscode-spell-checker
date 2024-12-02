@@ -12,8 +12,8 @@ import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import { consoleDebug } from '../repl/consoleDebug.mjs';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { handleErrors, logErrors } from '../util/errors.js';
-import { findTextDocument } from '../util/findEditor.js';
 import { isDefined } from '../util/index.mjs';
+import { findTextDocument } from '../vscode/findEditor.js';
 import { getIconForSpellingIssue, icons } from './icons.mjs';
 import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
@@ -217,6 +217,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         this.disposeList.push(
             this.emitOnDidChange,
             vscode.window.onDidChangeVisibleTextEditors(() => this.updateChild()),
+            vscode.window.tabGroups.onDidChangeTabs(() => this.updateChild()),
         );
         options.issueTracker.then((tracker) => {
             this.issueTracker = tracker;

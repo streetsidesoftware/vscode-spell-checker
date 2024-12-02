@@ -1,5 +1,5 @@
-import type { TextDocument, TextEditor, Uri } from 'vscode';
-import { window, workspace } from 'vscode';
+import type { TextDocument, TextEditor } from 'vscode';
+import { Uri, window, workspace } from 'vscode';
 
 export function findEditor(uri?: Uri | string): TextEditor | undefined {
     if (!uri) return window.activeTextEditor;
