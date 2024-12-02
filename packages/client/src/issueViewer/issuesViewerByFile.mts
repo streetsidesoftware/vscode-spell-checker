@@ -217,6 +217,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         this.disposeList.push(
             this.emitOnDidChange,
             vscode.window.onDidChangeVisibleTextEditors(() => this.updateChild()),
+            vscode.window.tabGroups.onDidChangeTabs(() => this.updateChild()),
         );
         options.issueTracker.then((tracker) => {
             this.issueTracker = tracker;
