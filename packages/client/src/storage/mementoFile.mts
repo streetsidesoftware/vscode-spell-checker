@@ -87,12 +87,12 @@ export class MementoFile<T> implements Memento<T>, Disposable {
         this.#watcher.dispose();
     };
 
-    #handleFileChange(uri: Uri) {
-        const a = uri.path;
-        const b = this.uri.path;
-        if (a !== b) {
-            console.error(`Invalid file change: '${a}' !== '${b}'`);
-        }
+    #handleFileChange(_uri: Uri) {
+        // const a = uri.path.toLowerCase();
+        // const b = this.uri.path.toLowerCase();
+        // if (a !== b) {
+        //     console.error(`Invalid file change: '${a}' !== '${b}'`);
+        // }
         this.#loadData().catch(() => undefined);
     }
 
