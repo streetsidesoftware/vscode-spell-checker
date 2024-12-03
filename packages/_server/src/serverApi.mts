@@ -33,6 +33,7 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
             onSpellCheckDocument: true,
             onDiagnostics: true,
             onDocumentConfigChange: true,
+            onBlockFile: true,
         },
     };
     return createServerSideApi(connection, api, logger);

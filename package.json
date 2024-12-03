@@ -3704,7 +3704,7 @@
         "properties": {
           "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
             "default": 80,
-            "markdownDescription": "The maximum average length of chunks of text without word breaks.\n\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`\n\n\n**Error Message:** _Average Word Size is Too High._\n\n\nIf you are seeing this message, it means that the file contains mostly long lines\nwithout many word breaks.",
+            "markdownDescription": "The maximum average length of chunks of text without word breaks.\n\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`\n\n\n**Error Message:** _Average word length is too long._\n\n\nIf you are seeing this message, it means that the file contains mostly long lines\nwithout many word breaks.",
             "scope": "language-overridable",
             "type": "number"
           },
@@ -3716,7 +3716,7 @@
           },
           "cSpell.blockCheckingWhenTextChunkSizeGreaterThan": {
             "default": 500,
-            "markdownDescription": "The maximum length of a chunk of text without word breaks.\n\n\nIt is used to prevent spell checking of generated files.\n\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`, i.e. spaces or braces.\n\n\n**Error Message:** _Maximum Word Length is Too High._\n\n\nIf you are seeing this message, it means that the file contains a very long line\nwithout many word breaks.",
+            "markdownDescription": "The maximum length of a chunk of text without word breaks.\n\n\nIt is used to prevent spell checking of generated files.\n\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`, i.e. spaces or braces.\n\n\n**Error Message:** _Maximum word length exceeded._\n\n\nIf you are seeing this message, it means that the file contains a very long line\nwithout many word breaks.",
             "scope": "language-overridable",
             "type": "number"
           },

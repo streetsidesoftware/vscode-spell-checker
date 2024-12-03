@@ -53,6 +53,7 @@ import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
 import { handleTraceRequest } from './trace.js';
+import type { MinifiedReason } from './utils/analysis.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
@@ -524,10 +525,6 @@ export function run(): void {
             blockCheckingWhenAverageChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreaterThan,
             blockCheckingWhenTextChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenTextChunkSizeGreaterThan,
         } = settings;
-        if (blockedFiles.has(uri)) {
-            log(`File is blocked ${blockedFiles.get(uri)?.message}`, uri);
-            return true;
-        }
         const isMiniReason =
             textDocument.getText &&
             isTextLikelyMinified(textDocument.getText(), {
@@ -537,9 +534,14 @@ export function run(): void {
             });
 
         if (isMiniReason) {
+            const notify = !blockedFiles.has(uri);
             blockedFiles.set(uri, isMiniReason);
-            // connection.window.showInformationMessage(`File not spell checked:\n${isMiniReason}\n\"${uriToName(toUri(uri))}"`);
             log(`File is blocked: ${isMiniReason.message}`, uri);
+            if (notify) {
+                notifyUserAboutBlockedFile(uri, isMiniReason);
+            }
+        } else {
+            blockedFiles.delete(uri);
         }
 
         return !!isMiniReason;
@@ -770,6 +772,14 @@ export function run(): void {
     function ds<T extends { unsubscribe: () => void }>(v: T): T {
         disposables.push(() => v.unsubscribe());
         return v;
+    }
+
+    async function notifyUserAboutBlockedFile(uri: string, reason: MinifiedReason) {
+        try {
+            clientServerApi.clientNotification.onBlockFile({ uri, reason });
+        } catch (e) {
+            logError(`notifyUserAboutBlockedFile ${e}`);
+        }
     }
 }
 

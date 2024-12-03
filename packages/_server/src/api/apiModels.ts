@@ -20,7 +20,10 @@ export type { Position, Range } from 'vscode-languageserver-types';
 export interface BlockedFileReason {
     code: string;
     message: string;
-    documentationRefUri?: UriString;
+    documentationRefUri: UriString;
+    settingsUri: UriString;
+    settingsID: string;
+    notificationMessage: string;
 }
 
 export type UriString = string;
@@ -368,4 +371,14 @@ export interface IsSpellCheckingEnabledForUrisResponse {
 
 export interface OnDocumentConfigChange {
     uris: DocumentUri[];
+}
+
+/**
+ * Notify the client that a file is blocked from being spell checked.
+ */
+export interface OnBlockFile {
+    /** the uri of the document being blocked */
+    uri: DocumentUri;
+    /** the reason the file is blocked. */
+    reason: BlockedFileReason;
 }

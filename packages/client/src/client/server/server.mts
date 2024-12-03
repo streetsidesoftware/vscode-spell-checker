@@ -63,6 +63,7 @@ interface ExtensionSide {
     onDiagnostics: ClientSideApi['clientNotification']['onDiagnostics']['subscribe'];
     onDocumentConfigChange: ClientSideApi['clientNotification']['onDocumentConfigChange']['subscribe'];
     onSpellCheckDocument: ClientSideApi['clientNotification']['onSpellCheckDocument']['subscribe'];
+    onBlockFile: ClientSideApi['clientNotification']['onBlockFile']['subscribe'];
     onWorkspaceConfigForDocumentRequest: ClientSideApi['clientRequest']['onWorkspaceConfigForDocumentRequest']['subscribe'];
 }
 export interface ServerApi extends ServerSide, ExtensionSide, Disposable {}
@@ -99,6 +100,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
             onSpellCheckDocument: true,
             onDiagnostics: true,
             onDocumentConfigChange: true,
+            onBlockFile: true,
         },
         clientRequests: {
             onWorkspaceConfigForDocumentRequest: true,
@@ -124,6 +126,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
         checkDocument: log2Sfn(serverRequest.checkDocument, 'checkDocument'),
         onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onDocumentConfigChange: (fn) => clientNotification.onDocumentConfigChange.subscribe(log2Cfn(fn, 'onDocumentConfigChange')),
+        onBlockFile: (fn) => clientNotification.onBlockFile.subscribe(log2Cfn(fn, 'onBlockFile')),
         onDiagnostics: (fn) => clientNotification.onDiagnostics.subscribe(log2Cfn(fn, 'onDiagnostics')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
             clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
