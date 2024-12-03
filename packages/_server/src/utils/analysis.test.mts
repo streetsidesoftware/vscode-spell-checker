@@ -47,6 +47,7 @@ function sampleLines200() {
     return genLines(200);
 }
 
+// cspell:ignore bmxv uxma
 const sampleText = `
 # Weekly Report
 
