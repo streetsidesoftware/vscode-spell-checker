@@ -22,6 +22,7 @@ import type {
     GetConfigurationTargetsResult,
     GetSpellCheckingOffsetsResult,
     IsSpellCheckEnabledResult,
+    OnBlockFile,
     OnDocumentConfigChange,
     OnSpellCheckDocumentStep,
     PublishDiagnostics,
@@ -102,6 +103,13 @@ export interface ClientNotificationsAPI {
      * @param notification - The notification.
      */
     onDocumentConfigChange(notification: OnDocumentConfigChange): void;
+
+    /**
+     * Notify the client that a file is blocked from being spell checked.
+     * @param uri - the uri of the document.
+     * @param block - the reason the file is blocked.
+     */
+    onBlockFile(notification: OnBlockFile): void;
 }
 
 export interface SpellCheckerServerAPI extends RpcAPI {

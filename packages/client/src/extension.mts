@@ -1,5 +1,6 @@
+import { uriToName } from '@internal/common-utils';
 import { logger } from '@internal/common-utils/log';
-import type { ConfigFieldSelector, ConfigurationFields } from 'code-spell-checker-server/api';
+import type { ConfigFieldSelector, ConfigurationFields, OnBlockFile } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
@@ -40,15 +41,13 @@ let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
 
-export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
+export function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
     di.set('extensionContext', context);
     const eventLogger = createEventLogger(context.globalStorageUri);
     di.set('eventLogger', eventLogger);
     eventLogger.logActivate();
 
-    const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
-    const dLogger = bindLoggerToOutput(logOutput);
     setOutputChannelLogLevel();
 
     const eIssueTracker = new vscode.EventEmitter<IssueTracker>();
@@ -56,6 +55,13 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     activateIssueViewer(context, pIssueTracker);
     activateFileIssuesViewer(context, pIssueTracker);
+
+    return _activate(context, eIssueTracker);
+}
+
+async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventEmitter<IssueTracker>): Promise<ExtensionApi> {
+    const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
+    const dLogger = bindLoggerToOutput(logOutput);
 
     // Get the cSpell Client
     const client = await CSpellClient.create(context);
@@ -153,6 +159,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
         createLanguageStatus({ areIssuesVisible: () => decorator.visible, onDidChangeVisibility: decorator.onDidChangeVisibility }),
         registerActionsMenu({ areIssuesVisible: () => decorator.visible }),
+        client.onBlockFile(notifyUserOfBlockedFile),
     );
 
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
@@ -291,4 +298,20 @@ function getLogLevel() {
 function setOutputChannelLogLevel(level?: CSpellSettings['logLevel']) {
     const logLevel = level ?? getLogLevel();
     logger.level = logLevel;
+}
+
+async function notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
+    try {
+        const { uri, reason } = onBlockFile;
+        const actions: vscode.MessageItem[] = [{ title: 'Ok' }, { title: 'Open Settings' }];
+        const result = await vscode.window.showInformationMessage(
+            `File "${uriToName(vscode.Uri.parse(uri))}" not spell checked:\n${reason.notificationMessage}\n`,
+            ...actions,
+        );
+        if (result?.title === 'Open Settings') {
+            await vscode.commands.executeCommand('workbench.action.openSettings', reason.settingsID);
+        }
+    } catch {
+        // ignore
+    }
 }

@@ -372,3 +372,13 @@ export interface IsSpellCheckingEnabledForUrisResponse {
 export interface OnDocumentConfigChange {
     uris: DocumentUri[];
 }
+
+/**
+ * Notify the client that a file is blocked from being spell checked.
+ */
+export interface OnBlockFile {
+    /** the uri of the document being blocked */
+    uri: DocumentUri;
+    /** the reason the file is blocked. */
+    reason: BlockedFileReason;
+}

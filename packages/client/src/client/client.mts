@@ -4,6 +4,7 @@ import type {
     ConfigFieldSelector,
     ConfigurationFields,
     GetConfigurationTargetsResult,
+    OnBlockFile,
     OnDocumentConfigChange,
     SpellingSuggestionsResult,
     WorkspaceConfigForDocument,
@@ -72,6 +73,7 @@ export class CSpellClient implements Disposable {
     private disposables = createDisposableList();
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
     private broadcasterOnDocumentConfigChange = createBroadcaster<OnDocumentConfigChange>();
+    private broadcasterOnBlockFile = createBroadcaster<OnBlockFile>();
     private ready = new Resolvable<void>();
 
     /**
@@ -315,6 +317,10 @@ export class CSpellClient implements Disposable {
         return this.broadcasterOnDocumentConfigChange.listen(fn);
     }
 
+    public onBlockFile(fn: (p: OnBlockFile) => void): Disposable {
+        return this.broadcasterOnBlockFile.listen(fn);
+    }
+
     public async requestSpellingSuggestionsCodeActions(doc: TextDocument, range: Range, diagnostics: Diagnostic[]): Promise<CodeAction[]> {
         const params: CodeActionParams = {
             textDocument: VSCodeLangClientTextDocumentIdentifier.create(doc.uri.toString()),
@@ -357,8 +363,11 @@ export class CSpellClient implements Disposable {
     }
 
     private registerHandleNotificationsFromServer() {
-        this.registerDisposable(this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)));
-        this.registerDisposable(this.serverApi.onDocumentConfigChange((p) => this.broadcasterOnDocumentConfigChange.send(p)));
+        this.registerDisposable(
+            this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)),
+            this.serverApi.onDocumentConfigChange((p) => this.broadcasterOnDocumentConfigChange.send(p)),
+            this.serverApi.onBlockFile((p) => this.broadcasterOnBlockFile.send(p)),
+        );
     }
 }
 
