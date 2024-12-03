@@ -30,7 +30,7 @@ export const ReasonMaxWordsSize: MinifiedReason = {
     code: 'Maximum_Word_Length_Exceeded',
     message: 'Maximum word length exceeded.',
     notificationMessage:
-        'For performance reasons, the spell checker does not check documents with very long blocks ot text ' +
+        'For performance reasons, the spell checker does not check documents with very long blocks of text ' +
         'without spaces or word breaks. The limit is currently ${limit}.',
     settingsUri: 'vscode://settings/cSpell.blockCheckingWhenTextChunkSizeGreaterThan',
     settingsID: 'cSpell.blockCheckingWhenTextChunkSizeGreaterThan',

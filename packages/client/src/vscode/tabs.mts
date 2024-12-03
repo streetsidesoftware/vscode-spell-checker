@@ -37,3 +37,9 @@ export function extractUrisFromTabs(): Uri[] {
 export function findAllOpenUrisInTabs(): Uri[] {
     return extractUrisFromTabs();
 }
+
+export function isUriInAnyTab(uri: Uri | string): boolean {
+    const sUri = uri.toString();
+    const tabs = findTabsWithUriInput();
+    return tabs.some((tab) => tab.uri.toString() === sUri);
+}

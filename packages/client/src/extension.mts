@@ -32,6 +32,7 @@ import { createLanguageStatus } from './statusbar/languageStatus.mjs';
 import { createEventLogger, updateDocumentRelatedContext } from './storage/index.mjs';
 import { logErrors, silenceErrors } from './util/errors.js';
 import { performance } from './util/perf.js';
+import { isUriInAnyTab } from './vscode/tabs.mjs';
 import { activate as activateWebview } from './webview/index.mjs';
 
 performance.mark('cspell_done_import');
@@ -303,6 +304,8 @@ function setOutputChannelLogLevel(level?: CSpellSettings['logLevel']) {
 async function notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
     try {
         const { uri, reason } = onBlockFile;
+        if (!isUriInAnyTab(uri)) return;
+
         const actions: vscode.MessageItem[] = [{ title: 'Ok' }, { title: 'Open Settings' }];
         const result = await vscode.window.showInformationMessage(
             `File "${uriToName(vscode.Uri.parse(uri))}" not spell checked:\n${reason.notificationMessage}\n`,
