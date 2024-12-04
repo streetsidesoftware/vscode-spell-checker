@@ -1,4 +1,4 @@
-name: ' 👀 Set Pre-Release'
+name: ' 👀 Set Prerelease'
 on: # rebuild any PRs and main branch changes
   workflow_dispatch:
     inputs:
@@ -8,7 +8,7 @@ on: # rebuild any PRs and main branch changes
         default: true
 
 jobs:
-  set-preview:
+  set-prerelease-mode:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,16 +18,16 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 
-      - run: node ./scripts/set-preview-mode.js ${{ inputs.prerelease }}
+      - run: node ./scripts/set-prerelease-mode.js ${{ inputs.prerelease }}
 
       - name: PR
         uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
-          commit-message: 'fix: Set Preview Mode to `${{ inputs.prerelease }}`'
-          branch: update-preview-mode
+          commit-message: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
+          branch: update-prerelease-mode
           base: main
-          title: 'fix: Set Preview Mode to `${{ inputs.prerelease }}`'
+          title: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
           body: |
-            Set Preview Mode to `${{ inputs.prerelease }}`
+            Set Prerelease Mode to `${{ inputs.prerelease }}`
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}

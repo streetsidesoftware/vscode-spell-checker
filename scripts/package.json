@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Internal Scripts",
   "bin": {
-    "set-preview": "./set-preview-mode.js"
+    "set-prerelease": "./set-prerelease-mode.js"
   },
   "type": "module",
   "scripts": {

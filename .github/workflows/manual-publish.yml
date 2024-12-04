@@ -24,6 +24,21 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  prerelease:
+    runs-on: ubuntu-latest
+    outputs:
+      prerelease: ${{ steps.check-prerelease.outputs.prerelease }}
+    steps:
+      - name: Check package.json for prerelease
+        id: check-prerelease
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const manifest = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            const isPrerelease = manifest['prerelease'] || false;
+            core.setOutput('prerelease', isPrerelease);
+
   check_version:
     runs-on: ubuntu-latest
     outputs:
@@ -73,8 +88,12 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: check_version
+    needs:
+      - check_version
+      - prerelease
     if: ${{ needs.check_version.outputs.validVersion == 'true' }}
+    env:
+      PRERELEASE: ${{ needs.prerelease.outputs.prerelease && needs.prerelease.outputs.prerelease != 'false' && '--pre-release' || '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -95,14 +114,14 @@ jobs:
         run: npm run package-extension
       - name: Publish VSCE
         run: >
-          find ./build -name "*.vsix" | xargs npx vsce publish --skip-duplicate -p ${{ secrets.VSCE_TOKEN }} --packagePath
+          find ./build -name "*.vsix" | xargs npx vsce publish --skip-duplicate -p ${{ secrets.VSCE_TOKEN }} ${{ env.PRERELEASE}} --packagePath
           || echo "PUB_FAIL_VSCE=true" >> $GITHUB_ENV
       - name: Check Publish Result VSCE
         if: ${{ env.PUB_FAIL_VSCE }}
         run: echo "::error title=VSCE::Failed to Publish to VS Code Marketplace."
       - name: Publish OVSX
         run: >
-          find ./build -name "*.vsix" | xargs npx ovsx publish --skip-duplicate -p ${{ secrets.OVSX_TOKEN }}
+          find ./build -name "*.vsix" | xargs npx ovsx publish --skip-duplicate -p ${{ secrets.OVSX_TOKEN }} ${{ env.PRERELEASE}}
           || echo "PUB_FAIL_OVSX=true" >> $GITHUB_ENV
       - name: Check Publish Result OVSX
         if: ${{ env.PUB_FAIL_OVSX }}
