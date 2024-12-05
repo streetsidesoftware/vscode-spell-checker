@@ -5,6 +5,9 @@ outputs:
   args:
     description: A token for making Pull Requests
     value: ${{ steps.check-prerelease.outputs.arg }}
+  prerelease:
+    description: Is the package a prerelease?
+    value: ${{ steps.check-prerelease.outputs.prerelease }}
 runs:
   using: 'composite'
   steps:
@@ -17,3 +20,4 @@ runs:
           const manifest = JSON.parse(fs.readFileSync('package.json', 'utf8'));
           const isPrerelease = manifest['prerelease'] || false;
           core.setOutput('arg', isPrerelease ? '--pre-release' : '');
+          core.setOutput('prerelease', isPrerelease);

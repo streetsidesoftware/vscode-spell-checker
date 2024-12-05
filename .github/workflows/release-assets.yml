@@ -41,15 +41,23 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.REF }}
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: npm
+
       - name: Install
         run: npm i
+
+      - name: VSCE Args
+        id: vsce-args
+        uses: ./.github/actions/vsce-args
+
       - name: Build Extension .vsix
-        run: npm run package-extension
+        run: npm run package-extension -- ${{ steps.vsce-args.outputs.args }}
+
       - run: zip code-spell-checker build/*
 
       - name: Upload Assets
