@@ -29,6 +29,11 @@ jobs:
     outputs:
       prerelease: ${{ steps.check-prerelease.outputs.prerelease }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
       - name: Check package.json for prerelease
         id: check-prerelease
         uses: actions/github-script@v7
