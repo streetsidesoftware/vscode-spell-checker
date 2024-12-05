@@ -20,6 +20,19 @@ jobs:
 
       - run: node ./scripts/set-prerelease-mode.js ${{ inputs.prerelease }}
 
+      - name: Check Args
+        id: check-args
+        uses: ./.github/actions/vsce-args
+
+      - name: Show Args
+        uses: streetsidesoftware/actions/public/summary@v1
+        with:
+          text: |
+            # VSCE Args
+            ```
+            ${{ toJSON(steps.check-args.outputs) }}
+            ```
+
       - name: PR
         uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
