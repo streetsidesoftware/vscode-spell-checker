@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.22](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.21...code-spell-checker-v4.0.22) (2024-12-04)
+
+
+### Updates and Bug Fixes
+
+* bump @cspell/dict-cspell-bundle from 1.0.10 to 1.0.11 ([#3843](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3843)) ([a25b88a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a25b88aba8ab67456cbbe2ebcdf5c86091781f57))
+* Clean up non-visible diagnostics ([#3867](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3867)) ([f056daf](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f056daf86630ee691dc13aae8260398457107fc6))
+* Improve error messages when a file is blocked. ([#3860](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3860)) ([e303d1e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e303d1efcd50e9180626afabce7297af595884ec))
+* Remove debug noise. ([#3878](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3878)) ([330f940](https://github.com/streetsidesoftware/vscode-spell-checker/commit/330f940c62d98935d6f7a49a51aa8e27de230847))
+* Set Prerelease Mode to `true` ([#3881](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3881)) ([2e895fd](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2e895fd320bca04100d4050d5f30397c1d274047))
+* Update CSpell (main) ([#3864](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3864)) ([7f8a038](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7f8a0380e959f2e451453789f76ed6e791a97fa3))
+
 ## [4.0.21](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.20...code-spell-checker-v4.0.21) (2024-11-20)
 
 
