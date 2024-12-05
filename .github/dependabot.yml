@@ -32,3 +32,11 @@ updates:
       interval: daily
     commit-message:
       prefix: chore
+
+  # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
+  - package-ecosystem: github-actions
+    directory: /.github/actions/vsce-args
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
