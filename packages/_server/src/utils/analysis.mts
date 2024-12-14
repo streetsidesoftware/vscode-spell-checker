@@ -1,6 +1,8 @@
 import { opFilter, opMap, opTake, pipe } from '@cspell/cspell-pipe/sync';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { BlockedFileReason } from '../api.js';
+import type { CSpellUserAndExtensionSettings } from '../config/cspellConfig/index.mjs';
 
 export type MinifiedReason = BlockedFileReason;
 
@@ -106,4 +108,26 @@ export function getFirstNLinesWithText(text: string, n: number): string[] {
             opTake(n),
         ),
     ];
+}
+
+export type ShouldValidateDocument = Pick<TextDocument, 'uri'> & Partial<TextDocument>;
+
+export type ShouldCheckDocumentOptions = Pick<CSpellUserAndExtensionSettings, 'checkVSCodeSystemFiles'>;
+
+const vsCodeSystemFilesRegExp = /^vscode-userdata:\/.*\/(?:settings|keybindings).json$/i;
+
+const BlockedFileReasonSystemFile: BlockedFileReason = {
+    code: 'VSCode_System_File',
+    message: 'VS Code System File',
+    notificationMessage: '',
+    settingsUri: 'vscode://settings/cSpell.checkVSCodeSystemFiles',
+    settingsID: 'cSpell.checkVSCodeSystemFiles',
+    documentationRefUri: 'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellcheckvscodesystemfiles',
+};
+
+export function shouldBlockDocumentCheck(document: ShouldValidateDocument, options: ShouldCheckDocumentOptions): BlockedFileReason | false {
+    const { uri } = document;
+    if (!uri) return false;
+    if (options.checkVSCodeSystemFiles) return false;
+    return vsCodeSystemFilesRegExp.test(uri) ? BlockedFileReasonSystemFile : false;
 }

@@ -3,12 +3,12 @@ import type { TextDocuments } from 'vscode-languageserver/node.js';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { SpellingSuggestionsResult, TextDocumentInfo } from './api.js';
-import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 import type { GetSettingsResult } from './SuggestionsGenerator.mjs';
 import { SuggestionGenerator } from './SuggestionsGenerator.mjs';
 
 export interface SuggestionsServerDependencies {
-    fetchSettings: (doc?: TextDocumentInfo) => Promise<CSpellUserSettings>;
+    fetchSettings: (doc?: TextDocumentInfo) => Promise<CSpellUserAndExtensionSettings>;
     getSettingsVersion: (doc?: TextDocumentInfo) => number;
 }
 

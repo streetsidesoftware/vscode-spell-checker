@@ -2,7 +2,7 @@ export { ConfigFields } from './configFields.mjs';
 export type {
     AllSpellCheckerSettingsInVSCode,
     AllSpellCheckerSettingsInVSCodeWithPrefix,
-    CSpellUserSettings,
+    CSpellUserAndExtensionSettings,
     SpellCheckerSettingsProperties,
     SpellCheckerSettingsVSCode,
     SpellCheckerSettingsVSCodeBase,

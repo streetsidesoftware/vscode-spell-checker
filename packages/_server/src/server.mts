@@ -32,7 +32,7 @@ import type * as Api from './api.js';
 import { createOnCodeActionHandler } from './codeActions.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import { ConfigWatcher } from './config/configWatcher.mjs';
-import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 import { DictionaryWatcher } from './config/dictionaryWatcher.mjs';
 import type { SettingsCspell } from './config/documentSettings.mjs';
 import {
@@ -53,8 +53,8 @@ import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
 import { handleTraceRequest } from './trace.js';
-import type { MinifiedReason } from './utils/analysis.mjs';
-import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
+import type { MinifiedReason, ShouldValidateDocument } from './utils/analysis.mjs';
+import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified, shouldBlockDocumentCheck } from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
@@ -64,7 +64,7 @@ import { bindFileSystemProvider } from './vfs/CSpellFileSystemProvider.mjs';
 
 log('Starting Spell Checker Server');
 
-const overRideDefaults: CSpellUserSettings = {
+const overRideDefaults: CSpellUserAndExtensionSettings = {
     id: 'Extension overrides',
     patterns: [],
     ignoreRegExpList: [],
@@ -75,7 +75,7 @@ const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.
 const dictionaryRefreshRateMs = 10000;
 
-async function calcDefaultSettings(): Promise<CSpellUserSettings> {
+async function calcDefaultSettings(): Promise<CSpellUserAndExtensionSettings> {
     return {
         ...CSpell.mergeSettings(await getDefaultSettings(), await CSpell.getGlobalSettingsAsync(), overRideDefaults),
         checkLimit: defaultCheckLimit,
@@ -506,9 +506,10 @@ export function run(): void {
         catchPromise(clientServerApi.clientNotification.onDiagnostics(diagsForClient));
     }
 
-    type ShouldValidateDocument = Pick<TextDocument, 'uri'> & Partial<TextDocument>;
-
-    async function shouldValidateDocument(textDocument: ShouldValidateDocument, settings: CSpellUserSettings): Promise<boolean> {
+    async function shouldValidateDocument(
+        textDocument: ShouldValidateDocument,
+        settings: CSpellUserAndExtensionSettings,
+    ): Promise<boolean> {
         const { uri, languageId } = textDocument;
         return (
             !!settings.enabled &&
@@ -518,33 +519,34 @@ export function run(): void {
         );
     }
 
-    function isBlocked(textDocument: ShouldValidateDocument, settings: CSpellUserSettings): boolean {
+    function isBlocked(textDocument: ShouldValidateDocument, settings: CSpellUserAndExtensionSettings): boolean {
         const { uri } = textDocument;
         const {
             blockCheckingWhenLineLengthGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenLineLengthGreaterThan,
             blockCheckingWhenAverageChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreaterThan,
             blockCheckingWhenTextChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenTextChunkSizeGreaterThan,
         } = settings;
-        const isMiniReason =
-            textDocument.getText &&
-            isTextLikelyMinified(textDocument.getText(), {
-                blockCheckingWhenAverageChunkSizeGreaterThan,
-                blockCheckingWhenLineLengthGreaterThan,
-                blockCheckingWhenTextChunkSizeGreaterThan,
-            });
+        const blockedReason =
+            shouldBlockDocumentCheck(textDocument, settings) ||
+            (textDocument.getText &&
+                isTextLikelyMinified(textDocument.getText(), {
+                    blockCheckingWhenAverageChunkSizeGreaterThan,
+                    blockCheckingWhenLineLengthGreaterThan,
+                    blockCheckingWhenTextChunkSizeGreaterThan,
+                }));
 
-        if (isMiniReason) {
+        if (blockedReason) {
             const notify = !blockedFiles.has(uri);
-            blockedFiles.set(uri, isMiniReason);
-            log(`File is blocked: ${isMiniReason.message}`, uri);
-            if (notify) {
-                notifyUserAboutBlockedFile(uri, isMiniReason);
+            blockedFiles.set(uri, blockedReason);
+            log(`File is blocked: ${blockedReason.message}`, uri);
+            if (notify && blockedReason.notificationMessage) {
+                notifyUserAboutBlockedFile(uri, blockedReason);
             }
         } else {
             blockedFiles.delete(uri);
         }
 
-        return !!isMiniReason;
+        return !!blockedReason;
     }
 
     async function calcIncludeExcludeInfo(
@@ -669,7 +671,7 @@ export function run(): void {
         return r;
     }
 
-    function logProblemsWithSettings(settings: CSpellUserSettings) {
+    function logProblemsWithSettings(settings: CSpellUserAndExtensionSettings) {
         function join(...s: (string | undefined)[]): string {
             return s.filter((s) => !!s).join(' ');
         }
@@ -799,5 +801,5 @@ interface OnChangeParam extends DidChangeConfigurationParams {
 
 interface DocSettingPair {
     doc: TextDocument;
-    settings: CSpellUserSettings;
+    settings: CSpellUserAndExtensionSettings;
 }

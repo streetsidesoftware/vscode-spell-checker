@@ -4,7 +4,7 @@ import type { Diagnostic } from 'vscode-languageserver-types';
 import { DiagnosticSeverity } from 'vscode-languageserver-types';
 
 import type { SpellCheckerDiagnosticData, SpellingDiagnostic, Suggestion } from './api.js';
-import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 import { diagnosticSource } from './constants.mjs';
 import { createDocumentValidator } from './DocumentValidationController.mjs';
 
@@ -21,7 +21,7 @@ const diagSeverityMap = new Map<string, DiagnosticSeverity | undefined>([
     ['off', undefined],
 ]);
 
-export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
+export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserAndExtensionSettings): Promise<Diagnostic[]> {
     const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
     const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
@@ -75,7 +75,7 @@ function haveSuggestionsMatchCase(example: string, suggestions: Suggestion[] | u
     return suggestions.map((sug) => (TextUtil.isLowerCase(sug.word) ? { ...sug, word: TextUtil.matchCase(example, sug.word) } : sug));
 }
 
-type SeverityOptions = Pick<CSpellUserSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'>;
+type SeverityOptions = Pick<CSpellUserAndExtensionSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'>;
 
 interface Severity {
     severity: DiagnosticSeverity | undefined;

@@ -1,7 +1,7 @@
 import type { PublishDiagnosticsParams } from 'vscode-languageserver';
 
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
-import type { CSpellUserSettings } from '../config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from '../config/cspellConfig/index.mjs';
 import type { CheckDocumentIssue } from './models/Diagnostic.mjs';
 import type { Suggestion } from './models/Suggestion.mjs';
 import type { ExtensionId } from './models/types.mjs';
@@ -92,14 +92,16 @@ export interface GetSpellCheckingOffsetsResult {
     offsets: number[];
 }
 
-export type ConfigurationFields = keyof CSpellUserSettings;
+export type ConfigurationFields = keyof CSpellUserAndExtensionSettings;
 export type ConfigFieldSelector<T extends ConfigurationFields> = Readonly<Record<T, true>>;
 
 export type AllowUndefined<T> = {
     [P in keyof T]: T[P] | undefined;
 };
 
-export type PartialCSpellUserSettings<T extends ConfigurationFields> = Pick<CSpellUserSettings, T> & { _fields?: ConfigFieldSelector<T> };
+export type PartialCSpellUserSettings<T extends ConfigurationFields> = Pick<CSpellUserAndExtensionSettings, T> & {
+    _fields?: ConfigFieldSelector<T>;
+};
 
 export interface GetConfigurationForDocumentRequest<Fields extends ConfigurationFields> extends Partial<TextDocumentInfo> {
     /** used to calculate configTargets, configTargets will be empty if undefined. */
@@ -234,7 +236,7 @@ export type FieldExistsInTarget = Partial<Record<ConfigurationTarget, boolean>>;
 export type ConfigurationTarget = ConfigScopeVScode;
 
 export type {
-    CSpellUserSettings,
+    CSpellUserAndExtensionSettings as CSpellUserSettings,
     CustomDictionaries,
     CustomDictionary,
     CustomDictionaryEntry,
@@ -248,7 +250,7 @@ export type {
     SpellCheckerSettingsProperties,
 } from '../config/cspellConfig/index.mjs';
 
-export type VSCodeSettingsCspell = Partial<Record<ExtensionId, CSpellUserSettings>>;
+export type VSCodeSettingsCspell = Partial<Record<ExtensionId, CSpellUserAndExtensionSettings>>;
 
 export type PublishDiagnostics = Required<PublishDiagnosticsParams>;
 

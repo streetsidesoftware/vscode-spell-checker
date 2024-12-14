@@ -40,7 +40,7 @@ class CSpellFileSystemProvider implements VFileSystemProvider {
     private async _updateWorkspaceFolders() {
         try {
             const folders = await this.connection.workspace.getWorkspaceFolders();
-            logDebug(`Workspace folders: ${JSON.stringify(folders)}`);
+            // logDebug(`Workspace folders: ${JSON.stringify(folders)}`);
             this.folders = folders ?? [];
             this.pFolders = undefined;
             return this.folders;
@@ -79,7 +79,7 @@ class CSpellFileSystemProvider implements VFileSystemProvider {
                 const folder = findMatchingFolderForUri(folders, href);
                 // Do not read directories outside of the workspace.
                 if (!folder) {
-                    logDebug(`readDirectory: ${url.href} not in workspace: ${JSON.stringify(folders)}`);
+                    // logDebug(`readDirectory: ${url.href} not in workspace: ${JSON.stringify(folders)}`);
                     logDebug(`readDirectory: ${url.href} not in workspace`);
                     return [];
                 }

@@ -1389,6 +1389,13 @@
           "title": "Check Only Enabled File Types",
           "type": "boolean"
         },
+        "cSpell.checkVSCodeSystemFiles": {
+          "default": false,
+          "description": "Spell check VS Code system files. These include:\n- `vscode-userdata:/**/settings.json`\n- `vscode-userdata:/**/keybindings.json`",
+          "markdownDescription": "Spell check VS Code system files.\nThese include:\n- `vscode-userdata:/**/settings.json`\n- `vscode-userdata:/**/keybindings.json`",
+          "scope": "application",
+          "type": "boolean"
+        },
         "cSpell.enableFiletypes": {
           "deprecated": true,
           "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",

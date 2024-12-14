@@ -12,12 +12,12 @@ import type {
     ConfigTargetVSCode,
 } from './configTargets.mjs';
 import { ConfigKinds, ConfigScopes, weight } from './configTargets.mjs';
-import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import type { CSpellSettingsWithFileSource } from './documentSettings.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries, filterExistingCSpellFileConfigurations } from './documentSettings.mjs';
 
 export async function calculateConfigTargets(
-    settings: CSpellUserSettings,
+    settings: CSpellUserAndExtensionSettings,
     workspaceConfig: WorkspaceConfigForDocument,
     configFilesFound?: string[],
 ): Promise<ConfigTarget[]> {

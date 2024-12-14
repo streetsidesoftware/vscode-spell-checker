@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'vitest';
 
-import type { CSpellUserSettings, CustomDictionaries, CustomDictionariesDictionary, DictionaryDefinition } from './cspellConfig/index.mjs';
+import type {
+    CSpellUserAndExtensionSettings,
+    CustomDictionaries,
+    CustomDictionariesDictionary,
+    DictionaryDefinition,
+} from './cspellConfig/index.mjs';
 import { extractDictionaryDefinitions } from './customDictionaries.mjs';
 
 describe('customDictionaries', () => {
@@ -20,7 +25,7 @@ describe('customDictionaries', () => {
         ${cd('my-terms', { name: 'company-terms', noSuggest: true })} | ${dictionaryDefinitions.map((d) => ({ ...d, noSuggest: true }))}
         ${cd('company-terms', { path: 'new/path', addWords: true })}  | ${[{ name: 'company-terms', path: 'new/path', addWords: true }]}
     `('extractDictionaryDefinitions $customDictionaries', ({ customDictionaries, expected }) => {
-        const settings: CSpellUserSettings = {
+        const settings: CSpellUserAndExtensionSettings = {
             dictionaryDefinitions,
             customDictionaries,
         };

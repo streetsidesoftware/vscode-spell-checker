@@ -146,6 +146,8 @@ export const commandHandlers = {
     'cSpell.editText': handleApplyLsTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
+    'cSpell.openSettings': callCommand('workbench.action.openSettings', () => [{ query: 'cSpell.' }]),
+
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
     'cSpell.createCustomDictionary': createCustomDictionary,

@@ -1,11 +1,11 @@
 import { ConfigFields as CSpellConfigFields } from '@cspell/cspell-types';
 
-import type { CSpellUserSettings } from './cspellConfig.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig.mjs';
 
 export { ConfigFields as CSpellConfigFields } from '@cspell/cspell-types';
 
 export type ConfigKeys = Exclude<
-    keyof CSpellUserSettings,
+    keyof CSpellUserAndExtensionSettings,
     '$schema' | 'version' | 'id' | 'experimental.enableRegexpView' | 'experimental.enableSettingsViewerV2'
 >;
 
@@ -24,6 +24,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     blockCheckingWhenTextChunkSizeGreaterThan: 'blockCheckingWhenTextChunkSizeGreaterThan',
     checkLimit: 'checkLimit',
     checkOnlyEnabledFileTypes: 'checkOnlyEnabledFileTypes',
+    checkVSCodeSystemFiles: 'checkVSCodeSystemFiles',
     customDictionaries: 'customDictionaries',
     customFolderDictionaries: 'customFolderDictionaries',
     customUserDictionaries: 'customUserDictionaries',

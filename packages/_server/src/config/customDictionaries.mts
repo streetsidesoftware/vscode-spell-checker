@@ -1,7 +1,12 @@
 import { isDefined } from '@internal/common-utils/util';
 import type { DictionaryDefinitionCustom, DictionaryDefinitionInline, DictionaryDefinitionPreferred } from 'cspell-lib';
 
-import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinition } from './cspellConfig/index.mjs';
+import type {
+    CSpellUserAndExtensionSettings,
+    CustomDictionaries,
+    CustomDictionaryEntry,
+    DictionaryDefinition,
+} from './cspellConfig/index.mjs';
 
 export function mapCustomDictionaryEntryToCustomDictionaries(
     entries: CustomDictionaryEntry[] | undefined,
@@ -16,7 +21,7 @@ export function mapCustomDictionaryEntryToCustomDictionaries(
     return customDict;
 }
 
-export function extractCustomDictionaries(settings: CSpellUserSettings): CustomDictionaries {
+export function extractCustomDictionaries(settings: CSpellUserAndExtensionSettings): CustomDictionaries {
     const dicts = Object.assign(
         {} as CustomDictionaries,
         mapCustomDictionaryEntryToCustomDictionaries(settings.customUserDictionaries, 'user'),
@@ -27,7 +32,7 @@ export function extractCustomDictionaries(settings: CSpellUserSettings): CustomD
     return dicts;
 }
 
-export function extractDictionaryDefinitions(settings: CSpellUserSettings): NormalizedDictionaryDefinition[] {
+export function extractDictionaryDefinitions(settings: CSpellUserAndExtensionSettings): NormalizedDictionaryDefinition[] {
     const customDicts = extractCustomDictionaries(settings);
 
     const dicts = new Map(
@@ -61,7 +66,7 @@ export function extractDictionaryDefinitions(settings: CSpellUserSettings): Norm
     return [...dicts.values()];
 }
 
-export function extractDictionaryList(settings: CSpellUserSettings): string[] {
+export function extractDictionaryList(settings: CSpellUserAndExtensionSettings): string[] {
     const customDicts = extractCustomDictionaries(settings);
     const dicts = (settings.dictionaries || []).concat(extractNamesFromCustomDictionaries(customDicts));
     return dicts;

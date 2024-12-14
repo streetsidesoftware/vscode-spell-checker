@@ -1,5 +1,5 @@
 import type { EnabledFileTypes, EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
-import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 
 const schemeBlockList: EnabledSchemes = {
     git: false, // blocked by default
@@ -21,7 +21,7 @@ const defaultAllowedSchemes: EnabledSchemes = {
 
 const defaultCheckOnlyEnabledFileTypes = true;
 
-function reduceExtractEnabledSchemes(schemes: EnabledSchemes, settings: CSpellUserSettings): EnabledSchemes {
+function reduceExtractEnabledSchemes(schemes: EnabledSchemes, settings: CSpellUserAndExtensionSettings): EnabledSchemes {
     if (settings.allowedSchemas) {
         const changes = Object.fromEntries(settings.allowedSchemas.map((schema) => [schema, true]));
         schemes = { ...schemes, ...changes };
@@ -33,7 +33,7 @@ function reduceExtractEnabledSchemes(schemes: EnabledSchemes, settings: CSpellUs
     return schemes;
 }
 
-export function extractEnabledSchemes(...settings: CSpellUserSettings[]): EnabledSchemes {
+export function extractEnabledSchemes(...settings: CSpellUserAndExtensionSettings[]): EnabledSchemes {
     const schemes: Record<string, boolean> = {
         ...defaultAllowedSchemes,
     };
@@ -41,14 +41,17 @@ export function extractEnabledSchemes(...settings: CSpellUserSettings[]): Enable
     return settings.reduce(reduceExtractEnabledSchemes, schemes);
 }
 
-export function extractEnabledSchemeList(...settings: CSpellUserSettings[]): string[] {
+export function extractEnabledSchemeList(...settings: CSpellUserAndExtensionSettings[]): string[] {
     const schemes = extractEnabledSchemes(...settings);
     return Object.entries(schemes)
         .filter(([, enabled]) => enabled)
         .map(([schema]) => schema);
 }
 
-export function applyEnabledSchemes(settings: CSpellUserSettings, enabledSchemes: EnabledSchemes = {}): CSpellUserSettings {
+export function applyEnabledSchemes(
+    settings: CSpellUserAndExtensionSettings,
+    enabledSchemes: EnabledSchemes = {},
+): CSpellUserAndExtensionSettings {
     enabledSchemes = extractEnabledSchemes(settings, enabledSchemes);
     const { allowedSchemas: _, ...rest } = settings;
     return { ...rest, enabledSchemes };
@@ -67,22 +70,28 @@ function reduceEnabledFileTypes(filetypes: EnabledFileTypes, changes: EnabledFil
     return changes ? { ...filetypes, ...changes } : filetypes;
 }
 
-function reduceEnabledFileTypesInSettings(filetypes: EnabledFileTypes, settings: CSpellUserSettings): EnabledFileTypes {
+function reduceEnabledFileTypesInSettings(filetypes: EnabledFileTypes, settings: CSpellUserAndExtensionSettings): EnabledFileTypes {
     filetypes = reduceLangIdsToEnabledFileTypes(filetypes, settings.enabledLanguageIds);
     filetypes = reduceLangIdsToEnabledFileTypes(filetypes, settings.enableFiletypes);
     filetypes = reduceEnabledFileTypes(filetypes, settings.enabledFileTypes);
     return filetypes;
 }
 
-export function extractEnabledFileTypes(settings: CSpellUserSettings, enabledFileTypes: EnabledFileTypes = {}): EnabledFileTypes {
+export function extractEnabledFileTypes(
+    settings: CSpellUserAndExtensionSettings,
+    enabledFileTypes: EnabledFileTypes = {},
+): EnabledFileTypes {
     return reduceEnabledFileTypesInSettings(enabledFileTypes, settings);
 }
 
-export function extractKnownFileTypeIds(settings: CSpellUserSettings): string[] {
+export function extractKnownFileTypeIds(settings: CSpellUserAndExtensionSettings): string[] {
     return Object.keys(extractEnabledFileTypes(settings)).sort();
 }
 
-export function applyEnabledFileTypes(settings: CSpellUserSettings, enabledFileTypes: EnabledFileTypes = {}): CSpellUserSettings {
+export function applyEnabledFileTypes(
+    settings: CSpellUserAndExtensionSettings,
+    enabledFileTypes: EnabledFileTypes = {},
+): CSpellUserAndExtensionSettings {
     enabledFileTypes = reduceEnabledFileTypesInSettings(enabledFileTypes, settings);
     const { enableFiletypes: _, enabledLanguageIds: __, ...rest } = settings;
     return { ...rest, enabledFileTypes };
@@ -98,7 +107,7 @@ export function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
     return ids;
 }
 
-export function isFileTypeEnabled(languageId: string, settings: CSpellUserSettings): boolean {
+export function isFileTypeEnabled(languageId: string, settings: CSpellUserAndExtensionSettings): boolean {
     const enabledFileTypes = extractEnabledFileTypes(settings);
     const enabled = enabledFileTypes[languageId];
     if (enabled !== undefined) return enabled;

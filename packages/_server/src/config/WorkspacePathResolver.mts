@@ -5,7 +5,7 @@ import * as os from 'os';
 import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
-import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { extractDictionaryDefinitions, extractDictionaryList } from './customDictionaries.mjs';
 import { toDirURL } from './urlUtil.mjs';
 
@@ -23,7 +23,7 @@ interface FolderPath {
     uri: Uri;
 }
 
-export function resolveSettings<T extends CSpellUserSettings>(settings: T, resolver: WorkspacePathResolver): T {
+export function resolveSettings<T extends CSpellUserAndExtensionSettings>(settings: T, resolver: WorkspacePathResolver): T {
     // Sections
     // - imports
     // - dictionary definitions (also nested in language settings)
@@ -200,13 +200,13 @@ function createWorkspaceNameToPathResolver(
     };
 }
 
-function resolveCoreSettings<T extends CSpellUserSettings>(settings: T, resolver: WorkspacePathResolver): T {
+function resolveCoreSettings<T extends CSpellUserAndExtensionSettings>(settings: T, resolver: WorkspacePathResolver): T {
     // Sections
     // - imports
     // - dictionary definitions (also nested in language settings)
     // - globs (ignorePaths and Override filenames)
     // - override dictionaries
-    const newSettings: CSpellUserSettings = resolveCustomAndBaseSettings(settings, resolver);
+    const newSettings: CSpellUserAndExtensionSettings = resolveCustomAndBaseSettings(settings, resolver);
     // There is a more elegant way of doing this, but for now just change each section.
     newSettings.dictionaryDefinitions = resolveDictionaryPathReferences(newSettings.dictionaryDefinitions, resolver);
     newSettings.languageSettings = resolveLanguageSettings(newSettings.languageSettings, resolver);
@@ -220,11 +220,14 @@ function resolveBaseSettings<T extends BaseSetting>(settings: T, resolver: Works
     newSettings.dictionaryDefinitions = resolveDictionaryPathReferences(newSettings.dictionaryDefinitions, resolver);
     return shallowCleanObject(newSettings);
 }
-function resolveCustomAndBaseSettings<T extends CSpellUserSettings>(settings: T, resolver: WorkspacePathResolver): T {
+function resolveCustomAndBaseSettings<T extends CSpellUserAndExtensionSettings>(settings: T, resolver: WorkspacePathResolver): T {
     const newSettings = resolveBaseSettings(settings, resolver);
     return newSettings;
 }
-function resolveImportsToWorkspace(imports: CSpellUserSettings['import'], resolver: WorkspacePathResolver): CSpellUserSettings['import'] {
+function resolveImportsToWorkspace(
+    imports: CSpellUserAndExtensionSettings['import'],
+    resolver: WorkspacePathResolver,
+): CSpellUserAndExtensionSettings['import'] {
     if (!imports) return imports;
     const toImport = typeof imports === 'string' ? [imports] : imports;
     return toImport.map(resolver.resolveFile);
@@ -245,16 +248,19 @@ function resolveDictionaryPathReferences<T extends PathRef>(dictDefs: T[] | unde
     return dictDefs.map((def) => (def.path ? { ...def, path: resolver.resolveFile(def.path) } : def));
 }
 function resolveLanguageSettings(
-    langSettings: CSpellUserSettings['languageSettings'],
+    langSettings: CSpellUserAndExtensionSettings['languageSettings'],
     resolver: WorkspacePathResolver,
-): CSpellUserSettings['languageSettings'] {
+): CSpellUserAndExtensionSettings['languageSettings'] {
     if (!langSettings) return langSettings;
 
     return langSettings.map((langSetting) => {
         return shallowCleanObject({ ...resolveBaseSettings(langSetting, resolver) });
     });
 }
-function resolveOverrides(settings: CSpellUserSettings, resolver: WorkspacePathResolver): CSpellUserSettings['overrides'] {
+function resolveOverrides(
+    settings: CSpellUserAndExtensionSettings,
+    resolver: WorkspacePathResolver,
+): CSpellUserAndExtensionSettings['overrides'] {
     const { overrides } = settings;
     if (!overrides) return overrides;
 
