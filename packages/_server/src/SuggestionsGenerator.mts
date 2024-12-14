@@ -1,7 +1,7 @@
 import { CompoundWordsMethod, type SpellingDictionaryCollection, type SuggestionResult, type SuggestOptions } from 'cspell-lib';
 
 import type { Suggestion } from './api.js';
-import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 
 const defaultNumSuggestions = 10;
 
@@ -13,7 +13,7 @@ export const maxNumberOfSuggestionsForLongWords = 1;
 const maxEdits = 3;
 
 export interface GetSettingsResult {
-    settings: CSpellUserSettings;
+    settings: CSpellUserAndExtensionSettings;
     dictionary: SpellingDictionaryCollection;
 }
 

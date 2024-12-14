@@ -8,7 +8,7 @@ import { URI as Uri } from 'vscode-uri';
 
 import { createMockServerSideApi } from '../test/test.api.js';
 import { extendExpect } from '../test/test.matchers.js';
-import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import type { ExcludedByMatch } from './documentSettings.mjs';
 import {
     __testing__,
@@ -45,7 +45,7 @@ const workspaceFolderClient: WorkspaceFolder = {
     name: 'client',
 };
 
-const cspellConfigInVsCode: CSpellUserSettings = {
+const cspellConfigInVsCode: CSpellUserAndExtensionSettings = {
     name: 'Mock VS Code Config',
     ignorePaths: ['${workspaceFolder:_server}/**/*.json'],
     import: [
@@ -194,7 +194,7 @@ describe('Validate DocumentSettings', () => {
     });
 
     test('applyEnableFiletypes', () => {
-        const settings: CSpellUserSettings = {
+        const settings: CSpellUserAndExtensionSettings = {
             enabledLanguageIds: ['typescript', 'markdown', 'plaintext', 'json'],
             enableFiletypes: ['!json', '!!!javascript'],
             enabledFileTypes: { typescript: true, plaintext: false, FreeFormFortran: true, json: true },
@@ -451,7 +451,7 @@ describe('Validate DocumentSettings', () => {
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
 
-    function newDocumentSettings(defaultSettings: CSpellUserSettings = {}) {
+    function newDocumentSettings(defaultSettings: CSpellUserAndExtensionSettings = {}) {
         const connection = createMockConnection();
         const mockWorkspaceGetConfiguration = vi.mocked(connection.workspace.getConfiguration);
         mockWorkspaceGetConfiguration.mockImplementation(implGetConfiguration);
@@ -496,7 +496,7 @@ describe('Validate RegExp corrections', () => {
         // Make sure it doesn't change the defaults.
         expect(correctBadSettings(defaultSettings)).toEqual(defaultSettings);
 
-        const settings: CSpellUserSettings = {
+        const settings: CSpellUserAndExtensionSettings = {
             patterns: [
                 {
                     name: 'strings',
@@ -504,7 +504,7 @@ describe('Validate RegExp corrections', () => {
                 },
             ],
         };
-        const expectedSettings: CSpellUserSettings = {
+        const expectedSettings: CSpellUserAndExtensionSettings = {
             patterns: [
                 {
                     name: 'strings',

@@ -17,10 +17,10 @@ import type {
 
 type InternalSettings = object;
 
-export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties, InternalSettings {}
+export interface CSpellUserAndExtensionSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties, InternalSettings {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
-export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
+export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserAndExtensionSettings}`;
 
 interface DictionaryDefinitions {
     /**
@@ -108,7 +108,7 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
 
 export interface SpellCheckerSettingsVSCodeBase
     extends Omit<
-            CSpellUserSettings,
+            CSpellUserAndExtensionSettings,
             CSpellOmitFieldsFromExtensionContributesInPackageJson | keyof DictionaryDefinitions | keyof LanguageSettings | keyof Overrides
         >,
         DictionaryDefinitions,
@@ -221,6 +221,7 @@ type _VSConfigFilesAndFolders = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'allowedSchemas'
     | 'checkOnlyEnabledFileTypes'
+    | 'checkVSCodeSystemFiles'
     | 'enableFiletypes'
     | 'files'
     | 'globRoot'

@@ -14,7 +14,7 @@ import { clientCommands as cc } from './commands.mjs';
 import type { ConfigScope, ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './config/configTargets.mjs';
 import { ConfigKinds, ConfigScopes } from './config/configTargets.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
-import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 import { isUriAllowedBySettings } from './config/documentSettings.mjs';
 import type { GetSettingsResult } from './SuggestionsGenerator.mjs';
 import { SuggestionGenerator } from './SuggestionsGenerator.mjs';
@@ -37,7 +37,7 @@ function extractDiagnosticData(diag: Diagnostic): SpellCheckerDiagnosticData {
 }
 
 export interface CodeActionHandlerDependencies {
-    fetchSettings: (doc: TextDocument) => Promise<CSpellUserSettings>;
+    fetchSettings: (doc: TextDocument) => Promise<CSpellUserAndExtensionSettings>;
     getSettingsVersion: (doc: TextDocument) => number;
     fetchWorkspaceConfigForDocument: (uri: UriString) => Promise<WorkspaceConfigForDocument>;
 }

@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest';
 import type {
     AllSpellCheckerSettingsInVSCode,
     AllSpellCheckerSettingsInVSCodeWithPrefix,
-    CSpellUserSettings,
+    CSpellUserAndExtensionSettings,
     SpellCheckerSettingsVSCode,
 } from './cspellConfig/index.mjs';
 
@@ -87,7 +87,7 @@ describe('cspellConfig', () => {
         // The idea is to use features of the configuration and make sure it compiles.
         expect(sampleSettings).toBeDefined();
 
-        const moreSettings: CSpellUserSettings[] = sampleSettings;
+        const moreSettings: CSpellUserAndExtensionSettings[] = sampleSettings;
 
         expect(moreSettings).toBeDefined();
 

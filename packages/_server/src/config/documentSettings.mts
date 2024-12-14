@@ -41,7 +41,7 @@ import { findRepoRoot } from '../vfs/index.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
-import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
 import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
@@ -69,7 +69,7 @@ type VsCodeSettings = Record<string, any>;
 interface ExtSettings {
     uri: string;
     vscodeSettings: SettingsCspell;
-    settings: CSpellUserSettings;
+    settings: CSpellUserAndExtensionSettings;
     excludeGlobMatcher: GlobMatcher;
     includeGlobMatcher: GlobMatcher;
 }
@@ -109,7 +109,7 @@ const defaultExclude: Glob[] = [
 
 const defaultRootUri = toFileUri(process.cwd()).toString();
 
-const _defaultSettings: CSpellUserSettings = Object.freeze(Object.create(null));
+const _defaultSettings: CSpellUserAndExtensionSettings = Object.freeze(Object.create(null));
 
 type ClearFn = () => void;
 
@@ -141,14 +141,14 @@ export class DocumentSettings {
     constructor(
         readonly connection: Connection,
         readonly api: ServerSideApi,
-        readonly defaultSettings: CSpellUserSettings | Promise<CSpellUserSettings> = _defaultSettings,
+        readonly defaultSettings: CSpellUserAndExtensionSettings | Promise<CSpellUserAndExtensionSettings> = _defaultSettings,
     ) {}
 
-    getSettings(document: TextDocumentUri): Promise<CSpellUserSettings> {
+    getSettings(document: TextDocumentUri): Promise<CSpellUserAndExtensionSettings> {
         return this.getUriSettings(document.uri);
     }
 
-    getUriSettings(uri: string | undefined): Promise<CSpellUserSettings> {
+    getUriSettings(uri: string | undefined): Promise<CSpellUserAndExtensionSettings> {
         return this.fetchUriSettings(uri);
     }
 
@@ -294,7 +294,7 @@ export class DocumentSettings {
         await this.resetSettings();
     }
 
-    private async fetchUriSettings(uri: string | undefined): Promise<CSpellUserSettings> {
+    private async fetchUriSettings(uri: string | undefined): Promise<CSpellUserAndExtensionSettings> {
         if (uri) {
             const pendingRelease = this.pendingUrisToRelease.get(uri);
             if (pendingRelease !== undefined) {
@@ -354,7 +354,7 @@ export class DocumentSettings {
     private async _fetchVSCodeConfiguration(uri?: string) {
         const [cSpell, search] = (
             await getConfiguration(this.connection, [{ scopeUri: uri || undefined, section: cSpellSection }, { section: 'search' }])
-        ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
+        ).map((v) => v || {}) as [CSpellUserAndExtensionSettings, VsCodeSettings];
 
         return { cSpell, search };
     }
@@ -393,8 +393,8 @@ export class DocumentSettings {
     private async fetchLocalImportSettings(
         uri: URL,
         useLocallyInstalledCSpellDictionaries: boolean | undefined,
-    ): Promise<CSpellUserSettings> {
-        const cSpellConfigSettings: CSpellUserSettings = {
+    ): Promise<CSpellUserAndExtensionSettings> {
+        const cSpellConfigSettings: CSpellUserAndExtensionSettings = {
             id: 'VSCode-Config-Imports',
             name: 'VS Code Settings Local Imports',
             import: useLocallyInstalledCSpellDictionaries ? ['@cspell/cspell-bundled-dicts'] : [],
@@ -405,11 +405,11 @@ export class DocumentSettings {
         return this.loader.mergeConfigFileWithImports(configFile);
     }
 
-    private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
+    private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserAndExtensionSettings> {
         const { cSpell, search } = await this.fetchVSCodeConfiguration(uri || '');
         const { exclude = {} } = search;
         const { ignorePaths = [] } = cSpell;
-        const cSpellConfigSettings: CSpellUserSettings = {
+        const cSpellConfigSettings: CSpellUserAndExtensionSettings = {
             ...cSpell,
             id: 'VSCode-Config',
             name: 'VS Code Settings',
@@ -462,8 +462,9 @@ export class DocumentSettings {
         const enabledSchemes = extractEnabledSchemes(vscodeCSpellConfigSettingsRel);
         const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, useUriForConfig);
         const vscodeCSpellConfigFileForDocument = loader.createCSpellConfigFile(useURLForConfig, vscodeCSpellConfigSettingsForDocument);
-        const vscodeCSpellSettings: CSpellUserSettings = await loader.mergeConfigFileWithImports(vscodeCSpellConfigFileForDocument);
-        const localDictionarySettings: CSpellUserSettings = await this.fetchLocalImportSettings(
+        const vscodeCSpellSettings: CSpellUserAndExtensionSettings =
+            await loader.mergeConfigFileWithImports(vscodeCSpellConfigFileForDocument);
+        const localDictionarySettings: CSpellUserAndExtensionSettings = await this.fetchLocalImportSettings(
             new URL(fileConfigLocalImport, useUriForConfig),
             vscodeCSpellConfigSettingsRel.useLocallyInstalledCSpellDictionaries,
         );
@@ -485,7 +486,7 @@ export class DocumentSettings {
             settings,
         );
 
-        let fileSettings: CSpellUserSettings = calcOverrideSettings(mergedSettings, uriToGlobPath(searchForUri));
+        let fileSettings: CSpellUserAndExtensionSettings = calcOverrideSettings(mergedSettings, uriToGlobPath(searchForUri));
         fileSettings = applyEnabledFileTypes(fileSettings, enabledFileTypes);
         fileSettings = applyEnabledSchemes(fileSettings, enabledSchemes);
         const { ignorePaths = [], files = [] } = fileSettings;
@@ -516,7 +517,10 @@ export class DocumentSettings {
         return ext;
     }
 
-    private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string | undefined): Promise<CSpellUserSettings> {
+    private async resolveWorkspacePaths(
+        settings: CSpellUserAndExtensionSettings,
+        docUri: string | undefined,
+    ): Promise<CSpellUserAndExtensionSettings> {
         const folders = await this.folders;
         const folder = (docUri && (await this.findMatchingFolder(docUri))) || folders[0] || this.rootSchemaAndDomainFolderForUri(docUri);
         const resolver = createWorkspaceNamesResolver(folder, folders, settings.workspaceRootPath);
@@ -557,12 +561,12 @@ export class DocumentSettings {
     }
 }
 
-export function isUriAllowedBySettings(uri: string, settings: CSpellUserSettings): boolean {
+export function isUriAllowedBySettings(uri: string, settings: CSpellUserAndExtensionSettings): boolean {
     const schemes = extractEnabledSchemes(settings);
     return doesUriMatchAnyScheme(uri, schemes);
 }
 
-export function isUriBlockedBySettings(uri: string, settings: CSpellUserSettings): boolean {
+export function isUriBlockedBySettings(uri: string, settings: CSpellUserAndExtensionSettings): boolean {
     const schemes = extractEnabledSchemes(settings);
     return schemes[Uri.parse(uri).scheme] === false;
 }
@@ -630,7 +634,7 @@ function fixPattern(pat: RegExpPatternDefinition): RegExpPatternDefinition {
     return { ...pat, pattern };
 }
 
-export function correctBadSettings(settings: CSpellUserSettings): CSpellUserSettings {
+export function correctBadSettings(settings: CSpellUserAndExtensionSettings): CSpellUserAndExtensionSettings {
     const newSettings = { ...settings };
 
     // Fix patterns
@@ -640,10 +644,10 @@ export function correctBadSettings(settings: CSpellUserSettings): CSpellUserSett
     return newSettings;
 }
 
-export function stringifyPatterns(settings: CSpellUserSettings): CSpellUserSettings;
+export function stringifyPatterns(settings: CSpellUserAndExtensionSettings): CSpellUserAndExtensionSettings;
 export function stringifyPatterns(settings: undefined): undefined;
-export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSpellUserSettings | undefined;
-export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSpellUserSettings | undefined {
+export function stringifyPatterns(settings: CSpellUserAndExtensionSettings | undefined): CSpellUserAndExtensionSettings | undefined;
+export function stringifyPatterns(settings: CSpellUserAndExtensionSettings | undefined): CSpellUserAndExtensionSettings | undefined {
     if (!settings) return settings;
     const patterns = settings.patterns?.map((pat) => ({ ...pat, pattern: pat.pattern.toString() }));
     return { ...settings, patterns };
@@ -711,7 +715,9 @@ export interface CSpellSettingsWithFileSource extends CSpellSettingsWithSourceTr
     source: FileSource;
 }
 
-function isCSpellSettingsWithFileSource(s: CSpellUserSettings | CSpellSettingsWithFileSource): s is CSpellSettingsWithFileSource {
+function isCSpellSettingsWithFileSource(
+    s: CSpellUserAndExtensionSettings | CSpellSettingsWithFileSource,
+): s is CSpellSettingsWithFileSource {
     return !!(s as CSpellSettingsWithSourceTrace).source?.filename;
 }
 
@@ -720,7 +726,7 @@ function isCSpellSettingsWithFileSource(s: CSpellUserSettings | CSpellSettingsWi
  * @param settings - finalized settings
  * @returns config file uri's.
  */
-function extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
+function extractCSpellConfigurationFiles(settings: CSpellUserAndExtensionSettings): Uri[] {
     const configs = extractCSpellFileConfigurations(settings);
     return configs.map(({ source }) => toFileUri(source.filename));
 }
@@ -733,7 +739,7 @@ const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
  * @param settings - finalized settings
  * @returns array of Settings
  */
-export function extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
+export function extractCSpellFileConfigurations(settings: CSpellUserAndExtensionSettings): CSpellSettingsWithFileSource[] {
     const sources = getSources(settings);
     const configs = sources
         .filter(isCSpellSettingsWithFileSource)
@@ -765,7 +771,7 @@ export async function filterExistingCSpellFileConfigurations(
  * @param settings - finalized settings
  * @returns
  */
-export function extractTargetDictionaries(settings: CSpellUserSettings): DictionaryDefinitionCustom[] {
+export function extractTargetDictionaries(settings: CSpellUserAndExtensionSettings): DictionaryDefinitionCustom[] {
     const { dictionaries = [], dictionaryDefinitions = [] } = settings;
     const defs = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
     const activeDicts = dictionaries.map((name) => defs.get(name)).filter(isDefined);

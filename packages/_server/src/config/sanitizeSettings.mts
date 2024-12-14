@@ -1,15 +1,21 @@
 import { isDefined } from '@internal/common-utils';
 import type { DictionaryDefinition, DictionaryDefinitionCustom } from 'cspell-lib';
 
-import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { ConfigFields } from './cspellConfig/index.mjs';
 
-type ConfigFieldKeys = keyof CSpellUserSettings;
+type ConfigFieldKeys = keyof CSpellUserAndExtensionSettings;
 type ConfigFieldFilter = Record<ConfigFieldKeys, boolean | undefined>;
 
-export function sanitizeSettings(settings: CSpellUserSettings, fields: ConfigFieldFilter): CSpellUserSettings;
-export function sanitizeSettings(settings: CSpellUserSettings | undefined, fields: ConfigFieldFilter): CSpellUserSettings | undefined;
-export function sanitizeSettings(settings: CSpellUserSettings | undefined, fields: ConfigFieldFilter): CSpellUserSettings | undefined {
+export function sanitizeSettings(settings: CSpellUserAndExtensionSettings, fields: ConfigFieldFilter): CSpellUserAndExtensionSettings;
+export function sanitizeSettings(
+    settings: CSpellUserAndExtensionSettings | undefined,
+    fields: ConfigFieldFilter,
+): CSpellUserAndExtensionSettings | undefined;
+export function sanitizeSettings(
+    settings: CSpellUserAndExtensionSettings | undefined,
+    fields: ConfigFieldFilter,
+): CSpellUserAndExtensionSettings | undefined {
     if (!settings) return settings;
     const includeKeys = new Set<string>(
         Object.entries(fields)
@@ -26,7 +32,9 @@ export function sanitizeSettings(settings: CSpellUserSettings | undefined, field
     return s;
 }
 
-function sanitizeDictionaryDefinitions(defs: CSpellUserSettings['dictionaryDefinitions']): CSpellUserSettings['dictionaryDefinitions'] {
+function sanitizeDictionaryDefinitions(
+    defs: CSpellUserAndExtensionSettings['dictionaryDefinitions'],
+): CSpellUserAndExtensionSettings['dictionaryDefinitions'] {
     if (!defs) return defs;
     return defs.map((def) => sanitizeDictionaryDefinition(def)).filter(isDefined);
 }

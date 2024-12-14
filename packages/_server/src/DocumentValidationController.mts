@@ -4,14 +4,14 @@ import type { TextDocumentChangeEvent, TextDocuments } from 'vscode-languageserv
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { TextDocumentInfoWithText, TextDocumentRef } from './api.js';
-import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 import type { DocumentSettings } from './config/documentSettings.mjs';
 import { defaultCheckLimit } from './constants.mjs';
 import { breakTextAtLimit } from './utils/breakTextAtLimit.mjs';
 
 interface DocValEntry {
     uri: string;
-    settings: Promise<CSpellUserSettings>;
+    settings: Promise<CSpellUserAndExtensionSettings>;
     docVal: Promise<DocumentValidator>;
 }
 
@@ -97,7 +97,7 @@ export class DocumentValidationController {
 
 export async function createDocumentValidator(
     textDocument: TextDocument | TextDocumentInfoWithText,
-    pSettings: Promise<CSpellUserSettings> | CSpellUserSettings,
+    pSettings: Promise<CSpellUserAndExtensionSettings> | CSpellUserAndExtensionSettings,
 ): Promise<DocumentValidator> {
     const settings = await pSettings;
     const limit = (settings.checkLimit || defaultCheckLimit) * 1024;

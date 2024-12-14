@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 export interface SpellCheckerShouldCheckDocSettings {
     /**
      * The maximum line length.
@@ -55,4 +56,14 @@ export interface SpellCheckerShouldCheckDocSettings {
      * @default 80
      */
     blockCheckingWhenAverageChunkSizeGreaterThan?: number;
+
+    /**
+     * Spell check VS Code system files.
+     * These include:
+     * - `vscode-userdata:/**​/settings.json`
+     * - `vscode-userdata:/**​/keybindings.json`
+     * @scope application
+     * @default false
+     */
+    checkVSCodeSystemFiles?: boolean;
 }

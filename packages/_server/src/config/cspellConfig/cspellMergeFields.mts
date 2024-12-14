@@ -1,4 +1,4 @@
-import type { CSpellUserSettings } from './cspellConfig.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig.mjs';
 import type { CSpellMergeFields, CSpellMergeFieldsKeys } from './CSpellSettingsPackageProperties.mjs';
 
 export const cspellMergeFields: Required<CSpellMergeFields> = {
@@ -46,10 +46,10 @@ const fields = Object.keys(cspellMergeFields) as CSpellMergeFieldsKeys[];
  * @returns filtered settings
  */
 export function filterMergeFields(
-    settings: Readonly<CSpellUserSettings>,
-    mergeCSpellSettings: CSpellUserSettings['mergeCSpellSettings'],
-    mergeCSpellSettingsFields: CSpellUserSettings['mergeCSpellSettingsFields'],
-): CSpellUserSettings {
+    settings: Readonly<CSpellUserAndExtensionSettings>,
+    mergeCSpellSettings: CSpellUserAndExtensionSettings['mergeCSpellSettings'],
+    mergeCSpellSettingsFields: CSpellUserAndExtensionSettings['mergeCSpellSettingsFields'],
+): CSpellUserAndExtensionSettings {
     mergeCSpellSettings ??= false;
     if (mergeCSpellSettings === true && !mergeCSpellSettingsFields) return settings;
     const copy = { ...settings };

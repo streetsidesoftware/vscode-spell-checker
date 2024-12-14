@@ -17,12 +17,12 @@ describe('Validate vscode config', () => {
         expect(mockedWorkspace.getConfiguration).toHaveBeenLastCalledWith(items);
     });
 
-    test('getWorkspaceFolders', () => {
+    test('getWorkspaceFolders', async () => {
         const connection = sampleConnection();
         const mockedWorkspace = vi.mocked(connection.workspace);
         const folders: WorkspaceFolder[] = [];
         mockedWorkspace.getWorkspaceFolders.mockResolvedValue(folders);
-        expect(getWorkspaceFolders(connection)).resolves.toBe(folders);
+        await expect(getWorkspaceFolders(connection)).resolves.toBe(folders);
     });
 });
 
