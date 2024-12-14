@@ -823,6 +823,11 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     return settings.excludeGlobMatcher.match(uriToGlobPath(uri));
 }
 
+/**
+ * A Map to of schemes to see if the uri should be checked against the glob patterns.
+ * In some cases we want to turn them off. For example, we want to check commit messages,
+ * but do not want to filter it out based upon the url.
+ */
 const checkScheme: Record<string, boolean | undefined> = {
     comment: false,
     file: true,
@@ -831,8 +836,8 @@ const checkScheme: Record<string, boolean | undefined> = {
     sftp: true,
     untitled: false,
     'vscode-notebook-cell': true,
-    'vscode-scm': false,
-    'vscode-userdata': false,
+    'vscode-scm': false, // Used by git messages.
+    'vscode-userdata': false, // Used by `.code-snippets` (and settings.json, keybindings.json)
     'vscode-vfs': true,
     vsls: true,
 };
