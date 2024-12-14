@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 export interface SpellCheckerShouldCheckDocSettings {
     /**
      * The maximum line length.
