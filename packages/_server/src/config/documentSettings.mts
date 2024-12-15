@@ -10,6 +10,7 @@ import type {
     Pattern,
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
+import { toFileURL } from '@cspell/url';
 import { createEmitter, setIfDefined } from '@internal/common-utils';
 import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad';
 import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad';
@@ -28,7 +29,6 @@ import {
     mergeSettings,
     searchForConfig,
 } from 'cspell-lib';
-import { pathToFileURL } from 'url';
 import type { DisposableClassic } from 'utils-disposables';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
@@ -271,7 +271,7 @@ export class DocumentSettings {
         log('importSettings');
         const importPaths = [...this.configsToImport].sort();
         const loader = getDefaultConfigLoader();
-        const cfg = loader.createCSpellConfigFile(pathToFileURL(fileConfigsToImport), {
+        const cfg = loader.createCSpellConfigFile(toFileURL(fileConfigsToImport), {
             name: 'VS Code Imports',
             import: importPaths,
             readonly: true,
@@ -334,7 +334,7 @@ export class DocumentSettings {
         //     url = toPathURL(this.#rootHref || defaultRootUri);
         // }
         if (url.protocol === 'file:') {
-            url = pathToFileURL('/');
+            url = toFileURL('/', url);
         } else {
             url = new URL('/', url);
         }
@@ -426,7 +426,7 @@ export class DocumentSettings {
                 await this.determineIsTrusted();
                 return await this.__fetchSettingsForUri(docUri);
             } catch (_e) {
-                console.error('fetchSettingsForUri: %s %s', docUri, _e);
+                console.error('fetchSettingsForUri: %s %o', docUri, _e);
                 return {
                     uri: docUri || '',
                     vscodeSettings: { cSpell: {} },

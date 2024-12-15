@@ -1,5 +1,6 @@
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
+import { toFileURL } from '@cspell/url';
 import { isUrlLike as _isUrlLike } from 'cspell-io';
 import { URI as Uri } from 'vscode-uri';
 
@@ -121,7 +122,7 @@ export function uriToGlobRoot(uri: UrlLike): string {
 
 export function uriToUrl(uri: UrlLike): Readonly<URL> {
     if (uri instanceof URL) return uri;
-    uri = typeof uri === 'string' && !isUriLike(uri) ? pathToFileURL(uri) : uri;
+    uri = typeof uri === 'string' && !isUriLike(uri) ? toFileURL(uri) : uri;
     const href = typeof uri === 'string' ? uri : uri.toString();
     return normalizeWindowsUrl(new URL(href));
 }
