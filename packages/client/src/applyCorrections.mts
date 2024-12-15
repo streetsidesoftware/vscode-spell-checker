@@ -116,7 +116,7 @@ interface UseRefInfo {
 export async function handleApplyLsTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
     const converter = di.get('client').client.protocol2CodeConverter;
 
-    console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
+    // console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
 
     return applyTextEditsWithRename(uri, cvtLsTextEdits(converter, edits), documentVersion);
 }
