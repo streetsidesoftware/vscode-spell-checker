@@ -781,6 +781,11 @@
         "markdownDescription": "Settings related to CSpell Command Line Tool.",
         "order": 5,
         "properties": {
+          "cSpell.ignoreRandomStrings": {
+            "default": true,
+            "markdownDescription": "Ignore sequences of characters that look like random strings.",
+            "type": "boolean"
+          },
           "cSpell.ignoreRegExpList": {
             "items": {
               "type": "string"
@@ -796,6 +801,11 @@
             "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.",
             "scope": "resource",
             "type": "array"
+          },
+          "cSpell.minRandomLength": {
+            "default": 40,
+            "markdownDescription": "The minimum length of a random string to be ignored.",
+            "type": "number"
           },
           "cSpell.overrides": {
             "items": {
@@ -1090,6 +1100,11 @@
                 "id": {
                   "markdownDescription": "Optional identifier.",
                   "type": "string"
+                },
+                "ignoreRandomStrings": {
+                  "default": true,
+                  "markdownDescription": "Ignore sequences of characters that look like random strings.",
+                  "type": "boolean"
                 },
                 "ignoreRegExpList": {
                   "items": {
@@ -1709,6 +1724,11 @@
                 "maxNumberOfProblems": {
                   "default": 10000,
                   "markdownDescription": "The maximum number of problems to report in a file.",
+                  "type": "number"
+                },
+                "minRandomLength": {
+                  "default": 40,
+                  "markdownDescription": "The minimum length of a random string to be ignored.",
                   "type": "number"
                 },
                 "minWordLength": {
