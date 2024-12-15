@@ -24,10 +24,10 @@
     "webview-api": "file:../webview-api"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.1",
-    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^15.3.1",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.1",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.36",
