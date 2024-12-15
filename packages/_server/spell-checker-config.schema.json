@@ -91,6 +91,12 @@
       "description": "Settings related to CSpell Command Line Tool.",
       "order": 5,
       "properties": {
+        "cSpell.ignoreRandomStrings": {
+          "default": true,
+          "description": "Ignore sequences of characters that look like random strings.",
+          "markdownDescription": "Ignore sequences of characters that look like random strings.",
+          "type": "boolean"
+        },
         "cSpell.ignoreRegExpList": {
           "description": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,   it is necessary to escape `\\`.   Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | settings.json         | Description                                  | | :------------------ | :-------------------- | :------------------------------------------- | | `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         | | `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    | | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
           "items": {
@@ -108,6 +114,12 @@
           "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.",
           "scope": "resource",
           "type": "array"
+        },
+        "cSpell.minRandomLength": {
+          "default": 40,
+          "description": "The minimum length of a random string to be ignored.",
+          "markdownDescription": "The minimum length of a random string to be ignored.",
+          "type": "number"
         },
         "cSpell.overrides": {
           "description": "Overrides are used to apply settings for specific files in your project.\n\n**Example:**\n\n```jsonc \"cSpell.overrides\": [   // Force `*.hrr` and `*.crr` files to be treated as `cpp` files:   {     \"filename\": \"**/{*.hrr,*.crr}\",     \"languageId\": \"cpp\"   },   // Force `dutch/**/*.txt` to be treated as Dutch (dictionary needs to be installed separately):   {     \"filename\": \"**/dutch/**/*.txt\",     \"language\": \"nl\"   } ] ```",
@@ -444,6 +456,12 @@
                 "description": "Optional identifier.",
                 "markdownDescription": "Optional identifier.",
                 "type": "string"
+              },
+              "ignoreRandomStrings": {
+                "default": true,
+                "description": "Ignore sequences of characters that look like random strings.",
+                "markdownDescription": "Ignore sequences of characters that look like random strings.",
+                "type": "boolean"
               },
               "ignoreRegExpList": {
                 "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
@@ -1141,6 +1159,12 @@
                 "default": 10000,
                 "description": "The maximum number of problems to report in a file.",
                 "markdownDescription": "The maximum number of problems to report in a file.",
+                "type": "number"
+              },
+              "minRandomLength": {
+                "default": 40,
+                "description": "The minimum length of a random string to be ignored.",
+                "markdownDescription": "The minimum length of a random string to be ignored.",
                 "type": "number"
               },
               "minWordLength": {
