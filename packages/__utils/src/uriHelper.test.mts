@@ -34,7 +34,7 @@ describe('Validate uriHelper', () => {
         ${new URL('http://www.streetsidesoftware.nl')}   | ${'http://www.streetsidesoftware.nl/'}
         ${'/path/to/file.txt'}                           | ${Uri.parse(pathToFileURL('/path/to/file.txt').toString()).toString()}
         ${'path/to/file.txt'}                            | ${Uri.parse(pathToFileURL('path/to/file.txt').toString()).toString()}
-        ${''}                                            | ${Uri.parse(pathToFileURL('').toString()).toString()}
+        ${''}                                            | ${Uri.parse(pathToFileURL('./').toString()).toString()}
     `('toUri $uri', ({ uri, expected }) => {
         expect(toUri(uri).toString()).toBe(expected.toString());
     });

@@ -1,3 +1,4 @@
+import { toFileURL } from '@cspell/url';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 export const supportedSchemes = [
@@ -40,7 +41,7 @@ export function toFileUri(uri: undefined | null): undefined;
 export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined;
 export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined {
     if (typeof uri === 'string') {
-        return regExpIsUri.test(uri) ? Uri.parse(uri) : Uri.file(uri);
+        return regExpIsUri.test(uri) ? Uri.parse(uri) : Uri.parse(toFileURL(uri).toString());
     }
     if (!uri) return undefined;
     if (uri instanceof URL) {
