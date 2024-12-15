@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.23...code-spell-checker-v4.0.24) (2024-12-15)
+
+
+### Updates and Bug Fixes
+
+* Fix issues with UNC ([#3925](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3925)) ([a673230](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a67323016baeaf67d4d173abe96f75a35874e5da))
+* Make sure VS Code files are not spell checked ([#3916](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3916)) ([f2efd7b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f2efd7bc1b9f9b36b64a436f5539565400a9128d))
+* Update CSpell (main) ([#3921](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3921)) ([fb4fb36](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fb4fb361a102c3e7ca91b6341a172c31b28fc3e9))
+* Update CSpell (main) ([#3923](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3923)) ([4c1649a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4c1649aff7a4469345765532e4b1ec9a2dd8348c))
+
+
+### Code Refactoring
+
+* change comments ([#3919](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3919)) ([d3896a3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d3896a3ec1230d67e04b2196743a6254294fde3d))
+
 ## [4.0.23](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.22...code-spell-checker-v4.0.23) (2024-12-05)
 
 
