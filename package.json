@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "GPL-3.0-or-later",
-  "version": "4.0.24",
+  "version": "4.0.25",
   "publisher": "streetsidesoftware",
   "private": true,
   "type": "module",
