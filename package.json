@@ -3754,7 +3754,7 @@
           },
           "cSpell.checkLimit": {
             "default": 500,
-            "markdownDescription": "Set the maximum number of bocks of text to check.\nEach block is 1024 characters.",
+            "markdownDescription": "Set the maximum number of blocks of text to check.\nEach block is 1024 characters.",
             "scope": "resource",
             "type": "number"
           },
