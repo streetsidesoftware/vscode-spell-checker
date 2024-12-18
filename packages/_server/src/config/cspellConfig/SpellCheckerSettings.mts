@@ -45,7 +45,7 @@ export interface SpellCheckerSettings
     autoFormatConfigFile?: boolean;
 
     /**
-     * Set the maximum number of bocks of text to check.
+     * Set the maximum number of blocks of text to check.
      * Each block is 1024 characters.
      * @scope resource
      * @default 500
