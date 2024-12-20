@@ -50,7 +50,7 @@
     "ts-loader": "^9.5.1",
     "vitest-when": "^0.5.0",
     "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.0"
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@cspell/cspell-pipe": "^8.17.1",
