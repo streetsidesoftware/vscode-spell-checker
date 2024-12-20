@@ -35,7 +35,7 @@
     "ts-json-schema-generator": "^2.3.0",
     "ts-loader": "^9.5.1",
     "webpack": "^5.97.1",
-    "webpack-cli": "^5.1.4",
+    "webpack-cli": "^6.0.0",
     "yargs": "^17.7.2"
   },
   "dependencies": {
