@@ -60,7 +60,6 @@ interface ServerSide {
 }
 
 interface ExtensionSide {
-    onDiagnostics: ClientSideApi['clientNotification']['onDiagnostics']['subscribe'];
     onDocumentConfigChange: ClientSideApi['clientNotification']['onDocumentConfigChange']['subscribe'];
     onSpellCheckDocument: ClientSideApi['clientNotification']['onSpellCheckDocument']['subscribe'];
     onBlockFile: ClientSideApi['clientNotification']['onBlockFile']['subscribe'];
@@ -98,7 +97,6 @@ export function createServerApi(client: LanguageClient): ServerApi {
         },
         clientNotifications: {
             onSpellCheckDocument: true,
-            onDiagnostics: true,
             onDocumentConfigChange: true,
             onBlockFile: true,
         },
@@ -127,7 +125,6 @@ export function createServerApi(client: LanguageClient): ServerApi {
         onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onDocumentConfigChange: (fn) => clientNotification.onDocumentConfigChange.subscribe(log2Cfn(fn, 'onDocumentConfigChange')),
         onBlockFile: (fn) => clientNotification.onBlockFile.subscribe(log2Cfn(fn, 'onBlockFile')),
-        onDiagnostics: (fn) => clientNotification.onDiagnostics.subscribe(log2Cfn(fn, 'onDiagnostics')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
             clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
         dispose: rpcApi.dispose,

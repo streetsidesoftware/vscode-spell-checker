@@ -10,6 +10,7 @@
 **/*.mdx
 **/*.schema.json
 **/dist/
+**/out/
 **/scripts/ts-json-schema-generator.cjs
 **/yarn.lock
 CHANGELOG.md

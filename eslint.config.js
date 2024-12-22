@@ -30,6 +30,7 @@ export default tsEslint.config(
             '**/fixtures/**',
             '**/fixtures/**/*.js',
             '**/node_modules/**',
+            '**/out/**',
             '**/scripts/ts-json-schema-generator.cjs',
             '**/temp/**',
             '**/webpack*.js',
