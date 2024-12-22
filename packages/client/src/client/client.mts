@@ -100,7 +100,7 @@ export class CSpellClient implements Disposable {
         this.languageIds = new Set([...languageIds, ...LanguageIds.languageIds, ...extractKnownFileTypeIds(settings)]);
 
         const handleDiagnostics = (uri: Uri, diagnostics: Diagnostic[]) => {
-            logger.log(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
+            // logger.log(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
             this.diagEmitter.fire({ uri, diagnostics });
         };
 
@@ -342,16 +342,6 @@ export class CSpellClient implements Disposable {
 
     public onDiagnostics(fn: (diags: DiagnosticsFromServer) => void): DisposableHybrid {
         return makeDisposable(this.diagEmitter.event(fn));
-        // return this.serverApi.onDiagnostics((pub) => {
-        //     const cvt = this.client.protocol2CodeConverter;
-        //     const uri = cvt.asUri(pub.uri);
-        //     const diags: DiagnosticsFromServer = {
-        //         uri,
-        //         version: pub.version,
-        //         diagnostics: pub.diagnostics.map((diag) => cvt.asDiagnostic(diag)),
-        //     };
-        //     return fn(diags);
-        // });
     }
 
     private async initWhenReady() {
