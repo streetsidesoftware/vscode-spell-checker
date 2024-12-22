@@ -43,21 +43,34 @@ let currLogLevel: CSpellSettings['logLevel'] = undefined;
 modules.init();
 
 export function activate(context: ExtensionContext): Promise<ExtensionApi> {
-    performance.mark('cspell_activate_start');
-    di.set('extensionContext', context);
-    const eventLogger = createEventLogger(context.globalStorageUri);
-    di.set('eventLogger', eventLogger);
-    eventLogger.logActivate();
+    try {
+        performance.mark('cspell_activate_start');
+        di.set('extensionContext', context);
+        const eventLogger = createEventLogger(context.globalStorageUri);
+        di.set('eventLogger', eventLogger);
+        eventLogger.logActivate();
 
-    setOutputChannelLogLevel();
+        setOutputChannelLogLevel();
 
-    const eIssueTracker = new vscode.EventEmitter<IssueTracker>();
-    const pIssueTracker = new Promise<IssueTracker>((resolve) => eIssueTracker.event(resolve));
+        const eIssueTracker = new vscode.EventEmitter<IssueTracker>();
+        const pIssueTracker = new Promise<IssueTracker>((resolve) => eIssueTracker.event(resolve));
 
-    activateIssueViewer(context, pIssueTracker);
-    activateFileIssuesViewer(context, pIssueTracker);
+        performance.mark('activateIssueViewer');
+        activateIssueViewer(context, pIssueTracker);
+        performance.mark('activateFileIssuesViewer');
+        activateFileIssuesViewer(context, pIssueTracker);
 
-    return _activate(context, eIssueTracker);
+        performance.mark('start_async_activate');
+        return _activate(context, eIssueTracker).catch((e) => {
+            throw activationError(e);
+        });
+    } catch (e) {
+        throw activationError(e);
+    }
+}
+
+function activationError(e: unknown) {
+    return new Error(`Failed to activate: (${performance.getLastEventName()}) ${e}`, { cause: e });
 }
 
 async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventEmitter<IssueTracker>): Promise<ExtensionApi> {
@@ -65,6 +78,7 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
     const dLogger = bindLoggerToOutput(logOutput);
 
     // Get the cSpell Client
+    performance.mark('create client');
     const client = await CSpellClient.create(context);
     context.subscriptions.push(client, logOutput, dLogger);
 
@@ -84,10 +98,13 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
         });
     }
 
+    performance.mark('ExtensionRegEx.activate');
     ExtensionRegEx.activate(context, client);
 
     // Start the client.
+    performance.mark('start client');
     await client.start();
+    performance.mark('start IssueTracker');
     const issueTracker = new IssueTracker(client);
     di.set('issueTracker', issueTracker);
     eIssueTracker.fire(issueTracker);
@@ -112,6 +129,7 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
         triggerGetSettings();
     }
 
+    performance.mark('createConfigWatcher');
     const configWatcher = createConfigWatcher();
     // console.log('config files: %o', await configWatcher.scanWorkspaceForConfigFiles());
     const decorator = new SpellingIssueDecorator(context, issueTracker);
@@ -124,6 +142,8 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
         'cSpell.hide': () => (decorator.visible = false),
         'cSpell.createCSpellTerminal': createTerminal,
     };
+
+    performance.mark('register');
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
@@ -161,6 +181,7 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
         client.onBlockFile(notifyUserOfBlockedFile),
     );
 
+    performance.mark('registerCspellInlineCompletionProviders');
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
@@ -240,6 +261,8 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
     const getConfigurationForDocument = <F extends ConfigurationFields>(doc: vscode.TextDocument, fields: ConfigFieldSelector<F>) =>
         client.getConfigurationForDocument(doc, fields);
 
+    performance.mark('setup Extension API');
+
     const server = {
         registerConfig,
         triggerGetSettings,
@@ -263,6 +286,7 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
         disableCurrentLanguage: commands.disableCurrentFileType,
     } as const satisfies ExtensionApi & { getConfigurationForDocument: typeof getConfigurationForDocument };
 
+    performance.mark('activateWebview');
     activateWebview(context);
 
     performance.mark('cspell_activate_end');

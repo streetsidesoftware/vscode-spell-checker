@@ -34,6 +34,14 @@ export class PerformanceTimeline {
         this.addEvent(event);
     }
 
+    getLastEvent(): TimeLineEvent {
+        return this.timeLine[this.timeLine.length - 1];
+    }
+
+    getLastEventName(): string {
+        return this.getLastEvent().name || '';
+    }
+
     private addEvent(event: TimeLineEvent) {
         this.timeLine.push(event);
         this.timeLineEvents.set(event.name, event);

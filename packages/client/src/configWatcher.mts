@@ -1,8 +1,9 @@
 import { opMap, pipe } from '@cspell/cspell-pipe/sync';
-import { defaultConfigFilenames } from 'cspell-lib';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, Event, Uri } from 'vscode';
 import * as vscode from 'vscode';
+
+import { defaultConfigFilenames } from './defaultConfigFilenames.mjs';
 
 export interface ConfigWatcher extends Disposable {
     on: Event<Uri>;
