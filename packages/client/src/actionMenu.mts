@@ -182,7 +182,7 @@ class ActionButtonItem implements vscode.QuickInputButton {
 
 class CommandButtonItem extends ActionButtonItem {
     constructor(
-        public iconPath: vscode.ThemeIcon,
+        public override iconPath: vscode.ThemeIcon,
         public command: vscode.Command,
     ) {
         super(new vscode.ThemeIcon('gear'), command.tooltip ?? command.title, commandFn(command));
@@ -218,7 +218,7 @@ class MenuItem implements ActionMenuItem {
 class CommandMenuItem extends MenuItem {
     constructor(
         readonly command: vscode.Command,
-        public description?: string,
+        public override description?: string,
     ) {
         super(command.title, description, commandFn(command));
     }

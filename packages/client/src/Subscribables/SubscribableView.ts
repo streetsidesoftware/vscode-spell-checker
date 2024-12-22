@@ -27,12 +27,12 @@ class ViewImpl<T> extends SubscribableImpl<T> implements SubscribableView<T> {
         return this._value === symbolNoValue ? undefined : this._value;
     }
 
-    protected notify(value: T): void {
+    protected override notify(value: T): void {
         this._value = value;
         super.notify(value);
     }
 
-    subscribe(s: SubscriberLike<T>) {
+    override subscribe(s: SubscriberLike<T>) {
         const dispose = super.subscribe(s);
         if (this._value !== symbolNoValue) {
             const sFn = toSubscriberFn(s);

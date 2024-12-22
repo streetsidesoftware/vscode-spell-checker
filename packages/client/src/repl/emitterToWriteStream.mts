@@ -220,12 +220,12 @@ class ReadableEmitter extends stream.Readable {
         });
     }
 
-    _read() {
+    override _read() {
         this.paused = false;
         this.pushBuffer();
     }
 
-    _destroy() {
+    override _destroy() {
         this.disposable.dispose();
     }
 

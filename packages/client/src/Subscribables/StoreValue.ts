@@ -37,7 +37,7 @@ class StoreValueImpl<T> extends AbstractSubscribable<T> implements StoreValue<T>
         return;
     }
 
-    subscribe(s: SubscriberLike<T>) {
+    override subscribe(s: SubscriberLike<T>) {
         const dispose = super.subscribe(s);
         const sFn = toSubscriberFn(s);
         sFn(this._value);
