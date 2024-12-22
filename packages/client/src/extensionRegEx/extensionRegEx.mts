@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { catchErrors, isError, logError, logErrors, showError } from '../util/errors.js';
-import { toRegExp } from './evaluateRegExp.js';
+import { toRegExp } from '../util/toRegExp.js';
 import { PatternMatcherClient } from './patternMatcherClient.mjs';
 import type { RegexpOutlineItem } from './RegexpOutlineProvider.mjs';
 import { RegexpOutlineProvider } from './RegexpOutlineProvider.mjs';

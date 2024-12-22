@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { isRegExp, toRegExp } from './evaluateRegExp.js';
+import { isRegExp, toRegExp } from './toRegExp.js';
 
 describe('EvaluateRegExp', () => {
     test('isRegExp', () => {
