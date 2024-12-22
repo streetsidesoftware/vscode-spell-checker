@@ -418,7 +418,7 @@ export class DictionaryTargetError extends Error {
     constructor(
         msg: string,
         readonly dictTarget: DictionaryTarget,
-        readonly cause: Error | unknown,
+        override readonly cause: Error | unknown,
     ) {
         super(msg);
     }
@@ -429,7 +429,7 @@ export class UnableToAddWordError extends DictionaryTargetError {
         msg: string,
         dictTarget: DictionaryTarget,
         readonly words: string | string[],
-        readonly cause: Error | unknown,
+        override readonly cause: Error | unknown,
     ) {
         super(msg, dictTarget, cause);
     }

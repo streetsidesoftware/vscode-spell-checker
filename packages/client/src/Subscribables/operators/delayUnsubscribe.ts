@@ -25,7 +25,7 @@ class SubscribableDelayedUnsubscribeImpl<T> extends SubscribableImpl<T> {
         this._handleTimeout = undefined;
     }
 
-    protected _tryToStop(): void {
+    protected override _tryToStop(): void {
         this.clearTimeout();
         this._handleTimeout = setTimeout(() => {
             if (this._hasSubscribers()) return;
@@ -33,7 +33,7 @@ class SubscribableDelayedUnsubscribeImpl<T> extends SubscribableImpl<T> {
         }, this._timeout);
     }
 
-    protected done() {
+    protected override done() {
         this.clearTimeout();
         super.done();
     }
