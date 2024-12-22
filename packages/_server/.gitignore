@@ -1,6 +1,6 @@
-out
+/out
 node_modules
 !.vscode
 temp
-dist
-lib
+/dist
+/lib
