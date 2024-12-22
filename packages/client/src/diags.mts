@@ -3,7 +3,7 @@ import { createDisposableList } from 'utils-disposables';
 import type { Diagnostic, Disposable, Event, Range, Selection, TabChangeEvent, TextDocument, TextEditor, Uri } from 'vscode';
 import vscode from 'vscode';
 
-import { diagnosticSource } from './constants.js';
+import { diagnosticSource, extensionId } from './constants.js';
 import { getDependencies } from './di.mjs';
 import type { SpellingDiagnostic } from './issueTracker.mjs';
 import type { CSpellSettings } from './settings/CSpellSettings.mjs';
@@ -88,12 +88,12 @@ function determineWordRangeToAddToDictionaryFromSelection(
 export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>): Disposable {
     const dList = createDisposableList();
     const issueTracker = getDependencies().issueTracker;
-    const collection = vscode.languages.createDiagnosticCollection('cSpell');
+    const collection = vscode.languages.createDiagnosticCollection(diagnosticSource);
     let overrides: CSpellSettings[typeof ConfigFields.doNotUseCustomDecorationForScheme];
     let useDiagnosticCollection = true;
 
     function updateConfig() {
-        const cfg = vscode.workspace.getConfiguration('cSpell');
+        const cfg = vscode.workspace.getConfiguration(extensionId);
         useDiagnosticCollection = !cfg.get(ConfigFields.useCustomDecorations);
         overrides = cfg.get(ConfigFields.doNotUseCustomDecorationForScheme);
     }

@@ -313,6 +313,10 @@ class WordIssueTreeItem extends IssueTreeItemBase {
         this.suggestions = gatherSuggestions(this.suggestionsByDocument);
         this.context.invalidate(this);
     }
+
+    toString(): string {
+        return `WordIssueTreeItem ${this.word}`;
+    }
 }
 
 class IssueLocationsTreeItem extends IssueTreeItemBase {
@@ -338,6 +342,10 @@ class IssueLocationsTreeItem extends IssueTreeItemBase {
     getParent(): IssueTreeItemBase | undefined {
         return this.parent;
     }
+
+    toString(): string {
+        return `IssueLocationsTreeItem ${this.word}`;
+    }
 }
 
 class IssueFixesTreeItem extends IssueTreeItemBase {
@@ -362,6 +370,10 @@ class IssueFixesTreeItem extends IssueTreeItemBase {
 
     getParent(): IssueTreeItemBase | undefined {
         return this.parent;
+    }
+
+    toString(): string {
+        return `IssueFixesTreeItem ${this.word}`;
     }
 }
 
@@ -408,6 +420,10 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
 
     getRange(): Range {
         return this.issue.range;
+    }
+
+    toString(): string {
+        return `IssueLocationTreeItem ${this.issue.word}`;
     }
 
     static compare(a: IssueLocationTreeItem, b: IssueLocationTreeItem) {
@@ -477,6 +493,10 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 
     isPreferred(): boolean {
         return this.suggestion.isPreferred || false;
+    }
+
+    toString(): string {
+        return `IssueSuggestionTreeItem ${this.word}`;
     }
 }
 

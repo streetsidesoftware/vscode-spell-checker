@@ -110,7 +110,7 @@ export class CSpellClient implements Disposable {
             },
             middleware: {
                 handleDiagnostics(uri, diagnostics, next) {
-                    // console.error(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
+                    logger.log(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
                     next(uri, diagnostics);
                 },
             },

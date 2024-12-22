@@ -5,6 +5,7 @@ import vscode, { ColorThemeKind, MarkdownString, Range, window, workspace } from
 
 import type { PartialCSpellUserSettings } from '../client/index.mjs';
 import { commandUri, createTextEditCommand } from '../commands.mjs';
+import { extensionId } from '../constants.js';
 import type { Disposable } from '../disposable.js';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import type { CSpellSettings } from '../settings/index.mjs';
@@ -209,7 +210,7 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     private getConfiguration() {
-        const cfg = workspace.getConfiguration('cSpell') as PartialCSpellUserSettings<
+        const cfg = workspace.getConfiguration(extensionId) as PartialCSpellUserSettings<
             'hideIssuesWhileTyping' | 'revealIssuesAfterDelayMS' | 'doNotUseCustomDecorationForScheme'
         >;
         this.hideIssuesWhileTyping = cfg.hideIssuesWhileTyping ?? defaultHideIssuesWhileTyping;
@@ -237,11 +238,11 @@ export class SpellingIssueDecorator implements Disposable {
           }
         | undefined {
         this.clearDecoration();
-        const useCustomDecorations = this.visible && (workspace.getConfiguration('cSpell').get<boolean>('useCustomDecorations') ?? true);
+        const useCustomDecorations = this.visible && (workspace.getConfiguration(extensionId).get<boolean>('useCustomDecorations') ?? true);
         if (!useCustomDecorations) return undefined;
 
         const mode = calcMode(window.activeColorTheme.kind);
-        const cfg = workspace.getConfiguration('cSpell') as PartialCSpellUserSettings<
+        const cfg = workspace.getConfiguration(extensionId) as PartialCSpellUserSettings<
             | 'dark'
             | 'doNotUseCustomDecorationForScheme'
             | 'hideIssuesWhileTyping'
@@ -362,7 +363,7 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     #onConfigChange(e: vscode.ConfigurationChangeEvent) {
-        if (!e.affectsConfiguration('cSpell')) return;
+        if (!e.affectsConfiguration(extensionId)) return;
         this.resetDecorator();
     }
 

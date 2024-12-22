@@ -5,6 +5,7 @@ import type { Disposable, QuickPickItem } from 'vscode';
 import vscode from 'vscode';
 
 import { knownCommands } from './commands.mjs';
+import { extensionId } from './constants.js';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
 import { handleErrors } from './util/errors.js';
@@ -57,7 +58,7 @@ async function actionMenu(options: ActionsMenuOptions) {
             command: 'workbench.action.openGlobalKeybindings',
             arguments: ['Spell:'],
         }),
-        itemCommand({ title: '$(gear) Edit Settings...', command: 'workbench.action.openSettings', arguments: ['cSpell'] }),
+        itemCommand({ title: '$(gear) Edit Settings...', command: 'workbench.action.openSettings', arguments: [extensionId] }),
     ].filter(isDefined);
 
     return quickPickMenu({ items, title: 'Spell Checker Actions Menu' }).catch(() => undefined);

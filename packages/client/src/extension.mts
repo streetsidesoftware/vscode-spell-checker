@@ -81,8 +81,6 @@ async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventE
             dataFileDirUri: vscode.Uri.joinPath(dataFileUri, '..').toJSON(),
             workspaceState: context.workspaceState.keys(),
             globalState: context.globalState.keys(),
-            // contextKeys: cki.filter((k) => k.key.startsWith('cSpell')),
-            // commands: commands.filter((c) => c.toLowerCase().includes('command')),
         });
     }
 
