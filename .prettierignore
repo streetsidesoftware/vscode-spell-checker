@@ -5,6 +5,7 @@
 .yarn
 [tT]emp/
 *.d.ts
+**/_server/lib/**
 **/*.lock
 **/*.log
 **/*.mdx

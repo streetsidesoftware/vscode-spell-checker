@@ -21,6 +21,7 @@ export default tsEslint.config(
             '.github/**/*.yaml',
             '.github/**/*.yml',
             '**/__snapshots__/**',
+            '**/_server/lib/**',
             '**/.vscode-test/**',
             '**/.yarn/**',
             '**/*.d.ts',

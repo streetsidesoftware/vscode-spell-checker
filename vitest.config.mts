@@ -7,7 +7,7 @@ export default defineConfig({
         exclude: [
             '**/node_modules/**',
             '**/dist/**',
-            '**/lib/**/*.{cjs,mjs,js}',
+            '**/_server/lib/**',
             '**/cypress/**',
             '**/coverage/**',
             '**/temp/**',
