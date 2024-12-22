@@ -5,12 +5,12 @@
 .yarn
 [tT]emp/
 *.d.ts
-**/_server/lib/**
 **/*.lock
 **/*.log
 **/*.mdx
 **/*.schema.json
 **/dist/
+**/out/
 **/scripts/ts-json-schema-generator.cjs
 **/yarn.lock
 CHANGELOG.md

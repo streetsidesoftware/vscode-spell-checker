@@ -26,7 +26,7 @@
       "require": "./dist/api.cjs"
     },
     "./lib": {
-      "import": "./lib/lib/index.mjs"
+      "import": "./out/lib/index.mjs"
     }
   },
   "devDependencies": {
