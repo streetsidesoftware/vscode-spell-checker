@@ -25,7 +25,6 @@ import type {
     OnBlockFile,
     OnDocumentConfigChange,
     OnSpellCheckDocumentStep,
-    PublishDiagnostics,
     SpellingSuggestionsResult,
     SplitTextIntoWordsResult,
     TextDocumentInfo,
@@ -92,11 +91,6 @@ export interface ClientNotificationsAPI {
      * @param step - The step in the spell checking process.
      */
     onSpellCheckDocument(step: OnSpellCheckDocumentStep): void;
-    /**
-     * Send updated document diagnostics to the client.
-     * @param pub - The diagnostics to publish.
-     */
-    onDiagnostics(pub: PublishDiagnostics): void;
 
     /**
      * Notify the client that the configuration has for the listed document URIs.
