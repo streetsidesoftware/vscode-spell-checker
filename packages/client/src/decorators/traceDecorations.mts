@@ -3,6 +3,7 @@ import type { TextEditorDecorationType } from 'vscode';
 import vscode from 'vscode';
 
 import type { CSpellClient } from '../client/index.mjs';
+import { extensionId } from '../constants.js';
 import type { Disposable } from '../disposable.js';
 import { createEmitter, map, pipe, throttle } from '../Subscribables/index.js';
 import { logError } from '../util/errors.js';
@@ -27,7 +28,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
-            vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.refreshEditor(undefined)),
+            vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration(extensionId) && this.refreshEditor(undefined)),
             vscode.workspace.onDidChangeTextDocument((e) => this.refreshDocument(e.document)),
             vscode.languages.registerHoverProvider('*', this.getHoverProvider()),
             pipe(

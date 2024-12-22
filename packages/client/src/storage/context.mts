@@ -102,7 +102,7 @@ async function _setContext(context: ContextTypes): Promise<void> {
  * @param prefix - optional prefix to use for the context keys
  */
 export async function setContext(context: ContextTypes, prefix = 'cSpell.context'): Promise<void> {
-    assert(prefix.startsWith('cSpell'));
+    assert(prefix.startsWith(extensionId));
     const kvpValues = [...flatten(prefix, context)];
     const filteredKvpValues = kvpValues.filter(([k, v]) => v !== currentContext.get(k));
 

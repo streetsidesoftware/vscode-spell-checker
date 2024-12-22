@@ -359,6 +359,10 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         this.targets = this.context.issueTracker.getConfigurationTargets(this.document.uri).then((r) => ({ targets: r.configTargets }));
         return this.targets;
     };
+
+    toString(): string {
+        return `FileWithIssuesTreeItem: ${this.document.uri.toString()}`;
+    }
 }
 
 class FileIssueTreeItem extends IssueTreeItemBase {
@@ -413,6 +417,7 @@ class FileIssueTreeItem extends IssueTreeItemBase {
     getChildren() {
         if (this.children) return this.children;
         this.pChildren ??= this.#getChildren();
+        return undefined;
     }
 
     async #getChildren() {
@@ -445,6 +450,10 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         // const md = new vscode.MarkdownString();
         // md.appendMarkdown(`Unknown word: **\`${cleanWord(this.issue.word)}\`**`);
         // return md;
+    }
+
+    toString(): string {
+        return `FileIssueTreeItem: ${this.issue.diag.message}`;
     }
 
     static compare(a: FileIssueTreeItem, b: FileIssueTreeItem) {
@@ -499,6 +508,10 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
     isPreferred(): boolean {
         return this.suggestion.isPreferred || false;
     }
+
+    toString(): string {
+        return `IssueSuggestionTreeItem: ${this.issue.word} -> ${this.suggestion.word}`;
+    }
 }
 
 class IssueAddToTargetTreeItem extends IssueTreeItemBase {
@@ -543,6 +556,10 @@ class IssueAddToTargetTreeItem extends IssueTreeItemBase {
             di.get('dictionaryHelper').addWordsToTargetServerConfigTarget(this.issue.word, this.target, this.issue.document.uri),
             'addWordsToConfig',
         );
+    }
+
+    toString(): string {
+        return `IssueAddToTargetTreeItem: ${this.issue.word} to ${this.target.name}`;
     }
 }
 

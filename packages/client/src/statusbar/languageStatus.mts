@@ -5,6 +5,7 @@ import vscode from 'vscode';
 
 import type { ServerResponseIsSpellCheckEnabledForFile } from '../client/client.mjs';
 import { knownCommands } from '../commands.mjs';
+import { extensionId } from '../constants.js';
 import { getClient, getIssueTracker } from '../di.mjs';
 import type { IssuesStats } from '../issueTracker.mjs';
 import { handleErrors } from '../util/errors.js';
@@ -28,7 +29,7 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
     dList.push(vscode.window.onDidChangeActiveTextEditor(queueUpdate));
     dList.push(
         vscode.workspace.onDidChangeConfiguration((e) => {
-            if (e.affectsConfiguration('cSpell')) queueUpdate();
+            if (e.affectsConfiguration(extensionId)) queueUpdate();
         }),
     );
     dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow()));

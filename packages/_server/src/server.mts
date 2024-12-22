@@ -42,6 +42,7 @@ import {
     isUriBlockedBySettings,
     stringifyPatterns,
 } from './config/documentSettings.mjs';
+import { isUrlIncludedByDefault } from './config/docUriHelper.mjs';
 import { isFileTypeEnabled } from './config/extractEnabledFileTypes.mjs';
 import { sanitizeSettings } from './config/sanitizeSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
@@ -592,6 +593,7 @@ export function run(): void {
         };
     }
     async function isUriExcluded(uri: string): Promise<boolean> {
+        if (isUrlIncludedByDefault(uri)) return false;
         const ie = await calcFileIncludeExclude(uri);
         return !ie.include || ie.exclude || !!ie.ignored;
     }
