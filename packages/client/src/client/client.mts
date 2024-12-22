@@ -10,9 +10,9 @@ import type {
     WorkspaceConfigForDocument,
 } from 'code-spell-checker-server/api';
 import { extractEnabledSchemeList, extractKnownFileTypeIds } from 'code-spell-checker-server/lib';
-import { createDisposableList, type DisposableHybrid } from 'utils-disposables';
+import { createDisposableList, type DisposableHybrid, makeDisposable } from 'utils-disposables';
 import type { CodeAction, Diagnostic, DiagnosticCollection, Disposable, ExtensionContext, Range, TextDocument } from 'vscode';
-import { languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
+import { EventEmitter, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
 
 import { diagnosticSource } from '../constants.js';
 import { isLcCodeAction, mapDiagnosticToLc, mapLcCodeAction, mapRangeToLc } from '../languageServer/clientHelpers.js';
@@ -48,7 +48,7 @@ export { GetConfigurationForDocumentResult } from './server/index.mjs';
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
 
-const diagnosticCollectionName = diagnosticSource;
+const diagnosticCollectionName = diagnosticSource + 'Server';
 
 export type ServerResponseIsSpellCheckEnabled = Partial<IsSpellCheckEnabledResult>;
 
@@ -75,6 +75,7 @@ export class CSpellClient implements Disposable {
     private broadcasterOnDocumentConfigChange = createBroadcaster<OnDocumentConfigChange>();
     private broadcasterOnBlockFile = createBroadcaster<OnBlockFile>();
     private ready = new Resolvable<void>();
+    private diagEmitter = new EventEmitter<DiagnosticsFromServer>();
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -98,6 +99,11 @@ export class CSpellClient implements Disposable {
 
         this.languageIds = new Set([...languageIds, ...LanguageIds.languageIds, ...extractKnownFileTypeIds(settings)]);
 
+        const handleDiagnostics = (uri: Uri, diagnostics: Diagnostic[]) => {
+            logger.log(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
+            this.diagEmitter.fire({ uri, diagnostics });
+        };
+
         const uniqueLangIds = [...this.languageIds];
         const documentSelector = [...this.allowedSchemas].flatMap((scheme) => uniqueLangIds.map((language) => ({ language, scheme })));
         // Options to control the language client
@@ -108,12 +114,7 @@ export class CSpellClient implements Disposable {
                 // Synchronize the setting section 'spellChecker' to the server
                 configurationSection: [sectionCSpell, 'search'],
             },
-            middleware: {
-                handleDiagnostics(uri, diagnostics, next) {
-                    logger.log(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
-                    next(uri, diagnostics);
-                },
-            },
+            middleware: { handleDiagnostics },
         };
 
         const execArgv = this.calcServerArgs();
@@ -340,16 +341,17 @@ export class CSpellClient implements Disposable {
     }
 
     public onDiagnostics(fn: (diags: DiagnosticsFromServer) => void): DisposableHybrid {
-        return this.serverApi.onDiagnostics((pub) => {
-            const cvt = this.client.protocol2CodeConverter;
-            const uri = cvt.asUri(pub.uri);
-            const diags: DiagnosticsFromServer = {
-                uri,
-                version: pub.version,
-                diagnostics: pub.diagnostics.map((diag) => cvt.asDiagnostic(diag)),
-            };
-            return fn(diags);
-        });
+        return makeDisposable(this.diagEmitter.event(fn));
+        // return this.serverApi.onDiagnostics((pub) => {
+        //     const cvt = this.client.protocol2CodeConverter;
+        //     const uri = cvt.asUri(pub.uri);
+        //     const diags: DiagnosticsFromServer = {
+        //         uri,
+        //         version: pub.version,
+        //         diagnostics: pub.diagnostics.map((diag) => cvt.asDiagnostic(diag)),
+        //     };
+        //     return fn(diags);
+        // });
     }
 
     private async initWhenReady() {

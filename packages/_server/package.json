@@ -26,7 +26,7 @@
       "require": "./dist/api.cjs"
     },
     "./lib": {
-      "import": "./dist/lib/index.mjs"
+      "import": "./lib/lib/index.mjs"
     }
   },
   "devDependencies": {
@@ -72,7 +72,7 @@
     "#build:ts-json-schema-generator": "esbuild --bundle ../../../../code/clones/ts-json-schema-generator/dist/ts-json-schema-generator.js --outfile=scripts/ts-json-schema-generator.cjs  --platform=node --external:typescript",
     "clean-build-production": "npm run clean && npm run build:production",
     "clean-build": "npm run clean && npm run build",
-    "clean": "shx rm -rf dist temp out coverage",
+    "clean": "shx rm -rf dist temp out coverage lib",
     "test-watch": "vitest",
     "test": "vitest run",
     "watch": "concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",

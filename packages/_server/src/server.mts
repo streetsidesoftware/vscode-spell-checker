@@ -83,6 +83,14 @@ async function calcDefaultSettings(): Promise<CSpellUserAndExtensionSettings> {
     };
 }
 
+// This is to filter out the "Off" severity that is used to hide issues from the VS Code Problems panel.
+const knownDiagnosticSeverityLevels = new Set<number | undefined>([
+    DiagnosticSeverity.Error,
+    DiagnosticSeverity.Warning,
+    DiagnosticSeverity.Information,
+    DiagnosticSeverity.Hint,
+]);
+
 export function run(): void {
     // debounce buffer
     const disposables = createDisposableList();
@@ -488,14 +496,6 @@ export function run(): void {
 
         const diags: Required<PublishDiagnosticsParams> = { uri, version, diagnostics };
 
-        // This is to filter out the "Off" severity that is used to hide issues from the VS Code Problems panel.
-        const knownDiagnosticSeverityLevels = new Set<number | undefined>([
-            DiagnosticSeverity.Error,
-            DiagnosticSeverity.Warning,
-            DiagnosticSeverity.Information,
-            DiagnosticSeverity.Hint,
-        ]);
-
         function mapDiagnostic(diag: Diagnostic): Diagnostic {
             return {
                 ...diag,
@@ -504,7 +504,8 @@ export function run(): void {
         }
 
         const diagsForClient = { ...diags, diagnostics: diags.diagnostics.map(mapDiagnostic) };
-        catchPromise(clientServerApi.clientNotification.onDiagnostics(diagsForClient));
+        catchPromise(connection.sendDiagnostics(diagsForClient));
+        // catchPromise(clientServerApi.clientNotification.onDiagnostics(diagsForClient));
     }
 
     async function shouldValidateDocument(
