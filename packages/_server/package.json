@@ -14,19 +14,20 @@
   },
   "type": "module",
   "main": "dist/main.cjs",
+  "types": "out/main.d.cts",
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./dist/main.cjs",
-      "require": "./dist/main.cjs"
+      "import": "./out/main.js",
+      "require": "./out/main.cjs"
     },
     "./api": {
-      "types": "./dist/api.d.cts",
-      "import": "./dist/api.cjs",
-      "require": "./dist/api.cjs"
+      "import": "./out/api.js",
+      "require": "./out/api.cjs"
     },
     "./lib": {
-      "import": "./out/lib/index.mjs"
+      "import": "./out/lib/index.js",
+      "require": "./out/lib/index.cjs"
     }
   },
   "devDependencies": {
@@ -60,10 +61,11 @@
     "vscode-uri": "^3.0.8"
   },
   "scripts": {
-    "build": "npm run build:esbuild && npm run build:api && npm run build:tsc && npm run build-schema",
+    "build": "tsup-node && npm run build:tsc && npm run build-schema",
     "build-production": "npm run clean-build-production",
     "build-schema": "node ./scripts/build-schema.mjs",
-    "build:production": "npm run build:esbuild -- --production && npm run build:api && npm run build-schema",
+    "build:production": "tsup-node --minify && npm run build-schema",
+    "x-build:production": "npm run build:esbuild -- --production && npm run build:api && npm run build-schema",
     "build:esbuild": "node ./build.mjs",
     "build:api": "npm run build:api.d.ts && npm run build:api.d.cts",
     "build:api.d.ts": "tsc -p tsconfig.api.json",
