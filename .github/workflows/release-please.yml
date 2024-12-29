@@ -74,6 +74,14 @@ jobs:
     with:
       ref: ${{ needs.release-please.outputs.tag_name }}
 
+  mark-prerelease:
+    needs:
+      - release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    uses: ./.github/workflows/release-mark-prerelease.yml
+    with:
+      ref: ${{ needs.release-please.outputs.tag_name }}
+
   publish:
     needs:
       - release-please
