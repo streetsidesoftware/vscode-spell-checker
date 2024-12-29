@@ -6,7 +6,7 @@ outputs:
     description: A token for making Pull Requests
     value: ${{ steps.check-prerelease.outputs.arg }}
   prerelease:
-    description: Is the package a prerelease?
+    description: Is the package a prerelease? ("true"/"false")
     value: ${{ steps.check-prerelease.outputs.prerelease }}
 runs:
   using: 'composite'

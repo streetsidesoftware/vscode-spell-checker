@@ -1,0 +1,51 @@
+name: ' 🚀 Mark Prerelease'
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag of the release to be updated.
+        type: string
+        required: true
+  release:
+    types:
+      - published
+  # push:
+  #   # Sequence of patterns matched against refs/tags
+  #   tags:
+  #     - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+
+permissions:
+  actions: read
+  checks: write
+  contents: write
+  issues: read
+  packages: write
+  pull-requests: read
+  repository-projects: read
+  statuses: read
+
+jobs:
+  UpdateRelease:
+    name: Mark Release
+    env:
+      REF: ${{ inputs.ref || github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REF }}
+
+      - name: VSCE Args
+        id: vsce-args
+        uses: ./.github/actions/vsce-args
+
+      - name: Mark Prerelease
+        if: ${{ steps.vsce-args.outputs.prerelease == 'true' }}
+        run: gh release edit ${{ env.REF }} --prerelease
