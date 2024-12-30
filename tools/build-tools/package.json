@@ -35,7 +35,7 @@
     "@types/json-schema": "^7.0.15"
   },
   "dependencies": {
-    "commander": "^12.1.0",
+    "commander": "^13.0.0",
     "json-schema": "0.4.0",
     "json-schema-traverse": "1.0.0"
   },
