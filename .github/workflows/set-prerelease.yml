@@ -1,4 +1,4 @@
-name: ' 👀 Set Prerelease'
+name: '  👀 Set Prerelease'
 on: # rebuild any PRs and main branch changes
   workflow_dispatch:
     inputs:

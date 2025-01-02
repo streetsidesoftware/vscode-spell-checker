@@ -1,4 +1,4 @@
-name: ' 🔒 Lock closed issues'
+name: '🔒 Lock closed issues'
 
 on:
   schedule:

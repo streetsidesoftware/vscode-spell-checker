@@ -2,7 +2,7 @@
 # It reads the `prerelease` property from the `package.json` file.
 # If the property is `true`, it marks the release as a prerelease.
 # If the property is `false`, it does nothing.
-name: ' 🚀 Mark Prerelease'
+name: '🚀 Mark Prerelease'
 
 on:
   workflow_dispatch:
