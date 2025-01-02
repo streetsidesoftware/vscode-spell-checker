@@ -70,6 +70,7 @@ jobs:
           git checkout -b ${{ env.BRANCH_NAME }}
           git add .
           git commit -m "${{ env.PR_TITLE }}"
+          git push -f origin ${{ env.BRANCH_NAME }}
 
       - name: Pull request
         if: steps.dirty.outputs.isDirty
