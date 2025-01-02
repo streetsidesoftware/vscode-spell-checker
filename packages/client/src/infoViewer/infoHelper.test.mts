@@ -49,7 +49,7 @@ describe('infoHelper', () => {
                     name: 'en_us',
                 },
                 {
-                    description: 'Lorem-ipsum dictionary for cspell.',
+                    description: 'Lorem-ipsum dictionary.',
                     languageIds: [],
                     locales: ['lorem', 'lorem-ipsum'],
                     name: 'lorem-ipsum',
