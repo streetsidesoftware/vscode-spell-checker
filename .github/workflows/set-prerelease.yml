@@ -8,6 +8,13 @@ on: # rebuild any PRs and main branch changes
         default: true
 env:
   BRANCH_NAME: update-prerelease-mode
+permissions:
+  actions: read
+  checks: write
+  contents: write
+  issues: read
+  packages: write
+  pull-requests: write
 jobs:
   set-prerelease-mode:
     runs-on: ubuntu-latest
@@ -40,7 +47,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           commit-message: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
-          branch: update-prerelease-mode
+          branch: ${{ env.BRANCH_NAME }}
           base: main
           title: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
           body: |
