@@ -29,7 +29,7 @@
     "@types/chai": "^5.0.1",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.10",
+    "@types/node": "^20.17.11",
     "chai": "^5.1.2",
     "cross-env": "^7.0.3"
   },
@@ -40,7 +40,7 @@
     "decompress": "^4.2.1",
     "glob": "^11.0.0",
     "kefir": "^3.8.8",
-    "mocha": "^11.0.2"
+    "mocha": "^11.1.0"
   },
   "engines": {
     "node": ">20.0.0"
