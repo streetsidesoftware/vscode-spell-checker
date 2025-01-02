@@ -1360,13 +1360,6 @@
           "scope": "application",
           "type": "boolean"
         },
-        "cSpell.experimental.enableSettingsViewerV2": {
-          "default": false,
-          "description": "Enable the Settings Viewer V2 Extension",
-          "markdownDescription": "Enable the Settings Viewer V2 Extension",
-          "scope": "application",
-          "type": "boolean"
-        },
         "cSpell.experimental.symbols": {
           "default": false,
           "description": "Experiment with executeDocumentSymbolProvider. This feature is experimental and will be removed in the future.",

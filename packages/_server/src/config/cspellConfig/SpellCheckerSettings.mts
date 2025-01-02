@@ -378,13 +378,6 @@ export interface ExperimentalSettings {
     'experimental.enableRegexpView'?: boolean;
 
     /**
-     * Enable the Settings Viewer V2 Extension
-     * @scope application
-     * @default false
-     */
-    'experimental.enableSettingsViewerV2'?: boolean;
-
-    /**
      * Experiment with executeDocumentSymbolProvider.
      * This feature is experimental and will be removed in the future.
      * @title Experiment with `executeDocumentSymbolProvider`
