@@ -33,14 +33,29 @@ jobs:
             ${{ toJSON(steps.check-args.outputs) }}
             ```
 
-      - name: PR
-        uses: streetsidesoftware/actions/.github/actions/pr@v1
-        with:
-          commit-message: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
-          branch: update-prerelease-mode
-          base: main
-          title: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
-          body: |
+      # - name: PR
+      #   uses: streetsidesoftware/actions/.github/actions/pr@v1
+      #   with:
+      #     commit-message: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
+      #     branch: update-prerelease-mode
+      #     base: main
+      #     title: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
+      #     body: |
+      #       Set Prerelease Mode to `${{ inputs.prerelease }}`
+      #     app_id: ${{ secrets.AUTOMATION_APP_ID }}
+      #     app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
+
+      - name: Dirty
+        id: dirty
+        uses: streetsidesoftware/actions/public/dirty@v1
+
+      - name: Pull request
+        if: steps.dirty.outputs.isDirty
+        env:
+          PR_BODY: |
             Set Prerelease Mode to `${{ inputs.prerelease }}`
-          app_id: ${{ secrets.AUTOMATION_APP_ID }}
-          app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
+          PR_TITLE: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
+          BRANCH_NAME: update-prerelease-mode
+        run: |
+          echo ${{ github.token }} | gh auth login --with-token
+          gh pr edit ${{ env.BRANCH_NAME }} -b '${{ env.PR_BODY }}' -t '${{ env.PR_TITLE }}'  && gh pr reopen ${{ env.BRANCH_NAME }} || gh pr create --fill -B main -H ${{ env.BRANCH_NAME }}
