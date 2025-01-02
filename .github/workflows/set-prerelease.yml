@@ -6,12 +6,18 @@ on: # rebuild any PRs and main branch changes
         type: boolean
         description: Is prerelease?
         default: true
-
+env:
+  BRANCH_NAME: update-prerelease-mode
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   set-prerelease-mode:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -34,13 +40,12 @@ jobs:
             ```
 
       - name: PR
-        uses: streetsidesoftware/actions/.github/actions/pr@v1
+        uses: peter-evans/create-pull-request@v3
         with:
           commit-message: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
-          branch: update-prerelease-mode
+          branch: ${{ env.BRANCH_NAME }}
           base: main
           title: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
           body: |
             Set Prerelease Mode to `${{ inputs.prerelease }}`
-          app_id: ${{ secrets.AUTOMATION_APP_ID }}
-          app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
