@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.30](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.29...code-spell-checker-v4.0.30) (2025-01-02)
+
+
+### Updates and Bug Fixes
+
+* bump @cspell/dict-cspell-bundle from 1.0.18 to 1.0.19 ([#3977](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3977)) ([b995b13](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b995b132f656038527e3ac6e4fa9983491f364e4))
+* Hide explorer icon by default ([#3986](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3986)) ([3e4ac0e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/3e4ac0e207709cc85d997612c6c6dd7fa1efea7b))
+
 ## [4.0.29](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.28...code-spell-checker-v4.0.29) (2024-12-29)
 
 
