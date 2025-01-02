@@ -45,7 +45,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install
