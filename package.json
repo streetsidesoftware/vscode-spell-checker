@@ -234,12 +234,14 @@
         {
           "type": "webview",
           "id": "cSpellInfoView",
-          "name": "Spell Checker"
+          "name": "Spell Checker",
+          "visibility": "hidden"
         },
         {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
-          "when": "config.cSpell.experimental.enableRegexpView"
+          "when": "config.cSpell.experimental.enableRegexpView",
+          "visibility": "hidden"
         }
       ],
       "cspellPanel": [
@@ -265,12 +267,6 @@
     },
     "viewsWelcome": [],
     "commands": [
-      {
-        "command": "cspell-info.showHelloWorld",
-        "title": "Hello World (Svelte): Show",
-        "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
-        "category": "Spell"
-      },
       {
         "command": "cSpell.addWordToWorkspaceDictionary",
         "category": "Spell",
@@ -1899,12 +1895,6 @@
           "cSpell.experimental.enableRegexpView": {
             "default": false,
             "markdownDescription": "Show Regular Expression Explorer",
-            "scope": "application",
-            "type": "boolean"
-          },
-          "cSpell.experimental.enableSettingsViewerV2": {
-            "default": false,
-            "markdownDescription": "Enable the Settings Viewer V2 Extension",
             "scope": "application",
             "type": "boolean"
           },
