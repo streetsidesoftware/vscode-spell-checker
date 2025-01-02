@@ -9,11 +9,7 @@ on: # rebuild any PRs and main branch changes
 env:
   BRANCH_NAME: update-prerelease-mode
 permissions:
-  actions: read
-  checks: write
   contents: write
-  issues: read
-  packages: write
   pull-requests: write
 jobs:
   set-prerelease-mode:
