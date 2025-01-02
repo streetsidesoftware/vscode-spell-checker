@@ -46,39 +46,3 @@ jobs:
           body: |
             Set Prerelease Mode to `${{ inputs.prerelease }}`
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Dirty
-      #   id: dirty
-      #   uses: streetsidesoftware/actions/public/dirty@v1
-
-      # - name: Show Dirty
-      #   uses: streetsidesoftware/actions/public/summary@v1
-      #   with:
-      #     text: |
-      #       # Dirty
-      #       ```
-      #       ${{ toJSON(steps.dirty.outputs) }}
-      #       ```
-      # - name: Commit changes
-      #   if: steps.dirty.outputs.isDirty
-      #   env:
-      #     PR_BODY: |
-      #       Set Prerelease Mode to `${{ inputs.prerelease }}`
-      #     PR_TITLE: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
-      #   run: |
-      #     git config user.name github-actions[bot]
-      #     git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      #     git checkout -b ${{ env.BRANCH_NAME }}
-      #     git add .
-      #     git commit -m "${{ env.PR_TITLE }}"
-      #     git push -f origin ${{ env.BRANCH_NAME }}
-
-      # - name: Pull request
-      #   if: steps.dirty.outputs.isDirty
-      #   env:
-      #     PR_BODY: |
-      #       Set Prerelease Mode to `${{ inputs.prerelease }}`
-      #     PR_TITLE: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
-      #   run: |
-      #     echo ${{ github.token }} | gh auth login --with-token
-      #     gh pr edit ${{ env.BRANCH_NAME }} -b '${{ env.PR_BODY }}' -t '${{ env.PR_TITLE }}'  && gh pr reopen ${{ env.BRANCH_NAME }} || gh pr create  -b '${{ env.PR_BODY }}' -t '${{ env.PR_TITLE }}'
