@@ -82,4 +82,4 @@ jobs:
           PR_TITLE: 'fix: Set Prerelease Mode to `${{ inputs.prerelease }}`'
         run: |
           echo ${{ github.token }} | gh auth login --with-token
-          gh pr create  -b '${{ env.PR_BODY }}' -t '${{ env.PR_TITLE }}'
+          gh pr edit ${{ env.BRANCH_NAME }} -b '${{ env.PR_BODY }}' -t '${{ env.PR_TITLE }}'  && gh pr reopen ${{ env.BRANCH_NAME }} || gh pr create  -b '${{ env.PR_BODY }}' -t '${{ env.PR_TITLE }}'
