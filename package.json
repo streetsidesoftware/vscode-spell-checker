@@ -4019,6 +4019,5 @@
     "@cspell/dict-cspell-bundle": "1.0.20",
     "cspell": "^8.17.1",
     "regexp-worker": "^3.0.0"
-  },
-  "prerelease": true
+  }
 }

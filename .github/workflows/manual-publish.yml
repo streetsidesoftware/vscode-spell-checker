@@ -93,22 +93,18 @@ jobs:
           npm install
           npm run build
 
-      - name: VSCE Args
-        id: vsce-args
-        uses: ./.github/actions/vsce-args
-
       - name: Build Extension .vsix
-        run: npm run package-extension -- ${{ steps.vsce-args.outputs.args }}
+        run: npm run package-extension
       - name: Publish VSCE
         run: >
-          find ./build -name "*.vsix" | xargs npx vsce publish --skip-duplicate -p ${{ secrets.VSCE_TOKEN }} ${{ steps.vsce-args.outputs.args }} --packagePath
+          find ./build -name "*.vsix" | xargs npx vsce publish --skip-duplicate -p ${{ secrets.VSCE_TOKEN }} --packagePath
           || echo "PUB_FAIL_VSCE=true" >> $GITHUB_ENV
       - name: Check Publish Result VSCE
         if: ${{ env.PUB_FAIL_VSCE }}
         run: echo "::error title=VSCE::Failed to Publish to VS Code Marketplace."
       - name: Publish OVSX
         run: >
-          find ./build -name "*.vsix" | xargs npx ovsx publish --skip-duplicate -p ${{ secrets.OVSX_TOKEN }} ${{ steps.vsce-args.outputs.args }}
+          find ./build -name "*.vsix" | xargs npx ovsx publish --skip-duplicate -p ${{ secrets.OVSX_TOKEN }}
           || echo "PUB_FAIL_OVSX=true" >> $GITHUB_ENV
       - name: Check Publish Result OVSX
         if: ${{ env.PUB_FAIL_OVSX }}

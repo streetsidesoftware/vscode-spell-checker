@@ -51,12 +51,8 @@ jobs:
       - name: Install
         run: npm i
 
-      - name: VSCE Args
-        id: vsce-args
-        uses: ./.github/actions/vsce-args
-
       - name: Build Extension .vsix
-        run: npm run package-extension -- ${{ steps.vsce-args.outputs.args }}
+        run: npm run package-extension
 
       - run: zip code-spell-checker build/*
 
