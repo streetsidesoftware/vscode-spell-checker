@@ -42,6 +42,12 @@ let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
 
+/**
+ * Activate the extension
+ * NOTE: Do NOT make this an async function. It will cause errors in the extension host.
+ * @param context - The extension context from VS Code.
+ * @returns The extension API.
+ */
 export function activate(context: ExtensionContext): Promise<ExtensionApi> {
     try {
         performance.mark('cspell_activate_start');
@@ -61,7 +67,7 @@ export function activate(context: ExtensionContext): Promise<ExtensionApi> {
         activateFileIssuesViewer(context, pIssueTracker);
 
         performance.mark('start_async_activate');
-        return _activate(context, eIssueTracker).catch((e) => {
+        return _activate({ context, eIssueTracker }).catch((e) => {
             throw activationError(e);
         });
     } catch (e) {
@@ -73,7 +79,13 @@ function activationError(e: unknown) {
     return new Error(`Failed to activate: (${performance.getLastEventName()}) ${e}`, { cause: e });
 }
 
-async function _activate(context: ExtensionContext, eIssueTracker: vscode.EventEmitter<IssueTracker>): Promise<ExtensionApi> {
+interface ActivateOptions {
+    context: ExtensionContext;
+    eIssueTracker: vscode.EventEmitter<IssueTracker>;
+}
+
+async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
+    const { context, eIssueTracker } = options;
     const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
     const dLogger = bindLoggerToOutput(logOutput);
 

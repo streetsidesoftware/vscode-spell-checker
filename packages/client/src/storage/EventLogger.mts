@@ -8,7 +8,15 @@ import { MementoFile } from './mementoFile.mjs';
 export interface EventLogger {
     readonly eventLog: readonly LogEntryBase[];
     log(event: LogEntry): void;
+    /**
+     * Log that the extension was activated.
+     */
     logActivate(): void;
+    /**
+     * Log a word replacement.
+     * @param word - The word being replaced.
+     * @param suggestion - The suggestion being used.
+     */
     logReplace(word: string, suggestion: string): void;
     flush(): Promise<void>;
 }

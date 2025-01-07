@@ -1,1 +1,2 @@
-export { about, rateTheSpellChecker, releaseNotes, reportIssue, sponsor, supportRequest } from './commands.mjs';
+export { about, releaseNotes, reportIssue, sponsor, supportRequest } from './commands.mjs';
+export { rateTheSpellChecker } from './rateTheSpellChecker.mjs';
