@@ -242,7 +242,6 @@
           "type": "webview",
           "id": "cSpellInfoView",
           "when": "cSpell.context.displayCSpellInfo",
-          "visibility": "hidden",
           "name": "Spell Checker"
         }
       ],
