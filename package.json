@@ -214,6 +214,12 @@
           "id": "cspell-info-explorer",
           "title": "Spell Checker Info",
           "icon": "resources/dark/check_circle.svg"
+        },
+        {
+          "id": "cspell-regexp-explorer",
+          "title": "Regular Expressions",
+          "contextualTitle": "Spell Checker",
+          "icon": "resources/dark/check_circle.svg"
         }
       ],
       "panel": [
@@ -235,14 +241,16 @@
         {
           "type": "webview",
           "id": "cSpellInfoView",
-          "name": "Spell Checker",
-          "visibility": "hidden"
-        },
+          "when": "cSpell.context.displayCSpellInfo",
+          "visibility": "hidden",
+          "name": "Spell Checker"
+        }
+      ],
+      "cspell-regexp-explorer": [
         {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
-          "when": "config.cSpell.experimental.enableRegexpView",
-          "visibility": "hidden"
+          "when": "config.cSpell.experimental.enableRegexpView"
         }
       ],
       "cspellPanel": [
@@ -346,6 +354,11 @@
         "command": "cSpell.displayCSpellInfo",
         "category": "Spell",
         "title": "Show Spell Checker Configuration Info"
+      },
+      {
+        "command": "cSpell.hideCSpellInfo",
+        "category": "Spell",
+        "title": "Hide Spell Checker Configuration Info"
       },
       {
         "command": "cSpell.toggleEnableForGlobal",
