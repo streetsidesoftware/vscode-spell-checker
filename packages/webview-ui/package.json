@@ -16,7 +16,7 @@
   "dependencies": {
     "@tanstack/svelte-query": "^5.62.12",
     "@vscode/webview-ui-toolkit": "^1.4.0",
-    "fast-equals": "^5.2.0",
+    "fast-equals": "^5.2.1",
     "sirv-cli": "^3.0.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
