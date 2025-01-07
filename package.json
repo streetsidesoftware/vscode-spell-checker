@@ -604,30 +604,35 @@
       },
       {
         "command": "cSpell.supportRequest",
+        "enablement": "config.cSpell.command.enableSupportRequest",
         "category": "Spell",
         "title": "Request Support with the Spell Checker",
         "icon": "$(github)"
       },
       {
         "command": "cSpell.reportIssue",
+        "enablement": "config.cSpell.command.reportIssue",
         "category": "Spell",
         "title": "Report an Issue with the Spell Checker",
         "icon": "$(github)"
       },
       {
         "command": "cSpell.about",
+        "enablement": "config.cSpell.command.about",
         "category": "Spell",
         "title": "About the Spell Checker",
         "icon": "$(home)"
       },
       {
         "command": "cSpell.releaseNotes",
+        "enablement": "config.cSpell.command.releaseNotes",
         "category": "Spell",
         "title": "Show Spell Checker Release Notes",
         "icon": "$(heart)"
       },
       {
         "command": "cSpell.sponsor",
+        "enablement": "config.cSpell.command.sponsor",
         "category": "Spell",
         "title": "Sponsor the Spell Checker",
         "icon": "$(heart)"

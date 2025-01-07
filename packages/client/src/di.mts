@@ -65,6 +65,10 @@ export function getIssueTracker(): IssueTracker {
     return get('issueTracker');
 }
 
+export function getEventLogger(): EventLogger {
+    return get('eventLogger');
+}
+
 export function set<K extends keyof GlobalDependencies>(key: K, value: GlobalDependencies[K]): void {
     Object.defineProperty(globals, key, {
         value,
