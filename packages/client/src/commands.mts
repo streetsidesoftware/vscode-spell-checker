@@ -50,6 +50,7 @@ import {
     targetsForUri,
     targetsFromConfigurationTarget,
 } from './settings/targetHelpers.mjs';
+import { setContext } from './storage/index.mjs';
 import { about, rateTheSpellChecker, releaseNotes, reportIssue, sponsor, supportRequest } from './support/index.mjs';
 import { experimentWithSymbols } from './symbolServer/index.mjs';
 import { findNotebookCell } from './util/documentUri.js';
@@ -181,8 +182,9 @@ export const commandHandlers = {
     'cspell.showActionsMenu': handlerResolvedLater,
 
     'cSpell.openIssuesPanel': callCommand('cSpellIssuesViewByFile.focus'),
-    'cSpell.openFileInfoView': callCommand('cSpellInfoView.focus'),
-    'cSpell.displayCSpellInfo': callCommand('cSpellInfoView.focus'),
+    'cSpell.openFileInfoView': handleDisplayCSpellInfo,
+    'cSpell.displayCSpellInfo': handleDisplayCSpellInfo,
+    'cSpell.hideCSpellInfo': handleHideCSpellInfo,
 
     'cSpell.experimental.executeDocumentSymbolProvider': handleCmdExperimentalExecuteDocumentSymbolProvider,
 
@@ -604,6 +606,15 @@ function callCommand<T>(command: string, calcArgs?: () => unknown[]): () => Prom
         const args = calcArgs?.() || [];
         return commands.executeCommand<T>(command, ...args);
     };
+}
+
+async function handleDisplayCSpellInfo() {
+    await setContext({ displayCSpellInfo: true });
+    await commands.executeCommand('cSpellInfoView.focus');
+}
+
+async function handleHideCSpellInfo() {
+    await setContext({ displayCSpellInfo: false });
 }
 
 function handleRestart() {
