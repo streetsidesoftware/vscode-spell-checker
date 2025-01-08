@@ -35,7 +35,7 @@ updates:
 
   # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
   - package-ecosystem: github-actions
-    directory: /.github/actions/vsce-args
+    directory: /.github/actions/is-prerelease
     schedule:
       interval: daily
     commit-message:
