@@ -126,5 +126,6 @@ jobs:
         env:
           LABEL_ADD: ${{ steps.prerelease-mode.outputs.prerelease == 'true' && 'Prerelease' || 'Release' }}
           LABEL_REMOVE: ${{ steps.prerelease-mode.outputs.prerelease == 'true' && 'Release' || 'Prerelease' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr edit ${{ steps.find-pr.outputs.result }} --add-label "$LABEL_ADD" --remove-label "$LABEL_REMOVE"
