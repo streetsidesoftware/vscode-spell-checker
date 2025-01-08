@@ -106,7 +106,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { data: prs } = await github.pulls.list({
+            const { data: prs } = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
