@@ -111,9 +111,9 @@ jobs:
               repo: context.repo.repo,
               state: 'open',
               head: context.sha
-              search: 'release code-spell-checker'
             });
-            return prs[0]?.number || '';
+            const found = prs.filter(pr => pr.title.startsWith('chore(main): release code-spell-checker'))
+            return found[0]?.number || '';
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Label PR
