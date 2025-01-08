@@ -249,6 +249,7 @@ export class SpellingIssueDecorator implements Disposable {
             | 'light'
             | 'overviewRulerColor'
             | 'revealIssuesAfterDelayMS'
+            | 'showInRuler'
             | 'textDecoration'
             | 'textDecorationColor'
             | 'textDecorationColorFlagged'
@@ -258,29 +259,32 @@ export class SpellingIssueDecorator implements Disposable {
             | 'textDecorationThickness'
         >;
 
-        const overviewRulerColor: string | undefined = cfg[mode]?.overviewRulerColor || cfg.overviewRulerColor || undefined;
+        const showInRuler = cfg.showInRuler ?? true;
+        const overviewRulerColor: string | undefined =
+            (showInRuler && (cfg[mode]?.overviewRulerColor || cfg.overviewRulerColor)) || undefined;
+        const overviewRulerLane = showInRuler ? vscode.OverviewRulerLane.Right : undefined;
 
         const decoratorIssues = window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-            overviewRulerLane: vscode.OverviewRulerLane.Right,
-            overviewRulerColor: overviewRulerColor,
+            overviewRulerLane,
+            overviewRulerColor,
             textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColor'),
         });
 
         const decoratorFlagged = window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-            overviewRulerLane: vscode.OverviewRulerLane.Right,
-            overviewRulerColor: overviewRulerColor,
+            overviewRulerLane,
+            overviewRulerColor,
             textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColorFlagged'),
         });
 
         const decoratorSuggestions = window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-            overviewRulerLane: vscode.OverviewRulerLane.Right,
-            overviewRulerColor: overviewRulerColor,
+            overviewRulerLane,
+            overviewRulerColor,
             textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColorSuggestion'),
         });
 

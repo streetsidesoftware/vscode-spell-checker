@@ -183,6 +183,17 @@ interface Appearance extends Decoration {
 
 export interface AppearanceSettings extends Appearance {
     /**
+     * Show spelling issues in the editor ruler.
+     *
+     * Note: This setting is only used when `#cSpell.useCustomDecorations#` is `true`.
+     *
+     * @scope application
+     * @since 4.0.35
+     * @default true
+     */
+    showInRuler?: boolean;
+
+    /**
      * Draw custom decorations on Spelling Issues.
      * - `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.
      * - `false` - Use the VS Code Diagnostic Collection to render spelling issues.
