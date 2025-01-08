@@ -65,6 +65,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     // Appearance
     useCustomDecorations: 'useCustomDecorations',
     doNotUseCustomDecorationForScheme: 'doNotUseCustomDecorationForScheme',
+    showInRuler: 'showInRuler',
     textDecoration: 'textDecoration',
     textDecorationLine: 'textDecorationLine',
     textDecorationStyle: 'textDecorationStyle',
