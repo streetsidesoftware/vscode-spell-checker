@@ -243,7 +243,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
             requestSuggestions: (item) => this.issueTracker?.getSuggestionsForIssue(item) || Promise.resolve([]),
         };
         this.children = collectIssuesByFile(context);
-        this.updateMessage(this.children.length ? undefined : 'No issues found...');
+        this.updateMessage(this.children.length ? undefined : 'No issues found.');
         setTimeout(() => this.options.onDidUpdate(), 10);
         return this.children;
     }
