@@ -155,7 +155,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         };
         const issues = collectIssues(context);
         this.children = issues;
-        this.updateMessage(issues.length ? undefined : 'No issues found...');
+        this.updateMessage(issues.length ? undefined : 'No issues found.');
         return issues;
     }
 
