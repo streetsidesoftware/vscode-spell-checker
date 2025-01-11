@@ -169,7 +169,18 @@
           "when": "view == cSpellRegExpView"
         }
       ],
-      "view/title": [],
+      "view/title": [
+        {
+          "command": "cSpell.show",
+          "when": "!cSpell.context.showDecorations",
+          "group": "navigation"
+        },
+        {
+          "command": "cSpell.hide",
+          "when": "cSpell.context.showDecorations",
+          "group": "navigation"
+        }
+      ],
       "view/item/context": [
         {
           "command": "cSpellRegExpTester.editRegExp",
