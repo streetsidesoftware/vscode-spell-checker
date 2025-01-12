@@ -96,7 +96,7 @@ async function updateWordInCustomDictionary(updateFn: (words: string[]) => strin
         await ensureFileExists(dict.uri);
         const doc = await workspace.openTextDocument(dict.uri);
         const data = doc.getText();
-        const lines = updateFn(data.split(/\r?\n/g).filter((a) => !!a));
+        const lines = updateFn(data.split(/\r?\n/g));
         const text = lines.join('\n').trim() + '\n';
         const success = await replaceDocText(doc, text);
         if (!success) {
