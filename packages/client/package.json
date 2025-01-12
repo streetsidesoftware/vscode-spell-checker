@@ -47,7 +47,7 @@
     "lorem-ipsum": "^2.0.8",
     "rfdc": "^1.4.1",
     "source-map-support": "^0.5.21",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "vitest-when": "^0.5.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
