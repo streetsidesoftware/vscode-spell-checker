@@ -177,18 +177,11 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.parse(import.meta.url).toString() });
         expect(settings.enabledLanguageIds).toBeUndefined();
         expect(settings.enabledFileTypes).toEqual({
-            al: true,
-            dart: true,
-            fsharp: true,
             javascript: false,
             json: true,
             jsonc: true,
-            julia: true,
             php: true,
             pug: true,
-            r: true,
-            sql: true,
-            terraform: true,
             typescript: false,
         });
     });
