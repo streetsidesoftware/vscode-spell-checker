@@ -8,6 +8,13 @@ wordc
 wordd
 worde
 
+terma
+termb
+termc
+aterm
+
+white
+
 Here is text from `dict`:
 
 Compaknee.

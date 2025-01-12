@@ -1,6 +1,41 @@
+# This is a list of terms used by our project.
+# Please add terms into the appropriate section.
+# they will get automatically sorted and deduplicated.
+
+# Fruit
+apple
+banana
+cherry # a small fruit
+orange # both a fruit and a color
+
+# Colors
+blue
+green
+orange # both a fruit and a color
+red
+yellow
+
+# API terms
+# none yet
+
+# People
+Alice
+Bob
+Charlie
+
+# Word variants
 word
 worda
 wordb
 wordc
 wordd
 worde
+
+# More terms
+aterm
+termA # with comment
+termb
+termc
+
+# New Terms
+white
