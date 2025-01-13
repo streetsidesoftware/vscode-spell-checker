@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.35](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.34...code-spell-checker-v4.0.35) (2025-01-12)
+
+
+### Updates and Bug Fixes
+
+* add show/hide to spelling issues view ([#4036](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4036)) ([d7436cc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d7436cc831edf6833752ddab64a23dc3d8975eee))
+* Have a single setting to hide issues in ruler ([#4028](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4028)) ([8732e23](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8732e235927f91837942e85a9d5375222a082c1c))
+* improve how words are sorted ([#4041](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4041)) ([37b3ede](https://github.com/streetsidesoftware/vscode-spell-checker/commit/37b3ede11de5a4fb8d981c92044426df1481ea5b))
+* Remove ellipse from "No issues found." ([312a7a1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/312a7a1c603855d393b90e64889788b596abb980))
+* Update dictionaries ([#4039](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4039)) ([1d3e1c7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1d3e1c77d36d5e9807b22fbfcde362b0738e6cae))
+
 ## [4.0.34](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.33...code-spell-checker-v4.0.34) (2025-01-08)
 
 
