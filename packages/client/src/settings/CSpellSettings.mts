@@ -5,6 +5,7 @@ import { unique, uniqueFilter } from '../util/index.mjs';
 import type { ConfigUpdateFn } from './configFileReadWrite.mjs';
 import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite.mjs';
 import type { CustomDictDef } from './DictionaryTarget.mjs';
+import { compareWords } from './wordList.mjs';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -106,7 +107,7 @@ function mergeWords(wordsLeft: string[] | undefined, wordsRight: string[]): stri
         .filter((a) => !!a)
         .filter(uniqueFilter());
 
-    words.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    words.sort(compareWords);
     return words;
 }
 
