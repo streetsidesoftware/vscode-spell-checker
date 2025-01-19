@@ -37,6 +37,12 @@ export function createWordListFromLines(lines: string[]): WordList {
     return new WordListImpl(lines);
 }
 
+const intl = new Intl.Collator();
+
+export function compareWords(a: string, b: string): number {
+    return intl.compare(a, b);
+}
+
 class WordListImpl implements WordList {
     private _entries: WordListEntry[] = [];
 
@@ -68,7 +74,7 @@ class WordListImpl implements WordList {
         const sections = wordListEntriesToSections(this._entries);
 
         for (const section of sections) {
-            section.words.sort((a, b) => a.word.localeCompare(b.word));
+            section.words.sort((a, b) => compareWords(a.word, b.word));
             section.words = section.words.filter((w) => {
                 if (knownWords.has(w.word) && !w.comment) return false;
                 knownWords.add(w.word);
