@@ -172,12 +172,22 @@
       "view/title": [
         {
           "command": "cSpell.show",
-          "when": "!cSpell.context.showDecorations",
+          "when": "!cSpell.context.showDecorations && view == cSpellIssuesViewByFile",
           "group": "navigation"
         },
         {
           "command": "cSpell.hide",
-          "when": "cSpell.context.showDecorations",
+          "when": "cSpell.context.showDecorations && view == cSpellIssuesViewByFile",
+          "group": "navigation"
+        },
+        {
+          "command": "cSpell.show",
+          "when": "!cSpell.context.showDecorations && activePanel == 'workbench.panel.markers'",
+          "group": "navigation"
+        },
+        {
+          "command": "cSpell.hide",
+          "when": "cSpell.context.showDecorations && activePanel == 'workbench.panel.markers'",
           "group": "navigation"
         }
       ],
