@@ -266,7 +266,13 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const cfgSearchExclude = vscode.workspace.getConfiguration('search.exclude') as Record<string, boolean>;
         const searchExclude = Object.keys(cfgSearchExclude).filter((k) => cfgSearchExclude[k] === true);
         const excludePattern = globsToGlob(searchExclude);
-        const files = await globSearch(pattern, currentDirectory(), excludePattern, undefined, this.#getCancellationTokenForAction());
+        const files = await globSearch(
+            pattern,
+            this.#cwd || currentDirectory(),
+            excludePattern,
+            undefined,
+            this.#getCancellationTokenForAction(),
+        );
 
         log(eraseLine() + 'Checking...');
 

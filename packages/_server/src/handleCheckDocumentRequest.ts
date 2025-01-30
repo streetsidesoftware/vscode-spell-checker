@@ -1,4 +1,4 @@
-import type { CSpellSettings } from 'cspell-lib';
+import { type CSpellSettings, IssueType } from 'cspell-lib';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
@@ -29,12 +29,15 @@ export async function handleCheckDocumentRequest(
 
     const results = docVal.checkDocument(options.forceCheck);
 
-    const issues: Api.CheckDocumentIssue[] = results.map((issue) => ({
-        text: issue.text,
-        range: { start: doc.positionAt(issue.offset), end: doc.positionAt(issue.offset + (issue.length || issue.text.length)) },
-        suggestions: issue.suggestionsEx,
-        message: issue.message,
-    }));
+    const issues: Api.CheckDocumentIssue[] = results
+        .filter((issue) => issue.issueType !== IssueType.directive)
+        .map((issue) => ({
+            text: issue.text,
+            range: { start: doc.positionAt(issue.offset), end: doc.positionAt(issue.offset + (issue.length || issue.text.length)) },
+            suggestions: issue.suggestionsEx,
+            message: issue.message,
+            isFlagged: issue.isFlagged,
+        }));
 
     return { uri, issues };
 

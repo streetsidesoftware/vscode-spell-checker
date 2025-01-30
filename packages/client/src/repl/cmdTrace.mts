@@ -18,6 +18,8 @@ export interface TraceWordOptions {
 export async function traceWord(word: string, uri: Uri | string, options: TraceWordOptions): Promise<string> {
     const { width } = options;
     const client = di.get('client');
+    uri = uri.toString();
+    if (!uri.endsWith('/')) uri = uri + '/';
     const result = await client.serverApi.traceWord({
         word,
         uri: uri.toString(),
@@ -41,9 +43,9 @@ export async function traceWord(word: string, uri: Uri | string, options: TraceW
 
     const toTable = asTable.configure({ maxTotalWidth: width });
     const filters = [
-        options.all ? undefined : (trace: { found: boolean; dictEnabled: boolean }) => trace.found || trace.dictEnabled,
-        options.onlyFound ? (trace: { found: boolean }) => trace.found : undefined,
-        options.onlyEnabled ? (trace: { dictEnabled: boolean }) => trace.dictEnabled : undefined,
+        options.all ? undefined : (trace: Trace) => isFound(trace) || trace.dictEnabled,
+        options.onlyFound ? (trace: Trace) => isFound(trace) : undefined,
+        options.onlyEnabled ? (trace: Trace) => trace.dictEnabled : undefined,
     ].filter(isDefined);
 
     const filter = combineFilters(filters);
@@ -57,7 +59,7 @@ export async function traceWord(word: string, uri: Uri | string, options: TraceW
             const dictionary = colors.yellow(line.dictName);
             return {
                 Word: colorWord(line.word, line.foundWord, line.found),
-                F: line.found ? colors.whiteBright('*') : colors.dim('-'),
+                F: line.forbidden ? colors.red('!') : line.found ? colors.whiteBright('*') : colors.dim('-'),
                 Dictionary: line.dictEnabled ? dictionary : colors.dim(dictionary),
             };
         });
@@ -79,4 +81,35 @@ function colorWord(word: string, foundWord: string | undefined, found: boolean):
     const w = foundWord || colors.green(word);
 
     return found ? w : colors.dim(w);
+}
+
+interface Trace {
+    /**
+     * true if found in the dictionary.
+     */
+    found: boolean;
+    /**
+     * The actual word found in the dictionary.
+     */
+    foundWord: string | undefined;
+    /**
+     * true if the word is forbidden.
+     */
+    forbidden: boolean;
+    /**
+     * true if it is a no-suggest word.
+     */
+    noSuggest: boolean;
+    /**
+     * name of the dictionary
+     */
+    dictName: string;
+    /**
+     * true if the dictionary is enabled for the languageId (file type).
+     */
+    dictEnabled: boolean;
+}
+
+function isFound(trace: Trace): boolean {
+    return trace.found || trace.forbidden || trace.noSuggest;
 }

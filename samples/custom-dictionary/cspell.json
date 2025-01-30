@@ -13,6 +13,7 @@
             "addWords": true
         }
     ],
+    "ignorePaths": ["*.dic"],
     "dictionaries": ["words", "dict"],
     "words": []
 }
