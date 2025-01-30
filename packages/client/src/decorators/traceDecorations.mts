@@ -175,6 +175,9 @@ export class SpellingExclusionsDecorator implements Disposable {
                             } else {
                                 hoverMessage.appendMarkdown('- $(book) _').appendText(trace.dictName).appendMarkdown('_');
                             }
+                            if (trace.forbidden) {
+                                hoverMessage.appendMarkdown(' _(Forbidden)_');
+                            }
                             if (trace.foundWord && trace.foundWord !== word) {
                                 hoverMessage.appendMarkdown(' **').appendText(trace.foundWord.trim()).appendMarkdown('**');
                             }

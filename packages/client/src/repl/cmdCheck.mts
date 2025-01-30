@@ -8,7 +8,15 @@ import { formatPath, relative } from './formatPath.mjs';
 
 const maxPathLen = 60;
 
-async function cmdCheckDocument(prep: CheckDocumentPrep): Promise<void> {
+interface CheckResult {
+    checked: boolean;
+    issues: number;
+}
+
+const skippedCheck: CheckResult = { checked: false, issues: 0 };
+const okCheck: CheckResult = { checked: true, issues: 0 };
+
+async function cmdCheckDocument(prep: CheckDocumentPrep): Promise<CheckResult> {
     const { uri, options, index, count, result: pResult, startTs, endTs } = prep;
     const { output, log, width } = options;
 
@@ -22,7 +30,7 @@ async function cmdCheckDocument(prep: CheckDocumentPrep): Promise<void> {
 
     if (result.skipped) {
         log(` ${elapsedTime} Skipped`);
-        return;
+        return skippedCheck;
     }
 
     const lines: string[] = [];
@@ -35,7 +43,7 @@ async function cmdCheckDocument(prep: CheckDocumentPrep): Promise<void> {
 
     if (!failed) {
         output(lines.join('') + '\r' + clearLine(0));
-        return;
+        return okCheck;
     }
 
     if (result.errors) {
@@ -49,6 +57,7 @@ async function cmdCheckDocument(prep: CheckDocumentPrep): Promise<void> {
     }
 
     log('%s', lines.join('\n'));
+    return { checked: true, issues: issues?.length || 0 };
 }
 
 function countPrefix(index?: number, count?: number): string {
@@ -61,7 +70,7 @@ function countPrefix(index?: number, count?: number): string {
 function formatIssue(uri: string | Uri, issue: API.CheckDocumentIssue): string {
     const { range, text, suggestions, isFlagged } = issue;
     const pos = `:${range.start.line + 1}:${range.start.character + 1}`;
-    const message = isFlagged ? 'Flagged word ' : 'Unknown word ';
+    const message = isFlagged ? 'Flagged word' : 'Unknown word';
     const rel = relative(uri);
     const sugMsg = suggestions ? ` fix: (${suggestions.map((s) => colors.yellow(s.word)).join(', ')})` : '';
     return `  ${colors.green(rel)}${colors.yellow(pos)} - ${message} (${colors.red(text)})${sugMsg}`;
@@ -102,7 +111,13 @@ const prefetchCount = 10;
 export async function cmdCheckDocuments(uris: (string | Uri)[], options: CheckDocumentsOptions): Promise<void> {
     const count = uris.length;
 
+    options.log(`Checking ${count} documents`);
+
     const pending: CheckDocumentPrep[] = [];
+    let files = 0;
+    let filesWithIssues = 0;
+    let issues = 0;
+    let skipped = 0;
 
     try {
         let index = 0;
@@ -115,7 +130,11 @@ export async function cmdCheckDocuments(uris: (string | Uri)[], options: CheckDo
             try {
                 const prep = pending.shift();
                 if (!prep) break;
-                await cmdCheckDocument(prep);
+                const r = await cmdCheckDocument(prep);
+                issues += r.issues;
+                filesWithIssues += r.issues ? 1 : 0;
+                files += r.checked ? 1 : 0;
+                skipped += r.checked ? 0 : 1;
                 if (index < count) {
                     const uri = uris[index];
                     pending.push(prepareCheckDocument(uri, options, index, count));
@@ -128,6 +147,9 @@ export async function cmdCheckDocuments(uris: (string | Uri)[], options: CheckDo
         }
         //
         Promise.all(pending.map((p) => p.result)).catch((error) => options.error(error));
+        options.log(
+            `Checked ${files}/${count} files${skipped ? `, skipped ${skipped},` : ''} with ${issues} issues in ${filesWithIssues} files.`,
+        );
     } catch {
         // All errors should have been reported.
         return;
