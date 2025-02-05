@@ -28,6 +28,7 @@ import {
     matchScopeWorkspace,
     negatePattern,
     quickPickBestMatchTarget,
+    UnableToFindTarget,
 } from './configTargetHelper.mjs';
 
 vi.mock('vscode');
@@ -109,7 +110,7 @@ describe('configTargetHelper', () => {
         mockedShowQuickPick.mockImplementation(async () => undefined);
         const targets = sampleTargets();
         const fn = await _buildQuickPickBestMatchTargetFn(matchKindNone, matchScopeNone);
-        await expect(() => fn(targets)).rejects.toEqual(new Error('No matching configuration found.'));
+        await expect(() => fn(targets)).rejects.toEqual(new UnableToFindTarget('No matching configuration found.'));
     });
 
     test('quickPickBestMatchTarget', async () => {

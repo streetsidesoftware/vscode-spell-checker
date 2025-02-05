@@ -12,7 +12,7 @@ const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTex
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
-vi.mock('./di');
+vi.mock('./di.mjs');
 
 const mockGetDependencies = vi.mocked(getDependencies);
 

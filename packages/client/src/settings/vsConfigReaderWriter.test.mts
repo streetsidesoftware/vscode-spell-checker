@@ -7,7 +7,7 @@ import { createVSConfigReaderWriter } from './vsConfigReaderWriter.mjs';
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
-vi.mock('./vsConfig');
+vi.mock('./vsConfig.mjs');
 
 const mockedUpdateConfig = vi.mocked(updateConfig);
 const mockedCalculateConfigForTarget = vi.mocked(calculateConfigForTarget);

@@ -26,7 +26,7 @@ const {
     isTextDocument,
 } = __testing__;
 
-vi.mock('../client/client', () => {
+vi.mock('../client/client.mjs', () => {
     return {
         CSpellClient: vi.fn().mockImplementation(() => {
             return {
