@@ -104,11 +104,11 @@ export function uriToName(uri: Uri, options: UriToNameOptions = {}): string {
     if (relTo) {
         const rel = relativeTo(toUri(relTo), uri);
         if (!regExpIsUri.test(rel)) {
-            return rel.split('/').slice(-segments).join('/');
+            return decodeURIComponent(rel.split('/').slice(-segments).join('/'));
         }
     }
     const parts = splitUri(uri).slice(-segments);
-    return parts.join('/');
+    return decodeURIComponent(parts.join('/'));
 }
 
 function splitUri(uri: Uri) {

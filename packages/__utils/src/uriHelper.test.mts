@@ -88,16 +88,17 @@ describe('Validate uriHelper', () => {
     });
 
     test.each`
-        uri                             | segments                             | expected
-        ${'file:///a/b/c/file.txt'}     | ${undefined}                         | ${'c/file.txt'}
-        ${'file:///a/b/'}               | ${undefined}                         | ${'a/b'}
-        ${'file:///a/b'}                | ${undefined}                         | ${'a/b'}
-        ${'file:///a/b/c/file.txt'}     | ${3}                                 | ${'b/c/file.txt'}
-        ${'file:///a/b/c/file.txt'}     | ${1}                                 | ${'file.txt'}
-        ${'file:///a/b/c/file.txt#156'} | ${undefined}                         | ${'c/file.txt'}
-        ${'file:///a/b/c/file.txt?x=1'} | ${undefined}                         | ${'c/file.txt'}
-        ${'file:///a/b/c/file.txt#156'} | ${{ relativeTo: 'file:///a/b/c/' }}  | ${'file.txt'}
-        ${'file:///a/b/c/file.txt#156'} | ${{ relativeTo: 'stdin:///a/b/c/' }} | ${'c/file.txt'}
+        uri                                    | segments                             | expected
+        ${'file:///a/b/c/file.txt'}            | ${undefined}                         | ${'c/file.txt'}
+        ${'file:///a/b/c/長いファイル名前.md'} | ${undefined}                         | ${'c/長いファイル名前.md'}
+        ${'file:///a/b/'}                      | ${undefined}                         | ${'a/b'}
+        ${'file:///a/b'}                       | ${undefined}                         | ${'a/b'}
+        ${'file:///a/b/c/file.txt'}            | ${3}                                 | ${'b/c/file.txt'}
+        ${'file:///a/b/c/file.txt'}            | ${1}                                 | ${'file.txt'}
+        ${'file:///a/b/c/file.txt#156'}        | ${undefined}                         | ${'c/file.txt'}
+        ${'file:///a/b/c/file.txt?x=1'}        | ${undefined}                         | ${'c/file.txt'}
+        ${'file:///a/b/c/file.txt#156'}        | ${{ relativeTo: 'file:///a/b/c/' }}  | ${'file.txt'}
+        ${'file:///a/b/c/file.txt#156'}        | ${{ relativeTo: 'stdin:///a/b/c/' }} | ${'c/file.txt'}
     `('uriToName "$uri" -> "$expected"', ({ uri, segments, expected }) => {
         const uriA = toUri(uri);
         expect(uriToName(uriA, typeof segments === 'number' ? { segments } : segments)).toBe(expected);
