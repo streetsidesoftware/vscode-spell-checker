@@ -52,7 +52,7 @@
     "regexp-worker": "^3.0.0",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.12",
-    "vscode-uri": "^3.0.8"
+    "vscode-uri": "^3.1.0"
   },
   "scripts": {
     "build": "npm run build:esbuild && npm run build:api && npm run build:tsc",
