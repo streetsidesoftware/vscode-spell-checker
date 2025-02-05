@@ -4,5 +4,6 @@
     ],
     "cSpell.customWorkspaceDictionaries": [
         "words"
-    ]
+    ],
+    "cSpell.blockCheckingWhenLineLengthGreaterThan": 1000
 }
