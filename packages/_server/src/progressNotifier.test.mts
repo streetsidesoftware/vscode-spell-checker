@@ -6,7 +6,7 @@ import { createProgressNotifier } from './progressNotifier.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createMockServerSideApi } from './test/test.api.js';
 
-vi.mock('./serverApi');
+vi.mock('./serverApi.mjs');
 
 const mockedCreateClientApi = vi.mocked(createServerApi);
 // const mockedCreateConnection = jest.mocked(createConnection);

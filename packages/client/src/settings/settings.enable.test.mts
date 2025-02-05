@@ -1,5 +1,6 @@
 import { describe, expect, test, vi } from 'vitest';
 
+import { UnableToFindTarget } from './configTargetHelper.mjs';
 import { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable.mjs';
 
 vi.mock('vscode');
@@ -12,7 +13,7 @@ describe('settings.enable', () => {
 
     test('setEnableSpellChecking empty', async () => {
         await expect(setEnableSpellChecking({ targets: [], scopes: [] }, true)).rejects.toEqual(
-            new Error('No matching configuration found.'),
+            new UnableToFindTarget('No matching configuration found.'),
         );
     });
 });

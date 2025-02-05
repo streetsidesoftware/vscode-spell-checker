@@ -24,7 +24,7 @@ import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 const { toEqualCaseInsensitive: expectToEqualCaseInsensitive } = extendExpect(expect);
 
 vi.mock('vscode-languageserver/node');
-vi.mock('./vscode.config');
+vi.mock('./vscode.config.mjs');
 
 const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);
 const mockGetConfiguration = vi.mocked(getConfiguration);
