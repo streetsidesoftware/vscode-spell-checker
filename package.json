@@ -4027,7 +4027,7 @@
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
-    "@eslint/js": "^9.19.0",
+    "@eslint/js": "^9.20.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.17.17",
     "@types/vscode": "1.90.0",
@@ -4038,7 +4038,7 @@
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "esbuild": "^0.24.2",
-    "eslint": "^9.19.0",
+    "eslint": "^9.20.0",
     "eslint-plugin-n": "^17.15.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^56.0.1",
@@ -4049,7 +4049,7 @@
     "patch-package": "^8.0.0",
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.3",
-    "rollup": "^4.34.3",
+    "rollup": "^4.34.6",
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
     "tsup": "^8.3.6",
