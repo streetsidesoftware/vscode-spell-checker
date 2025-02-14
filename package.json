@@ -4029,7 +4029,7 @@
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.17.17",
+    "@types/node": "^20.17.19",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^3.0.5",
