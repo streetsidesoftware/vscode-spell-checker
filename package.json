@@ -4054,7 +4054,7 @@
     "shx": "^0.3.4",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.0",
+    "typescript-eslint": "^8.24.1",
     "vite": "^6.1.0",
     "vitest": "^3.0.5"
   },
