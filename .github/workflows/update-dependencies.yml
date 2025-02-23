@@ -48,6 +48,10 @@ jobs:
           npm run lint
           npm run update-packages
           npm i
+
+      - name: NPM Audit Fix
+        continue-on-error: true
+        run: |
           npm audit fix
 
       - name: GenBody
