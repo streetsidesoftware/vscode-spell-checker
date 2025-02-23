@@ -38,6 +38,7 @@ id: extensions
 - [Latvian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-latvian) - Latvian dictionary extension for VS Code.
 - [Lithuanian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-lithuanian) - Lithuanian dictionary extension for VS Code.
 - [Macedonian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-macedonian) - Macedonian dictionary extension for VS Code.
+- [Mongolian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-mongolian) - Mongolian dictionary extension for VS Code.
 - [Norwegian Bokmål](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-norwegian-bokmal) - Norwegian Bokmål dictionary extension for VS Code.
 - [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian) - Persian dictionary extension for VS Code.
 - [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish) - Polish dictionary extension for VS Code.
