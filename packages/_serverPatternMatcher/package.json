@@ -46,9 +46,9 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^8.17.4",
+    "@cspell/cspell-types": "^8.17.5",
     "@internal/common-utils": "file:../__utils",
-    "cspell-lib": "^8.17.4",
+    "cspell-lib": "^8.17.5",
     "regexp-worker": "^3.0.0",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.12",
