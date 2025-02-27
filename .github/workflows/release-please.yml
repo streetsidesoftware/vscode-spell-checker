@@ -122,7 +122,7 @@ jobs:
         uses: ./.github/actions/is-prerelease
 
       - name: Label PR
-        if: ${{ steps.find-pr.outputs.result }}
+        if: ${{ fromJSON(steps.find-pr.outputs.result) }}
         env:
           LABEL_ADD: ${{ steps.prerelease-mode.outputs.prerelease == 'true' && 'Prerelease' || 'Release' }}
           LABEL_REMOVE: ${{ steps.prerelease-mode.outputs.prerelease == 'true' && 'Release' || 'Prerelease' }}
