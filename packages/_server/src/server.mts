@@ -78,9 +78,17 @@ const dictionaryRefreshRateMs = 10000;
 
 async function calcDefaultSettings(): Promise<CSpellUserAndExtensionSettings> {
     return {
-        ...CSpell.mergeSettings(await getDefaultSettings(), await CSpell.getGlobalSettingsAsync(), overRideDefaults),
+        ...CSpell.mergeSettings(
+            clearEnabledLanguageIds(await getDefaultSettings()),
+            clearEnabledLanguageIds(await CSpell.getGlobalSettingsAsync()),
+            overRideDefaults,
+        ),
         checkLimit: defaultCheckLimit,
     };
+}
+
+function clearEnabledLanguageIds(settings: CSpellUserAndExtensionSettings) {
+    return { ...settings, enabledLanguageIds: undefined };
 }
 
 // This is to filter out the "Off" severity that is used to hide issues from the VS Code Problems panel.
