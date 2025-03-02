@@ -3506,6 +3506,37 @@
           "title": "Set Diagnostic Reporting Level for Flagged Words",
           "type": "string"
         },
+        "cSpell.enabledNotifications": {
+          "additionalProperties": false,
+          "default": {
+            "Average Word Length too Long": true,
+            "Lines too Long": true,
+            "Maximum Word Length Exceeded": true
+          },
+          "description": "Control which notifications are displayed.",
+          "markdownDescription": "Control which notifications are displayed.",
+          "properties": {
+            "Average Word Length too Long": {
+              "description": "Enable notifications if the average word size is too high.",
+              "markdownDescription": "Enable notifications if the average word size is too high.",
+              "type": "boolean"
+            },
+            "Lines too Long": {
+              "description": "Enable notifications if the line is too long.",
+              "markdownDescription": "Enable notifications if the line is too long.",
+              "type": "boolean"
+            },
+            "Maximum Word Length Exceeded": {
+              "description": "Enable notifications if the maximum word length is exceeded.",
+              "markdownDescription": "Enable notifications if the maximum word length is exceeded.",
+              "type": "boolean"
+            }
+          },
+          "scope": "resource",
+          "since": "4.0.41",
+          "title": "Enabled Notifications",
+          "type": "object"
+        },
         "cSpell.hideAddToDictionaryCodeActions": {
           "default": false,
           "description": "Hide the options to add words to dictionaries or settings.",

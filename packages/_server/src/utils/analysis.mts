@@ -3,11 +3,12 @@ import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { BlockedFileReason } from '../api.js';
 import type { CSpellUserAndExtensionSettings } from '../config/cspellConfig/index.mjs';
+import type { NotificationMessageId } from '../config/cspellConfig/SpellCheckerSettings.mjs';
 
-export type MinifiedReason = BlockedFileReason;
+export type MinifiedReason = BlockedFileReason & { code: NotificationMessageId };
 
 export const ReasonLineLength: MinifiedReason = {
-    code: 'Lines_too_long.',
+    code: 'Lines too Long',
     message: 'Lines are too long.',
     notificationMessage:
         'For performance reasons, the spell checker does not check documents where the line length is greater than ${limit}.',
@@ -18,7 +19,7 @@ export const ReasonLineLength: MinifiedReason = {
 };
 
 export const ReasonAverageWordsSize: MinifiedReason = {
-    code: 'Word_Size_Too_High.',
+    code: 'Average Word Length too Long',
     message: 'Average word length is too long.',
     notificationMessage:
         'For performance reasons, the spell checker does not check documents where the average block ' +
@@ -29,7 +30,7 @@ export const ReasonAverageWordsSize: MinifiedReason = {
         'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellblockcheckingwhenaveragechunksizegreaterthan',
 };
 export const ReasonMaxWordsSize: MinifiedReason = {
-    code: 'Maximum_Word_Length_Exceeded',
+    code: 'Maximum Word Length Exceeded',
     message: 'Maximum word length exceeded.',
     notificationMessage:
         'For performance reasons, the spell checker does not check documents with very long blocks of text ' +

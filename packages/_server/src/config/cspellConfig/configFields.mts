@@ -60,6 +60,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     enabledLanguageIds: 'enabledLanguageIds',
     enabledSchemes: 'enabledSchemes',
     // Behavior
+    enabledNotifications: 'enabledNotifications',
     hideIssuesWhileTyping: 'hideIssuesWhileTyping',
     revealIssuesAfterDelayMS: 'revealIssuesAfterDelayMS',
     // Appearance
