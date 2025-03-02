@@ -16,7 +16,7 @@ export type {
     CustomDictionaryEntry,
     CustomDictionaryWithScope,
 } from './CustomDictionary.mjs';
-export type { SpellCheckerSettings } from './SpellCheckerSettings.mjs';
+export type { NotificationMessageId, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
 export type {
     CustomDictionaryScope,
     DictionaryDefinition,

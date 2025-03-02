@@ -32,7 +32,7 @@ import type * as Api from './api.js';
 import { createOnCodeActionHandler } from './codeActions.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import { ConfigWatcher } from './config/configWatcher.mjs';
-import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserAndExtensionSettings, NotificationMessageId } from './config/cspellConfig/index.mjs';
 import { DictionaryWatcher } from './config/dictionaryWatcher.mjs';
 import type { SettingsCspell } from './config/documentSettings.mjs';
 import {
@@ -54,7 +54,7 @@ import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
 import { handleTraceRequest } from './trace.js';
-import type { MinifiedReason, ShouldValidateDocument } from './utils/analysis.mjs';
+import type { ShouldValidateDocument } from './utils/analysis.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified, shouldBlockDocumentCheck } from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
@@ -546,7 +546,8 @@ export function run(): void {
                 }));
 
         if (blockedReason) {
-            const notify = !blockedFiles.has(uri);
+            const isNotificationEnabled = settings.enabledNotifications?.[blockedReason.code as NotificationMessageId] ?? true;
+            const notify = !blockedFiles.has(uri) && isNotificationEnabled;
             blockedFiles.set(uri, blockedReason);
             log(`File is blocked: ${blockedReason.message}`, uri);
             if (notify && blockedReason.notificationMessage) {
@@ -787,7 +788,7 @@ export function run(): void {
         return v;
     }
 
-    async function notifyUserAboutBlockedFile(uri: string, reason: MinifiedReason) {
+    async function notifyUserAboutBlockedFile(uri: string, reason: Api.BlockedFileReason) {
         try {
             clientServerApi.clientNotification.onBlockFile({ uri, reason });
         } catch (e) {

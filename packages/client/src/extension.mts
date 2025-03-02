@@ -340,13 +340,19 @@ async function notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
         const { uri, reason } = onBlockFile;
         if (!isUriInAnyTab(uri)) return;
 
-        const actions: vscode.MessageItem[] = [{ title: 'Ok' }, { title: 'Open Settings' }];
+        const openSettings: vscode.MessageItem = { title: 'Open Settings' };
+        const manageNotifications: vscode.MessageItem = { title: 'Manage Notifications' };
+
+        const actions: vscode.MessageItem[] = [{ title: 'Ok' }, openSettings, manageNotifications];
         const result = await vscode.window.showInformationMessage(
             `File "${uriToName(vscode.Uri.parse(uri))}" not spell checked:\n${reason.notificationMessage}\n`,
             ...actions,
         );
-        if (result?.title === 'Open Settings') {
+        if (result === openSettings) {
             await vscode.commands.executeCommand('workbench.action.openSettings', reason.settingsID);
+        }
+        if (result === manageNotifications) {
+            await vscode.commands.executeCommand('workbench.action.openSettings', 'cSpell.enabledNotifications');
         }
     } catch {
         // ignore

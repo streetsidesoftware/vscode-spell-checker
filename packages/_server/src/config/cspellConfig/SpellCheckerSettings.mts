@@ -438,6 +438,15 @@ export interface SpellCheckerBehaviorSettings {
      * @default 1500
      */
     revealIssuesAfterDelayMS?: number;
+
+    /**
+     * Control which notifications are displayed.
+     * @title Enabled Notifications
+     * @scope resource
+     * @since 4.0.41
+     * @default { "Lines too Long": true, "Average Word Length too Long": true, "Maximum Word Length Exceeded": true }
+     */
+    enabledNotifications?: EnabledNotifications;
 }
 
 type AutoOrBoolean = boolean | 'auto';
@@ -489,3 +498,26 @@ export interface AddToTargets extends AddToDictionaryTarget {
 }
 
 export type UnknownWordsReportingLevel = 'all' | 'simple' | 'none';
+
+/**
+ * Control which notifications are displayed.
+ * @title Enabled Notifications
+ * @scope resource
+ * @since 4.0.41
+ */
+export interface EnabledNotifications {
+    /**
+     * Enable notifications if the line is too long.
+     */
+    'Lines too Long'?: boolean;
+    /**
+     * Enable notifications if the average word size is too high.
+     */
+    'Average Word Length too Long'?: boolean;
+    /**
+     * Enable notifications if the maximum word length is exceeded.
+     */
+    'Maximum Word Length Exceeded'?: boolean;
+}
+
+export type NotificationMessageId = keyof EnabledNotifications;
