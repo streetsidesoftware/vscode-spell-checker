@@ -48,6 +48,7 @@
     const enabledInVSCode = fileConfig?.enabled ?? true;
     const fileIsIncluded = fileConfig?.fileIsIncluded;
     const fileIsExcluded = fileConfig?.fileIsExcluded;
+    const gitIgnore = fileConfig?.gitignoreInfo;
 
     info.push(
       { key: 'Name', value: name },
@@ -67,6 +68,7 @@
       (blocked && { key: 'Blocked Code', value: blocked.code }) || undefined,
       (blocked && { key: 'Blocked Help', value: 'See Documentation', url: blocked.documentationRefUri }) || undefined,
       (blocked && { key: 'Blocked Settings', value: 'VS Code Settings', url: blocked.settingsUri }) || undefined,
+      (gitIgnore && { key: 'Blocked GitIgnore', value: gitIgnore.glob, url: gitIgnore.gitignoreFileUri }) || undefined,
     );
 
     return info.filter((a): a is DisplayInfo => !!a?.value);
