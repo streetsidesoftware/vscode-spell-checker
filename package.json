@@ -4056,7 +4056,7 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.17.19",
+    "@types/node": "^20.17.22",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^3.0.7",
@@ -4066,7 +4066,7 @@
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.0",
     "eslint": "^9.21.0",
-    "eslint-plugin-n": "^17.15.1",
+    "eslint-plugin-n": "^17.16.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^57.0.0",
     "globals": "^16.0.0",
@@ -4074,9 +4074,9 @@
     "jest-mock-vscode": "^4.1.0",
     "ovsx": "^0.10.1",
     "patch-package": "^8.0.0",
-    "prettier": "^3.5.2",
+    "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
-    "rollup": "^4.34.8",
+    "rollup": "^4.34.9",
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
     "tsup": "^8.4.0",
@@ -4088,7 +4088,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.17.5",
     "@cspell/cspell-types": "^8.17.5",
-    "@cspell/dict-cspell-bundle": "^1.0.34",
+    "@cspell/dict-cspell-bundle": "^1.0.35",
     "cspell": "^8.17.5",
     "regexp-worker": "^3.0.0"
   },
