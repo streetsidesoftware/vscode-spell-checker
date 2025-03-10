@@ -4064,7 +4064,7 @@
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.1",
     "eslint": "^9.22.0",
     "eslint-plugin-n": "^17.16.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
