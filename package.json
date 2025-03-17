@@ -4078,7 +4078,7 @@
     "prettier-plugin-svelte": "^3.3.3",
     "rollup": "^4.35.0",
     "rollup-plugin-dts": "^6.1.1",
-    "shx": "^0.3.4",
+    "shx": "^0.4.0",
     "tsup": "^8.4.0",
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.26.1",
