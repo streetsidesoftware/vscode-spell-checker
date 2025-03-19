@@ -4032,7 +4032,7 @@
     "build-production": "npm --workspaces --if-present run build-production",
     "build-release": "npm run build && npm run package-extension",
     "build-website": "cd website && npm i && npm run build-site",
-    "gen-docs": "npm --if-present run gen-docs",
+    "gen-docs": "npm --if-present -ws run gen-docs",
     "package-extension": "vsce package -o ./build",
     "prettier:check": "prettier . -c",
     "prettier:fix": "npm run prettier:check -- -w",
