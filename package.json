@@ -3907,7 +3907,7 @@
               "Hide issues while typing on the line",
               "Hide all issues while typing in the document"
             ],
-            "markdownDescription": "Control how spelling issues are displayed while typing.\nSee: `#cSpell.revealIssuesAfterMS#` to control when issues are revealed.",
+            "markdownDescription": "Control how spelling issues are displayed while typing.\nSee: `#cSpell.revealIssuesAfterDelayMS#` to control when issues are revealed.",
             "scope": "application",
             "since": "4.0.0",
             "title": "Hide Issues While Typing",

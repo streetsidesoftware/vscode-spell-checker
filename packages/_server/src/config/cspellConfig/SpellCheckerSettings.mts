@@ -417,7 +417,7 @@ export interface AdvancedSettings {
 export interface SpellCheckerBehaviorSettings {
     /**
      * Control how spelling issues are displayed while typing.
-     * See: `#cSpell.revealIssuesAfterMS#` to control when issues are revealed.
+     * See: `#cSpell.revealIssuesAfterDelayMS#` to control when issues are revealed.
      * @title Hide Issues While Typing
      * @scope application
      * @since 4.0.0
