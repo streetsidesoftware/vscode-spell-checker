@@ -4059,7 +4059,7 @@
     "@types/node": "^20.17.24",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "^3.0.8",
+    "@vitest/coverage-istanbul": "^3.0.9",
     "@vscode/vsce": "^3.3.0",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
@@ -4076,14 +4076,14 @@
     "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
-    "rollup": "^4.35.0",
+    "rollup": "^4.36.0",
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.4.0",
     "tsup": "^8.4.0",
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.2.2",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.9"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.17.5",
