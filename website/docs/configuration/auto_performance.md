@@ -15,7 +15,7 @@ Settings that control the performance of the spell checker.
 | [`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks. |
 | [`cSpell.blockCheckingWhenLineLengthGreaterThan`](#cspellblockcheckingwhenlinelengthgreaterthan) | language-overridable | The maximum line length. |
 | [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](#cspellblockcheckingwhentextchunksizegreaterthan) | language-overridable | The maximum length of a chunk of text without word breaks. |
-| [`cSpell.checkLimit`](#cspellchecklimit) | resource | Set the maximum number of bocks of text to check. Each block is 1024 characters. |
+| [`cSpell.checkLimit`](#cspellchecklimit) | resource | Set the maximum number of blocks of text to check. Each block is 1024 characters. |
 | [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms) | application | Delay in ms after a document has changed before checking it for spelling errors. |
 | [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout) | resource | The maximum amount of time in milliseconds to generate suggestions for a word. |
 
@@ -49,7 +49,7 @@ A chunk is the characters between absolute word breaks.
 Absolute word breaks match: `/[\s,{}[\]]/`
 
 
-**Error Message:** _Average Word Size is Too High._
+**Error Message:** _Average word length is too long._
 
 
 If you are seeing this message, it means that the file contains mostly long lines
@@ -196,7 +196,7 @@ A chunk is the characters between absolute word breaks.
 Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
 
 
-**Error Message:** _Maximum Word Length is Too High._
+**Error Message:** _Maximum word length exceeded._
 
 
 If you are seeing this message, it means that the file contains a very long line
@@ -263,7 +263,7 @@ Description
 </dt>
 <dd>
 
-Set the maximum number of bocks of text to check.
+Set the maximum number of blocks of text to check.
 Each block is 1024 characters.
 
 </dd>

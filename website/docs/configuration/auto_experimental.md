@@ -13,7 +13,6 @@ Experimental settings that may change or be removed in the future.
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
 | [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
-| [`cSpell.experimental.enableSettingsViewerV2`](#cspellexperimentalenablesettingsviewerv2) | application | Enable the Settings Viewer V2 Extension |
 | [`cSpell.experimental.symbols`](#cspellexperimentalsymbols) | application | Experiment with `executeDocumentSymbolProvider` |
 | [`cSpell.reportUnknownWords`](#cspellreportunknownwords) | language-overridable | Strict Spell Checking |
 
@@ -41,69 +40,6 @@ Description
 <dd>
 
 Show Regular Expression Explorer
-
-</dd>
-
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-
-<dt>
-Scope
-</dt>
-<dd>
-
-application - Settings that apply to all instances of VS Code and can only be configured in user settings.
-
-</dd>
-
-
-
-
-<dt>
-Default
-</dt>
-<dd>
-
-_`false`_
-
-</dd>
-
-
-
-
-</dl>
-
----
-
-
-### `cSpell.experimental.enableSettingsViewerV2`
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-`cSpell.experimental.enableSettingsViewerV2`
-
-</dd>
-
-
-<dt>
-Description
-</dt>
-<dd>
-
-Enable the Settings Viewer V2 Extension
 
 </dd>
 
