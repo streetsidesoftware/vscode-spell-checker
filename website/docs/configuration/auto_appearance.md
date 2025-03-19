@@ -17,7 +17,7 @@ Settings that control the appearance of the spell checker.
 | [`cSpell.light`](#cspelllight) | application | Decoration for light themes. |
 | [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler. |
 | [`cSpell.showInRuler`](#cspellshowinruler) | application | Show spelling issues in the editor ruler. |
-| [`cSpell.textDecoration`](#cspelltextdecoration) | application | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
+| [`cSpell.textDecoration`](#cspelltextdecoration) | application | The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations). |
 | [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) | application | The decoration color for normal spelling issues. |
 | [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues. |
 | [`cSpell.textDecorationColorSuggestion`](#cspelltextdecorationcolorsuggestion) | application | The decoration color for spelling suggestions. |
