@@ -147,7 +147,7 @@ export const commandHandlers = {
     'cSpell.editText': handleApplyLsTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
-    'cSpell.openSettings': callCommand('workbench.action.openSettings', () => [{ query: 'cSpell.' }]),
+    'cSpell.openSettings': callCommand('workbench.action.openSettings', () => [{ query: '@ext:streetsidesoftware.code-spell-checker' }]),
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
