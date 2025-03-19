@@ -123,7 +123,7 @@ function formatSectionContent(section, refs) {
 
         ${section.description || ''}
 
-        ${configTable(activeEntries)}
+        ${configTable(activeEntries, refs)}
 
         ## Settings
 
@@ -164,17 +164,20 @@ function compareProperties(a, b) {
 /**
  *
  * @param {[string, JSONSchema4][]} entries
+ * @param {TypeSlugRefs} refs
  * @returns
  */
-function configTable(entries) {
+function configTable(entries, refs) {
     /**
      *
      * @param {[string, any]} param0
      * @returns
      */
     function tableEntryConfig([key, value]) {
-        const description =
-            value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '';
+        const description = fixVSCodeRefs(
+            value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
+            refs,
+        );
         const scope = value.scope || '';
         return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
     }

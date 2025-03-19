@@ -13,11 +13,11 @@ Settings related to CSpell Command Line Tool.
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
 | [`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings) |  | Ignore sequences of characters that look like random strings. |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in [`cSpell.patterns`](cspell#cspellpatterns))… |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking. |
 | [`cSpell.minRandomLength`](#cspellminrandomlength) |  | The minimum length of a random string to be ignored. |
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
-| [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
+| [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)… |
 
 
 ## Settings

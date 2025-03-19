@@ -2042,6 +2042,7 @@
             },
             "markdownDescription": "Glob patterns of files to be checked.\nGlob patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.",
             "scope": "resource",
+            "title": "Glob patterns of files to be checked",
             "type": "array"
           },
           "cSpell.globRoot": {

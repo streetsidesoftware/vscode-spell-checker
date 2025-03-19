@@ -130,6 +130,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     /**
      * Glob patterns of files to be checked.
      * Glob patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
+     * @title Glob patterns of files to be checked
      * @scope resource
      */
     files?: CSpellSettings['files'];

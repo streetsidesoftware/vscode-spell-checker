@@ -16,7 +16,7 @@ Settings that control which files and folders are spell checked.
 | [`cSpell.checkVSCodeSystemFiles`](#cspellcheckvscodesystemfiles) | application | Spell check VS Code system files. These include: |
 | [`cSpell.enabledFileTypes`](#cspellenabledfiletypes) | resource | Enabled File Types to Check |
 | [`cSpell.enabledSchemes`](#cspellenabledschemes) | window | Specify Allowed Schemes |
-| [`cSpell.files`](#cspellfiles) | resource | Glob patterns of files to be checked. Glob patterns are relative to the `#cSpell.globRoot#`… |
+| [`cSpell.files`](#cspellfiles) | resource | Glob patterns of files to be checked |
 | [`cSpell.globRoot`](#cspellglobroot) | resource | The root to use for glob patterns found in this configuration. Default: The current workspace… |
 | [`cSpell.ignorePaths`](#cspellignorepaths) | resource | Glob patterns of files to be ignored |
 | [`cSpell.import`](#cspellimport) | resource | Allows this configuration to inherit configuration for one or more other files. |
@@ -331,7 +331,7 @@ Name
 </dt>
 <dd>
 
-`cSpell.files`
+`cSpell.files` -- Glob patterns of files to be checked
 
 </dd>
 
