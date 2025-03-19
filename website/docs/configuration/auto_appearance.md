@@ -16,6 +16,7 @@ Settings that control the appearance of the spell checker.
 | [`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme) | application | Use VS Code to Render Spelling Issues |
 | [`cSpell.light`](#cspelllight) | application | Decoration for light themes. |
 | [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler. |
+| [`cSpell.showInRuler`](#cspellshowinruler) | application | Show spelling issues in the editor ruler. |
 | [`cSpell.textDecoration`](#cspelltextdecoration) | application | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
 | [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) | application | The decoration color for normal spelling issues. |
 | [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues. |
@@ -274,6 +275,8 @@ Description
 
 The CSS color used to show issues in the ruler.
 
+Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+
 See:
 - [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
 - [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
@@ -316,7 +319,7 @@ Default
 </dt>
 <dd>
 
-_`"#fc4c"`_
+_`"#348feb80"`_
 
 </dd>
 
@@ -327,6 +330,79 @@ Since Version
 <dd>
 
 4.0.0
+
+</dd>
+
+
+</dl>
+
+---
+
+
+### `cSpell.showInRuler`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.showInRuler`
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+Show spelling issues in the editor ruler.
+
+Note: This setting is only used when [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations) is `true`.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+
+<dt>
+Since Version
+</dt>
+<dd>
+
+4.0.35
 
 </dd>
 
@@ -376,6 +452,8 @@ Examples:
 - `underline green`
 - `underline dotted yellow 0.2rem`
 - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
+
+To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
 
 </dd>
 
@@ -451,6 +529,8 @@ The decoration color for normal spelling issues.
 See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
 - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
 
+To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
+
 Examples:
 - `green`
 - `yellow`
@@ -486,7 +566,7 @@ Default
 </dt>
 <dd>
 
-_`"#fc4"`_
+_`"#348feb"`_
 
 </dd>
 
@@ -794,7 +874,7 @@ Default
 </dt>
 <dd>
 
-_`"wavy"`_
+_`"dashed"`_
 
 </dd>
 
@@ -915,8 +995,10 @@ Description
 <dd>
 
 Draw custom decorations on Spelling Issues.
-- `true` - Use custom decorations.
+- `true` - Use custom decorations. - VS Code Diagnostic Severity Levels are not used.
 - `false` - Use the VS Code Diagnostic Collection to render spelling issues.
+
+Note: This setting overrides the VS Code Diagnostics setting: [`cSpell.diagnosticLevel`](reporting-and-display#cspelldiagnosticlevel).
 
 </dd>
 
@@ -948,7 +1030,7 @@ Default
 </dt>
 <dd>
 
-_`true`_
+_`false`_
 
 </dd>
 

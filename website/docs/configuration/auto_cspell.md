@@ -12,13 +12,78 @@ Settings related to CSpell Command Line Tool.
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
+| [`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings) |  | Ignore sequences of characters that look like random strings. |
 | [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking. |
+| [`cSpell.minRandomLength`](#cspellminrandomlength) |  | The minimum length of a random string to be ignored. |
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
 
 
 ## Settings
+
+
+### `cSpell.ignoreRandomStrings`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.ignoreRandomStrings`
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+Ignore sequences of characters that look like random strings.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+
+
+
+</dl>
+
+---
 
 
 ### `cSpell.ignoreRegExpList`
@@ -151,6 +216,69 @@ Default
 <dd>
 
 _- none -_
+
+</dd>
+
+
+
+
+</dl>
+
+---
+
+
+### `cSpell.minRandomLength`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.minRandomLength`
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+The minimum length of a random string to be ignored.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`40`_
 
 </dd>
 

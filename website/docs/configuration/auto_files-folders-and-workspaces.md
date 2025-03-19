@@ -13,6 +13,7 @@ Settings that control which files and folders are spell checked.
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
 | [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes) | resource | Check Only Enabled File Types |
+| [`cSpell.checkVSCodeSystemFiles`](#cspellcheckvscodesystemfiles) | application | Spell check VS Code system files. These include: |
 | [`cSpell.enabledFileTypes`](#cspellenabledfiletypes) | resource | Enabled File Types to Check |
 | [`cSpell.enabledSchemes`](#cspellenabledschemes) | window | Specify Allowed Schemes |
 | [`cSpell.files`](#cspellfiles) | resource | Glob patterns of files to be checked. Glob patterns are relative to the `#cSpell.globRoot#`… |
@@ -98,6 +99,72 @@ _`true`_
 ---
 
 
+### `cSpell.checkVSCodeSystemFiles`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.checkVSCodeSystemFiles`
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+Spell check VS Code system files.
+These include:
+- `vscode-userdata:/**/settings.json`
+- `vscode-userdata:/**/keybindings.json`
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`false`_
+
+</dd>
+
+
+
+
+</dl>
+
+---
+
+
 ### `cSpell.enabledFileTypes`
 
 <dl>
@@ -164,27 +231,7 @@ Default
 </dt>
 <dd>
 
-
-```json5
-{
-"al": true, "asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript":
-true, "cpp": true, "csharp": true, "css": true, "dart": true, "diff": true,
-"dockerfile": true, "elixir": true, "erlang": true, "fsharp": true,
-"git-commit": true, "git-rebase": true, "github-actions-workflow": true, "go":
-true, "graphql": true, "groovy": true, "handlebars": true, "haskell": true,
-"html": true, "ini": true, "jade": true, "java": true, "javascript": true,
-"javascriptreact": true, "json": true, "jsonc": true, "julia": true, "jupyter":
-true, "latex": true, "less": true, "lua": true, "makefile": true, "markdown":
-true, "objective-c": true, "perl": true, "perl6": true, "php": true,
-"plaintext": true, "powershell": true, "properties": true, "pug": true,
-"python": true, "r": true, "razor": true, "restructuredtext": true, "ruby":
-true, "rust": true, "scala": true, "scminput": true, "scss": true, "shaderlab":
-true, "shellscript": true, "sql": true, "swift": true, "text": true,
-"typescript": true, "typescriptreact": true, "vb": true, "vue": true, "xml":
-true, "xsl": true, "yaml": true
-}
-```
-
+_`{"*":true,"markdown":true}`_
 
 </dd>
 

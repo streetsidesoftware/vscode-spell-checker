@@ -15,6 +15,7 @@ Settings that control how the spell checker reports and displays errors.
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile) | window | Auto Format Configuration File |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel) | resource | Set Diagnostic Reporting Level |
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords) | resource | Set Diagnostic Reporting Level for Flagged Words |
+| [`cSpell.enabledNotifications`](#cspellenablednotifications) | resource | Enabled Notifications |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions) | resource | Hide the options to add words to dictionaries or settings. |
 | [`cSpell.hideIssuesWhileTyping`](#cspellhideissueswhiletyping) | application | Hide Issues While Typing |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems) | resource | The maximum number of times the same word can be flagged as an error in a file. |
@@ -118,8 +119,9 @@ Description
 <dd>
 
 The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-Set the level to `Hint` to hide the issues from the Problems Pane. Use the [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations)
-to control how issues are displayed in the document.
+Set the level to `Hint` to hide the issues from the Problems Pane.
+
+Note: [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations) must be `false` to use VS Code Diagnostic Severity Levels.
 
 See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
 
@@ -253,6 +255,84 @@ Since Version
 ---
 
 
+### `cSpell.enabledNotifications`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.enabledNotifications` -- Enabled Notifications
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which notifications are displayed.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`object`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+
+```json5
+{
+"Average Word Length too Long": true, "Lines too Long": true,
+"Maximum Word Length Exceeded": true
+}
+```
+
+
+</dd>
+
+
+<dt>
+Since Version
+</dt>
+<dd>
+
+4.0.41
+
+</dd>
+
+
+</dl>
+
+---
+
+
 ### `cSpell.hideAddToDictionaryCodeActions`
 
 <dl>
@@ -336,7 +416,7 @@ Description
 <dd>
 
 Control how spelling issues are displayed while typing.
-See: [`cSpell.revealIssuesAfterMS`](#cspellrevealissuesafterms) to control when issues are revealed.
+See: [`cSpell.revealIssuesAfterDelayMS`](reporting-and-display#cspellrevealissuesafterdelayms) to control when issues are revealed.
 
 </dd>
 

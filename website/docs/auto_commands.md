@@ -10,7 +10,7 @@ id: commands
 
 | Command | Title |
 | ------- | ----- |
-| `cSpell.about` |  About the Spell Checker |
+| `cSpell.about` |  About the Spell Checker<br />**When:**<br />  `config.cSpell.command.about` |
 | `cSpell.addIgnoreWord` |  Ignore Words |
 | `cSpell.addIgnoreWordsToFolder` |  Ignore Word in Folder Settings |
 | `cSpell.addIgnoreWordsToUser` |  Ignore Words in User Settings |
@@ -43,6 +43,7 @@ id: commands
 | `cSpell.goToPreviousSpellingIssue` |  Go to Previous Spelling Issue |
 | `cSpell.goToPreviousSpellingIssueAndSuggest` |  Go to Previous Spelling Issue and Suggest |
 | `cSpell.hide` |  Hide Spelling Issues |
+| `cSpell.hideCSpellInfo` |  Hide Spell Checker Configuration Info |
 | `cSpell.insertDisableLineDirective` |  Insert Disable Current Line Directive |
 | `cSpell.insertDisableNextLineDirective` |  Insert Disable Next Line Directive |
 | `cSpell.insertIgnoreWordsDirective` |  Insert Ignore Words Directive |
@@ -55,18 +56,19 @@ id: commands
 | `cSpell.logPerfTimeline` |  Log CSpell performance times to console |
 | `cSpell.openFileInfoView` |  Open Spell Checker File Information View |
 | `cSpell.openIssuesPanel` |  Open Spell Checker Issues Panel |
+| `cSpell.openSettings` |  Open Spell Checker Settings |
 | `cSpell.rateTheSpellChecker` |  Rate the Spell Checker |
-| `cSpell.releaseNotes` |  Show Spell Checker Release Notes |
+| `cSpell.releaseNotes` |  Show Spell Checker Release Notes<br />**When:**<br />  `config.cSpell.command.releaseNotes` |
 | `cSpell.reload` |  Reload Spell Checker Configuration and Dictionaries |
 | `cSpell.removeWordFromFolderDictionary` |  Remove Words from the Folder Dictionary |
 | `cSpell.removeWordFromUserDictionary` |  Remove Words from the Global Dictionary |
 | `cSpell.removeWordFromWorkspaceDictionary` |  Remove Words from the Workspace Dictionaries |
-| `cSpell.reportIssue` |  Report an Issue with the Spell Checker |
+| `cSpell.reportIssue` |  Report an Issue with the Spell Checker<br />**When:**<br />  `config.cSpell.command.reportIssue` |
 | `cSpell.restart` |  Restart Spell Checker Server |
 | `cSpell.show` |  Show Spelling Issues |
-| `cSpell.sponsor` |  Sponsor the Spell Checker |
+| `cSpell.sponsor` |  Sponsor the Spell Checker<br />**When:**<br />  `config.cSpell.command.sponsor` |
 | `cSpell.suggestSpellingCorrections` |  Spelling Suggestions...<br />**When:**<br />  `editorTextFocus && cSpell.editorMenuContext.showSuggestions` |
-| `cSpell.supportRequest` |  Request Support with the Spell Checker |
+| `cSpell.supportRequest` |  Request Support with the Spell Checker<br />**When:**<br />  `config.cSpell.command.enableSupportRequest` |
 | `cSpell.toggleEnableForGlobal` |  Toggle Spell Checking in User Settings |
 | `cSpell.toggleEnableForWorkspace` |  Toggle Spell Checking for Workspace |
 | `cSpell.toggleEnableSpellChecker` |  Toggle Spell Checking |
