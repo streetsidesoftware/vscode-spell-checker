@@ -18,9 +18,12 @@
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
   },
   "homepage": "https://streetsidesoftware.github.io/vscode-spell-checker",
+  "packageManager": "npm@10.8.2",
   "engineStrict": true,
   "engines": {
     "node": "^20.18.1",
+    "pnpm": "0",
+    "yarn": "0",
     "vscode": "^1.90.0"
   },
   "sponsor": {
