@@ -18,7 +18,8 @@
   interface DisplayInfo {
     key: string;
     value: string | undefined;
-    url?: string;
+    url?: string | undefined;
+    line?: number | undefined;
   }
 
   const maxDelay = 10000;
@@ -26,8 +27,8 @@
   let fileInfo: DisplayInfo[] = $state([]);
   let delay = $state(initialDelay);
 
-  function openTextDocument(uri: string) {
-    getServerNotificationApi().openTextDocument(uri);
+  function openTextDocument(uri: string, line?: number | undefined) {
+    getServerNotificationApi().openTextDocument(uri, line ? { line } : undefined);
   }
 
   async function updateEnabledFileType(fileType: string | undefined, enable: boolean, url: URL | undefined) {
@@ -68,7 +69,8 @@
       (blocked && { key: 'Blocked Code', value: blocked.code }) || undefined,
       (blocked && { key: 'Blocked Help', value: 'See Documentation', url: blocked.documentationRefUri }) || undefined,
       (blocked && { key: 'Blocked Settings', value: 'VS Code Settings', url: blocked.settingsUri }) || undefined,
-      (gitIgnore && { key: 'Blocked GitIgnore', value: gitIgnore.glob, url: gitIgnore.gitignoreFileUri }) || undefined,
+      (gitIgnore && { key: 'Blocked GitIgnore', value: gitIgnore.glob, url: gitIgnore.gitignoreFileUri, line: gitIgnore.line }) ||
+        undefined,
     );
 
     return info.filter((a): a is DisplayInfo => !!a?.value);
@@ -115,7 +117,7 @@
       <dt>{entry.key}:</dt>
       <dd>
         {#if entry.url}
-          <VscodeLink href={entry.url}>{entry.value}</VscodeLink>
+          <VscodeLink href={entry.url} click={() => openTextDocument(entry.url || '', entry.line)}>{entry.value}</VscodeLink>
         {:else}
           {entry.value}
         {/if}
@@ -197,7 +199,7 @@
   {/if}
 
   {#if unusedDictionaries && unusedDictionaries.length}
-    <h2>Other Dictionaries</h2>
+    <h2>Available Dictionaries</h2>
     <ul>
       {#each unusedDictionaries as dictionary}
         <li>

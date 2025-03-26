@@ -199,13 +199,13 @@ function extractFileConfig(
     function extractGitignoreInfo(): FileConfig['gitignoreInfo'] {
         if (!gitignoreInfo) return undefined;
         const { glob, gitIgnoreFile, line, matched, root } = gitignoreInfo;
-        const uri = Uri.file(gitIgnoreFile);
+        const uri = Uri.parse(gitIgnoreFile);
         return {
             matched,
             glob,
             line,
             root,
-            gitignoreFileUri: uri.toString(),
+            gitignoreFileUri: gitIgnoreFile,
             gitignoreName: uriToName(uri),
         };
     }

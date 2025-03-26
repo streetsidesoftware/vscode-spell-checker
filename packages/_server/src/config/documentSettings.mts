@@ -238,7 +238,11 @@ export class DocumentSettings {
         if (root) {
             this.gitIgnore.addRoots([uriToGlobPath(root)]);
         }
-        return await this.gitIgnore.isIgnoredEx(uriToGlobPath(uri));
+        const results = await this.gitIgnore.isIgnoredEx(uriToGlobPath(uri));
+        if (!results) return undefined;
+        const info = { ...results };
+        info.gitIgnoreFile = toFileURL(results.gitIgnoreFile).href;
+        return info;
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
