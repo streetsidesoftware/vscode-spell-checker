@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.42](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.41...code-spell-checker-v4.0.42) (2025-03-26)
+
+
+### Updates and Bug Fixes
+
+* Docs, fix link to `revealIssuesAfterDelayMS` ([#4229](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4229)) ([92b3d20](https://github.com/streetsidesoftware/vscode-spell-checker/commit/92b3d203f609b9f28d6d066796d347688e873080))
+* Fix issue with `.gitignore` files ([#4254](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4254)) ([9aed4fe](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9aed4fe279578d557c56ddf6cd02451aaf96fc79))
+* handle opening of settings is better way ([#4226](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4226)) ([64cbdd3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/64cbdd3c09494932a1e393df31631bed31ce74b7))
+* Report when .gitignore blocks a file. ([#4178](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4178)) ([12966e8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/12966e890eeb13abc87ae7c1849391f8cb8915aa))
+* Update CSpell (main) ([#4181](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4181)) ([33993bc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/33993bc427baa8dce6e44f2f42b7593b24a23541))
+* Update CSpell (main) ([#4187](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4187)) ([0d9cae6](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0d9cae67f87a75f89755bac689bcd29c25aac840))
+* Update CSpell (main) ([#4230](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4230)) ([5d52bfc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5d52bfcc1c92c6901209318eb36e93d64ad6d2ca))
+
 ## [4.0.41](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.40...code-spell-checker-v4.0.41) (2025-03-02)
 
 
