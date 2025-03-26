@@ -36,10 +36,15 @@ export interface ServerRequestsAPI {
     watchFields(req: WatchFieldList): void;
 }
 
+export interface OpenTextDocumentOptions {
+    line?: number;
+    column?: number;
+}
+
 /** Notifications that can be sent to the extension */
 export interface ServerNotificationsAPI {
     showInformationMessage(message: string): void;
-    openTextDocument(url: string): void;
+    openTextDocument(url: string, options?: OpenTextDocumentOptions): void;
 }
 
 /**

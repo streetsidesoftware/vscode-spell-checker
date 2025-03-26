@@ -266,6 +266,7 @@
           "type": "webview",
           "id": "cSpellInfoView",
           "when": "cSpell.context.displayCSpellInfo",
+          "icon": "$(lightbulb)",
           "name": "Spell Checker"
         }
       ],
@@ -273,6 +274,7 @@
         {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
+          "icon": "$(code)",
           "when": "config.cSpell.experimental.enableRegexpView"
         }
       ],
@@ -4089,10 +4091,10 @@
     "vitest": "^3.0.9"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.17.5",
-    "@cspell/cspell-types": "^8.17.5",
+    "@cspell/cspell-bundled-dicts": "^8.18.0",
+    "@cspell/cspell-types": "^8.18.0",
     "@cspell/dict-cspell-bundle": "^1.0.39",
-    "cspell": "^8.17.5",
+    "cspell": "^8.18.0",
     "regexp-worker": "^3.0.0"
   },
   "vsce": {
