@@ -4069,7 +4069,7 @@
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.2",
     "eslint": "^9.23.0",
     "eslint-plugin-n": "^17.17.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
