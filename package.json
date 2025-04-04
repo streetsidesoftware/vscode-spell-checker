@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "GPL-3.0-or-later",
-  "version": "4.0.42",
+  "version": "4.0.43",
   "publisher": "streetsidesoftware",
   "private": true,
   "type": "module",
@@ -4087,7 +4087,7 @@
     "tsup": "^8.4.0",
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.29.0",
-    "vite": "^6.2.5",
+    "vite": "^6.2.4",
     "vitest": "^3.1.1"
   },
   "dependencies": {
