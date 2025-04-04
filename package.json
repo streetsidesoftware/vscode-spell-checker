@@ -4087,13 +4087,13 @@
     "tsup": "^8.4.0",
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.29.0",
-    "vite": "^6.2.4",
+    "vite": "^6.2.5",
     "vitest": "^3.1.1"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.18.1",
     "@cspell/cspell-types": "^8.18.1",
-    "@cspell/dict-cspell-bundle": "^1.0.41",
+    "@cspell/dict-cspell-bundle": "^1.0.42",
     "cspell": "^8.18.1",
     "regexp-worker": "^3.0.0"
   },
