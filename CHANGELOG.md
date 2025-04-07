@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.45](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.44...code-spell-checker-v4.0.45) (2025-04-07)
+
+
+### Updates and Bug Fixes
+
+* Remove eye icon from title bars ([#4294](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4294)) ([4840118](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4840118c125e518629acd2d8efc672e52f62aae7))
+
 ## [4.0.44](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.43...code-spell-checker-v4.0.44) (2025-04-07)
 
 
