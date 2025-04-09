@@ -14,7 +14,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@tanstack/svelte-query": "^5.71.10",
+    "@tanstack/svelte-query": "^5.72.1",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "fast-equals": "^5.2.2",
     "sirv-cli": "^3.0.1",
