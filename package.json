@@ -4071,13 +4071,13 @@
     "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
-    "rollup": "^4.39.0",
+    "rollup": "^4.40.0",
     "rollup-plugin-dts": "^6.2.1",
     "shx": "^0.4.0",
     "tsup": "^8.4.0",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.29.0",
-    "vite": "^6.2.5",
+    "typescript-eslint": "^8.29.1",
+    "vite": "^6.2.6",
     "vitest": "^3.1.1"
   },
   "dependencies": {
