@@ -21,7 +21,7 @@
   "packageManager": "npm@10.8.2",
   "engineStrict": true,
   "engines": {
-    "node": "^20.18.1",
+    "node": ">=20.18.1",
     "pnpm": "0",
     "yarn": "0",
     "vscode": "^1.90.0"
