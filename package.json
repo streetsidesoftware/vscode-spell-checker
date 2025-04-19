@@ -4113,7 +4113,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@eslint/js": "^9.24.0",
+    "@eslint/js": "^9.25.0",
     "@tsconfig/node20": "^20.1.5",
     "@types/node": "^20.17.30",
     "@types/vscode": "1.90.0",
@@ -4124,7 +4124,7 @@
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.2",
-    "eslint": "^9.24.0",
+    "eslint": "^9.25.0",
     "eslint-plugin-n": "^17.17.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^58.0.0",
@@ -4141,7 +4141,7 @@
     "tsup": "^8.4.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.1",
+    "vite": "^6.3.2",
     "vitest": "^3.1.1"
   },
   "dependencies": {
