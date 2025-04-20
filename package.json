@@ -4151,5 +4151,7 @@
     "cspell": "^8.19.1",
     "regexp-worker": "^3.0.0"
   },
-  "vsce": {}
+  "vsce": {
+    "preRelease": true
+  }
 }
