@@ -4145,10 +4145,10 @@
     "vitest": "^3.1.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.19.1",
-    "@cspell/cspell-types": "^8.19.1",
+    "@cspell/cspell-bundled-dicts": "^8.19.2",
+    "@cspell/cspell-types": "^8.19.2",
     "@cspell/dict-cspell-bundle": "^1.0.46",
-    "cspell": "^8.19.1",
+    "cspell": "^8.19.2",
     "regexp-worker": "^3.0.0"
   },
   "vsce": {}
