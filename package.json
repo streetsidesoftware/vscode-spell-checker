@@ -4113,7 +4113,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
+    "@eslint/js": "^9.25.1",
     "@tsconfig/node20": "^20.1.5",
     "@types/node": "^20.17.30",
     "@types/vscode": "1.90.0",
