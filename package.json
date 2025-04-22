@@ -4113,18 +4113,18 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
+    "@eslint/js": "^9.25.1",
     "@tsconfig/node20": "^20.1.5",
     "@types/node": "^20.17.30",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "^3.1.1",
+    "@vitest/coverage-istanbul": "^3.1.2",
     "@vscode/vsce": "^3.3.2",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.2",
-    "eslint": "^9.25.0",
+    "eslint": "^9.25.1",
     "eslint-plugin-n": "^17.17.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^58.0.0",
@@ -4140,14 +4140,14 @@
     "shx": "^0.4.0",
     "tsup": "^8.4.0",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.30.1",
+    "typescript-eslint": "^8.31.0",
     "vite": "^6.3.2",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.19.2",
     "@cspell/cspell-types": "^8.19.2",
-    "@cspell/dict-cspell-bundle": "^1.0.46",
+    "@cspell/dict-cspell-bundle": "^1.0.47",
     "cspell": "^8.19.2",
     "regexp-worker": "^3.0.0"
   },
