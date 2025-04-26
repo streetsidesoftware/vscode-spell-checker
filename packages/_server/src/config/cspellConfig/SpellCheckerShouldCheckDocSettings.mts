@@ -11,8 +11,10 @@ export interface SpellCheckerShouldCheckDocSettings {
      * **Error Message:** _Lines are too long._
      *
      *
+     * Hide this message using `#cSpell.enabledNotifications#`
+     *
      * @scope language-overridable
-     * @default 10000
+     * @default 20000
      */
     blockCheckingWhenLineLengthGreaterThan?: number;
 
@@ -33,8 +35,11 @@ export interface SpellCheckerShouldCheckDocSettings {
      * If you are seeing this message, it means that the file contains a very long line
      * without many word breaks.
      *
+     *
+     * Hide this message using `#cSpell.enabledNotifications#`
+     *
      * @scope language-overridable
-     * @default 500
+     * @default 1000
      */
     blockCheckingWhenTextChunkSizeGreaterThan?: number;
 
@@ -52,8 +57,11 @@ export interface SpellCheckerShouldCheckDocSettings {
      * If you are seeing this message, it means that the file contains mostly long lines
      * without many word breaks.
      *
+     *
+     * Hide this message using `#cSpell.enabledNotifications#`
+     *
      * @scope language-overridable
-     * @default 80
+     * @default 200
      */
     blockCheckingWhenAverageChunkSizeGreaterThan?: number;
 

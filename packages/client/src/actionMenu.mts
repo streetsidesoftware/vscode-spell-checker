@@ -4,8 +4,7 @@ import { createDisposableList } from 'utils-disposables';
 import type { Disposable, QuickPickItem } from 'vscode';
 import vscode from 'vscode';
 
-import { knownCommands } from './commands.mjs';
-import { extensionId } from './constants.js';
+import { generateOpenSettingsCommand, knownCommands } from './commands.mjs';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
 import { handleErrors } from './util/errors.js';
@@ -58,7 +57,10 @@ async function actionMenu(options: ActionsMenuOptions) {
             command: 'workbench.action.openGlobalKeybindings',
             arguments: ['Spell:'],
         }),
-        itemCommand({ title: '$(gear) Edit Settings...', command: 'workbench.action.openSettings', arguments: [extensionId] }),
+        itemCommand({
+            title: '$(gear) Edit Settings...',
+            ...generateOpenSettingsCommand(),
+        }),
     ].filter(isDefined);
 
     return quickPickMenu({ items, title: 'Spell Checker Actions Menu' }).catch(() => undefined);
@@ -250,8 +252,7 @@ function itemDocFileType(uri: vscode.Uri | undefined, fileType: string | undefin
     item.buttons = [
         new CommandButtonItem(new vscode.ThemeIcon('gear'), {
             title: 'Edit Enable File Type in Settings',
-            command: 'workbench.action.openSettings',
-            arguments: [ConfigFields.enabledFileTypes],
+            ...generateOpenSettingsCommand(ConfigFields.enabledFileTypes),
         }),
     ];
     return item;
@@ -268,8 +269,7 @@ function itemDocScheme(uri: vscode.Uri | undefined, schemeAllowed: boolean | und
     item.buttons = [
         new CommandButtonItem(new vscode.ThemeIcon('gear'), {
             title: 'Edit Enable Scheme in Settings',
-            command: 'workbench.action.openSettings',
-            arguments: [ConfigFields.enabledSchemes],
+            ...generateOpenSettingsCommand(ConfigFields.enabledSchemes),
         }),
     ];
     return item;

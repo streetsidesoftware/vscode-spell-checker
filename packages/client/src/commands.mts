@@ -14,6 +14,7 @@ import { actionAutoFixSpellingIssues, handleApplyLsTextEdits, handleFixSpellingI
 import type { ClientSideCommandHandlerApi } from './client/index.mjs';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from './client/vscode-languageclient.js';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections.mjs';
+import { extensionSettings } from './constants.js';
 import * as di from './di.mjs';
 import { getCSpellDiags } from './diags.mjs';
 import { onCommandUseDiagsSelectionOrPrompt } from './promptUser.mjs';
@@ -147,7 +148,7 @@ export const commandHandlers = {
     'cSpell.editText': handleApplyLsTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
-    'cSpell.openSettings': callCommand('workbench.action.openSettings', () => [{ query: '@ext:streetsidesoftware.code-spell-checker' }]),
+    'cSpell.openSettings': async () => executeOpenSettingsCommand(),
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
@@ -181,7 +182,7 @@ export const commandHandlers = {
 
     'cspell.showActionsMenu': handlerResolvedLater,
 
-    'cSpell.openIssuesPanel': callCommand('cSpellIssuesViewByFile.focus'),
+    'cSpell.openIssuesPanel': genExecCommandFn('cSpellIssuesViewByFile.focus'),
     'cSpell.openFileInfoView': handleDisplayCSpellInfo,
     'cSpell.displayCSpellInfo': handleDisplayCSpellInfo,
     'cSpell.hideCSpellInfo': handleHideCSpellInfo,
@@ -601,10 +602,17 @@ function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorE
     }, 'handleInsertWordsDirective');
 }
 
-function callCommand<T>(command: string, calcArgs?: () => unknown[]): () => Promise<T> {
+export type ExecuteCommand = Omit<Command, 'title'>;
+
+async function execCommand<T = unknown>(command: ExecuteCommand): Promise<T> {
+    const args = command.arguments || [];
+    return commands.executeCommand<T>(command.command, ...args);
+}
+
+function genExecCommandFn<T>(command: string | ExecuteCommand): () => Promise<T> {
     return async () => {
-        const args = calcArgs?.() || [];
-        return commands.executeCommand<T>(command, ...args);
+        command = typeof command === 'string' ? { command } : command;
+        return execCommand<T>(command);
     };
 }
 
@@ -627,4 +635,16 @@ function handleReload() {
 
 function handleCmdExperimentalExecuteDocumentSymbolProvider() {
     return handleErrors(experimentWithSymbols(), 'handleCmdExperimentalExecuteDocumentSymbolProvider');
+}
+
+export function generateOpenSettingsCommand(setting?: string): ExecuteCommand {
+    const query = setting ? `${extensionSettings} ${setting}` : extensionSettings;
+    return {
+        command: 'workbench.action.openSettings',
+        arguments: [{ query }],
+    };
+}
+
+export function executeOpenSettingsCommand(setting?: string) {
+    return execCommand(generateOpenSettingsCommand(setting));
 }

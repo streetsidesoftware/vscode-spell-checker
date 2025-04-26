@@ -441,6 +441,13 @@ export interface SpellCheckerBehaviorSettings {
 
     /**
      * Control which notifications are displayed.
+     *
+     * See:
+     * - `#cSpell.blockCheckingWhenLineLengthGreaterThan#`
+     * - `#cSpell.blockCheckingWhenTextChunkSizeGreaterThan#`
+     * - `#cSpell.blockCheckingWhenAverageChunkSizeGreaterThan#`
+     *
+     *
      * @title Enabled Notifications
      * @scope resource
      * @since 4.0.41

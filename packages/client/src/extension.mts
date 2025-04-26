@@ -349,10 +349,10 @@ async function notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
             ...actions,
         );
         if (result === openSettings) {
-            await vscode.commands.executeCommand('workbench.action.openSettings', reason.settingsID);
+            await commands.executeOpenSettingsCommand(reason.settingsID);
         }
         if (result === manageNotifications) {
-            await vscode.commands.executeCommand('workbench.action.openSettings', 'cSpell.enabledNotifications');
+            await commands.executeOpenSettingsCommand('cSpell.enabledNotifications');
         }
     } catch {
         // ignore
