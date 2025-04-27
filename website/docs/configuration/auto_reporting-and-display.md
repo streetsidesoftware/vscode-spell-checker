@@ -276,6 +276,11 @@ Description
 
 Control which notifications are displayed.
 
+See:
+- [`cSpell.blockCheckingWhenLineLengthGreaterThan`](performance#cspellblockcheckingwhenlinelengthgreaterthan)
+- [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](performance#cspellblockcheckingwhentextchunksizegreaterthan)
+- [`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](performance#cspellblockcheckingwhenaveragechunksizegreaterthan)
+
 </dd>
 
 
