@@ -55,6 +55,9 @@ Absolute word breaks match: `/[\s,{}[\]]/`
 If you are seeing this message, it means that the file contains mostly long lines
 without many word breaks.
 
+
+Hide this message using [`cSpell.enabledNotifications`](reporting-and-display#cspellenablednotifications)
+
 </dd>
 
 
@@ -85,7 +88,7 @@ Default
 </dt>
 <dd>
 
-_`80`_
+_`200`_
 
 </dd>
 
@@ -125,6 +128,9 @@ This is used to prevent spell checking generated files.
 
 **Error Message:** _Lines are too long._
 
+
+Hide this message using [`cSpell.enabledNotifications`](reporting-and-display#cspellenablednotifications)
+
 </dd>
 
 
@@ -155,7 +161,7 @@ Default
 </dt>
 <dd>
 
-_`10000`_
+_`20000`_
 
 </dd>
 
@@ -202,6 +208,9 @@ Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
 If you are seeing this message, it means that the file contains a very long line
 without many word breaks.
 
+
+Hide this message using [`cSpell.enabledNotifications`](reporting-and-display#cspellenablednotifications)
+
 </dd>
 
 
@@ -232,7 +241,7 @@ Default
 </dt>
 <dd>
 
-_`500`_
+_`1000`_
 
 </dd>
 
