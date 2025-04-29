@@ -4115,7 +4115,7 @@
   "devDependencies": {
     "@eslint/js": "^9.25.1",
     "@tsconfig/node20": "^20.1.5",
-    "@types/node": "^20.17.31",
+    "@types/node": "^20.17.32",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^3.1.2",
