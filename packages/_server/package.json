@@ -40,7 +40,7 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.19.3",
+    "@cspell/cspell-bundled-dicts": "^8.19.4",
     "@cspell/cspell-pipe": "^8.19.3",
     "@cspell/cspell-types": "^8.19.3",
     "@cspell/url": "^8.19.3",
