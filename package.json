@@ -4134,7 +4134,7 @@
     "ovsx": "^0.10.2",
     "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
-    "prettier-plugin-svelte": "^3.3.3",
+    "prettier-plugin-svelte": "^3.4.0",
     "rollup": "^4.40.2",
     "rollup-plugin-dts": "^6.2.1",
     "shx": "^0.4.0",
