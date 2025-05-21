@@ -240,7 +240,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *
      * - `false` - Case is ignored and accents can be missing on the entire word.
      *   Incorrect accents or partially missing accents will be marked as incorrect.
-     *   Note: Some languages like Portuguese have case sensitivity turned on by default.
+     *   **Note:** Some languages like Portuguese have case sensitivity turned on by default.
      *   You must use `#cSpell.languageSettings#` to turn it off.
      * - `true` - Case and accents are enforced by default.
      *
