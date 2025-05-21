@@ -88,7 +88,7 @@ interface NormalizedDictionaryDefinition extends Partial<DictionaryDefinitionPre
 
 function normalizeDictionaryDefinition(def: DictionaryDefinition): NormalizedDictionaryDefinition | undefined {
     if (def.file === undefined) {
-        return isInlineDict(def) ? undefined : def;
+        return def.path ? def as NormalizedDictionaryDefinition : undefined;
     }
     const { file, path, ...rest } = def;
     const usePath = [path || '', file || ''].filter((a) => !!a).join('/');
@@ -103,7 +103,7 @@ export function canAddWordsToDictionary(def: NormalizedDictionaryDefinition): bo
     return def.addWords ?? !regExpBlockCustomAdd.test(def.path);
 }
 
-function isInlineDict(def: DictionaryDefinition): def is DictionaryDefinitionInline {
+export function isInlineDict(def: DictionaryDefinition): def is DictionaryDefinitionInline {
     const d = def as DictionaryDefinitionInline;
     return !!(d.flagWords || d.words || d.ignoreWords || d.suggestWords);
 }

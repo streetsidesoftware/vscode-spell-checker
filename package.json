@@ -973,6 +973,11 @@
                             ],
                             "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                             "title": "Scope of dictionary"
+                          },
+                          "supportNonStrictSearches": {
+                            "default": true,
+                            "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -1003,6 +1008,11 @@
                           "path": {
                             "markdownDescription": "Path to the file.",
                             "type": "string"
+                          },
+                          "supportNonStrictSearches": {
+                            "default": true,
+                            "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -1063,6 +1073,11 @@
                               }
                             ],
                             "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
+                          },
+                          "supportNonStrictSearches": {
+                            "default": true,
+                            "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -1397,6 +1412,11 @@
                                   ],
                                   "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                                   "title": "Scope of dictionary"
+                                },
+                                "supportNonStrictSearches": {
+                                  "default": true,
+                                  "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                                  "type": "boolean"
                                 }
                               },
                               "required": [
@@ -1427,6 +1447,11 @@
                                 "path": {
                                   "markdownDescription": "Path to the file.",
                                   "type": "string"
+                                },
+                                "supportNonStrictSearches": {
+                                  "default": true,
+                                  "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                                  "type": "boolean"
                                 }
                               },
                               "required": [
@@ -1487,6 +1512,11 @@
                                     }
                                   ],
                                   "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
+                                },
+                                "supportNonStrictSearches": {
+                                  "default": true,
+                                  "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                                  "type": "boolean"
                                 }
                               },
                               "required": [
@@ -2366,6 +2396,11 @@
                       ],
                       "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                       "title": "Scope of dictionary"
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "title": "Custom Dictionary Entry",
@@ -2447,6 +2482,11 @@
                       ],
                       "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                       "title": "Scope of dictionary"
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -2477,6 +2517,11 @@
                     "path": {
                       "markdownDescription": "Path to the file.",
                       "type": "string"
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -2537,6 +2582,11 @@
                         }
                       ],
                       "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -2673,6 +2723,11 @@
                             ],
                             "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                             "title": "Scope of dictionary"
+                          },
+                          "supportNonStrictSearches": {
+                            "default": true,
+                            "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -2703,6 +2758,11 @@
                           "path": {
                             "markdownDescription": "Path to the file.",
                             "type": "string"
+                          },
+                          "supportNonStrictSearches": {
+                            "default": true,
+                            "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -2763,6 +2823,11 @@
                               }
                             ],
                             "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
+                          },
+                          "supportNonStrictSearches": {
+                            "default": true,
+                            "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -3474,6 +3539,11 @@
                       ],
                       "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                       "title": "Scope of dictionary"
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -3619,6 +3689,11 @@
                       ],
                       "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                       "title": "Scope of dictionary"
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -3764,6 +3839,11 @@
                       ],
                       "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
                       "title": "Scope of dictionary"
+                    },
+                    "supportNonStrictSearches": {
+                      "default": true,
+                      "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -4145,10 +4225,10 @@
     "vitest": "^3.1.4"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.0.1",
-    "@cspell/cspell-types": "^9.0.1",
+    "@cspell/cspell-bundled-dicts": "^9.0.2",
+    "@cspell/cspell-types": "^9.0.2",
     "@cspell/dict-cspell-bundle": "^2.0.3",
-    "cspell": "^9.0.1",
+    "cspell": "^9.0.2",
     "regexp-worker": "^3.0.0"
   },
   "vsce": {
