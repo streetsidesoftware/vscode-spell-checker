@@ -47,7 +47,7 @@
     "@internal/common-utils": "file:../__utils",
     "cspell-config-lib": "^9.0.1",
     "cspell-gitignore": "^9.0.1",
-    "cspell-glob": "^9.0.1",
+    "cspell-glob": "^9.0.2",
     "cspell-io": "^9.0.1",
     "cspell-lib": "^9.0.1",
     "gensequence": "^7.0.0",
