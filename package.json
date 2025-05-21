@@ -4148,7 +4148,7 @@
     "@cspell/cspell-bundled-dicts": "^9.0.1",
     "@cspell/cspell-types": "^9.0.1",
     "@cspell/dict-cspell-bundle": "^2.0.3",
-    "cspell": "^9.0.1",
+    "cspell": "^9.0.2",
     "regexp-worker": "^3.0.0"
   },
   "vsce": {
