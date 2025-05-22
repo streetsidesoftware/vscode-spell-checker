@@ -2316,7 +2316,7 @@
         "order": 1,
         "properties": {
           "cSpell.caseSensitive": {
-            "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  Note: Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
+            "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  **Note:** Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
             "scope": "resource",
             "type": "boolean"
           },
