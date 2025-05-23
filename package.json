@@ -2316,7 +2316,7 @@
         "order": 1,
         "properties": {
           "cSpell.caseSensitive": {
-            "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  Note: Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
+            "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  **Note:** Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
             "scope": "resource",
             "type": "boolean"
           },
@@ -4199,7 +4199,7 @@
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^3.1.4",
-    "@vscode/vsce": "^3.4.1",
+    "@vscode/vsce": "^3.4.2",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
