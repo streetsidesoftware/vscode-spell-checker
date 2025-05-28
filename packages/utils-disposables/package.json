@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
-    "@types/node": "^20.17.50",
+    "@types/node": "^20.17.51",
     "ts2mjs": "^3.0.0",
     "tslib": "^2.8.1"
   },
