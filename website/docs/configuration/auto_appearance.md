@@ -276,12 +276,12 @@ Description
 The CSS color used to show issues in the ruler.
 
 Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+Disable the ruler by setting [`cSpell.showInRuler`](appearance#cspellshowinruler) to `false`.
 
 See:
 - [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
 - [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
 - Hex colors
-- Use "" (empty string) to disable.
 
 Examples:
 - `green`
@@ -361,6 +361,8 @@ Description
 Show spelling issues in the editor ruler.
 
 Note: This setting is only used when [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations) is `true`.
+
+Note: To set the color of the ruler, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
 
 </dd>
 
