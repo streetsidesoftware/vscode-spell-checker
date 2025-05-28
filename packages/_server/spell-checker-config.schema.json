@@ -2740,8 +2740,8 @@
           "properties": {
             "overviewRulerColor": {
               "default": "#348feb80",
-              "description": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
-              "markdownDescription": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "description": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`. Disable the ruler by setting `#cSpell.showInRuler#` to `false`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "markdownDescription": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\nDisable the ruler by setting `#cSpell.showInRuler#` to `false`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
               "scope": "application",
               "since": "4.0.0",
               "type": "string"
@@ -2839,8 +2839,8 @@
           "properties": {
             "overviewRulerColor": {
               "default": "#348feb80",
-              "description": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
-              "markdownDescription": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "description": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`. Disable the ruler by setting `#cSpell.showInRuler#` to `false`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "markdownDescription": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\nDisable the ruler by setting `#cSpell.showInRuler#` to `false`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
               "scope": "application",
               "since": "4.0.0",
               "type": "string"
@@ -2919,16 +2919,16 @@
         },
         "cSpell.overviewRulerColor": {
           "default": "#348feb80",
-          "description": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
-          "markdownDescription": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+          "description": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`. Disable the ruler by setting `#cSpell.showInRuler#` to `false`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+          "markdownDescription": "The CSS color used to show issues in the ruler.\n\nDepends upon `#cSpell.useCustomDecorations#`.\nDisable the ruler by setting `#cSpell.showInRuler#` to `false`.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
           "scope": "application",
           "since": "4.0.0",
           "type": "string"
         },
         "cSpell.showInRuler": {
           "default": true,
-          "description": "Show spelling issues in the editor ruler.\n\nNote: This setting is only used when `#cSpell.useCustomDecorations#` is `true`.",
-          "markdownDescription": "Show spelling issues in the editor ruler.\n\nNote: This setting is only used when `#cSpell.useCustomDecorations#` is `true`.",
+          "description": "Show spelling issues in the editor ruler.\n\nNote: This setting is only used when `#cSpell.useCustomDecorations#` is `true`.\n\nNote: To set the color of the ruler, use `#cSpell.overviewRulerColor#`.",
+          "markdownDescription": "Show spelling issues in the editor ruler.\n\nNote: This setting is only used when `#cSpell.useCustomDecorations#` is `true`.\n\nNote: To set the color of the ruler, use `#cSpell.overviewRulerColor#`.",
           "scope": "application",
           "since": "4.0.35",
           "type": "boolean"
