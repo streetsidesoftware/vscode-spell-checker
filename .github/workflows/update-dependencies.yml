@@ -16,6 +16,10 @@ on:
   schedule:
     - cron: '0 12 * * 0'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   NEW_BRANCH: "update-dependencies-${{ inputs.base || 'main' }}"
   REF_BRANCH: ${{ inputs.base || 'main' }}
