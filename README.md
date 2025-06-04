@@ -386,7 +386,7 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
 
 #### Example _cspell.json_ file
 
-```javascript
+```jsonc
 // cSpell Settings
 {
     // Version of the setting file.  Always 0.2
@@ -394,26 +394,17 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
     // language - current active spelling language
     "language": "en",
     // words - list of words to be always considered correct
-    "words": [
-        "mkdirp",
-        "tsmerge",
-        "githubusercontent",
-        "streetsidesoftware",
-        "vsmarketplacebadge",
-        "visualstudio"
-    ],
+    "words": ["mkdirp", "tsmerge", "githubusercontent", "streetsidesoftware", "vsmarketplacebadge", "visualstudio"],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"
-    "flagWords": [
-        "hte"
-    ]
+    "flagWords": ["hte"]
 }
 ```
 
 ### VS Code Configuration Settings
 
-```javascript
+```jsonc
     //-------- Code Spell Checker Configuration --------
     // The Language locale to use when spell checking. "en", "en-US" and "en-GB" are currently supported by default.
     "cSpell.language": "en",
@@ -519,25 +510,25 @@ Here are some of the default rules:
 - `"*"` matches any programming language / file type.
 - `"locale"` is used to filter based upon the `"cSpell.language"` setting.
 
-```javascript
+```jsonc
 {
-"cSpell.languageSettings": [
-  { "languageId": '*',      "locale": 'en',    "dictionaries": ['wordsEn'] },
-  { "languageId": '*',      "locale": 'en-US', "dictionaries": ['wordsEn'] },
-  { "languageId": '*',      "locale": 'en-GB', "dictionaries": ['wordsEnGb'] },
-  { "languageId": '*',                         "dictionaries": ['companies', 'softwareTerms', 'misc'] },
-  { "languageId": "python",                    "dictionaries": ["python"]},
-  { "languageId": "go",                        "dictionaries": ["go"] },
-  { "languageId": "javascript",                "dictionaries": ["typescript", "node"] },
-  { "languageId": "javascriptreact",           "dictionaries": ["typescript", "node"] },
-  { "languageId": "typescript",                "dictionaries": ["typescript", "node"] },
-  { "languageId": "typescriptreact",           "dictionaries": ["typescript", "node"] },
-  { "languageId": "html",                      "dictionaries": ["html", "fonts", "typescript", "css"] },
-  { "languageId": "php",                       "dictionaries": ["php", "html", "fonts", "css", "typescript"] },
-  { "languageId": "css",                       "dictionaries": ["fonts", "css"] },
-  { "languageId": "less",                      "dictionaries": ["fonts", "css"] },
-  { "languageId": "scss",                      "dictionaries": ["fonts", "css"] },
-];
+    "cSpell.languageSettings": [
+        { "languageId": "*", "locale": "en", "dictionaries": ["wordsEn"] },
+        { "languageId": "*", "locale": "en-US", "dictionaries": ["wordsEn"] },
+        { "languageId": "*", "locale": "en-GB", "dictionaries": ["wordsEnGb"] },
+        { "languageId": "*", "dictionaries": ["companies", "softwareTerms", "misc"] },
+        { "languageId": "python", "dictionaries": ["python"] },
+        { "languageId": "go", "dictionaries": ["go"] },
+        { "languageId": "javascript", "dictionaries": ["typescript", "node"] },
+        { "languageId": "javascriptreact", "dictionaries": ["typescript", "node"] },
+        { "languageId": "typescript", "dictionaries": ["typescript", "node"] },
+        { "languageId": "typescriptreact", "dictionaries": ["typescript", "node"] },
+        { "languageId": "html", "dictionaries": ["html", "fonts", "typescript", "css"] },
+        { "languageId": "php", "dictionaries": ["php", "html", "fonts", "css", "typescript"] },
+        { "languageId": "css", "dictionaries": ["fonts", "css"] },
+        { "languageId": "less", "dictionaries": ["fonts", "css"] },
+        { "languageId": "scss", "dictionaries": ["fonts", "css"] }
+    ]
 }
 ```
 
@@ -645,7 +636,7 @@ Example adding medical terms, so words like _acanthopterygious_ can be found.
 
 **VS Code Settings**
 
-```js
+```jsonc
 "cSpell.customDictionaries": {
   "myWords": {
     "name": "myWords",
@@ -670,15 +661,13 @@ This file can be either at the project root or in the .vscode directory.
 
 Example adding medical terms, where the terms are checked into the project and we only want to use it for .md files.
 
-```javascript
+```jsonc
 {
     "dictionaryDefinitions": [
-        { "name": "medicalTerms", "path": "./dictionaries/medicalterms-en.txt"},
-        { "name": "cities", "path": "./dictionaries/cities.txt"}
+        { "name": "medicalTerms", "path": "./dictionaries/medicalterms-en.txt" },
+        { "name": "cities", "path": "./dictionaries/cities.txt" }
     ],
-    "dictionaries": [
-        "cities"
-    ],
+    "dictionaries": ["cities"],
     "languageSettings": [
         { "languageId": "markdown", "dictionaries": ["medicalTerms"] },
         { "languageId": "plaintext", "dictionaries": ["medicalTerms"] }
@@ -727,7 +716,7 @@ interface DictionaryDefinition {
 
 **VS Code Settings**
 
-```js
+```jsonc
 "cSpell.customDictionaries": {
   "project-words": {
     "name": "project-words",
