@@ -12,12 +12,14 @@ vi.mock('vscode-languageclient/node');
 const fileUri = Uri.parse(import.meta.url);
 const dirUri = Uri.parse(new URL('.', import.meta.url).toString());
 
+const oc = (...params: Parameters<typeof expect.objectContaining>) => expect.objectContaining(...params);
+
 describe('Validate DictionaryTargetHelper', () => {
     test.each`
         target                        | expected
-        ${configTargetDict()}         | ${oc<DictionaryTarget>({ name: 'custom-words' })}
-        ${configTargetCSpell()}       | ${oc<DictionaryTarget>({ name: 'cspell.json' })}
-        ${configTargetVSCode('user')} | ${oc<DictionaryTarget>({ name: 'user' })}
+        ${configTargetDict()}         | ${oc({ name: 'custom-words' })}
+        ${configTargetCSpell()}       | ${oc({ name: 'cspell.json' })}
+        ${configTargetVSCode('user')} | ${oc({ name: 'user' })}
     `(
         'configTargetToDictionaryTarget $target',
         ({ target, expected }: { target: ClientConfigTarget; expected: DictionaryTarget | undefined }) => {
@@ -33,10 +35,6 @@ describe('Validate DictionaryTargetHelper', () => {
         );
     });
 });
-
-function oc<T>(s: Partial<T>): T {
-    return expect.objectContaining(s);
-}
 
 function configTargetDict(): ConfigTargetDictionary {
     return {

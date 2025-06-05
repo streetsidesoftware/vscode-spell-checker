@@ -6,7 +6,6 @@ import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
 import type { WorkspaceConfigForDocument } from '../api.js';
-import type { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets.mjs';
 import { __testing__, calculateConfigTargets } from './configTargetsHelper.mjs';
 import type { DictionaryDef } from './cspellConfig/CustomDictionary.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
@@ -14,6 +13,8 @@ import { extractCSpellFileConfigurations, extractTargetDictionaries } from './do
 const { workspaceConfigToTargets, cspellToTargets, dictionariesToTargets, sortTargets } = __testing__;
 
 const col = new Intl.Collator();
+
+const oc = (...params: Parameters<typeof expect.objectContaining>) => expect.objectContaining(...params);
 
 describe('Validate configTargetsHelper', () => {
     test('workspaceConfigToTargets in single root workspace', () => {
@@ -28,14 +29,14 @@ describe('Validate configTargetsHelper', () => {
         };
         const r = [...workspaceConfigToTargets(wConfig)];
         expect(r).toEqual([
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'user',
                 name: 'User',
                 docUri: expect.stringContaining('file:'),
                 has: { words: true, ignoreWords: undefined },
             }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'workspace',
                 name: 'Workspace',
@@ -60,21 +61,21 @@ describe('Validate configTargetsHelper', () => {
         };
         const r = [...workspaceConfigToTargets(wConfig)];
         expect(r).toEqual([
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'user',
                 name: 'User',
                 docUri: wConfig.uri,
                 has: { words: true, ignoreWords: undefined },
             }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'workspace',
                 name: 'Workspace',
                 docUri: wConfig.uri,
                 has: { words: undefined, ignoreWords: undefined },
             }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'folder',
                 name: 'Folder',
@@ -96,7 +97,7 @@ describe('Validate configTargetsHelper', () => {
         };
         const r = [...workspaceConfigToTargets(wConfig)];
         expect(r).toEqual([
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'user',
                 name: 'User',
@@ -111,14 +112,14 @@ describe('Validate configTargetsHelper', () => {
         const sources = extractCSpellFileConfigurations(cfg);
         const r = cspellToTargets(sources);
         expect(r).toEqual([
-            oc<ConfigTargetCSpell>({
+            oc({
                 kind: 'cspell',
                 name: '_server/cspell.json',
                 scope: 'unknown',
                 configUri: expect.stringContaining('_server/cspell.json'),
                 has: { words: undefined, ignoreWords: undefined },
             }),
-            oc<ConfigTargetCSpell>({
+            oc({
                 kind: 'cspell',
                 name: expect.stringContaining('cspell.config.yaml'),
                 scope: 'unknown',
@@ -145,19 +146,19 @@ describe('Validate configTargetsHelper', () => {
         ]);
         const r = sortTargets(dictionariesToTargets(dictionaries));
         expect(r).toEqual([
-            oc<ConfigTargetDictionary>({
+            oc({
                 kind: 'dictionary',
                 name: 'local-words',
                 scope: 'unknown',
                 dictionaryUri: expect.stringContaining('local-words.txt'),
             }),
-            oc<ConfigTargetDictionary>({
+            oc({
                 kind: 'dictionary',
                 name: 'cspell-words',
                 scope: 'workspace',
                 dictionaryUri: expect.stringContaining('cspell-words.txt'),
             }),
-            oc<ConfigTargetDictionary>({
+            oc({
                 kind: 'dictionary',
                 name: 'user-words',
                 scope: 'user',
@@ -180,34 +181,34 @@ describe('Validate configTargetsHelper', () => {
         const settings = { ...cfg };
         const r = await calculateConfigTargets(settings, wConfig);
         expect(r).toEqual([
-            oc<ConfigTargetDictionary>({
+            oc({
                 kind: 'dictionary',
                 name: 'cspell-words',
                 scope: 'workspace',
                 dictionaryUri: expect.stringContaining('cspell-words.txt'),
             }),
-            oc<ConfigTargetCSpell>({
+            oc({
                 kind: 'cspell',
                 name: '_server/cspell.json',
                 scope: 'unknown',
                 configUri: expect.stringContaining('_server/cspell.json'),
                 has: { words: undefined, ignoreWords: undefined },
             }),
-            oc<ConfigTargetCSpell>({
+            oc({
                 kind: 'cspell',
                 name: expect.stringContaining('cspell.config.yaml'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
                 has: { words: true, ignoreWords: true },
             }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'workspace',
                 name: 'Workspace',
                 docUri: expect.stringContaining('file:'),
                 has: { words: undefined, ignoreWords: undefined },
             }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'user',
                 name: 'User',
@@ -235,34 +236,34 @@ describe('Validate configTargetsHelper', () => {
             (a, b) => col.compare(a.kind, b.kind) || col.compare(a.name, b.name),
         );
         expect(r).toEqual([
-            oc<ConfigTargetCSpell>({
+            oc({
                 kind: 'cspell',
                 name: '_server/cspell.json',
                 scope: 'unknown',
                 configUri: expect.stringContaining('_server/cspell.json'),
                 has: { words: undefined, ignoreWords: undefined },
             }),
-            oc<ConfigTargetCSpell>({
+            oc({
                 kind: 'cspell',
                 name: expect.stringContaining('cspell.config.yaml'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
                 has: { words: true, ignoreWords: true },
             }),
-            // oc<ConfigTargetDictionary>({
+            // oc({
             //     kind: 'dictionary',
             //     name: 'custom-words',
             //     scope: 'unknown',
             //     dictionaryUri: expect.stringContaining('custom-words.txt'),
             // }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'user',
                 name: 'User',
                 docUri: expect.stringContaining('file:'),
                 has: { words: undefined, ignoreWords: undefined },
             }),
-            oc<ConfigTargetVSCode>({
+            oc({
                 kind: 'vscode',
                 scope: 'workspace',
                 name: 'Workspace',
@@ -280,8 +281,4 @@ function cd(name: string, path: string, addWords?: boolean, noSuggest?: boolean)
         addWords,
         noSuggest,
     };
-}
-
-function oc<T>(v: Partial<T>): T {
-    return expect.objectContaining(v);
 }
