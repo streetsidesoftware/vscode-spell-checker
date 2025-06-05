@@ -23,6 +23,8 @@ import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 
 const { toEqualCaseInsensitive: expectToEqualCaseInsensitive } = extendExpect(expect);
 
+const oc = (...params: Parameters<typeof expect.objectContaining>) => expect.objectContaining(...params);
+
 vi.mock('vscode-languageserver/node');
 vi.mock('./vscode.config.mjs');
 
@@ -284,10 +286,6 @@ describe('Validate DocumentSettings', () => {
     }
 
     const pathCspellExcludeTests = Path.resolve(pathWorkspaceServer, 'sampleSourceFiles/cspell-exclude-tests.json');
-
-    function oc<T>(t: T): T {
-        return expect.objectContaining(t);
-    }
 
     function ocGlob(glob: string, root: string = pathWorkspaceServer, source?: string) {
         return source ? oc({ glob, root, source }) : oc({ glob, root });

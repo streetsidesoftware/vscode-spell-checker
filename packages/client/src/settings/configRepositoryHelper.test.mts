@@ -13,6 +13,8 @@ import { configTargetToConfigRepo } from './configRepositoryHelper.mjs';
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
+const oc = (...params: Parameters<typeof expect.objectContaining>) => expect.objectContaining(...params);
+
 const fileUri = Uri.parse(import.meta.url);
 const dirUri = Uri.parse(new URL('.', import.meta.url).toString());
 
@@ -20,8 +22,8 @@ describe('Validate configRepositoryHelper', () => {
     test.each`
         target                        | expected
         ${configTargetDict()}         | ${undefined}
-        ${configTargetCSpell()}       | ${oc<ConfigRepository>({ kind: 'cspell' })}
-        ${configTargetVSCode('user')} | ${oc<ConfigRepository>({ kind: 'vscode' })}
+        ${configTargetCSpell()}       | ${oc({ kind: 'cspell' })}
+        ${configTargetVSCode('user')} | ${oc({ kind: 'vscode' })}
     `(
         'configTargetToConfigRepo $target',
         ({ target, expected }: { target: ClientConfigTarget; expected: ConfigRepository | undefined }) => {
@@ -35,10 +37,6 @@ describe('Validate configRepositoryHelper', () => {
         expect(() => configTargetToConfigRepo(badTarget as unknown as ClientConfigTarget)).toThrow(`Unknown target ${badTarget.kind}`);
     });
 });
-
-function oc<T>(s: Partial<T>): T {
-    return expect.objectContaining(s);
-}
 
 function configTargetDict(): ClientConfigTargetDictionary {
     return {

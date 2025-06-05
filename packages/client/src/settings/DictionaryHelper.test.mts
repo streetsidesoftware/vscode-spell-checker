@@ -18,6 +18,8 @@ import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
+const oc = (...params: Parameters<typeof expect.objectContaining>) => expect.objectContaining(...params);
+
 const {
     addCustomDictionaryToConfig,
     calcDictInfoForConfigRep,
@@ -285,12 +287,8 @@ function cd(name: string, addWords?: boolean, scope?: DictionaryDefinitionCustom
     };
 }
 
-function oc<T>(t: Partial<T>): T {
-    return expect.objectContaining(t);
-}
-
 function ocUri(uri: Uri): Uri {
-    return oc<Uri>({
+    return oc({
         scheme: uri.scheme,
         path: uri.path,
         fragment: uri.fragment,
