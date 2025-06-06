@@ -4198,7 +4198,7 @@
     "@types/node": "^20.17.57",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~3.2.1",
+    "@vitest/coverage-istanbul": "~3.2.2",
     "@vscode/vsce": "^3.5.0",
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
