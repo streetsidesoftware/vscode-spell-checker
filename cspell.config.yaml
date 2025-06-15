@@ -54,6 +54,7 @@ overrides:
     ignoreWords:
       - colour
       - canot
+      - incase
   - filename: '**/*.test.*'
     dictionaries:
       - lorem-ipsum
