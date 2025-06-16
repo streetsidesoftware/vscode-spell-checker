@@ -47,11 +47,11 @@ jobs:
       - name: Update
         run: |
           npm i
+          npm run update-cspell
+          npm i
           npm run build
           npm run build:readme
           npm run lint
-          npm run update-cspell
-          npm i
 
       - name: Get New CSpell Version
         id: cspell-new-version
