@@ -38,20 +38,78 @@ jobs:
         run: |
           npm -v
           node -v
+
+      - name: Get Current CSpell Version
+        id: cspell-current-version
+        run: |
+          echo "value=$(jq -r '.dependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
+
       - name: Update
         run: |
+          npm i
+          npm run update-cspell
           npm i
           npm run build
           npm run build:readme
           npm run lint
-          npm run update-cspell
-          npm i
+
+      - name: Get New CSpell Version
+        id: cspell-new-version
+        run: |
+          echo "value=$(jq -r '.dependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Update Type
+        id: cspell-update-type
+        uses: actions/github-script@v7
+        env:
+          CURRENT: ${{ steps.cspell-current-version.outputs.value }}
+          NEW: ${{ steps.cspell-new-version.outputs.value }}
+        with:
+          result-encoding: string
+          script: |
+            const curParts = process.env.CURRENT.split('.').map(Number);
+            const newParts = process.env.NEW.split('.').map(Number);
+            return (newParts[0] > curParts[0] || newParts[1] > curParts[1]) ? 'feat' : 'fix';
+
+      - name: Get Available CSpell Releases
+        id: cspell-release-tags
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo value=$(gh release list -R streetsidesoftware/cspell --exclude-drafts --json tagName --jq '.[].tagName') >> $GITHUB_OUTPUT
+
+      - name: Build List of CSpell Releases
+        id: cspell-releases
+        uses: actions/github-script@v7
+        env:
+          CURRENT: ${{ steps.cspell-current-version.outputs.value }}
+          NEW: ${{ steps.cspell-new-version.outputs.value }}
+          RELEASES: ${{ steps.cspell-release-tags.outputs.value }}
+        with:
+          result-encoding: string
+          script: |
+            const current = 'v' + process.env.CURRENT;
+            const newVersion = 'v' + process.env.NEW;
+            const releases = process.env.RELEASES.split(/\s+/).filter(release => release > current && release <= newVersion);
+            return releases.map(r => `- [${r}](https://github.com/streetsidesoftware/cspell/releases/tag/${r})`).join('\n') || '- Not Updated';
 
       - name: GenBody
         id: body
         uses: streetsidesoftware/actions/public/pr-body@v1
         with:
           title: Update ALL Dependencies
+          message: |
+            This PR updates the CSpell version from `${{ steps.cspell-current-version.outputs.value }}` to `${{ steps.cspell-new-version.outputs.value }}`.
+
+            CSpell Releases:
+            ${{ steps.cspell-releases.outputs.result }}
+
+            <!---
+            BEGIN_COMMIT_OVERRIDE
+            ${{ steps.cspell-update-type.outputs.result }}: Update CSpell and other dependencies
+            ${{ steps.cspell-releases.outputs.result }}
+            END_COMMIT_OVERRIDE
+            --->
           path: package.json
 
       - name: PR
@@ -60,7 +118,7 @@ jobs:
           commit-message: 'ci: Update CSpell'
           branch: ${{ env.NEW_BRANCH }}
           base: ${{ env.REF_BRANCH }}
-          title: 'fix: Update CSpell (${{ env.REF_BRANCH }})'
+          title: '${{ steps.cspell-update-type.outputs.result }}: Update CSpell (${{ env.REF_BRANCH }})'
           body: ${{ steps.body.outputs.body }}
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
