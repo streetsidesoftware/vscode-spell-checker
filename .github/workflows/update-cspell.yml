@@ -67,9 +67,9 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const curParts = process.env.CURRENT.split('.');
-            const newParts = process.env.NEW.split('.');
-            return newParts[0] > curParts[0] || newParts[1] > curParts[1] ? 'feat' : 'fix';
+            const curParts = process.env.CURRENT.split('.').map(Number);
+            const newParts = process.env.NEW.split('.').map(Number);
+            return (newParts[0] > curParts[0] || newParts[1] > curParts[1]) ? 'feat' : 'fix';
 
       - name: Get Available CSpell Releases
         id: cspell-release-tags
