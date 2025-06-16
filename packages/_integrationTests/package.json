@@ -38,9 +38,9 @@
     "@vscode/test-electron": "^2.5.2",
     "chalk": "^5.4.1",
     "decompress": "^4.2.1",
-    "glob": "^11.0.2",
+    "glob": "^11.0.3",
     "kefir": "^3.8.8",
-    "mocha": "^11.5.0"
+    "mocha": "^11.6.0"
   },
   "engines": {
     "node": ">20.0.0"
