@@ -106,7 +106,7 @@ jobs:
 
             <!---
             BEGIN_COMMIT_OVERRIDE
-            ${{ steps.cspell-update-type.outputs.value }}: Update CSpell and other dependencies
+            ${{ steps.cspell-update-type.outputs.result }}: Update CSpell and other dependencies
             ${{ steps.cspell-releases.outputs.result }}
             END_COMMIT_OVERRIDE
             --->
@@ -118,7 +118,7 @@ jobs:
           commit-message: 'ci: Update CSpell'
           branch: ${{ env.NEW_BRANCH }}
           base: ${{ env.REF_BRANCH }}
-          title: '${{ steps.cspell-update-type.outputs.value }}: Update CSpell (${{ env.REF_BRANCH }})'
+          title: '${{ steps.cspell-update-type.outputs.result }}: Update CSpell (${{ env.REF_BRANCH }})'
           body: ${{ steps.body.outputs.body }}
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
