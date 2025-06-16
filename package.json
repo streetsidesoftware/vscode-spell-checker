@@ -1778,6 +1778,18 @@
                         "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
                         "type": "array"
                       },
+                      "unknownWords": {
+                        "default": "report-all",
+                        "enum": [
+                          "report-all",
+                          "report-simple",
+                          "report-common-typos",
+                          "report-flagged"
+                        ],
+                        "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
+                        "since": "9.1.0",
+                        "type": "string"
+                      },
                       "words": {
                         "items": {
                           "type": "string"
@@ -1912,6 +1924,18 @@
                   "markdownDescription": "The maximum amount of time in milliseconds to generate suggestions for a word.",
                   "type": "number"
                 },
+                "unknownWords": {
+                  "default": "report-all",
+                  "enum": [
+                    "report-all",
+                    "report-simple",
+                    "report-common-typos",
+                    "report-flagged"
+                  ],
+                  "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
+                  "since": "9.1.0",
+                  "type": "string"
+                },
                 "usePnP": {
                   "default": false,
                   "markdownDescription": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading\npackages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence\nof a PnP file and load it.",
@@ -1970,6 +1994,18 @@
             "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
             "scope": "resource",
             "type": "array"
+          },
+          "cSpell.unknownWords": {
+            "default": "report-all",
+            "enum": [
+              "report-all",
+              "report-simple",
+              "report-common-typos",
+              "report-flagged"
+            ],
+            "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
+            "since": "9.1.0",
+            "type": "string"
           }
         },
         "title": "CSpell",
@@ -3088,6 +3124,18 @@
                   },
                   "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
                   "type": "array"
+                },
+                "unknownWords": {
+                  "default": "report-all",
+                  "enum": [
+                    "report-all",
+                    "report-simple",
+                    "report-common-typos",
+                    "report-flagged"
+                  ],
+                  "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
+                  "since": "9.1.0",
+                  "type": "string"
                 },
                 "words": {
                   "items": {
@@ -4225,10 +4273,10 @@
     "vitest": "~3.2.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.0.2",
-    "@cspell/cspell-types": "^9.0.2",
+    "@cspell/cspell-bundled-dicts": "^9.1.1",
+    "@cspell/cspell-types": "^9.1.1",
     "@cspell/dict-cspell-bundle": "^2.0.7",
-    "cspell": "^9.0.2",
+    "cspell": "^9.1.1",
     "regexp-worker": "^3.0.0"
   },
   "vsce": {
