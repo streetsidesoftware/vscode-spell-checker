@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.1.0...code-spell-checker-v4.2.0) (2025-06-16)
+
+
+### Features
+
+* Update CSpell from `9.0.2` to `9.1.1` and other dependencies ([f933ba5](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f933ba56a7544d4f1f5340fc962a466a5d9cd7a0))
+
+
+### Updates and Bug Fixes
+
+* correct file type in code samples ([#4489](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4489)) ([33f2372](https://github.com/streetsidesoftware/vscode-spell-checker/commit/33f237295a08937d6951e8ff1ba3c95eb069a8aa))
+* Update CSpell (main) ([#4425](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4425)) ([1ca0b5c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1ca0b5cba956fad7f69379dc050f6c15d02c04a8))
+* Update CSpell (main) ([#4437](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4437)) ([f8f5ccc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f8f5cccef4b46664236bc5eca21c0da475231bcf))
+* Update dictionaries ([#4519](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4519)) ([e639347](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e6393478a8bfbf166dba56fdd8e6108157398195))
+* Update overviewRulerColor docs ([#4468](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4468)) ([2865fd7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2865fd7087a85a0a2aaca2aec3cf546d5e6bfe82))
+* Update to CSpell 9.0.2 ([#4445](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4445)) ([8f25754](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8f257548e8f23b26af82ceecaa72b6b1ed7cdf34))
+
 ## [4.1.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.49...code-spell-checker-v4.1.0) (2025-05-08)
 
 
