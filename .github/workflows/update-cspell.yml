@@ -106,8 +106,7 @@ jobs:
 
             <!---
             BEGIN_COMMIT_OVERRIDE
-            ${{ steps.cspell-update-type.outputs.result }}: Update CSpell and other dependencies
-            ${{ steps.cspell-releases.outputs.result }}
+            ${{ steps.cspell-update-type.outputs.result }}: Update CSpell from `${{ steps.cspell-current-version.outputs.value }}` to `${{ steps.cspell-new-version.outputs.value }}` and other dependencies
             END_COMMIT_OVERRIDE
             --->
           path: package.json
