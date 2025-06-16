@@ -60,9 +60,16 @@ jobs:
 
       - name: Update Type
         id: cspell-update-type
-        uses: streetsidesoftware/actions/public/output@v1
+        uses: actions/github-script@v7
+        env:
+          CURRENT: ${{ steps.cspell-current-version.outputs.value }}
+          NEW: ${{ steps.cspell-new-version.outputs.value }}
         with:
-          value: ${{ steps.cspell-new-version.outputs.value[1] > steps.cspell-current-version.outputs.value[1] && 'feat' || 'fix' }}
+          result-encoding: string
+          script: |
+            const curParts = process.env.CURRENT.split('.');
+            const newParts = process.env.NEW.split('.');
+            return newParts[0] > curParts[0] || newParts[1] > curParts[1] ? 'feat' : 'fix';
 
       - name: Get Available CSpell Releases
         id: cspell-release-tags
@@ -94,7 +101,7 @@ jobs:
           message: |
             This PR updates the CSpell version from `${{ steps.cspell-current-version.outputs.value }}` to `${{ steps.cspell-new-version.outputs.value }}`.
 
-            The following CSpell releases are available:
+            CSpell Releases:
             ${{ steps.cspell-releases.outputs.result }}
 
             <!---
