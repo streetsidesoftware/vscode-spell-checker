@@ -18,6 +18,7 @@ Settings related to CSpell Command Line Tool.
 | [`cSpell.minRandomLength`](#cspellminrandomlength) |  | The minimum length of a random string to be ignored. |
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)… |
+| [`cSpell.unknownWords`](#cspellunknownwords) |  | Controls how unknown words are handled. |
 
 
 ## Settings
@@ -442,6 +443,82 @@ _- none -_
 </dd>
 
 
+
+
+</dl>
+
+---
+
+
+### `cSpell.unknownWords`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.unknownWords`
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+Controls how unknown words are handled.
+
+- `report-all` - Report all unknown words (default behavior)
+- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.
+- `report-common-typos` - Report unknown words that are common typos and flagged words.
+- `report-flagged` - Report unknown words that are flagged.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"report-all"`_
+
+</dd>
+
+
+<dt>
+Since Version
+</dt>
+<dd>
+
+9.1.0
+
+</dd>
 
 
 </dl>
