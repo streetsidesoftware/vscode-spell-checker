@@ -1,7 +1,7 @@
 import type { RegExpPatternDefinition } from '@cspell/cspell-types';
 import { isDefined } from '@internal/common-utils';
 import { logError } from '@internal/common-utils/log';
-import { RegExpWorker, type TimeoutError } from 'regexp-worker';
+import { type MatchAllRegExpResult, RegExpWorker, type TimeoutError } from 'regexp-worker';
 import { format } from 'util';
 
 import type { PatternSettings } from './api.js';
@@ -100,7 +100,7 @@ function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[
 
 function execMatchRegExpArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResult[]> {
     return worker
-        .matchRegExpArray(text, regexpArray)
+        .matchAllArray(text, regexpArray)
         .then((r) => r.results.map((result, index) => toExecMatchRegExpArrayResult(result, regexpArray[index])));
 }
 
@@ -109,17 +109,17 @@ function execMatchRegExpArrayOneByOne(worker: RegExpWorker, text: string, regexp
     return Promise.all(results);
 }
 
-function toExecMatchRegExpArrayResult(result: MatchRegExpResult, regexp: RegExp): ExecMatchRegExpResult {
+function toExecMatchRegExpArrayResult(result: MatchAllRegExpResult, regexp: RegExp): ExecMatchRegExpResult {
     return {
         regexp,
-        ranges: [...result.ranges],
+        ranges: result.matches.map(mapRegExpMatchArrayToRange),
         elapsedTimeMs: result.elapsedTimeMs,
     };
 }
 
 function execMatch(worker: RegExpWorker, text: string, regexp: RegExp): Promise<ExecMatchRegExpResults> {
     return worker
-        .matchRegExp(text, regexp)
+        .matchAll(text, regexp)
         .then((r) => toExecMatchRegExpArrayResult(r, regexp))
         .catch((e) => toExecMatchRegExpResultTimeout(regexp, e));
 }
@@ -144,11 +144,6 @@ function isTimeoutError(e: unknown | TimeoutError): e is TimeoutError {
         'elapsedTimeMs' in e &&
         typeof e.elapsedTimeMs === 'number'
     );
-}
-
-interface MatchRegExpResult {
-    readonly elapsedTimeMs: number;
-    readonly ranges: Iterable<Range>;
 }
 
 function resolvePatterns(patterns: Patterns, settings: PatternSettings): MultiPattern[] {
@@ -234,4 +229,10 @@ interface MultiPattern {
     name: string;
     altPatternNames: string[];
     regexp: RegExp[];
+}
+
+function mapRegExpMatchArrayToRange(match: RegExpMatchArray): Range {
+    const index = match.index ?? 0;
+    const end = index + match[0].length;
+    return [index, end];
 }

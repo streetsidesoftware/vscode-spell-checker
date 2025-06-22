@@ -39,7 +39,7 @@ const optionsBase = {
     minify,
     platform: 'node',
     sourcemap: true,
-    external: ['regexp-worker'],
+    external: [],
 };
 
 async function buildAll() {
