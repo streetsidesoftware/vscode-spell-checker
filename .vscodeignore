@@ -22,10 +22,6 @@
 !node_modules/@cspell/cspell-bundled-dicts/**
 !node_modules/@cspell/dict*/**
 
-# Regexp worker must NOT be WebPacked
-!node_modules/regexp-worker/*
-!node_modules/regexp-worker/lib/**/*.js
-
 # All Other Client and Server files.
 !packages/_server/dist/main.cjs
 !packages/_server/package.json
