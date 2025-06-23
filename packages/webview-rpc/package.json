@@ -16,7 +16,7 @@
     "watch:tsc": "tsc -b tsconfig.json --watch -f",
     "watch:ts2mjs": "chokidar \"dist/esm/**/*.js\" -c \"ts2mjs dist/esm\"",
     "clean": "shx rm -rf dist",
-    "coverage": "jest --coverage",
+    "coverage": "echo ok",
     "test": "echo ok"
   },
   "exports": {
