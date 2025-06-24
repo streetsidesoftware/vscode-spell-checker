@@ -49,7 +49,7 @@
     "cspell-gitignore": "^9.1.1",
     "cspell-glob": "^9.1.1",
     "cspell-io": "^9.1.1",
-    "cspell-lib": "^9.1.1",
+    "cspell-lib": "^9.1.2",
     "gensequence": "^7.0.0",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
