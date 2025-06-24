@@ -157,7 +157,8 @@ export function run(): void {
     dd(
         documentSettings.onDidUpdateConfiguration(
             (update) => (
-                logInfo('onDidUpdateConfiguration'), clientServerApi.clientNotification.onDocumentConfigChange({ uris: [update.uri] })
+                logInfo('onDidUpdateConfiguration'),
+                clientServerApi.clientNotification.onDocumentConfigChange({ uris: [update.uri] })
             ),
         ),
     );

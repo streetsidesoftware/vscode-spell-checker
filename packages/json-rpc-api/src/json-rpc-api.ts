@@ -263,7 +263,8 @@ function mapNotificationsToFn<T extends Notifications>(
         Object.entries(notifications).map(([name]) => {
             const methodName = prefix + name;
             const fn = (...params: any) => (
-                logger?.log(`send notification "${name}" %o`, params), connection.sendNotification(methodName, params)
+                logger?.log(`send notification "${name}" %o`, params),
+                connection.sendNotification(methodName, params)
             );
             return [name, fn];
         }),
