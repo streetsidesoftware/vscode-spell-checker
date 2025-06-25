@@ -4261,7 +4261,7 @@
     "jest-mock-vscode": "^4.4.0",
     "ovsx": "^0.10.4",
     "patch-package": "^8.0.0",
-    "prettier": "^3.6.0",
+    "prettier": "^3.6.1",
     "prettier-plugin-svelte": "^3.4.0",
     "rollup": "^4.44.0",
     "rollup-plugin-dts": "^6.2.1",
