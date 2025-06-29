@@ -101,7 +101,7 @@ function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[
 function execMatchRegExpArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResult[]> {
     return worker
         .matchAllArray(text, regexpArray)
-        .then((r) => r.results.map((result, index) => toExecMatchRegExpArrayResult(result, regexpArray[index])));
+        .then((r) => r.results.map((result, index) => toExecMatchRegExpResult(result, regexpArray[index])));
 }
 
 function execMatchRegExpArrayOneByOne(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
@@ -109,17 +109,20 @@ function execMatchRegExpArrayOneByOne(worker: RegExpWorker, text: string, regexp
     return Promise.all(results);
 }
 
-function toExecMatchRegExpArrayResult(result: MatchAllRegExpResult, regexp: RegExp): ExecMatchRegExpResult {
-    return {
-        regexp,
-        ranges: result.matches.map(mapRegExpMatchArrayToRange),
-        elapsedTimeMs: result.elapsedTimeMs,
-    };
+function toExecMatchRegExpResult(result: MatchAllRegExpResult, regexp: RegExp): ExecMatchRegExpResult {
+    const { elapsedTimeMs, matches } = result;
+    const ranges = matches.map(mapRegExpMatchArrayToRange);
+    return toExecMatchRegExpArrayResult({ elapsedTimeMs, ranges }, regexp);
+}
+
+function toExecMatchRegExpArrayResult(result: { elapsedTimeMs: number; ranges: Range[] }, regexp: RegExp): ExecMatchRegExpResult {
+    const { elapsedTimeMs, ranges } = result;
+    return { regexp, ranges, elapsedTimeMs };
 }
 
 function execMatch(worker: RegExpWorker, text: string, regexp: RegExp): Promise<ExecMatchRegExpResults> {
     return worker
-        .matchAll(text, regexp)
+        .matchAllAsRangePairs(text, regexp)
         .then((r) => toExecMatchRegExpArrayResult(r, regexp))
         .catch((e) => toExecMatchRegExpResultTimeout(regexp, e));
 }
