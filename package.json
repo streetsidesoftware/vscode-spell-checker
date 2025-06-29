@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "GPL-3.0-or-later",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "publisher": "streetsidesoftware",
   "private": true,
   "type": "module",
@@ -4277,7 +4277,7 @@
     "@cspell/cspell-types": "^9.1.2",
     "@cspell/dict-cspell-bundle": "^2.0.9",
     "cspell": "^9.1.2",
-    "regexp-worker": "^4.1.7"
+    "regexp-worker": "^4.1.1"
   },
   "vsce": {
     "preRelease": true
