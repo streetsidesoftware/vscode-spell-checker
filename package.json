@@ -4268,7 +4268,7 @@
     "shx": "^0.4.0",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.35.0",
+    "typescript-eslint": "^8.35.1",
     "vite": "^7.0.0",
     "vitest": "~3.2.4"
   },
