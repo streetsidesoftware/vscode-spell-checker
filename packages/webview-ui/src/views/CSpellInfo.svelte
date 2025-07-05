@@ -7,7 +7,7 @@
   import type { Settings } from 'webview-api';
   import VscodeLink from '../components/VscodeLink.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
-  import type { TextDocumentRef, UpdateEnabledFileTypesRequest } from 'webview-api/dist/apiModels';
+  import type { TextDocumentRef, UpdateEnabledFileTypesRequest } from 'webview-api/apiModels';
 
   const queryClient = getQueryClientContext();
   const api = getServerApi();

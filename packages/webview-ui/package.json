@@ -2,44 +2,44 @@
   "name": "webview-ui",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "rollup -c",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "build-production": "npm run clean && npm run build",
     "clean": "shx rm -rf out",
     "compile": "tsc -p .",
-    "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "npm run check"
   },
-  "type": "module",
   "dependencies": {
     "@tanstack/svelte-query": "^5.81.5",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "fast-equals": "^5.2.2",
-    "sirv-cli": "^3.0.1",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.4",
+    "@sveltejs/vite-plugin-svelte": "^5.1.0",
     "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.36",
-    "rollup": "^4.44.2",
-    "rollup-plugin-css-only": "^4.5.2",
-    "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-svelte": "^7.2.2",
     "svelte": "^5.35.2",
     "svelte-check": "^4.2.2",
     "svelte-preprocess": "^6.0.3",
     "tslib": "^2.8.1",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
   },
   "engines": {
     "node": ">18.0"

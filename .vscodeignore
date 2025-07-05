@@ -35,8 +35,7 @@
 !packages/client/package.json
 !resources/**
 
-!packages/webview-ui/public/build/*.js
-!packages/webview-ui/public/build/*.css
-!packages/webview-ui/public/resources/**
+# Include the webview UI assets
+!packages/webview-ui/dist/assets/**
 
 # cspell:ignore callsites
