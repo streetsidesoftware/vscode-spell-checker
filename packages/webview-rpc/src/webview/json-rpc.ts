@@ -31,7 +31,7 @@ export class WebViewMessageReader extends AbstractMessageReader {
     }
 
     listen(callback: DataCallback): Disposable {
-        return this.api.onDidReceiveMessage((data) => {
+        return this.api.onDidReceiveMessage((data: { data: Message }) => {
             if (!data?.data) return;
             this.logger?.debug('client listen: %o', data.data);
             callback(data.data);
@@ -52,10 +52,12 @@ export class WebViewMessageWriter extends AbstractMessageWriter implements Messa
 
     public async write(msg: Message): Promise<void> {
         try {
+            // eslint-disable-next-line @typescript-eslint/await-thenable, @typescript-eslint/no-confusing-void-expression
             await this.api.postMessage(msg);
             this.errorCount = 0;
         } catch (error) {
             this.handleError(error, msg);
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
             return Promise.reject(error);
         }
     }

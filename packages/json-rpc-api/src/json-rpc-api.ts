@@ -207,7 +207,11 @@ function bindRequests<T>(
         const pub = pubSub as { publish: Func };
         const methodName = prefix + name;
         disposables.push(
-            connection.onRequest(methodName, (p: any[]) => (logger?.log(`handle request "${name}" %o`, p), pub.publish(...p))),
+            connection.onRequest(methodName, (p: any[]) => {
+                logger?.log(`handle request "${name}" %o`, p);
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument
+                return pub.publish(...p);
+            }),
         );
     }
 }
@@ -226,7 +230,11 @@ function bindNotifications(
         const pub = pubSub as { publish: Func };
 
         disposables.push(
-            connection.onNotification(methodName, (p: any[]) => (logger?.log(`handle notification "${name}" %o`, p), pub.publish(...p))),
+            connection.onNotification(methodName, (p: any[]) => {
+                logger?.log(`handle notification "${name}" %o`, p);
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument
+                return pub.publish(...p);
+            }),
         );
     }
 }
@@ -276,6 +284,7 @@ function mapRequestsToPubSub<T extends Requests>(requests: DefUsePubSubAPI<T>, l
         if (!fn) return undefined;
         const pubSub = createPubSingleSubscriber(name, logger);
         if (typeof fn === 'function') {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             pubSub.subscribe(fn);
         }
         return [name, pubSub];
@@ -289,6 +298,7 @@ function mapNotificationsToPubSub<T extends Notifications>(notifications: DefUse
         if (!fn) return undefined;
         const pubSub = createPubMultipleSubscribers(name, logger);
         if (typeof fn === 'function') {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             pubSub.subscribe(fn);
         }
         return [name, pubSub];
@@ -325,7 +335,7 @@ function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(nam
 
     async function listener(..._p: Parameters<Subscriber>) {
         logger?.log(`notify ${name} %o`, subscriber);
-        // eslint-disable-next-line prefer-rest-params
+        // eslint-disable-next-line prefer-rest-params, @typescript-eslint/no-unsafe-return
         return await subscriber?.(...arguments);
     }
 

@@ -6,6 +6,6 @@ const program = new Command();
 
 program.addCommand(commandUpdatePackageCSpellSchema());
 
-program.parseAsync(process.argv).catch((e) => {
+program.parseAsync(process.argv).catch((e: unknown) => {
     console.log(e);
 });

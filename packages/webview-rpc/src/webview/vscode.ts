@@ -67,7 +67,7 @@ class VSCodeAPIWrapper<T> implements VSCodeAPI<T> {
             return this.vsCodeApi.getState();
         } else {
             const state = localStorage.getItem('vscodeState');
-            return state ? JSON.parse(state) : undefined;
+            return state ? (JSON.parse(state) as T) : undefined;
         }
     }
 
@@ -92,8 +92,15 @@ class VSCodeAPIWrapper<T> implements VSCodeAPI<T> {
     }
 
     public onDidReceiveMessage(listener: (message: any) => void | Promise<void>): Disposable {
-        window.addEventListener('message', listener);
-        return { dispose: () => { window.removeEventListener('message', listener); } };
+        const fn = (msg: unknown) => {
+            Promise.resolve(listener(msg)).catch(() => undefined);
+        };
+        window.addEventListener('message', fn);
+        return {
+            dispose: () => {
+                window.removeEventListener('message', fn);
+            },
+        };
     }
 }
 
@@ -116,7 +123,7 @@ export function initVsCodeApi<T>(acquiredVsCodeApi?: WebviewApi<T>): VSCodeAPIWr
  * @returns a VSCodeAPIWrapper
  */
 export function getVsCodeApi<T>(acquiredVsCodeApi?: WebviewApi<T>): VSCodeAPIWrapper<T> {
-    if (vscode) return vscode;
+    if (vscode) return vscode as VSCodeAPIWrapper<T>;
     const api = new VSCodeAPIWrapper<T>(acquiredVsCodeApi);
     vscode = api;
     return api;

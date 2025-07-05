@@ -107,22 +107,39 @@ class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
 
         // We need to notify the sever of any changes made by any client.
         this.client = {
-            set: (v: T) => { this.setValue(v, true); },
-            update: (uFn) => { this.setValue(uFn(getValue()), true); },
+            set: (v: T) => {
+                this.setValue(v, true);
+            },
+            update: (uFn) => {
+                this.setValue(uFn(getValue()), true);
+            },
             subscribe: (s) => this.subscribe(this.subClient, s, true),
         };
         // We do not want to notify the server of changes made by the server.
         this.server = {
-            set: (v: T) => { this.setValue(v, false); },
-            update: (uFn) => { this.setValue(uFn(getValue()), false); },
+            set: (v: T) => {
+                this.setValue(v, false);
+            },
+            update: (uFn) => {
+                this.setValue(uFn(getValue()), false);
+            },
             subscribe: (s) => this.subscribe(this.subServer, s, false),
         };
 
         this.mutate = options.mutate || this.mutate;
 
-        this.disposables.push(this.server.subscribe((v) => { this._mutate(v); }));
+        this.disposables.push(
+            this.server.subscribe((v) => {
+                this._mutate(v);
+            }),
+        );
 
-        if (options.watch) this.disposables.push(options.watch.subscribe(() => { this._query(); }));
+        if (options.watch)
+            this.disposables.push(
+                options.watch.subscribe(() => {
+                    this._query();
+                }),
+            );
 
         this.dispose = createDisposeMethodFromList(this.disposables);
         this._query();
@@ -167,7 +184,7 @@ class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
                 console.error(e);
             }
         };
-        handle();
+        handle().catch(() => undefined);
     }
 
     /**
@@ -187,7 +204,7 @@ class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
                 console.error(e);
             }
         };
-        handle();
+        handle().catch(() => undefined);
     }
 }
 
@@ -226,12 +243,21 @@ class ReadonlyClientServerStoreImpl<T, N> implements ReadonlyClientServerStore<T
         };
         // We do not want to notify the server of changes made by the server.
         this.server = {
-            set: (v: T) => { this.setValue(v, false); },
-            update: (uFn) => { this.setValue(uFn(this._value === symbolNotSet ? undefined : this._value), false); },
+            set: (v: T) => {
+                this.setValue(v, false);
+            },
+            update: (uFn) => {
+                this.setValue(uFn(this._value === symbolNotSet ? undefined : this._value), false);
+            },
             subscribe: (s) => this.subscribe(this.subServer, s, false),
         };
 
-        if (options.watch) this.disposables.push(options.watch.subscribe(() => { this._query(); }));
+        if (options.watch)
+            this.disposables.push(
+                options.watch.subscribe(() => {
+                    this._query();
+                }),
+            );
 
         this.dispose = createDisposeMethodFromList(this.disposables);
         this._query();
@@ -279,7 +305,7 @@ class ReadonlyClientServerStoreImpl<T, N> implements ReadonlyClientServerStore<T
                 console.error(e);
             }
         };
-        handle();
+        handle().catch(() => undefined);
     }
 }
 
@@ -288,7 +314,7 @@ function isNotEqual<T>(a: T, b: T): boolean {
 }
 
 export function writable<T>(v: T): ValueStore<T>;
-export function writable<T>(v?: T  ): ValueStore<T | undefined>;
+export function writable<T>(v?: T): ValueStore<T | undefined>;
 export function writable<T>(v: T): ValueStore<T> {
     return new ValueStoreObservable(v);
 }
@@ -351,6 +377,7 @@ export function awaitForSubscribable<T>(sub: Subscribable<T>): Promise<T> {
         try {
             disposable = sub.subscribe(resolve);
         } catch (e) {
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
             reject(e);
         } finally {
             disposable?.();
