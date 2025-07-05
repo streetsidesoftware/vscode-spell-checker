@@ -1,5 +1,5 @@
-import { codes } from './languageCodes';
-import { scriptCodes } from './scriptCodes';
+import { codes } from './languageCodes.js';
+import { scriptCodes } from './scriptCodes.js';
 
 export interface LocaleInfo extends LangCountryPair, Partial<ScriptInfo> {}
 

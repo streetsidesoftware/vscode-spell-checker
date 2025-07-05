@@ -12,7 +12,6 @@ import {
 } from './addWords.mjs';
 import { actionAutoFixSpellingIssues, handleApplyLsTextEdits, handleFixSpellingIssue } from './applyCorrections.mjs';
 import type { ClientSideCommandHandlerApi } from './client/index.mjs';
-import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from './client/vscode-languageclient.js';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections.mjs';
 import { extensionSettings } from './constants.js';
 import * as di from './di.mjs';
@@ -60,6 +59,7 @@ import { performance, toMilliseconds } from './util/perf.js';
 import { pVoid } from './util/pVoid.js';
 import { scrollToText } from './util/textEditor.js';
 import { toUri } from './util/uriHelper.mjs';
+import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from './vscode-languageclient/node.cjs';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {

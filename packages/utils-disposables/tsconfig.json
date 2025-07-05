@@ -1,10 +1,11 @@
 {
+    "extends": "@tsconfig/node20",
     "compilerOptions": {
-        "outDir": "./dist/cjs",
+        "outDir": "./dist/",
         "target": "es2022",
-        "lib": ["es2022", "esnext.disposable", "dom"],
-        "module": "CommonJS",
-        "moduleResolution": "Node",
+        "lib": ["es2023", "esnext.disposable", "dom"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "esModuleInterop": true,
         "importHelpers": true,
         "sourceMap": true,

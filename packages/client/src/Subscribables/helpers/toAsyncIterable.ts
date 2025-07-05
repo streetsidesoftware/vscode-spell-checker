@@ -1,7 +1,7 @@
 import type { DisposableLike } from 'utils-disposables';
 import { disposeOf } from 'utils-disposables';
 
-import type { Subscribable } from '../Subscribables';
+import type { Subscribable } from '../Subscribables.js';
 
 export function toAsyncIterable<T>(source: Subscribable<T>): AsyncIterable<T> {
     let done = false;

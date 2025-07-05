@@ -1,7 +1,7 @@
 import type { ConfigurationScope, NotebookCell, NotebookDocument, TextDocument } from 'vscode';
 import { Uri, workspace } from 'vscode';
 
-import { findTextDocument } from '../vscode/findEditor';
+import { findTextDocument } from '../vscode/findEditor.js';
 
 const _schemeBlocked = {
     git: true,

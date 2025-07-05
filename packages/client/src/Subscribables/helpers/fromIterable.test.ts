@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
-import { awaitSubscribableAll } from './awaitSubscribable';
-import { fromIterable } from './fromIterable';
+import { awaitSubscribableAll } from './awaitSubscribable.js';
+import { fromIterable } from './fromIterable.js';
 
 describe('fromIterable', () => {
     test('fromIterable', async () => {

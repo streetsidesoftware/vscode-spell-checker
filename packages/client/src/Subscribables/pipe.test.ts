@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import { awaitSubscribableAll } from './helpers/awaitSubscribable';
-import { map } from './operators';
-import { pipe } from './pipe';
-import { rx } from './rx';
+import { awaitSubscribableAll } from './helpers/awaitSubscribable.js';
+import { map } from './operators/index.js';
+import { pipe } from './pipe.js';
+import { rx } from './rx.js';
 
 describe('pipe', () => {
     test('pipe', async () => {

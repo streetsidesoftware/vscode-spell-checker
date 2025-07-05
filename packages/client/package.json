@@ -15,7 +15,7 @@
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
   },
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/README.md",
-  "type": "commonjs",
+  "type": "module",
   "bin": {
     "build": "./build.mjs"
   },

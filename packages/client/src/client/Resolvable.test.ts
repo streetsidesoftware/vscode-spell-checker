@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Resolvable } from './Resolvable';
+import { Resolvable } from './Resolvable.js';
 
 describe('ResolvablePromise', () => {
     test.each`

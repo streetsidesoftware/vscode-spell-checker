@@ -1,7 +1,7 @@
 import type { DisposableLike } from 'utils-disposables';
 import { disposeOf } from 'utils-disposables';
 
-import type { EventType, Subscribable, SubscribableEvent } from '../Subscribables';
+import type { EventType, Subscribable, SubscribableEvent } from '../Subscribables.js';
 
 export function awaitSubscribable<T>(sub: Subscribable<T>): Promise<T> {
     let disposable: DisposableLike | undefined;

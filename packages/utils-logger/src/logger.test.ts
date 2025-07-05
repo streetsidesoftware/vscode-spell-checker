@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import type { Logger } from './logger';
-import { createLogger, LogLevel, LogLevelMasks, logLevelToLogLevelMask } from './logger';
+import type { Logger } from './logger.js';
+import { createLogger, LogLevel, LogLevelMasks, logLevelToLogLevelMask } from './logger.js';
 
 describe('logger', () => {
     afterEach(() => {

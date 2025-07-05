@@ -8,8 +8,7 @@ import {
     type Message,
     type MessageConnection,
     type MessageWriter,
-} from 'vscode-jsonrpc/browser';
-
+} from '../vscode-jsonrpc/browser.cjs';
 import { getVsCodeApi, type VSCodeAPI, type VSCodeMessageAPI } from './vscode.js';
 
 export type { MessageConnection } from 'json-rpc-api';

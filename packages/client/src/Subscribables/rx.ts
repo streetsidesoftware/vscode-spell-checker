@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { fromAsyncIterable } from './helpers/fromAsyncIterable';
-import { fromIterable } from './helpers/fromIterable';
-import { fromSubscribableLike } from './helpers/toSubscribable';
-import { pipe } from './pipe';
-import type { OperatorFn, Subscribable, SubscribableLike } from './Subscribables';
+import { fromAsyncIterable } from './helpers/fromAsyncIterable.js';
+import { fromIterable } from './helpers/fromIterable.js';
+import { fromSubscribableLike } from './helpers/toSubscribable.js';
+import { pipe } from './pipe.js';
+import type { OperatorFn, Subscribable, SubscribableLike } from './Subscribables.js';
 
 export type Subscribables<T> = SubscribableLike<T> | AsyncIterable<T> | Iterable<T>;
 

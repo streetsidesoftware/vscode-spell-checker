@@ -1,0 +1,7 @@
+{
+  "name": "sample-json-rpc-api",
+  "private": true,
+  "dependencies": {
+    "json-rpc-api": "file:.."
+  }
+}

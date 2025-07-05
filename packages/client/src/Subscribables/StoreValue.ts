@@ -1,8 +1,8 @@
 import deepEqual from 'fast-deep-equal';
 
-import { toSubscriberFn } from './helpers/toSubscriber';
-import { AbstractSubscribable } from './internal/AbstractSubscribable';
-import type { Subscribable, SubscribableValue, SubscriberLike } from './Subscribables';
+import { toSubscriberFn } from './helpers/toSubscriber.js';
+import { AbstractSubscribable } from './internal/AbstractSubscribable.js';
+import type { Subscribable, SubscribableValue, SubscriberLike } from './Subscribables.js';
 
 export interface StoreValue<T> extends SubscribableValue<T> {
     value: T;

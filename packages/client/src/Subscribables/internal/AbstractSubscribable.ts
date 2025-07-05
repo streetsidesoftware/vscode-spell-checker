@@ -1,7 +1,7 @@
 import type { DisposableHybrid as Disposable } from 'utils-disposables';
 import { createDisposable, InheritableDisposable } from 'utils-disposables';
 
-import type { EventListener, EventType, Subscribable, SubscribableEvent, SubscriberLike } from '../Subscribables';
+import type { EventListener, EventType, Subscribable, SubscribableEvent, SubscriberLike } from '../Subscribables.js';
 
 export abstract class AbstractSubscribable<T> extends InheritableDisposable implements Subscribable<T> {
     private _subscriptions = new Set<SubscriberLike<T>>();

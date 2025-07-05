@@ -24,6 +24,13 @@ import { createBroadcaster } from '../util/broadcaster.js';
 import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri.js';
 import { logErrors, silenceErrors, toError } from '../util/errors.js';
 import type { Maybe } from '../util/index.mjs';
+import type { CodeActionParams, ForkOptions, LanguageClientOptions, ServerOptions } from '../vscode-languageclient/node.cjs';
+import {
+    CodeActionContext as VSCodeLangClientCodeActionContext,
+    LanguageClient,
+    TextDocumentIdentifier as VSCodeLangClientTextDocumentIdentifier,
+    TransportKind as VSCodeLangClientTransportKind,
+} from '../vscode-languageclient/node.cjs';
 import { Resolvable } from './Resolvable.js';
 import type {
     FieldExistsInTarget,
@@ -35,13 +42,6 @@ import type {
     WorkspaceConfigForDocumentResponse,
 } from './server/index.mjs';
 import { createServerApi, requestCodeAction } from './server/index.mjs';
-import type { CodeActionParams, ForkOptions, LanguageClientOptions, ServerOptions } from './vscode-languageclient.js';
-import {
-    CodeActionContext as VSCodeLangClientCodeActionContext,
-    LanguageClient,
-    TextDocumentIdentifier as VSCodeLangClientTextDocumentIdentifier,
-    TransportKind as VSCodeLangClientTransportKind,
-} from './vscode-languageclient.js';
 
 export { GetConfigurationForDocumentResult } from './server/index.mjs';
 

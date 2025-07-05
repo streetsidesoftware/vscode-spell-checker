@@ -1,6 +1,6 @@
-export type { AwaitPromiseErrorHandler } from './awaitPromise';
-export { awaitPromise } from './awaitPromise';
-export { debounce } from './debounce';
-export { delayUnsubscribe } from './delayUnsubscribe';
-export { map } from './map';
-export { throttle } from './throttle';
+export type { AwaitPromiseErrorHandler } from './awaitPromise.js';
+export { awaitPromise } from './awaitPromise.js';
+export { debounce } from './debounce.js';
+export { delayUnsubscribe } from './delayUnsubscribe.js';
+export { map } from './map.js';
+export { throttle } from './throttle.js';

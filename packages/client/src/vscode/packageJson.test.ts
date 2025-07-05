@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import type * as pkg from './packageJson';
+import type * as pkg from './packageJson.js';
 
 describe('Validate Package Types', () => {
     test('api', () => {

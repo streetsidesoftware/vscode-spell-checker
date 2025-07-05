@@ -1,6 +1,6 @@
-import { EmitterImpl } from './internal/EmitterImpl';
-import { SubscribableImpl } from './internal/SubscribableImpl';
-import type { Subscribable, SubscribableLike, SubscribableSubscriber } from './Subscribables';
+import { EmitterImpl } from './internal/EmitterImpl.js';
+import { SubscribableImpl } from './internal/SubscribableImpl.js';
+import type { Subscribable, SubscribableLike, SubscribableSubscriber } from './Subscribables.js';
 
 export function createEmitter<T>(): SubscribableSubscriber<T> {
     return new EmitterImpl<T>();

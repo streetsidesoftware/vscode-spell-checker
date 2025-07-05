@@ -1,8 +1,18 @@
 {
     "extends": "@tsconfig/node20",
     "compilerOptions": {
-        "verbatimModuleSyntax": true
+        "outDir": "./dist",
+        "target": "es2022",
+        "lib": ["es2022"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "rootDir": "./src",
+        "strict": true
     },
-    "files": [],
-    "references": [{ "path": "./tsconfig.cjs.json" }, { "path": "./tsconfig.esm.json" }]
+    "include": ["src"]
 }

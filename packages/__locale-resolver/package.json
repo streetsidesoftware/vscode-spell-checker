@@ -4,11 +4,11 @@
   "description": "Language Code Resolver",
   "private": true,
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "import": "./dist/index.js"
+    }
   },
   "scripts": {
     "build-production": "npm run clean-build",
