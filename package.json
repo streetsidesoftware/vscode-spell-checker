@@ -4241,6 +4241,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "^9.30.1",
     "@tsconfig/node20": "^20.1.6",
     "@types/node": "^20.19.4",

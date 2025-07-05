@@ -14,12 +14,12 @@
   },
   "type": "module",
   "main": "dist/main.cjs",
-  "types": "out/main.d.cts",
+  "types": "dist/main.d.cts",
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./out/main.js",
-      "require": "./out/main.cjs"
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
     },
     "./api": {
       "import": "./out/api.js",
@@ -74,5 +74,10 @@
   },
   "engines": {
     "node": ">20.0.0"
-  }
+  },
+  "files": [
+    "dist",
+    "out",
+    "spell-checker-config.schema.json"
+  ]
 }
