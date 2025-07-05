@@ -8,7 +8,8 @@ import { logErrors, showErrors } from './util/errors.js';
 import { toRegExp } from './util/toRegExp.js';
 import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers.js';
 import { findEditor, findTextDocument } from './vscode/findEditor.js';
-import type { Converter, TextEdit as LsTextEdit } from './vscode-languageclient/node.cjs';
+import type { TextEdit as LsTextEdit } from './vscode-languageclient/node.cjs';
+import type { Converter } from './vscode-languageclient/types.js';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
 const propertyUseReferenceProviderWithRename = Settings.ConfigFields['advanced.feature.useReferenceProviderWithRename'];
