@@ -14,12 +14,12 @@
   },
   "type": "module",
   "main": "dist/main.cjs",
-  "types": "out/main.d.cts",
+  "types": "dist/main.d.cts",
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./out/main.js",
-      "require": "./out/main.cjs"
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
     },
     "./api": {
       "import": "./out/api.js",
@@ -31,13 +31,8 @@
     }
   },
   "devDependencies": {
-    "@types/yargs": "^17.0.33",
     "safe-stable-stringify": "^2.5.0",
-    "ts-json-schema-generator": "^2.4.0",
-    "ts-loader": "^9.5.2",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1",
-    "yargs": "^18.0.0"
+    "ts-json-schema-generator": "^2.4.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.1.2",
@@ -61,28 +56,23 @@
     "vscode-uri": "^3.1.0"
   },
   "scripts": {
-    "build": "tsup-node && npm run build:tsc && npm run build-schema",
+    "build": "tsdown && npm run build:tsc && npm run build-schema",
     "build-production": "npm run clean-build-production",
     "build-schema": "node ./scripts/build-schema.mjs",
-    "build:production": "tsup-node --minify && npm run build-schema",
-    "x-build:production": "npm run build:esbuild -- --production && npm run build:api && npm run build-schema",
-    "build:esbuild": "node ./build.mjs",
-    "build:api": "npm run build:api.d.ts && npm run build:api.d.cts",
-    "build:api.d.ts": "tsc -p tsconfig.api.json",
-    "build:api.d.cts": "rollup -c rollup.config.mjs",
+    "build:production": "tsdown --production --minify && npm run build-schema",
     "build:tsc": "tsc -p tsconfig.test.json",
     "#build:ts-json-schema-generator": "esbuild --bundle ../../../../code/clones/ts-json-schema-generator/dist/ts-json-schema-generator.js --outfile=scripts/ts-json-schema-generator.cjs  --platform=node --external:typescript",
     "clean-build-production": "npm run clean && npm run build:production",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf dist temp out coverage lib",
-    "test-watch": "vitest",
-    "test": "vitest run",
-    "watch": "concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
-    "watch:esbuild": "npm run build:esbuild -- --watch",
-    "watch:api": "npm run build:api.d.ts -- --watch",
-    "watch:tsc": "npm run build:tsc -- --watch"
+    "test": "vitest run"
   },
   "engines": {
     "node": ">20.0.0"
-  }
+  },
+  "files": [
+    "dist",
+    "out",
+    "spell-checker-config.schema.json"
+  ]
 }

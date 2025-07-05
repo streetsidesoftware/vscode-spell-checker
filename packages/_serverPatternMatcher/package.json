@@ -9,41 +9,18 @@
     "type": "git",
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
   },
-  "type": "commonjs",
-  "bin": {
-    "build": "./build.mjs"
-  },
+  "type": "module",
   "main": "dist/main.cjs",
-  "typings": "dist/main.d.ts",
+  "typings": "dist/main.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/main.cjs"
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
     },
     "./api": {
-      "import": "./dist/api.cjs"
+      "import": "./dist/api.js",
+      "require": "./dist/api.cjs"
     }
-  },
-  "typesVersions": {
-    "*": {
-      "*.d.cts": [
-        "dist/*.d.cts"
-      ],
-      "api": [
-        "dist/api.d.cts"
-      ],
-      "dist/api.d.cts": [
-        "dist/api.d.cts"
-      ],
-      "*": [
-        "dist/*.d.cts"
-      ]
-    }
-  },
-  "devDependencies": {
-    "ts-loader": "^9.5.2",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1",
-    "yargs": "^18.0.0"
   },
   "dependencies": {
     "@cspell/cspell-types": "^9.1.2",
@@ -55,23 +32,15 @@
     "vscode-uri": "^3.1.0"
   },
   "scripts": {
-    "build": "npm run build:esbuild && npm run build:api && npm run build:tsc",
+    "build": "tsdown && npm run build:tsc",
     "build-production": "npm run clean-build-production",
-    "build:production": "npm run build:esbuild -- --production && npm run build:api",
-    "build:esbuild": "node ./build.mjs",
-    "build:api": "npm run build:api.d.ts && npm run build:api.d.cts",
-    "build:api.d.ts": "tsc -p tsconfig.api.json",
-    "build:api.d.cts": "rollup -c rollup.config.mjs",
+    "build:production": "tsdown  --production --minify",
     "build:tsc": "tsc -p tsconfig.test.json",
     "clean-build-production": "npm run clean && npm run build:production",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf dist temp out coverage",
     "test-watch": "vitest",
-    "test": "vitest run",
-    "watch": "concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
-    "watch:esbuild": "npm run build:esbuild -- --watch",
-    "watch:api": "npm run build:api -- --watch",
-    "watch:tsc": "npm run build:tsc -- --watch"
+    "test": "vitest run"
   },
   "engines": {
     "node": ">20.0.0"
