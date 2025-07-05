@@ -23,9 +23,9 @@
     }
   },
   "dependencies": {
-    "@cspell/cspell-types": "^9.1.2",
+    "@cspell/cspell-types": "^9.1.3",
     "@internal/common-utils": "file:../__utils",
-    "cspell-lib": "^9.1.2",
+    "cspell-lib": "^9.1.3",
     "regexp-worker": "^4.1.8",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.12",
