@@ -1,7 +1,6 @@
 {
     "extends": "@tsconfig/node20",
     "compilerOptions": {
-        "composite": true,
         "outDir": "./dist",
         "target": "es2022",
         "lib": ["es2022"],
