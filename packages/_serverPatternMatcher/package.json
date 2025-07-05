@@ -34,7 +34,7 @@
   "scripts": {
     "build": "tsdown && npm run build:tsc",
     "build-production": "npm run clean-build-production",
-    "build:production": "tsdown --production",
+    "build:production": "tsdown  --production --minify",
     "build:tsc": "tsc -p tsconfig.test.json",
     "clean-build-production": "npm run clean && npm run build:production",
     "clean-build": "npm run clean && npm run build",
