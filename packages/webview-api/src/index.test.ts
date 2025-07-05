@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import * as api from './index';
+import * as api from './index.js';
 
 describe('api', () => {
     test('api', () => {

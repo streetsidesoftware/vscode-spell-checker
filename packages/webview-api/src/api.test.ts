@@ -2,8 +2,8 @@ import type { MessageConnection } from 'json-rpc-api';
 import { createDisposable } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
 
-import type { ClientSideApiDef } from './api';
-import * as api from './api';
+import type { ClientSideApiDef } from './api.js';
+import * as api from './api.js';
 
 describe('api', () => {
     test('api', () => {

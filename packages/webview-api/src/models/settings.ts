@@ -1,4 +1,4 @@
-import type { TextDocument, Workspace, WorkspaceFolder } from './workspace';
+import type { TextDocument, Workspace, WorkspaceFolder } from './workspace.js';
 
 export interface Settings {
     dictionaries: DictionaryEntry[];

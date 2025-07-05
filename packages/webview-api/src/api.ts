@@ -20,7 +20,7 @@ import type {
     TodoList,
     UpdateEnabledFileTypesRequest,
     WatchFieldList,
-} from './apiModels';
+} from './apiModels.js';
 
 /** Requests that can be made to the extension */
 export interface ServerRequestsAPI {

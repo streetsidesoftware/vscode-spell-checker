@@ -2,6 +2,7 @@ import:
   - ../../cspell.config.yaml
 ignorePaths:
   - out
+  - dist
   - public/assets
   - public/build
 words:

@@ -3,6 +3,7 @@ import type { Webview, WebviewOptions } from 'vscode';
 import { Uri } from 'vscode';
 import { createConnectionToWebview } from 'vscode-webview-rpc/extension';
 import type { SupportedViews } from 'webview-api';
+import * as webViewInfo from 'webview-ui';
 
 import { createApi, getLogger } from '../api/index.mjs';
 import { getNonce } from '../utilities/getNonce.js';
@@ -51,8 +52,16 @@ export class AppView {
             // Enable JavaScript in the webview
             enableScripts: true,
             // Restrict the webview to only load resources from the `out` and `webview-ui/public/build` directories
-            localResourceRoots: [Uri.joinPath(extensionUri, 'out'), Uri.joinPath(extensionUri, 'packages/webview-ui/public')],
+            localResourceRoots: [
+                Uri.joinPath(extensionUri, 'out'),
+                Uri.joinPath(extensionUri, 'packages/webview-ui/' + webViewInfo.assetsDir),
+            ],
         };
+    }
+
+    private webViewUri(path: string): Uri {
+        const { webview, extensionUri } = this;
+        return getUri(webview, extensionUri, 'packages/webview-ui/', path);
     }
 
     /**
@@ -67,14 +76,19 @@ export class AppView {
      * rendered within the webview panel
      */
     private _getWebviewContent() {
-        const { webview, extensionUri, viewName } = this;
+        const { webview, viewName } = this;
         // The CSS file from the Svelte build output
-        const stylesUri = getUri(webview, extensionUri, 'packages/webview-ui/public/build/bundle.css');
-        const stylesCodiconUri = getUri(webview, extensionUri, 'packages/webview-ui/public/assets/css/codicon.css');
+        const stylesUris = webViewInfo.css.map((file) => this.webViewUri(file));
+        const stylesCodiconUri = this.webViewUri('css/codicon.css');
+        const allStyleSheets = [...stylesUris, stylesCodiconUri];
         // The JS file from the Svelte build output
-        const scriptUri = getUri(webview, extensionUri, 'packages/webview-ui/public/build/bundle.js');
+        const scriptUri = this.webViewUri(webViewInfo.main);
 
         const nonce = getNonce();
+
+        function getStylesheetUri(stylesheet: Uri) {
+            return /*html*/ `<link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesheet}">`;
+        }
 
         // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
         return /*html*/ `
@@ -93,8 +107,7 @@ export class AppView {
           ">
           <meta property="csp-nonce" content="${nonce}" />
           <meta property="view-name" content="${viewName}" />
-          <link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesUri}">
-          <link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesCodiconUri}">
+          ${allStyleSheets.map(getStylesheetUri).join('\n          ')}
           <script nonce="${nonce}">
             var process = { env: { NODE_ENV: 'production' } };
           </script>

@@ -2,9 +2,17 @@
   "name": "webview-api",
   "version": "1.0.0",
   "description": "Define the API between the extension and the webviews.",
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./apiModels": {
+      "import": "./dist/apiModels.js",
+      "types": "./dist/apiModels.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc -p .",
     "build-production": "npm run clean && npm run build",
