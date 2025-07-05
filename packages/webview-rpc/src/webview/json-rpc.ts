@@ -32,7 +32,7 @@ export class WebViewMessageReader extends AbstractMessageReader {
 
     listen(callback: DataCallback): Disposable {
         return this.api.onDidReceiveMessage((data) => {
-            if (!data || !data.data) return;
+            if (!data?.data) return;
             this.logger?.debug('client listen: %o', data.data);
             callback(data.data);
         });

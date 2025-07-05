@@ -17,7 +17,7 @@ export function operator<T, U>(fn: (value: T, fire: (value: U) => void) => void,
     return (source) => (subscriber) => {
         const emitter = (_emitter ??= createEmitter<U>());
         const dEvent = emitter.event(subscriber);
-        _detachSource ??= source((value) => fn(value, emitter.fire));
+        _detachSource ??= source((value) => { fn(value, emitter.fire); });
         ++_count;
         return {
             dispose() {

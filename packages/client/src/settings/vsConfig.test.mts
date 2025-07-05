@@ -191,7 +191,7 @@ describe('Validate vsConfig', () => {
         ${'cSpell.version'}            | ${ConfigurationTarget.Workspace}       | ${'0.2'}
         ${'cSpell.version'}            | ${ConfigurationTarget.WorkspaceFolder} | ${'0.2'}
         ${'cSpell.customDictionaries'} | ${ConfigurationTarget.Global}          | ${baseConfig['[*]'].globalValue?.cSpell.customDictionaries}
-    `('mergeInspect $section $target', async ({ section, target, expected }) => {
+    `('mergeInspect $section $target', ({ section, target, expected }) => {
         const config = sampleConfig();
         const values = config.inspect(section);
         expect(mergeInspect(target, values)).toEqual(expected);

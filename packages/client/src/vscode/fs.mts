@@ -24,7 +24,7 @@ interface VSCodeFs {
 }
 
 async function createDirectory(uri: Uri): Promise<void> {
-    return await fs.createDirectory(uri);
+    await fs.createDirectory(uri);
 }
 
 async function writeFile(uri: Uri, content: string, encoding = 'utf8' as const): Promise<void> {
@@ -43,7 +43,7 @@ async function _writeDoc(doc: TextDocument, content: string): Promise<void> {
 }
 
 async function _writeFile(uri: Uri, content: string, encoding: 'utf8'): Promise<void> {
-    return await fs.writeFile(uri, Buffer.from(content, encoding));
+    await fs.writeFile(uri, Buffer.from(content, encoding));
 }
 
 async function readFile(uri: Uri, encoding: 'utf8'): Promise<string> {

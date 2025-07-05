@@ -43,6 +43,7 @@ export function getPathToTemp(baseFilename = '.', testFilename?: string): Uri {
     const callerFile = testFilename ?? testState.testPath ?? getCallStack()[1].file;
     const testFile = path.relative(rootClient, callerFile);
     expect.getState();
+     
     const testName = testState.currentTestName || '.';
     const testDirName = testNameToDir(testName);
     return Uri.file(path.join(tempClient, testFile, testDirName, baseFilename));
@@ -84,12 +85,12 @@ export function parseStackTrace(stackTrace: string): StackItem[] {
     const lines = stackTrace
         .split('\n')
         .map((a) => a.trim())
-        .map((line) => line.match(regStackLine)?.[1])
+        .map((line) => regStackLine.exec(line)?.[1])
         .filter(isString)
         .map((line) => extractBetween(line, '(', ')') || line)
         .filter(isString);
     const stack: StackItem[] = lines
-        .map((line) => line.match(regParts))
+        .map((line) => regParts.exec(line))
         .filter(isDefined)
         .map(([_, file, ln, col]) => ({ file, line: toNum(ln), column: toNum(col) }));
     return stack.slice(1);

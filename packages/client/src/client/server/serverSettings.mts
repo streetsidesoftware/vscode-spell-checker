@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import type { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { normalizeCode } from '@internal/locale-resolver';
 import type { PartialCSpellUserSettings } from 'code-spell-checker-server/api';

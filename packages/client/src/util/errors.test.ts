@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { window } from 'vscode';
 
-import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors.js';
+import { catchErrors, ErrorHandlers, handleErrors, isErrorLike, logErrors, Resolvers } from './errors.js';
 
 vi.mock('vscode');
 
@@ -27,7 +27,7 @@ describe('Validate errors', () => {
         ${{ message: 'hello' }}               | ${false}
         ${{ message: 'error', name: 'name' }} | ${true}
     `('isError $value', ({ value, expected }) => {
-        expect(isError(value)).toBe(expected);
+        expect(isErrorLike(value)).toBe(expected);
     });
 
     test.each`
@@ -112,10 +112,11 @@ describe('Validate errors', () => {
     });
 });
 
-async function e(message: string, doThrow = true): Promise<string> {
+async function e(message: string | Promise<string>, doThrow = true): Promise<string> {
     if (doThrow) {
-        const error = new Error(message);
-        error.name = message;
+        const msg = await message;
+        const error = new Error(msg);
+        error.name = msg;
         throw error;
     }
 

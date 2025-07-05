@@ -94,7 +94,7 @@ export function run(): void {
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
-        disposables.forEach((d) => d.dispose());
+        disposables.forEach((d) => { d.dispose(); });
         disposables.length = 0;
     });
 

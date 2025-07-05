@@ -3,6 +3,7 @@ import type { CancellationToken, Uri } from 'vscode';
 
 import type { CheckDocumentResponse } from '../api.mjs';
 import { checkDocument } from '../api.mjs';
+import { squelch } from '../util/errors.js';
 import { clearLine, colors } from './ansiUtils.mjs';
 import { formatPath, relative } from './formatPath.mjs';
 
@@ -102,7 +103,8 @@ function prepareCheckDocument(uri: string | Uri, options: CheckDocumentsOptions,
 
     const result = checkDocument({ uri: uri.toString() }, { forceCheck });
     const prep: CheckDocumentPrep = { index, count, uri, startTs, options, result };
-    result.finally(() => (prep.endTs = performance.now()));
+
+    result.finally(() => (prep.endTs = performance.now())).catch(squelch('prepareCheckDocument'));
     return prep;
 }
 
@@ -146,7 +148,9 @@ export async function cmdCheckDocuments(uris: (string | Uri)[], options: CheckDo
             }
         }
         //
-        Promise.all(pending.map((p) => p.result)).catch((error) => options.error(error));
+        Promise.all(pending.map((p) => p.result)).catch((error: unknown) => {
+            options.error(error);
+        });
         options.log(
             `Checked ${files}/${count} files${skipped ? `, skipped ${skipped},` : ''} with ${issues} issues in ${filesWithIssues} files.`,
         );

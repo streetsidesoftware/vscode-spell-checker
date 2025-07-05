@@ -8,7 +8,7 @@ import { knownCommands } from '../commands.mjs';
 import { extensionId } from '../constants.js';
 import { getClient, getIssueTracker } from '../di.mjs';
 import type { IssuesStats } from '../issueTracker.mjs';
-import { handleErrors } from '../util/errors.js';
+import { handleErrors, squelch } from '../util/errors.js';
 
 const showLanguageStatus = true;
 
@@ -34,8 +34,16 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
             if (e.affectsConfiguration(extensionId)) queueUpdate();
         }),
     );
-    dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow()));
-    dList.push(options.onDidChangeVisibility(() => updateNow(false)));
+    dList.push(
+        getIssueTracker().onDidChangeDiagnostics(() => {
+            updateNow();
+        }),
+    );
+    dList.push(
+        options.onDidChangeVisibility(() => {
+            updateNow(false);
+        }),
+    );
 
     updateNow();
 
@@ -62,6 +70,7 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
         if (enabled && !options.areIssuesVisible()) icons.push('$(eye-closed)');
         if (enabled && !issuesCount) icons.push('$(check)');
         if (enabled && flaggedCount) icons.push(`$(error) ${flaggedCount}`);
+
         if (enabled && warnCount) icons.push(`$(warning) ${warnCount}`);
         const icon = icons.join(' ');
         const issuesItemText = `${icon} Spell`;
@@ -88,9 +97,11 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
                 currDocument = document;
                 isEnabledResponse = undefined;
             }
-            handleErrors(document ? getClient().isSpellCheckEnabled(document) : Promise.resolve(undefined), 'Language Status').then(
-                (response) => updateIssues((isEnabledResponse = response)),
-            );
+            handleErrors(document ? getClient().isSpellCheckEnabled(document) : Promise.resolve(undefined), 'Language Status')
+                .then((response) => {
+                    updateIssues((isEnabledResponse = response));
+                })
+                .catch(squelch('updateNow'));
         }
         updateIssues(isEnabledResponse);
     }

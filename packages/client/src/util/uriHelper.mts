@@ -7,5 +7,5 @@ export function toUri(uri: string | Uri | undefined | null): Uri | undefined {
     if (typeof uri === 'string') {
         return Uri.from(cvtToUri(uri));
     }
-    return (uri && Uri.from(uri)) || undefined;
+    return (uri && Uri.from(uri)) ?? undefined;
 }

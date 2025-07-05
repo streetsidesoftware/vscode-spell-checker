@@ -30,7 +30,7 @@ class AppState {
                 return value;
             },
             watch: watchFields('logDebug'),
-            mutate: async (value, set) => set(await api.serverRequest.setLogDebug(value)),
+            mutate: async (value, set) => { set(await api.serverRequest.setLogDebug(value)); },
         });
         this.csLogDebug = cs;
         return cs.client;
@@ -45,7 +45,7 @@ class AppState {
             initialValue: [],
             query: async () => (await api.serverRequest.getTodos()).value,
             watch: watchFields('todos'),
-            mutate: async (value, set) => set((await api.serverRequest.setTodos({ value })).value),
+            mutate: async (value, set) => { set((await api.serverRequest.setTodos({ value })).value); },
         });
         this.csTodos = cs;
         return cs.client;

@@ -7,7 +7,7 @@ import vscode from 'vscode';
 import { generateOpenSettingsCommand, knownCommands } from './commands.mjs';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
-import { handleErrors } from './util/errors.js';
+import { handleErrors, squelch } from './util/errors.js';
 
 const debug = false;
 const consoleLog = debug ? console.log : () => undefined;
@@ -63,7 +63,7 @@ async function actionMenu(options: ActionsMenuOptions) {
         }),
     ].filter(isDefined);
 
-    return quickPickMenu({ items, title: 'Spell Checker Actions Menu' }).catch(() => undefined);
+    return quickPickMenu({ items, title: 'Spell Checker Actions Menu' }).catch(squelch());
 }
 
 type QuickPick = vscode.QuickPick<QuickPickItem>;
@@ -167,8 +167,7 @@ async function openMenu(options: QuickPickMenuOptions): Promise<QuickPickItem | 
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
-class NavigationStep {
+class NavigationStep extends Error {
     static back = new NavigationStep();
     static cancel = new NavigationStep();
     static redraw = new NavigationStep();
@@ -203,7 +202,7 @@ class MenuItem implements ActionMenuItem {
     constructor(
         public label: string,
         public description?: string,
-        action?: Action | undefined,
+        action?: Action,
     ) {
         this.#action = action || (() => Promise.resolve(undefined));
     }
@@ -302,6 +301,7 @@ function itemsConfigFiles(configUris?: vscode.Uri[]) {
 // }
 
 async function runCommand(command: vscode.Command) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     await vscode.commands.executeCommand(command.command, ...(command.arguments || []));
 }
 

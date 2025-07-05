@@ -5,10 +5,10 @@ import { createLogger } from 'utils-logger';
 
 export function createPrecisionLogger() {
     return createLogger({
-        log: (...params) => internalLogger.log(format(...params)),
-        info: (...params) => internalLogger.info(format(...params)),
-        debug: (...params) => internalLogger.debug(format(...params)),
-        error: (...params) => internalLogger.error(format(...params)),
-        warn: (...params) => internalLogger.warn(format(...params)),
+        log: (...params) => { internalLogger.log(format(...params)); },
+        info: (...params) => { internalLogger.info(format(...params)); },
+        debug: (...params) => { internalLogger.debug(format(...params)); },
+        error: (...params) => { internalLogger.error(format(...params)); },
+        warn: (...params) => { internalLogger.warn(format(...params)); },
     });
 }

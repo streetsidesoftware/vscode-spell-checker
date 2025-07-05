@@ -6,6 +6,7 @@ import { formatWithOptions } from 'node:util';
 import camelize from 'camelize';
 import * as vscode from 'vscode';
 
+import { squelch } from '../util/errors.js';
 import { clearScreen, crlf, eraseLine, green, red, yellow } from './ansiUtils.mjs';
 import { Application, Command, defArg, defOpt } from './args.mjs';
 import { cmdCheckDocuments } from './cmdCheck.mjs';
@@ -41,10 +42,14 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     readonly #emitterOnDidClose = new vscode.EventEmitter<void>();
     readonly onDidWrite = this.#emitterOutput.event;
     readonly onDidClose = this.#emitterOnDidClose.event;
-    readonly handleInput = (data: string) => this.#emitterInput.fire(data);
+    readonly handleInput = (data: string) => {
+        this.#emitterInput.fire(data);
+    };
     readonly #writeStream = emitterToWriteStream(this.#emitterOutput);
     readonly #readStream = emitterToReadStream(this.#emitterInput);
-    readonly #output = (value: string) => this.#emitterOutput.fire(value);
+    readonly #output = (value: string) => {
+        this.#emitterOutput.fire(value);
+    };
     readonly #controller = new AbortController();
     readonly #abortable = { signal: this.#controller.signal };
     #cwd = currentDirectory();
@@ -73,7 +78,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const rl = this.#rl;
         rl.on('SIGTSTP', () => undefined);
         rl.on('SIGINT', this.#cancelAction);
-        rl.on('close', () => (consoleDebug('rl close'), this.close()));
+        rl.on('close', () => {
+            consoleDebug('rl close');
+            this.close();
+        });
         rl.on('line', this.#processLine);
         this.#dimensions = dimensions;
         if (dimensions) {
@@ -154,7 +162,9 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             (args) => this.#cmdSuggestions(args.args.word, args.options),
         );
 
-        const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => this.#cmdPwd());
+        const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => {
+            this.#cmdPwd();
+        });
 
         const cmdCd = new Command(
             'cd',
@@ -177,7 +187,9 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             'Show environment variables.',
             { ...defArg('filter', 'string[]', 'Optional filter.') },
             {},
-            (args) => this.#cmdEnv(args.args.filter),
+            (args) => {
+                this.#cmdEnv(args.args.filter);
+            },
         );
 
         const cmdExit = new Command('exit', 'Exit the REPL.', {}, {}, () => {
@@ -192,10 +204,14 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 command: { type: 'string', description: 'Show Help', required: false },
             },
             {},
-            (args) => this.showHelp(args.args.command),
+            (args) => {
+                this.showHelp(args.args.command);
+            },
         );
 
-        const cmdCls = new Command('cls', 'Clear the screen.', {}, {}, () => this.#output(clearScreen()));
+        const cmdCls = new Command('cls', 'Clear the screen.', {}, {}, () => {
+            this.#output(clearScreen());
+        });
 
         const cmdInfo = new Command('info', 'Show information about the REPL.', {}, {}, () => {
             this.log('CSpell REPL');
@@ -243,7 +259,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 consoleDebug('cursor pos: %o', { cursorPos: this.#rl.getCursorPos(), dim: this.#dimensions, cursor, line, terminal });
             }
         };
-        p();
+        p().catch(squelch('prompt'));
     }
 
     #updatePrompt() {
@@ -264,7 +280,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         output(eraseLine() + 'Gathering Files...');
 
         const cfgSearchExclude = vscode.workspace.getConfiguration('search.exclude') as Record<string, boolean>;
-        const searchExclude = Object.keys(cfgSearchExclude).filter((k) => cfgSearchExclude[k] === true);
+        const searchExclude = Object.keys(cfgSearchExclude).filter((k) => cfgSearchExclude[k]);
         const excludePattern = globsToGlob(searchExclude);
         const files = await globSearch(
             pattern,
@@ -282,6 +298,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     async #cmdEcho(globs: string[] | undefined) {
         consoleDebug('Repl.cmdEcho');
         this.log((globs || []).join(' '));
+        await Promise.resolve(); // Ensure the promise chain is resolved.
     }
 
     getCommandNames() {
@@ -365,7 +382,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.log(this.#cwd?.toString(false) || 'No Working Directory');
     }
 
-    #cmdEnv(filter?: string[] | undefined) {
+    #cmdEnv(filter?: string[]) {
         consoleDebug('Repl.cmdEnv');
         this.log('Environment:');
         const entries = Object.entries(process.env)
@@ -397,7 +414,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         await cmdLs(args.paths, { log: this.log, cwd: this.#cwd, cancellationToken: this.#getCancellationTokenForAction() });
     }
 
-    async readDir(relUri?: string | vscode.Uri | undefined): Promise<DirEntry[]> {
+    async readDir(relUri?: string | vscode.Uri): Promise<DirEntry[]> {
         return readDir(relUri, this.#cwd);
     }
 
@@ -416,7 +433,8 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
     async #cmdCd(path?: string) {
         if (!path) {
-            return this.#cmdPwd();
+            this.#cmdPwd();
+            return;
         }
         try {
             const dirUri = resolvePath(path, this.#cwd);
@@ -455,8 +473,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.#cancellationTokenSource = undefined;
     };
 
-    log: typeof console.log = (...args) => this.#output(crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
-    error: typeof console.error = (...args) => this.#output(red('Error: ') + crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
+    log: typeof console.log = (...args) => {
+        this.#output(crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
+    };
+    error: typeof console.error = (...args) => {
+        this.#output(red('Error: ') + crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
+    };
 
     #cancelAction = () => this.#cancellationTokenSource?.cancel();
 
@@ -478,7 +500,9 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
 function abortControllerToCancellationTokenSource(ac: AbortController): vscode.CancellationTokenSource {
     const t = new vscode.CancellationTokenSource();
-    ac.signal.onabort = () => t.cancel();
+    ac.signal.onabort = () => {
+        t.cancel();
+    };
     return t;
 }
 

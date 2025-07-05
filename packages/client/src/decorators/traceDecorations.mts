@@ -6,7 +6,7 @@ import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import type { Disposable } from '../disposable.js';
 import { createEmitter, map, pipe, throttle } from '../Subscribables/index.js';
-import { logError } from '../util/errors.js';
+import { logError, squelch } from '../util/errors.js';
 
 const ignoreSchemes: Record<string, boolean> = {
     output: true,
@@ -26,16 +26,26 @@ export class SpellingExclusionsDecorator implements Disposable {
     ) {
         this._visible = context.globalState.get(SpellingExclusionsDecorator.globalStateKey, false);
         this.disposables.push(
-            () => this.clearDecoration(),
-            vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
-            vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration(extensionId) && this.refreshEditor(undefined)),
-            vscode.workspace.onDidChangeTextDocument((e) => this.refreshDocument(e.document)),
+            () => {
+                this.clearDecoration();
+            },
+            vscode.window.onDidChangeActiveTextEditor((e) => {
+                this.refreshEditor(e);
+            }),
+            vscode.workspace.onDidChangeConfiguration((e) => {
+                if (e.affectsConfiguration(extensionId)) this.refreshEditor(undefined);
+            }),
+            vscode.workspace.onDidChangeTextDocument((e) => {
+                this.refreshDocument(e.document);
+            }),
             vscode.languages.registerHoverProvider('*', this.getHoverProvider()),
             pipe(
                 this.eventEmitter,
                 map((e) => (e && this._pendingUpdates.add(e), e)),
                 throttle(100),
-            ).subscribe(() => this.handlePendingUpdates()),
+            ).subscribe(() => {
+                this.handlePendingUpdates();
+            }),
         );
     }
 
@@ -54,7 +64,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         this.visible = !this.visible;
     }
 
-    private refreshEditor(editor?: vscode.TextEditor | undefined) {
+    private refreshEditor(editor?: vscode.TextEditor) {
         editor ??= vscode.window.activeTextEditor;
         if (!editor) return;
         this.eventEmitter.notify(editor);
@@ -106,7 +116,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         const editors = [...this._pendingUpdates];
         this._pendingUpdates.clear();
         for (const editor of editors) {
-            this.updateDecorations(editor);
+            this.updateDecorations(editor).catch(squelch());
         }
     }
 
@@ -137,7 +147,7 @@ export class SpellingExclusionsDecorator implements Disposable {
             editor.setDecorations(this.decorationType, decorations);
         } catch (err) {
             editor.setDecorations(this.decorationType, []);
-            logError(err, 'Failed to update decorations');
+            logError(err, 'Failed to update decorations').catch(squelch());
         }
     }
 

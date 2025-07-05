@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { Uri } from 'vscode';
 
 import type { CSpellUserSettings, DictionaryDefinitionCustom } from '../client/index.mjs';
@@ -163,9 +164,9 @@ export async function readSettingsFileAndApplyUpdate(cspellConfigUri: Uri, actio
     try {
         await updateConfigFile(cspellConfigUri, action);
     } catch (e) {
-        return Promise.reject(
-            e instanceof UnhandledFileType ? new FailedToUpdateConfigFile(`Update for config file format not supported.\n${e.message}`) : e,
-        );
+        throw e instanceof UnhandledFileType
+            ? new FailedToUpdateConfigFile(`Update for config file format not supported.\n${e.message}`)
+            : e;
     }
 }
 

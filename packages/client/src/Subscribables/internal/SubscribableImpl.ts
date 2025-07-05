@@ -24,7 +24,7 @@ export class SubscribableImpl<T> extends AbstractSubscribable<T> {
     protected override _start() {
         super._start();
         if (this._isRunning && !this._dispose) {
-            this._dispose = subscribeTo(this._source, { notify: (v) => this.notify(v), done: () => this.done() });
+            this._dispose = subscribeTo(this._source, { notify: (v) => { this.notify(v); }, done: () => { this.done(); } });
         }
     }
 }

@@ -22,7 +22,7 @@ import { ConfigFields, inspectConfigKeys, sectionCSpell } from '../settings/inde
 import * as LanguageIds from '../settings/languageIds.js';
 import { createBroadcaster } from '../util/broadcaster.js';
 import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri.js';
-import { logErrors, silenceErrors, toError } from '../util/errors.js';
+import { logErrors, silenceErrors, squelch, toError } from '../util/errors.js';
 import type { Maybe } from '../util/index.mjs';
 import type { CodeActionParams, ForkOptions, LanguageClientOptions, ServerOptions } from '../vscode-languageclient/node.cjs';
 import {
@@ -43,7 +43,7 @@ import type {
 } from './server/index.mjs';
 import { createServerApi, requestCodeAction } from './server/index.mjs';
 
-export { GetConfigurationForDocumentResult } from './server/index.mjs';
+export type { GetConfigurationForDocumentResult } from './server/index.mjs';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -130,7 +130,9 @@ export class CSpellClient implements Disposable {
         };
 
         this.registerDisposable(
-            this.broadcasterOnDocumentConfigChange.listen((change) => this.clearCacheGetConfigurationForDocument(change.uris)),
+            this.broadcasterOnDocumentConfigChange.listen((change) => {
+                this.clearCacheGetConfigurationForDocument(change.uris);
+            }),
         );
 
         // Create the language client and start the client.
@@ -138,7 +140,7 @@ export class CSpellClient implements Disposable {
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
         context.subscriptions.push(this.serverApi);
-        this.initWhenReady();
+        this.initWhenReady().catch(squelch());
     }
 
     public start(): Promise<void> {
@@ -234,7 +236,7 @@ export class CSpellClient implements Disposable {
         fields: ConfigFieldSelector<ConfigurationFields>,
     ) => Promise<GetConfigurationForDocumentResult<ConfigurationFields>> {
         return (document: TextDocument | TextDocumentInfo | undefined, fields) => {
-            const key = document?.uri?.toString() + uriSeparator + Object.keys(fields).sort().join(',');
+            const key = (document?.uri?.toString() || 'undefined') + uriSeparator + Object.keys(fields).sort().join(',');
             const found = this.cacheGetConfigurationForDocument.get(key);
             if (found) return found;
             const result = this._getConfigurationForDocument(document, fields);
@@ -261,7 +263,9 @@ export class CSpellClient implements Disposable {
 
     public notifySettingsChanged(): Promise<void> {
         this.clearCacheGetConfigurationForDocument();
-        setTimeout(() => this.clearCacheGetConfigurationForDocument(), 250);
+        setTimeout(() => {
+            this.clearCacheGetConfigurationForDocument();
+        }, 250);
         return silenceErrors(
             this.whenReady(() => this.serverApi.notifyConfigChange()),
             'notifySettingsChanged',
@@ -276,7 +280,7 @@ export class CSpellClient implements Disposable {
     }
 
     get diagnostics(): Maybe<DiagnosticCollection> {
-        return (this.client && this.client.diagnostics) || undefined;
+        return this.client?.diagnostics || undefined;
     }
 
     public triggerSettingsRefresh(): Promise<void> {
@@ -301,7 +305,7 @@ export class CSpellClient implements Disposable {
     }
 
     public dispose(): void {
-        this.client.stop();
+        this.client.stop().catch(squelch());
         this.disposables.dispose();
     }
 
@@ -356,9 +360,15 @@ export class CSpellClient implements Disposable {
 
     private registerHandleNotificationsFromServer() {
         this.registerDisposable(
-            this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)),
-            this.serverApi.onDocumentConfigChange((p) => this.broadcasterOnDocumentConfigChange.send(p)),
-            this.serverApi.onBlockFile((p) => this.broadcasterOnBlockFile.send(p)),
+            this.serverApi.onSpellCheckDocument((p) => {
+                this.broadcasterOnSpellCheckDocument.send(p);
+            }),
+            this.serverApi.onDocumentConfigChange((p) => {
+                this.broadcasterOnDocumentConfigChange.send(p);
+            }),
+            this.serverApi.onBlockFile((p) => {
+                this.broadcasterOnBlockFile.send(p);
+            }),
         );
     }
 }

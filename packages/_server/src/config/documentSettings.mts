@@ -254,7 +254,7 @@ export class DocumentSettings {
         log('resetSettings');
         this.pIsTrusted = undefined;
         const waitFor = clearCachedFiles();
-        this.valuesToClearOnReset.forEach((fn) => fn());
+        this.valuesToClearOnReset.forEach((fn) => { fn(); });
         this._version += 1;
         this.gitIgnore = new GitIgnore();
         await waitFor;
@@ -317,7 +317,7 @@ export class DocumentSettings {
     private async findMatchingFolder(docUri: string | undefined, defaultTo: WorkspaceFolder): Promise<WorkspaceFolder>;
     private async findMatchingFolder(
         docUri: string | undefined,
-        defaultTo?: WorkspaceFolder | undefined,
+        defaultTo?: WorkspaceFolder  ,
     ): Promise<WorkspaceFolder | undefined>;
     private async findMatchingFolder(
         docUri: string | undefined,
@@ -484,8 +484,8 @@ export class DocumentSettings {
             localDictionarySettings,
             filterMergeFields(
                 mergedSettingsFromVSCode,
-                vscodeCSpellSettings['mergeCSpellSettings'] || !settings,
-                vscodeCSpellSettings['mergeCSpellSettingsFields'],
+                vscodeCSpellSettings.mergeCSpellSettings || !settings,
+                vscodeCSpellSettings.mergeCSpellSettingsFields,
             ),
             settings,
         );
@@ -538,13 +538,13 @@ export class DocumentSettings {
 
     private createCache<K, T>(loader: (key: K) => T): AutoLoadCache<K, T> {
         const cache = createAutoLoadCache(loader);
-        this.valuesToClearOnReset.push(() => cache.clear());
+        this.valuesToClearOnReset.push(() => { cache.clear(); });
         return cache;
     }
 
     private createLazy<T>(loader: () => T): LazyValue<T> {
         const lazy = createLazyValue(loader);
-        this.valuesToClearOnReset.push(() => lazy.clear());
+        this.valuesToClearOnReset.push(() => { lazy.clear(); });
         return lazy;
     }
 
@@ -572,11 +572,11 @@ export function isUriAllowedBySettings(uri: string, settings: CSpellUserAndExten
 
 export function isUriBlockedBySettings(uri: string, settings: CSpellUserAndExtensionSettings): boolean {
     const schemes = extractEnabledSchemes(settings);
-    return schemes[Uri.parse(uri).scheme] === false;
+    return !schemes[Uri.parse(uri).scheme];
 }
 
 export function doesUriMatchAnyScheme(uri: string, schemes: EnabledSchemes): boolean {
-    return schemes[Uri.parse(uri).scheme] === true;
+    return schemes[Uri.parse(uri).scheme];
 }
 
 function _bestMatchingFolderForUri(folders: WorkspaceFolder[], docUri: string | undefined, defaultFolder: WorkspaceFolder): WorkspaceFolder;
@@ -672,7 +672,7 @@ function calcExcludedBy(uri: string, extSettings: ExtSettings): ExcludedByMatch[
     const filename = uriToGlobPath(uri);
     const matchResult = extSettings.excludeGlobMatcher.matchEx(filename);
 
-    if (matchResult.matched === false) {
+    if (!matchResult.matched) {
         return [];
     }
 

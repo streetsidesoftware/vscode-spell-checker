@@ -1,11 +1,11 @@
 import { format } from 'util';
 import { window } from 'vscode';
 
-export function isError(e: unknown): e is Error {
+export function isErrorLike(e: unknown): e is Error {
     if (e instanceof Error) return true;
     if (!e || typeof e !== 'object') return false;
     const err = e as Error;
-    return err.message !== undefined && err.name !== undefined;
+    return typeof err.message === 'string' && typeof err.name === 'string';
 }
 
 export const Resolvers = {
@@ -31,7 +31,7 @@ export const ErrorHandlers = {
  * @returns Promise - resolves to `undefined` if an error has occurred.
  */
 export function showError(reason: unknown, context: string): Promise<undefined> {
-    if (!isPromiseCanceledError(reason) && isError(reason)) {
+    if (!isPromiseCanceledError(reason) && isErrorLike(reason)) {
         console.error(formatLogMessage(reason, context));
         return silenceErrors(window.showErrorMessage(reason.message), 'showError Resolver showErrorMessage').then(() => undefined);
     }
@@ -45,7 +45,7 @@ export function showError(reason: unknown, context: string): Promise<undefined> 
  * @returns Promise - resolves to `undefined` if an error has occurred.
  */
 export function logError(reason: unknown, context: string): Promise<undefined> {
-    if (!isPromiseCanceledError(reason) && isError(reason)) {
+    if (!isPromiseCanceledError(reason) && isErrorLike(reason)) {
         console.log(formatLogMessage(reason, context));
     }
     return Promise.resolve(undefined);
@@ -61,7 +61,8 @@ export function ignoreError(reason: unknown, context: string): Promise<undefined
     // The msg is generated for debugging purposes, it is not used.
     const msg = formatLogMessage(reason, context);
     // bogus logic so the compiler doesn't drop msg
-    return Promise.resolve(toUndefined(msg));
+    toMsgUndefined(msg);
+    return Promise.resolve(undefined);
 }
 
 export function handleErrors<T>(
@@ -92,8 +93,8 @@ export function catchErrors<Fn extends Func, R = ReturnType<Fn>>(
     context: string,
     onErrorResolver: OnErrorResolver = showError,
 ): (...p: Parameters<Fn>) => Promise<R | undefined> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (...p: any) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return (...p: Parameters<Fn>) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }
 
 export function logErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | undefined> {
@@ -108,13 +109,22 @@ export function showErrors<T>(promise: Promise<T> | Thenable<T>, context: string
     return handleErrors(Promise.resolve(promise), context, showError);
 }
 
+export function squelch(context?: string): (e: unknown | Error) => undefined {
+    return (e) => {
+        if (context && isErrorLike(e)) {
+            console.log(formatLogMessage(e, context));
+        }
+        return undefined;
+    };
+}
+
 function withContextOnError(context: string, onErrorResolver: OnErrorResolver): _OnErrorResolver {
     return (reason: unknown) => {
         return onErrorResolver(reason, context);
     };
 }
 
-function toUndefined<T>(_v: T) {
+function toMsgUndefined(_v: string): undefined {
     return undefined;
 }
 
@@ -133,7 +143,7 @@ function isPromiseCanceledError(error: unknown): boolean {
 }
 
 export function toError(e: unknown): Error {
-    if (isError(e)) {
+    if (isErrorLike(e)) {
         return e;
     }
     const err = new Error(format('Error: %o', e));

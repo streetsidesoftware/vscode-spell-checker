@@ -5,6 +5,7 @@ import { createEmitter } from '@internal/common-utils';
 import type { Disposable, FileSystemWatcher } from 'vscode';
 import { RelativePattern, Uri, workspace } from 'vscode';
 
+import { squelch } from '../util/errors.js';
 import type { Memento } from './memento.mjs';
 
 interface MementoFileData<T> {
@@ -34,6 +35,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
     ) {
         this.#data = data?.data;
         this.#signature = data?.signature;
+
         assert(!data || data.id === 'memento', 'Invalid memento data');
         this.#emitter = createEmitter();
         this.#watcher = watchFile(uri, this.#handleFileChange.bind(this));
@@ -51,7 +53,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
 
     async update<K extends keyof T>(key: K, value: T[K] | undefined): Promise<void>;
     async update(data: Partial<T>): Promise<void>;
-    async update<K extends keyof T>(keyOrData: K | Partial<T>, value?: T[K] | undefined): Promise<void> {
+    async update<K extends keyof T>(keyOrData: K | Partial<T>, value?: T[K]): Promise<void> {
         const keys: (keyof T)[] = [];
         if (typeof keyOrData === 'string') {
             const key: K = keyOrData;
@@ -68,6 +70,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
             keys.push(...(Object.keys(data) as K[]));
             this.#data = { ...this.#data, ...data } as T;
         }
+
         this.#signature = `s${performance.now()}/${performance.now()}`;
         await MementoFile.#save(this.uri, {
             id: 'memento',
@@ -93,7 +96,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
         // if (a !== b) {
         //     console.error(`Invalid file change: '${a}' !== '${b}'`);
         // }
-        this.#loadData().catch(() => undefined);
+        this.#loadData().catch(squelch());
     }
 
     async #loadData() {
@@ -120,7 +123,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
             const buffer = await workspace.fs.readFile(uri);
             const dc = new TextDecoder();
             const content = dc.decode(buffer);
-            return JSON.parse(content);
+            return JSON.parse(content) as MementoFileData<T>;
         } catch {
             return undefined;
         }

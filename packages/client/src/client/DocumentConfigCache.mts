@@ -1,5 +1,7 @@
 import type { Uri } from 'vscode';
 
+import { squelch } from '../util/errors.js';
+
 interface CacheItem<T> {
     config: T | undefined;
     timestamp: number;
@@ -20,11 +22,11 @@ export class DocumentConfigCache<T> {
     get(uri: Uri) {
         const item = this.configs.get(uri.toString());
         if (!item || !item.config || this.isTooOld(item)) {
-            this.fetch(uri);
+            this.fetch(uri).catch(squelch());
             return undefined;
         }
         if (!this.isState(item)) {
-            this.fetch(uri);
+            this.fetch(uri).catch(squelch());
         }
         return item.config;
     }

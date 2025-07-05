@@ -606,6 +606,7 @@ export type ExecuteCommand = Omit<Command, 'title'>;
 
 async function execCommand<T = unknown>(command: ExecuteCommand): Promise<T> {
     const args = command.arguments || [];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return commands.executeCommand<T>(command.command, ...args);
 }
 

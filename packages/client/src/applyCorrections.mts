@@ -24,13 +24,13 @@ function filterLocations(locations: Location[], uri: Uri, range?: Range): Locati
 
 async function findReferences(uri: Uri, range: Range): Promise<Location[] | undefined> {
     try {
-        const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
+        const locations = await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start);
         if (!Array.isArray(locations) || !locations.length) return undefined;
         // console.log(
         //     'findReferences: %o',
         //     locations.map((loc) => ({ uri: loc.uri.toString(), range: rangeToString(loc.range) })),
         // );
-        return locations;
+        return locations as Location[];
     } catch {
         return undefined;
     }
@@ -53,7 +53,7 @@ async function findEditReferenceBounds(document: TextDocument, range: Range, use
     }
 
     const wordRange = document.getWordRangeAtPosition(range.start);
-    if (!wordRange || !wordRange.contains(range)) {
+    if (!wordRange?.contains(range)) {
         return undefined;
     }
     return { locations: [new Location(document.uri, wordRange)], refUsed: false };
@@ -126,7 +126,7 @@ function calcUseRefInfo(doc: TextDocument) {
     const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
     const useRename = !!cfg.get(propertyFixSpellingWithRenameProvider);
     const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-    const removeRegExp = stringToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
+    const removeRegExp = stringToRegExp(cfg.get(propertyUseReferenceProviderRemove));
     return { useRename, useReference, removeRegExp };
 }
 

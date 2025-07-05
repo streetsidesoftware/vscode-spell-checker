@@ -30,7 +30,7 @@ import { sectionCSpell } from './settings/index.mjs';
 import { getSectionName } from './settings/vsConfig.mjs';
 import { createLanguageStatus } from './statusbar/languageStatus.mjs';
 import { createEventLogger, updateDocumentRelatedContext } from './storage/index.mjs';
-import { logErrors, silenceErrors } from './util/errors.js';
+import { logErrors, silenceErrors, squelch } from './util/errors.js';
 import { performance } from './util/perf.js';
 import { isUriInAnyTab } from './vscode/tabs.mjs';
 import { activate as activateWebview } from './webview/index.mjs';
@@ -67,7 +67,7 @@ export function activate(context: ExtensionContext): Promise<ExtensionApi> {
         activateFileIssuesViewer(context, pIssueTracker);
 
         performance.mark('start_async_activate');
-        return _activate({ context, eIssueTracker }).catch((e) => {
+        return _activate({ context, eIssueTracker }).catch((e: unknown) => {
             throw activationError(e);
         });
     } catch (e) {
@@ -75,8 +75,16 @@ export function activate(context: ExtensionContext): Promise<ExtensionApi> {
     }
 }
 
+class ActivationError extends Error {
+    constructor(message: string, options?: ErrorOptions) {
+        super(message, options);
+        this.name = 'ActivationError';
+    }
+}
+
 function activationError(e: unknown) {
-    return new Error(`Failed to activate: (${performance.getLastEventName()}) ${e}`, { cause: e });
+    if (e instanceof ActivationError) return e;
+    return new ActivationError(`Failed to activate: (${performance.getLastEventName()}) ${e}`, { cause: e });
 }
 
 interface ActivateOptions {
@@ -101,10 +109,10 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         // const commands = await vscode.commands.getCommands();
         const dataFileUri = vscode.Uri.joinPath(context.globalStorageUri, 'data.json');
         console.log('Extension "Code Spell Checker" is now active! %o', {
-            extensionUri: context.extensionUri.toJSON(),
-            globalStorageUri: context.globalStorageUri.toJSON(),
-            dataFileUri: dataFileUri.toJSON(),
-            dataFileDirUri: vscode.Uri.joinPath(dataFileUri, '..').toJSON(),
+            extensionUri: context.extensionUri.toJSON() as unknown,
+            globalStorageUri: context.globalStorageUri.toJSON() as unknown,
+            dataFileUri: dataFileUri.toJSON() as unknown,
+            dataFileDirUri: vscode.Uri.joinPath(dataFileUri, '..').toJSON() as unknown,
             workspaceState: context.workspaceState.keys(),
             globalState: context.globalState.keys(),
         });
@@ -132,7 +140,7 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
                 // settingsViewer.update();
                 return;
             })
-            .catch(() => undefined);
+            .catch(squelch());
     }
 
     function triggerConfigChange(uri: vscode.Uri) {
@@ -148,8 +156,12 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
 
     const extensionCommand: InjectableCommandHandlers = {
-        'cSpell.toggleTraceMode': () => decoratorExclusions.toggleVisible(),
-        'cSpell.toggleVisible': () => decorator.toggleVisible(),
+        'cSpell.toggleTraceMode': () => {
+            decoratorExclusions.toggleVisible();
+        },
+        'cSpell.toggleVisible': () => {
+            decorator.toggleVisible();
+        },
         'cSpell.show': () => (decorator.visible = true),
         'cSpell.hide': () => (decorator.visible = false),
         'cSpell.createCSpellTerminal': createTerminal,
@@ -194,7 +206,7 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
     );
 
     performance.mark('registerCspellInlineCompletionProviders');
-    await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
+    await registerCspellInlineCompletionProviders(context.subscriptions).catch(squelch());
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {
@@ -231,11 +243,14 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
     }
 
     function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {
-        logErrors(updateDocumentRelatedContext(client, e?.document), 'handleOnDidChangeActiveTextEditor');
+        logErrors(updateDocumentRelatedContext(client, e?.document), 'handleOnDidChangeActiveTextEditor').catch(squelch());
     }
 
     function handleOnDidChangeVisibleTextEditors(_e: readonly vscode.TextEditor[]) {
-        logErrors(updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document), 'handleOnDidChangeVisibleTextEditors');
+        logErrors(
+            updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document),
+            'handleOnDidChangeVisibleTextEditors',
+        ).catch(squelch());
     }
 
     function handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
@@ -245,7 +260,9 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         const uris = new Set(e.uris.map((u) => u.toString()));
         if (uris.has(activeTextEditor.document.uri.toString())) {
             setTimeout(() => {
-                logErrors(updateDocumentRelatedContext(client, activeTextEditor.document), 'handleOnDidChangeDiagnostics');
+                logErrors(updateDocumentRelatedContext(client, activeTextEditor.document), 'handleOnDidChangeDiagnostics').catch(
+                    () => undefined,
+                );
             }, 10);
         }
     }
@@ -262,7 +279,7 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
     // infoViewer.activate(context, client);
 
     function registerConfig(path: string) {
-        client.registerConfiguration(path);
+        client.registerConfiguration(path).catch(squelch());
     }
 
     const methods = {
@@ -310,8 +327,13 @@ function bindLoggerToOutput(logOutput: vscode.LogOutputChannel): vscode.Disposab
     const disposableList = createDisposableList();
     const logLevel = getLogLevel();
     const console = {
-        log: (...args: Parameters<typeof logOutput.info>) =>
-            debugMode || logLevel === 'Debug' ? logOutput.info(...args) : logOutput.debug(...args),
+        log: (...args: Parameters<typeof logOutput.info>) => {
+            if (debugMode || logLevel === 'Debug') {
+                logOutput.info(...args);
+            } else {
+                logOutput.debug(...args);
+            }
+        },
         error: logOutput.error.bind(logOutput),
         info: logOutput.info.bind(logOutput),
         warn: logOutput.warn.bind(logOutput),
@@ -335,26 +357,26 @@ function setOutputChannelLogLevel(level?: CSpellSettings['logLevel']) {
     logger.level = logLevel;
 }
 
-async function notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
-    try {
-        const { uri, reason } = onBlockFile;
-        if (!isUriInAnyTab(uri)) return;
+async function _notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
+    const { uri, reason } = onBlockFile;
+    if (!isUriInAnyTab(uri)) return;
 
-        const openSettings: vscode.MessageItem = { title: 'Open Settings' };
-        const manageNotifications: vscode.MessageItem = { title: 'Manage Notifications' };
+    const openSettings: vscode.MessageItem = { title: 'Open Settings' };
+    const manageNotifications: vscode.MessageItem = { title: 'Manage Notifications' };
 
-        const actions: vscode.MessageItem[] = [{ title: 'Ok' }, openSettings, manageNotifications];
-        const result = await vscode.window.showInformationMessage(
-            `File "${uriToName(vscode.Uri.parse(uri))}" not spell checked:\n${reason.notificationMessage}\n`,
-            ...actions,
-        );
-        if (result === openSettings) {
-            await commands.executeOpenSettingsCommand(reason.settingsID);
-        }
-        if (result === manageNotifications) {
-            await commands.executeOpenSettingsCommand('cSpell.enabledNotifications');
-        }
-    } catch {
-        // ignore
+    const actions: vscode.MessageItem[] = [{ title: 'Ok' }, openSettings, manageNotifications];
+    const result = await vscode.window.showInformationMessage(
+        `File "${uriToName(vscode.Uri.parse(uri))}" not spell checked:\n${reason.notificationMessage}\n`,
+        ...actions,
+    );
+    if (result === openSettings) {
+        await commands.executeOpenSettingsCommand(reason.settingsID);
     }
+    if (result === manageNotifications) {
+        await commands.executeOpenSettingsCommand('cSpell.enabledNotifications');
+    }
+}
+
+function notifyUserOfBlockedFile(onBlockFile: OnBlockFile) {
+    _notifyUserOfBlockedFile(onBlockFile).catch(squelch());
 }

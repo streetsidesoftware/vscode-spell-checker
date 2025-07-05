@@ -2,7 +2,7 @@ import type { Disposable, ExtensionContext, TextDocument } from 'vscode';
 import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node.js';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
 
-import { logErrors } from '../util/errors.js';
+import { logErrors, squelch } from '../util/errors.js';
 import type { MatchPatternsToDocumentResult, NamedPattern, PatternMatcherServerApi, PatternSettings } from './server/index.mjs';
 import { createServerApi } from './server/index.mjs';
 
@@ -52,7 +52,7 @@ export class PatternMatcherClient implements Disposable {
         );
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
-        logErrors(this.initWhenReady(), 'Init Pattern Matcher Server');
+        logErrors(this.initWhenReady(), 'Init Pattern Matcher Server').catch(squelch());
     }
 
     public async matchPatternsInDocument(
@@ -65,7 +65,7 @@ export class PatternMatcherClient implements Disposable {
 
     public dispose(): void {
         debugLog('Dispose: Pattern Matcher Client');
-        this.client.stop();
+        this.client.stop().catch(squelch());
     }
 
     public onReady(): Promise<void> {

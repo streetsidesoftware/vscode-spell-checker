@@ -93,7 +93,7 @@ class VSCodeAPIWrapper<T> implements VSCodeAPI<T> {
 
     public onDidReceiveMessage(listener: (message: any) => void | Promise<void>): Disposable {
         window.addEventListener('message', listener);
-        return { dispose: () => window.removeEventListener('message', listener) };
+        return { dispose: () => { window.removeEventListener('message', listener); } };
     }
 }
 

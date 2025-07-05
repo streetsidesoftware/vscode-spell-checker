@@ -1,5 +1,7 @@
+import { squelch } from '../util/errors.js';
+
 export async function* asyncQueue<T>(fnValues: Iterable<() => T | Promise<T>>, maxQueue = 10): AsyncIterable<T> {
-    function* buffered() {
+    async function* buffered() {
         let done = false;
         const buffer: Promise<T>[] = [];
         const iter = fnValues[Symbol.iterator]();
@@ -18,7 +20,7 @@ export async function* asyncQueue<T>(fnValues: Iterable<() => T | Promise<T>>, m
 
         while (!done && buffer.length) {
             yield buffer[0];
-            buffer.shift();
+            buffer.shift()?.catch(squelch('asyncQueue'));
             fill();
         }
 

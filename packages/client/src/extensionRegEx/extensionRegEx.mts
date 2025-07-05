@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 
 import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
-import { catchErrors, isError, logError, logErrors, showError } from '../util/errors.js';
+import { catchErrors, isErrorLike, logError, logErrors, showError, squelch } from '../util/errors.js';
 import { toRegExp } from '../util/toRegExp.js';
 import { PatternMatcherClient } from './patternMatcherClient.mjs';
 import type { RegexpOutlineItem } from './RegexpOutlineProvider.mjs';
@@ -51,7 +51,9 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
     let pattern: string | undefined = undefined;
     let history: string[] = [];
 
-    const updateDecorations = catchErrors(_updateDecorations, 'updateDecorations', showError);
+    const updateDecorations = () => {
+        catchErrors(_updateDecorations, 'updateDecorations', showError)().catch(squelch());
+    };
 
     async function _updateDecorations() {
         disposeCurrent();
@@ -176,7 +178,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
             try {
                 toRegExp(input, 'g');
             } catch (e) {
-                if (isError(e)) return e.message;
+                if (isErrorLike(e)) return e.message;
                 return format(e);
             }
         }
@@ -221,7 +223,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
         if (item?.treeItem?.pattern) {
             triggerUpdateDecorations();
             const { defs, name } = item.treeItem.pattern;
-            userTestRegExp(defs[0]?.regexp || name);
+            userTestRegExp(defs[0]?.regexp || name).catch(squelch());
         }
     }
 

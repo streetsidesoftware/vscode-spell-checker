@@ -34,18 +34,20 @@ export async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?:
         if (rangeParam) {
             editor.selection = new Selection(rangeParam.start, rangeParam.end);
         }
-        return await commands.executeCommand('editor.action.quickFix');
+        await commands.executeCommand('editor.action.quickFix');
+        return;
     }
 
     const actions = await requestSpellingSuggestions(document, r, matchingDiags);
-    if (!actions || !actions.length) {
+    if (!actions?.length) {
         return pVoid(window.showInformationMessage(`No Suggestions Found for ${document.getText(r)}`), 'actionSuggestSpellingCorrections');
     }
 
     const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
     const picked = await window.showQuickPick(items);
-    if (picked && picked._action.command) {
+    if (picked?._action.command) {
         const { command: cmd, arguments: args = [] } = picked._action.command;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         commands.executeCommand(cmd, ...args);
     }
 }

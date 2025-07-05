@@ -132,7 +132,7 @@ export class Application {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     addCommand(...commands: Command<any, any>[]) {
         for (const cmd of commands) {
-            this.#commands.set(cmd.name, cmd);
+            this.#commands.set(cmd.name, cmd as Command);
         }
         return this;
     }
@@ -172,13 +172,13 @@ export class Application {
         lines.push(`Usage: ${cmd.name}${options} ${cmd.getArgString()}`);
         lines.push('', ...splitIntoLines(cmd.description, width));
         const indent = '  ';
-        const argumentColumns = cmd.arguments.map((arg) => [indent + arg, arg.description.trim()] as const);
+        const argumentColumns = cmd.arguments.map((arg) => [indent + arg.toString(), arg.description.trim()] as const);
         if (argumentColumns.length) {
             lines.push('');
             lines.push('Arguments:');
             lines.push(formatTwoColumns(argumentColumns, width, '  '));
         }
-        const optionColumns = cmd.options.map((opt) => [indent + opt, opt.description.trim()] as const);
+        const optionColumns = cmd.options.map((opt) => [indent + opt.toString(), opt.description.trim()] as const);
         if (optionColumns.length) {
             lines.push('');
             lines.push('Options:');
@@ -533,6 +533,7 @@ export function toBoolean(value: unknown | undefined): boolean | undefined {
         if (['true', 't', 'yes', 'y', '1', 'ok'].includes(v)) return true;
         if (['false', 'f', 'no', 'n', '0', ''].includes(v)) return false;
     }
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     throw new Error(`Invalid boolean value: ${value}`);
 }
 

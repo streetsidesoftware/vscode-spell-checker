@@ -11,7 +11,17 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     protected _isNotifyBusy = false;
 
     constructor() {
-        super([() => this.done(), () => this._eventListeners.clear()], 'AbstractSubscribable');
+        super(
+            [
+                () => {
+                    this.done();
+                },
+                () => {
+                    this._eventListeners.clear();
+                },
+            ],
+            'AbstractSubscribable',
+        );
     }
 
     protected _hasSubscribers() {
@@ -53,7 +63,11 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     }
 
     protected _notifySubscriber(s: SubscriberLike<T>, value: T) {
-        return typeof s === 'function' ? s(value) : s.notify(value);
+        if (typeof s === 'function') {
+            s(value);
+        } else {
+            s.notify(value);
+        }
     }
 
     private _notify(v: T) {
@@ -71,7 +85,13 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     public subscribe(s: SubscriberLike<T>): Disposable {
         this._subscriptions.add(s);
         this._start();
-        return createDisposable(() => this._unSub(s), undefined, 'subscribe');
+        return createDisposable(
+            () => {
+                this._unSub(s);
+            },
+            undefined,
+            'subscribe',
+        );
     }
 
     protected notify(value: T): void {

@@ -11,7 +11,7 @@ import * as di from '../di.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import { consoleDebug } from '../repl/consoleDebug.mjs';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
-import { handleErrors, logErrors } from '../util/errors.js';
+import { handleErrors, logErrors, squelch } from '../util/errors.js';
 import { isDefined } from '../util/index.mjs';
 import { findTextDocument } from '../vscode/findEditor.js';
 import { getIconForSpellingIssue, icons } from './icons.mjs';
@@ -55,24 +55,43 @@ class IssueExplorerByFile {
             setMessage: (msg) => {
                 this.treeView.message = msg;
             },
-            onDidUpdate: () => this.onDidUpdate(),
+            onDidUpdate: () => {
+                this.onDidUpdate();
+            },
         });
         this.treeDataProvider = treeDataProvider;
         this.treeView = vscode.window.createTreeView(IssueExplorerByFile.viewID, { treeDataProvider, showCollapseAll: true });
         this.disposeList.push(
             this.treeView,
             this.uiEventFnEmitter,
-            pipe(this.uiEventFnEmitter, debounce(debounceUIDelay))((fn) => fn()),
-            vscode.window.onDidChangeActiveTextEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e))),
-            vscode.window.onDidChangeActiveNotebookEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e))),
-            treeDataProvider.onDidChangeTreeData((e) => this.onDidChangeTreeData(e)),
-            this.treeView.onDidChangeSelection((e) => this.onDidChangeSelection(e)),
-            this.treeView.onDidChangeVisibility(
-                (e) => (
-                    log('onDidChangeVisibility', e),
-                    this._emitUIEvent(() => this.onDidChangeActiveTextEditor(vscode.window.activeTextEditor))
-                ),
-            ),
+            pipe(
+                this.uiEventFnEmitter,
+                debounce(debounceUIDelay),
+            )((fn) => {
+                fn();
+            }),
+            vscode.window.onDidChangeActiveTextEditor((e) => {
+                this._emitUIEvent(() => {
+                    this.onDidChangeActiveTextEditor(e);
+                });
+            }),
+            vscode.window.onDidChangeActiveNotebookEditor((e) => {
+                this._emitUIEvent(() => {
+                    this.onDidChangeActiveNotebookEditor(e);
+                });
+            }),
+            treeDataProvider.onDidChangeTreeData((e) => {
+                this.onDidChangeTreeData(e);
+            }),
+            this.treeView.onDidChangeSelection((e) => {
+                this.onDidChangeSelection(e);
+            }),
+            this.treeView.onDidChangeVisibility((e) => {
+                log('onDidChangeVisibility', e);
+                this._emitUIEvent(() => {
+                    this.onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
+                });
+            }),
         );
         this.treeView.title = 'Spelling Issues';
         this.treeView.message = 'No open documents.';
@@ -85,7 +104,7 @@ class IssueExplorerByFile {
     private onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined) {
         if (!editor) return;
         log('onDidChangeActiveTextEditor', editor.document.uri.toString());
-        logErrors(this.adjustRevel(editor.document, editor.visibleRanges), 'onDidChangeActiveTextEditor');
+        logErrors(this.adjustRevel(editor.document, editor.visibleRanges), 'onDidChangeActiveTextEditor').catch(squelch());
     }
 
     private onDidChangeActiveNotebookEditor(editor: vscode.NotebookEditor | undefined, ranges?: readonly vscode.NotebookRange[]) {
@@ -216,21 +235,31 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         this.issueTracker = undefined;
         this.disposeList.push(
             this.emitOnDidChange,
-            vscode.window.onDidChangeVisibleTextEditors(() => this.updateChild()),
-            vscode.window.tabGroups.onDidChangeTabs(() => this.updateChild()),
+            vscode.window.onDidChangeVisibleTextEditors(() => {
+                this.updateChild();
+            }),
+            vscode.window.tabGroups.onDidChangeTabs(() => {
+                this.updateChild();
+            }),
         );
-        options.issueTracker.then((tracker) => {
-            this.issueTracker = tracker;
-            this.disposeList.push(this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)));
-            this.updateChild();
-        });
+        options.issueTracker
+            .then((tracker) => {
+                this.issueTracker = tracker;
+                this.disposeList.push(
+                    this.issueTracker.onDidChangeDiagnostics((e) => {
+                        this.handleOnDidChangeDiagnostics(e);
+                    }),
+                );
+                this.updateChild();
+            })
+            .catch(squelch());
     }
 
     getTreeItem(element: IssueTreeItemBase): TreeItem | Promise<TreeItem> {
         return element.getTreeItem();
     }
 
-    getChildren(element?: IssueTreeItemBase | undefined): ProviderResult<IssueTreeItemBase[]> {
+    getChildren(element?: IssueTreeItemBase): ProviderResult<IssueTreeItemBase[]> {
         if (!this.issueTracker) return undefined;
         if (element) {
             return element.getChildren();
@@ -239,12 +268,16 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         const context: Context = {
             onlyVisible: true,
             issueTracker: this.issueTracker,
-            invalidate: (item) => this.updateChild(item),
+            invalidate: (item) => {
+                this.updateChild(item);
+            },
             requestSuggestions: (item) => this.issueTracker?.getSuggestionsForIssue(item) || Promise.resolve([]),
         };
         this.children = collectIssuesByFile(context);
         this.updateMessage(this.children.length ? undefined : 'No issues found.');
-        setTimeout(() => this.options.onDidUpdate(), 10);
+        setTimeout(() => {
+            this.options.onDidUpdate();
+        }, 10);
         return this.children;
     }
 
@@ -456,13 +489,13 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         return `FileIssueTreeItem: ${this.issue.diag.message}`;
     }
 
-    static compare(a: FileIssueTreeItem, b: FileIssueTreeItem) {
+    static compare = (a: FileIssueTreeItem, b: FileIssueTreeItem): number => {
         const cellComp = a.cellIndex - b.cellIndex;
         if (cellComp) return cellComp;
         const lineComp = a.range.start.line - b.range.start.line;
         if (lineComp) return lineComp;
         return a.range.start.character - b.range.start.character;
-    }
+    };
 }
 
 type IssueFixTreeItem = IssueSuggestionTreeItem | IssueAddToTargetTreeItem;
@@ -579,12 +612,12 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
         .map((file) => ({ ...file, doc: findTextDocument(file.uri) }));
     const groupedByFile = groupIssues(fileIssues);
 
-    const comp = new Intl.Collator().compare;
+    const col = new Intl.Collator();
 
     const sorted = [...groupedByFile]
         .filter(([_, issues]) => issues.length)
         .map(([doc, issues]) => new FileWithIssuesTreeItem(context, doc, issues))
-        .sort((a, b) => comp(a.document.uri.toString(true), b.document.uri.toString(true)));
+        .sort((a, b) => col.compare(a.document.uri.toString(true), b.document.uri.toString(true)));
 
     return sorted;
 

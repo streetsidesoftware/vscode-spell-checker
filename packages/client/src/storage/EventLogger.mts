@@ -1,7 +1,7 @@
 import type { Disposable } from 'vscode';
 import { env, Uri } from 'vscode';
 
-import { logErrors } from '../util/errors.js';
+import { logErrors, squelch } from '../util/errors.js';
 import type { LogEntry, LogEntryBase } from './EventLog.mjs';
 import { MementoFile } from './mementoFile.mjs';
 
@@ -44,7 +44,7 @@ class EventLoggerImpl implements EventLogger, Disposable {
 
     constructor(readonly uriStorageDir: Uri) {
         this.#pData = MementoFile.createMemento<LocalEventLogData>(Uri.joinPath(uriStorageDir, 'eventLog.json'));
-        this.#pData.then((data) => (this.#data = data));
+        this.#pData.then((data) => (this.#data = data)).catch(squelch('EventLoggerImpl'));
     }
 
     log(event: LogEntry): void {
@@ -69,7 +69,7 @@ class EventLoggerImpl implements EventLogger, Disposable {
         if (this.#timeout) return;
         this.#timeout = setTimeout(() => {
             this.#timeout = undefined;
-            logErrors(this.flush(), 'EventLogger.flush');
+            logErrors(this.flush(), 'EventLogger.flush').catch(squelch('EventLoggerImpl.queueFlush'));
         }, 10);
     }
 
@@ -85,9 +85,11 @@ class EventLoggerImpl implements EventLogger, Disposable {
         };
         const pFlush = this.#pFlush ? this.#pFlush.then(doFlush) : doFlush();
         this.#pFlush = pFlush;
-        pFlush.finally(() => {
-            if (this.#pFlush === pFlush) this.#pFlush = undefined;
-        });
+        pFlush
+            .finally(() => {
+                if (this.#pFlush === pFlush) this.#pFlush = undefined;
+            })
+            .catch(squelch('EventLoggerImpl.flush'));
         return pFlush;
     }
 
@@ -95,7 +97,11 @@ class EventLoggerImpl implements EventLogger, Disposable {
         if (this.#data) {
             this.#data.dispose();
         } else {
-            this.#pData.then((data) => data.dispose());
+            this.#pData
+                .then((data) => {
+                    data.dispose();
+                })
+                .catch(squelch('EventLoggerImpl.dispose'));
         }
     }
 }

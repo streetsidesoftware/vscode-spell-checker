@@ -54,11 +54,11 @@ export type ClientConfigTargetVSCode = ClientConfigTargetVSCodeUser | ClientConf
 export type ClientConfigTarget = ClientConfigTargetDictionary | ClientConfigTargetCSpell | ClientConfigTargetVSCode;
 
 type ClientConfigKinds = {
-    [key in ClientConfigKind as `${Capitalize<key>}`]: key;
+    [key in ClientConfigKind as Capitalize<key>]: key;
 };
 
 type ClientConfigScopes = {
-    [key in ClientConfigScope as `${Capitalize<key>}`]: key;
+    [key in ClientConfigScope as Capitalize<key>]: key;
 };
 
 type ConfigKindToTarget = {

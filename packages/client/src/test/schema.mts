@@ -27,7 +27,7 @@ export async function readDefaults(): Promise<Map<string, unknown | undefined>> 
         Object.entries(item.properties).forEach(([k, v]) => results.set(k, v.default));
     }
 
-    items.forEach((element) => processItem(element));
+    items.forEach((element) => { processItem(element); });
 
     return results;
 }

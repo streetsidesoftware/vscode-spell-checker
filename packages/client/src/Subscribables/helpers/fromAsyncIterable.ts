@@ -1,5 +1,6 @@
 import { disposeOf } from 'utils-disposables';
 
+import { squelch } from '../../util/errors.js';
 import { createEmitter } from '../createFunctions.js';
 import type { Subscribable, SubscribableEvent } from '../Subscribables.js';
 
@@ -17,7 +18,7 @@ export function fromAsyncIterable<T>(iter: AsyncIterableIterator<T> | AsyncItera
         }
     }
 
-    async function emitValues() {
+    async function _emitValues() {
         try {
             for await (const val of iter) {
                 if (stop) break;
@@ -27,6 +28,12 @@ export function fromAsyncIterable<T>(iter: AsyncIterableIterator<T> | AsyncItera
             disposeOf(disposeEventListener);
             emitter.done();
         }
+    }
+
+    const cErrors = squelch('fromAsyncIterable.emitValues');
+
+    function emitValues() {
+        _emitValues().catch(cErrors);
     }
 
     return emitter;

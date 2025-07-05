@@ -22,7 +22,7 @@ describe('Util', () => {
 
     test('mustBeDefined', () => {
         expect(mustBeDefined('hello')).toBe('hello');
-        expect(() => mustBeDefined(undefined)).toThrowError('Value must be defined.');
+        expect(() => { mustBeDefined(undefined); }).toThrowError('Value must be defined.');
     });
 });
 

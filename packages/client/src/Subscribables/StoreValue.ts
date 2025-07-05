@@ -45,7 +45,7 @@ class StoreValueImpl<T> extends AbstractSubscribable<T> implements StoreValue<T>
     }
 
     update(u: (v: T) => T) {
-        return this.set(u(this._value));
+        this.set(u(this._value));
     }
 }
 

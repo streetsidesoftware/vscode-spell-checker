@@ -51,7 +51,7 @@ export function filterMergeFields(
     mergeCSpellSettingsFields: CSpellUserAndExtensionSettings['mergeCSpellSettingsFields'],
 ): CSpellUserAndExtensionSettings {
     mergeCSpellSettings ??= false;
-    if (mergeCSpellSettings === true && !mergeCSpellSettingsFields) return settings;
+    if (mergeCSpellSettings && !mergeCSpellSettingsFields) return settings;
     const copy = { ...settings };
     mergeCSpellSettingsFields = mergeCSpellSettingsFields || {};
 

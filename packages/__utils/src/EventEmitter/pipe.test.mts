@@ -44,7 +44,7 @@ describe('pipe', () => {
         // There should be one listener even though we have two event calls
         expect(numListeners(emitter)).toBe(1);
 
-        values.forEach((value) => emitter.fire(value));
+        values.forEach((value) => { emitter.fire(value); });
 
         expect(result).toEqual(['A', 'C']);
         expect(tappedResult).toEqual(values);
@@ -57,7 +57,7 @@ describe('pipe', () => {
         // All listeners are removed
         expect(numListeners(emitter)).toBe(0);
 
-        values.forEach((value) => emitter.fire(value));
+        values.forEach((value) => { emitter.fire(value); });
         expect(result).toEqual(['A', 'C']);
         expect(tappedResult).toEqual(values);
 

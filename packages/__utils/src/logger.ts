@@ -128,7 +128,7 @@ export class Logger {
             connection.console.log(msg);
         };
 
-        this.logs.forEach((log) => this.writeLog(log));
+        this.logs.forEach((log) => { this.writeLog(log); });
         this.logs.length = 0;
     }
 

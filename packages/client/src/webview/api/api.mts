@@ -31,7 +31,14 @@ export function getLogger() {
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
     let watcher: DisposableLike | undefined = undefined;
     const fieldsToWatch = new Set<WatchFields>();
-    const disposables = createDisposableList([() => disposeOf(watcher)], 'bindApiAndStore');
+    const disposables = createDisposableList(
+        [
+            () => {
+                disposeOf(watcher);
+            },
+        ],
+        'bindApiAndStore',
+    );
     const dispose = disposables.dispose;
 
     const api: ServerSideApiDef = {
@@ -83,7 +90,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
         req.forEach((field) => fieldsToWatch.add(field));
         watcher = watchFieldList(fieldsToWatch, (fields) => {
             // console.warn('Notify fields: %o', fields);
-            serverSideApi.clientNotification.onStateChange(fields);
+            serverSideApi.clientNotification.onStateChange(fields).catch(() => {});
         });
     }
 

@@ -6,7 +6,8 @@ import { normalizeWords } from './settings/CSpellSettings.mjs';
 import { toUri } from './util/uriHelper.mjs';
 import { findEditor } from './vscode/findEditor.js';
 
-const compareStrings = new Intl.Collator().compare;
+const col = new Intl.Collator();
+const compareStrings = (x: string, y: string) => col.compare(x, y);
 
 export function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
@@ -49,7 +50,7 @@ async function determineTextSelection(
         return { text: picked.join(' '), uri: document?.uri };
     }
 
-    if (!range || !selection || !document || !document.getText(range)) {
+    if (!range || !selection || !document?.getText(range)) {
         const word = await window.showInputBox({ title: prompt, prompt });
         if (!word) return;
         return { text: word, uri: document?.uri };

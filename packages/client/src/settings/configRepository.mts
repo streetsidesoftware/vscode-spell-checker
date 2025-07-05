@@ -116,7 +116,7 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
         const formatConfig = this.formatConfig;
         const uri = this.configFileUri;
         const doc = findOpenDocument(uri);
-        if (doc && doc.isDirty) {
+        if (doc?.isDirty) {
             const name = posix.basename(uri.path);
             const answer = await window.showInformationMessage(`Save "${name}"?`, 'Yes', 'No', 'Open');
             if (answer === 'Open') {
@@ -139,7 +139,7 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
 async function formatDocument(uri: Uri) {
     const doc = await workspace.openTextDocument(uri);
     const edits = await commands.executeCommand<TextEdit[] | undefined>('vscode.executeFormatDocumentProvider', uri);
-    if (!edits || !edits.length) return;
+    if (!edits?.length) return;
     const wsEdit = new WorkspaceEdit();
     wsEdit.set(uri, edits);
     await workspace.applyEdit(wsEdit);

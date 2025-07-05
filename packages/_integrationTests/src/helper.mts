@@ -74,7 +74,7 @@ export function getVSCodeCommands(): typeof vscode.commands {
 }
 
 export async function loadFolder(folderUri: Uri): Promise<void> {
-    return await vscode.commands.executeCommand('vscode.openFolder', folderUri, { forceNewWindow: false, forceReuseWindow: true });
+    await vscode.commands.executeCommand('vscode.openFolder', folderUri, { forceNewWindow: false, forceReuseWindow: true });
 }
 
 export function getVscodeWorkspace(): typeof vscode.workspace {
@@ -82,7 +82,7 @@ export function getVscodeWorkspace(): typeof vscode.workspace {
 }
 
 export async function sleep(ms: number): Promise<undefined> {
-    return new Promise((resolve) => setTimeout(() => resolve(undefined), ms));
+    return new Promise((resolve) => setTimeout(() => { resolve(undefined); }, ms));
 }
 
 export const getDocPath = (p: string) => {
@@ -96,7 +96,7 @@ export const getDocUri = (p: string) => {
 export async function setTestContent(context: DocumentContext, content: string): Promise<boolean> {
     const { doc, editor } = context;
     const all = new vscode.Range(doc.positionAt(0), doc.positionAt(doc.getText().length));
-    return editor.edit((eb) => eb.replace(all, content));
+    return editor.edit((eb) => { eb.replace(all, content); });
 }
 
 function getExtensionId() {
@@ -113,12 +113,12 @@ export function sampleWorkspaceUri(...pathSegments: string[]): Uri {
 
 export function logYellow(...params: Parameters<typeof console.log>): void {
     const [message, ...rest] = params;
-    if (!message) return log('');
+    if (!message) { log(''); return; }
     log(chalk.yellow(message), ...rest);
 }
 
 export function logRed(...params: Parameters<typeof console.log>): void {
     const [message, ...rest] = params;
-    if (!message) return log('');
+    if (!message) { log(''); return; }
     log(chalk.red(message), ...rest);
 }

@@ -233,7 +233,7 @@ export function disposeOf(disposable: DisposableLike | DisposeFn | undefined): v
 export function makeDisposable(disposable: DisposableLike, name = 'makeDisposable'): DisposableHybrid {
     if (isDisposableHybrid(disposable)) return disposable;
     if (Symbol.dispose in disposable) return createDisposable(disposable[Symbol.dispose], disposable, name);
-    if ('dispose' in disposable) return createDisposable(disposable['dispose'], disposable, name);
+    if ('dispose' in disposable) return createDisposable(disposable.dispose, disposable, name);
     return createDisposable(disposable, undefined, name);
 }
 

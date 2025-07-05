@@ -128,7 +128,7 @@ describe('Launch code spell extension', function () {
             logYellow('document loaded');
             // Force a spell check by making an edit.
             logYellow('edit start');
-            const r = vscode.window.activeTextEditor?.edit((edit) => edit.insert(new vscode.Position(0, 0), '#'));
+            const r = vscode.window.activeTextEditor?.edit((edit) => { edit.insert(new vscode.Position(0, 0), '#'); });
             expect(docContextMaybe).to.not.be.undefined;
             const wait = waitForSpellComplete(uri, 5000);
             await r;
@@ -188,7 +188,7 @@ describe('Launch code spell extension', function () {
 
         logYellow('edit start');
         const r = vscode.window.activeTextEditor?.edit((edit) =>
-            edit.insert(new vscode.Position(0, 0), 'This document has spellling errors.'),
+            { edit.insert(new vscode.Position(0, 0), 'This document has spellling errors.'); },
         );
         const wait = waitForSpellComplete(uri, 5000);
         await r;

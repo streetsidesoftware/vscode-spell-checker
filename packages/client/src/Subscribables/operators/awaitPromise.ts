@@ -22,6 +22,8 @@ export function awaitPromise<T>(onCatch: AwaitPromiseErrorHandler<T>): OperatorF
         operate(source, (value, emitter) => {
             Promise.resolve(value)
                 .then(emitter)
-                .catch((err) => onCatch(err, emitter, value));
+                .catch((err: unknown) => {
+                    onCatch(err, emitter, value);
+                });
         });
 }

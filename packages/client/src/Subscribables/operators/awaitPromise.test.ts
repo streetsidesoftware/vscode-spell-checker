@@ -48,7 +48,9 @@ describe('awaitPromise', () => {
 
         const promiseExpected = new WeakMap<T, string>();
 
-        const onReject = vi.fn<AwaitPromiseErrorHandler<T>>((err, emitter, pValue) => emitter(promiseExpected.get(pValue) || toStr(err)));
+        const onReject = vi.fn<AwaitPromiseErrorHandler<T>>((err, emitter, pValue) => {
+            emitter(promiseExpected.get(pValue) || toStr(err));
+        });
         const stream = rx(emitter, awaitPromise(onReject));
 
         const notify = vi.fn();
@@ -71,7 +73,12 @@ describe('awaitPromise', () => {
 });
 
 function rejectIn<T>(ms: number, err: unknown): Promise<T> {
-    return new Promise((_resolve, reject) => setTimeout(() => reject(err), ms));
+    return new Promise((_resolve, reject) =>
+        setTimeout(() => {
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            reject(err);
+        }, ms),
+    );
 }
 
 function toStr(err: unknown): string {

@@ -238,7 +238,7 @@ describe('disposable debug', () => {
             },
         ]);
 
-        expect(() => disposeOf(d)).toThrow(e2);
+        expect(() => { disposeOf(d); }).toThrow(e2);
     });
 
     test('createDisposableFromList double dispose', () => {

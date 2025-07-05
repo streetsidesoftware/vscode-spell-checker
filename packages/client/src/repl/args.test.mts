@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-spread */
 import assert from 'node:assert';
 import type { ParseArgsConfig } from 'node:util';
 import { parseArgs } from 'node:util';

@@ -94,8 +94,8 @@ async function filterPackageJson(uri: vscode.Uri): Promise<boolean> {
     try {
         const decoder = new TextDecoder();
         const pkgRaw = decoder.decode(await vscode.workspace.fs.readFile(uri));
-        const pkg = JSON.parse(pkgRaw);
-        return 'cspell' in pkg;
+        const pkg = JSON.parse(pkgRaw) as unknown;
+        return typeof pkg === 'object' && !!pkg && 'cspell' in pkg;
     } catch {
         return false;
     }

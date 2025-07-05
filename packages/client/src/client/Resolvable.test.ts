@@ -27,6 +27,7 @@ describe('ResolvablePromise', () => {
         const r = new Resolvable<string>();
         expect(r.isPending()).toBe(true);
         expect(r.isResolved()).toBe(false);
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         const p = Promise.reject(rejectWith);
         r.attach(p);
         await expect(r.promise).rejects.toBe(rejectWith);
@@ -42,9 +43,12 @@ describe('ResolvablePromise', () => {
             // Attaching the same promise is ok.
             r.attach(pOne);
             await expect(r.promise).resolves.toBe('one');
-            await expect(() => r.attach(Promise.resolve('two'))).toThrow('Already Resolved');
+            expect(() => {
+                r.attach(Promise.resolve('two'));
+            }).toThrow('Already Resolved');
         } catch (e) {
             console.error(e);
+            throw e;
         }
     });
 });

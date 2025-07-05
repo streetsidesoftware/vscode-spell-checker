@@ -126,7 +126,7 @@ export function buildQuickPickMatchTargetFn(match: ConfigTargetMatchPattern): Ma
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
     match: ConfigTargetMatchPattern,
-    canPickMany?: false | undefined,
+    canPickMany?: false  ,
 ): Promise<[ClientConfigTarget] | undefined>;
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
@@ -144,7 +144,7 @@ export async function quickPickBestMatchTarget(
 
 export async function quickPickTargets(
     targets: ClientConfigTarget[],
-    canPickMany?: undefined | false,
+    canPickMany?:   false,
 ): Promise<[ClientConfigTarget] | undefined>;
 export async function quickPickTargets(targets: ClientConfigTarget[], canPickMany: true): Promise<ClientConfigTarget[] | undefined>;
 export async function quickPickTargets(
@@ -170,7 +170,7 @@ export async function quickPickTargets(targets: ClientConfigTarget[], canPickMan
 
 export async function quickPickTarget(targets: ClientConfigTarget[]): Promise<ClientConfigTarget | undefined> {
     const t = await quickPickTargets(targets, false);
-    return t && t[0];
+    return t?.[0];
 }
 
 export function filterClientConfigTargets(

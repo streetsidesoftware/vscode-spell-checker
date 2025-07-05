@@ -26,7 +26,7 @@ export function debounce<T>(waitMs: number): OperatorFn<T, T> {
                 if (value !== symbolNotSet) notify(value);
             }
         });
-        subscribable.onEvent('onStop', () => clearTimeout(timer));
+        subscribable.onEvent('onStop', () => { clearTimeout(timer); });
         return subscribable;
     };
 }

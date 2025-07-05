@@ -31,7 +31,7 @@ export function throttle<T>(waitMs: number): OperatorFn<T, T> {
 
             handleTimer();
         });
-        subscribable.onEvent('onStop', () => clearTimeout(timer));
+        subscribable.onEvent('onStop', () => { clearTimeout(timer); });
         return subscribable;
     };
 }
