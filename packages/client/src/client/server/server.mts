@@ -6,8 +6,8 @@ import type {
 } from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
 
-import type { CodeAction, CodeActionParams, Command, LanguageClient } from '../vscode-languageclient.js';
-import { CodeActionRequest } from '../vscode-languageclient.js';
+import type { CodeAction, CodeActionParams, Command, LanguageClient } from '../../vscode-languageclient/node.cjs';
+import { CodeActionRequest } from '../../vscode-languageclient/node.cjs';
 import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs.js';
 
 export type {

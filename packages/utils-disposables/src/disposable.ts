@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-Symbol.dispose ??= Symbol('Symbol.dispose');
+Symbol.dispose ??= Symbol.for('Symbol.dispose');
 // Symbol.asyncDispose ??= Symbol('Symbol.asyncDispose');
 
 interface Disposable {

@@ -1,9 +1,9 @@
 import { disposeOf } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
 
-import { createEmitter } from '../createFunctions';
-import { rx } from '../rx';
-import { awaitPromise, type AwaitPromiseErrorHandler } from './awaitPromise';
+import { createEmitter } from '../createFunctions.js';
+import { rx } from '../rx.js';
+import { awaitPromise, type AwaitPromiseErrorHandler } from './awaitPromise.js';
 
 describe('awaitPromise', () => {
     test('awaitPromise', async () => {

@@ -1,6 +1,6 @@
-import { createSubscribable } from '../createFunctions';
-import { toSubscriber } from '../helpers/toSubscriber';
-import type { Subscribable, SubscriberLike } from '../Subscribables';
+import { createSubscribable } from '../createFunctions.js';
+import { toSubscriber } from '../helpers/toSubscriber.js';
+import type { Subscribable, SubscriberLike } from '../Subscribables.js';
 
 export type OperateFn<T, U> = (value: T, emitter: (value: U) => void) => void;
 

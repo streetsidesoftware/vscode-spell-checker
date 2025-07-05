@@ -1,5 +1,5 @@
-import type { OperatorFn } from '../Subscribables';
-import { operate } from './operate';
+import type { OperatorFn } from '../Subscribables.js';
+import { operate } from './operate.js';
 
 const symbolNotSet = Symbol('not set');
 type SymbolNotSet = typeof symbolNotSet;

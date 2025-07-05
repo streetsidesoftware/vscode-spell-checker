@@ -1,9 +1,9 @@
 import type { DisposableLike, DisposeFn } from 'utils-disposables';
 import { disposeOf } from 'utils-disposables';
 
-import { subscribeTo } from '../helpers/subscribeTo';
-import type { SubscribableLike } from '../Subscribables';
-import { AbstractSubscribable } from './AbstractSubscribable';
+import { subscribeTo } from '../helpers/subscribeTo.js';
+import type { SubscribableLike } from '../Subscribables.js';
+import { AbstractSubscribable } from './AbstractSubscribable.js';
 
 export class SubscribableImpl<T> extends AbstractSubscribable<T> {
     private _source: SubscribableLike<T>;

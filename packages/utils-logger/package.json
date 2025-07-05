@@ -4,26 +4,18 @@
   "version": "1.0.0",
   "description": "A logger interface.",
   "sideEffects": false,
-  "main": "dist/cjs/logger.js",
-  "types": "dist/cjs/logger.d.ts",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
-    "build": "npm run build:tsc && npm run build:ts2mjs",
-    "build:tsc": "tsc -b tsconfig.json -f",
-    "build:ts2mjs": "ts2mjs dist/esm",
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.json",
     "build-production": "npm run clean && npm run build",
-    "watch": "concurrently npm:watch:*",
-    "watch:tsc": "tsc -b tsconfig.json --watch -f",
-    "watch:ts2mjs": "chokidar \"dist/esm/**/*.js\" -c \"ts2mjs dist/esm\"",
     "clean": "shx rm -rf dist",
     "coverage": "vitest run --coverage",
     "test": "vitest run"
   },
   "exports": {
     ".": {
-      "types": "./dist/cjs/logger.d.ts",
-      "import": "./dist/esm/logger.mjs",
-      "require": "./dist/cjs/logger.js"
+      "import": "./dist/logger.js"
     }
   },
   "keywords": [

@@ -1,6 +1,6 @@
-export * from './createFunctions';
-export * from './operators/index';
-export { pipe } from './pipe';
-export { rx } from './rx';
-export type * from './Subscribables';
-export { createSubscribableView } from './SubscribableView';
+export * from './createFunctions.js';
+export * from './operators/index.js';
+export { pipe } from './pipe.js';
+export { rx } from './rx.js';
+export type * from './Subscribables.js';
+export { createSubscribableView } from './SubscribableView.js';

@@ -1,5 +1,5 @@
-import type { OperatorFn } from '../Subscribables';
-import { operate } from './operate';
+import type { OperatorFn } from '../Subscribables.js';
+import { operate } from './operate.js';
 
 export type AwaitPromiseErrorHandler<T> = (
     /** The error that occurred */

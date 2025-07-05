@@ -1,4 +1,5 @@
 import type { Webview } from 'vscode';
+
 import {
     AbstractMessageReader,
     AbstractMessageWriter,
@@ -8,7 +9,7 @@ import {
     type Message,
     type MessageConnection,
     type MessageWriter,
-} from 'vscode-jsonrpc/node';
+} from '../vscode-jsonrpc/node.cjs';
 
 export type { MessageConnection } from 'json-rpc-api';
 

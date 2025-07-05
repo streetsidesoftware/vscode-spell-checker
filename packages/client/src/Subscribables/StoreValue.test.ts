@@ -1,8 +1,8 @@
 import { describe, expect, test, vi } from 'vitest';
 
-import { createEmitter, createSubscribable } from './createFunctions';
-import { awaitSubscribable } from './helpers/awaitSubscribable';
-import { createStoreValue } from './StoreValue';
+import { createEmitter, createSubscribable } from './createFunctions.js';
+import { awaitSubscribable } from './helpers/awaitSubscribable.js';
+import { createStoreValue } from './StoreValue.js';
 
 describe('StoreValue', () => {
     test('createStoreValue', async () => {

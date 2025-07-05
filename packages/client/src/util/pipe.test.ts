@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { defaultTo, extract, map, pipe } from './pipe';
+import { defaultTo, extract, map, pipe } from './pipe.js';
 
 interface Address {
     street: string;

@@ -1,11 +1,11 @@
 import { createDisposable, disposeOf } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
 
-import { createSubscribable } from '../createFunctions';
-import { toSubscriberFn } from '../helpers/toSubscriber';
-import { rx } from '../rx';
-import type { SubscribeFn, SubscriberFn, SubscriberLike } from '../Subscribables';
-import { delayUnsubscribe } from './delayUnsubscribe';
+import { createSubscribable } from '../createFunctions.js';
+import { toSubscriberFn } from '../helpers/toSubscriber.js';
+import { rx } from '../rx.js';
+import type { SubscribeFn, SubscriberFn, SubscriberLike } from '../Subscribables.js';
+import { delayUnsubscribe } from './delayUnsubscribe.js';
 
 describe('delayUnsubscribe', () => {
     test('delayUnsubscribe', () => {

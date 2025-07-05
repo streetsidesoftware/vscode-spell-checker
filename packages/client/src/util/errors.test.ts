@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { window } from 'vscode';
 
-import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors';
+import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors.js';
 
 vi.mock('vscode');
 

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { getScriptInfo, isValidCode, lookupLocaleInfo, normalizeCode, parseLocale } from './index';
+import { getScriptInfo, isValidCode, lookupLocaleInfo, normalizeCode, parseLocale } from './index.js';
 
 describe('Validation', () => {
     test.each`

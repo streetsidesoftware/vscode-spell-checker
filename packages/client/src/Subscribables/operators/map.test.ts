@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
 
-import { awaitSubscribableAll } from '../helpers/awaitSubscribable';
-import { rx } from '../rx';
-import { map } from './map';
+import { awaitSubscribableAll } from '../helpers/awaitSubscribable.js';
+import { rx } from '../rx.js';
+import { map } from './map.js';
 
 describe('map', () => {
     test('map', async () => {

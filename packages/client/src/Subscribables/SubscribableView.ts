@@ -1,9 +1,9 @@
 import type { DisposableLike } from 'utils-disposables';
 import { disposeOf } from 'utils-disposables';
 
-import { toSubscriberFn } from './helpers/toSubscriber';
-import { SubscribableImpl } from './internal/SubscribableImpl';
-import type { SubscribableLike, SubscribableValue, SubscriberLike } from './Subscribables';
+import { toSubscriberFn } from './helpers/toSubscriber.js';
+import { SubscribableImpl } from './internal/SubscribableImpl.js';
+import type { SubscribableLike, SubscribableValue, SubscriberLike } from './Subscribables.js';
 
 export interface SubscribableView<T> extends SubscribableValue<T> {
     value: T | undefined;

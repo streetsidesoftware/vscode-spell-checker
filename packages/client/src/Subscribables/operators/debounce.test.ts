@@ -1,9 +1,9 @@
 import { disposeOf } from 'utils-disposables';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { createEmitter } from '../createFunctions';
-import { rx } from '../rx';
-import { debounce } from './debounce';
+import { createEmitter } from '../createFunctions.js';
+import { rx } from '../rx.js';
+import { debounce } from './debounce.js';
 
 describe('debounce', () => {
     beforeEach(() => {

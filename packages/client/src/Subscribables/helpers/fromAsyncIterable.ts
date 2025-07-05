@@ -1,7 +1,7 @@
 import { disposeOf } from 'utils-disposables';
 
-import { createEmitter } from '../createFunctions';
-import type { Subscribable, SubscribableEvent } from '../Subscribables';
+import { createEmitter } from '../createFunctions.js';
+import type { Subscribable, SubscribableEvent } from '../Subscribables.js';
 
 export function fromAsyncIterable<T>(iter: AsyncIterableIterator<T> | AsyncIterable<T>): Subscribable<T> {
     const emitter = createEmitter<T>();

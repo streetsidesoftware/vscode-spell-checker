@@ -1,5 +1,5 @@
-import { SubscribableImpl } from '../internal/SubscribableImpl';
-import type { OperatorFn, SubscribeFn } from '../Subscribables';
+import { SubscribableImpl } from '../internal/SubscribableImpl.js';
+import type { OperatorFn, SubscribeFn } from '../Subscribables.js';
 
 export function delayUnsubscribe<T>(timeout: number): OperatorFn<T, T> {
     return (a) => {

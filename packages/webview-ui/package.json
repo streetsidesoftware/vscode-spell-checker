@@ -14,9 +14,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "build-production": "npm run clean && npm run build",
-    "clean": "shx rm -rf out",
+    "clean": "shx rm -rf out dist",
     "compile": "tsc -p .",
-    "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "npm run check"
   },
@@ -37,11 +36,10 @@
     "svelte": "^5.35.2",
     "svelte-check": "^4.2.2",
     "svelte-preprocess": "^6.0.3",
-    "tslib": "^2.8.1",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   },
   "engines": {
-    "node": ">18.0"
+    "node": ">20.0.0"
   }
 }

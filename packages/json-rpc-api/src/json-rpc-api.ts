@@ -11,7 +11,7 @@ import type {
     MakeMethodsAsync,
     MessageConnection,
     ReturnPromise,
-} from './types';
+} from './types.js';
 
 export type ApiPrefix = Record<keyof (ServerSideAPI & ClientSideAPI), string>;
 

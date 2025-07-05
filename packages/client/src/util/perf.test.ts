@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { EVENT_TIMELINE_START, PerformanceTimeline } from './perf';
+import { EVENT_TIMELINE_START, PerformanceTimeline } from './perf.js';
 
 describe('Validate perf', () => {
     test('PerformanceTimeline', () => {

@@ -2,13 +2,13 @@ import { uriToName } from '@internal/common-utils';
 import type { Range, TextDocument, Uri } from 'vscode';
 import { commands, Location, TextEdit, window, workspace, WorkspaceEdit } from 'vscode';
 
-import type { Converter, TextEdit as LsTextEdit } from './client/vscode-languageclient.js';
 import * as di from './di.mjs';
 import * as Settings from './settings/index.mjs';
 import { logErrors, showErrors } from './util/errors.js';
 import { toRegExp } from './util/toRegExp.js';
 import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers.js';
 import { findEditor, findTextDocument } from './vscode/findEditor.js';
+import type { Converter, TextEdit as LsTextEdit } from './vscode-languageclient/node.cjs';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
 const propertyUseReferenceProviderWithRename = Settings.ConfigFields['advanced.feature.useReferenceProviderWithRename'];

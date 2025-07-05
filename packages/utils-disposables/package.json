@@ -4,25 +4,16 @@
   "version": "1.0.0",
   "description": "Helper methods for creating Disposables.",
   "sideEffects": false,
-  "main": "dist/cjs/index.cjs",
-  "types": "dist/cjs/index.d.cts",
   "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/cjs/index.cjs",
-      "import": "./dist/esm/index.js"
+      "import": "./dist/index.js"
     }
   },
-  "devDependencies": {
-    "@tsconfig/node20": "^20.1.6",
-    "@types/node": "^20.19.4",
-    "ts2mjs": "^3.0.0",
-    "tslib": "^2.8.1"
-  },
+  "devDependencies": {},
   "scripts": {
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build:cjs": "tsc -p tsconfig.cjs.json && ts2mjs --cjs dist/cjs",
+    "build": "npm run build:esm",
+    "build:esm": "tsc -p tsconfig.json",
     "build-production": "npm run clean && npm run build",
     "clean": "shx rm -rf dist",
     "coverage": "vitest run --coverage",
@@ -31,9 +22,7 @@
   "files": [
     "dist",
     "!dist/**/*.map",
-    "!dist/**/*.test.*",
-    "!dist/cjs/**/*.js",
-    "!dist/cjs/**/*.ts"
+    "!dist/**/*.test.*"
   ],
   "keywords": [
     "typescript",

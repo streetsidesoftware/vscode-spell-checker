@@ -1,4 +1,4 @@
-import type { Subscriber, SubscriberFn, SubscriberLike } from '../Subscribables';
+import type { Subscriber, SubscriberFn, SubscriberLike } from '../Subscribables.js';
 
 export function toSubscriber<T>(subscriberLike: SubscriberLike<T>): Subscriber<T> {
     if (typeof subscriberLike !== 'function') return subscriberLike;

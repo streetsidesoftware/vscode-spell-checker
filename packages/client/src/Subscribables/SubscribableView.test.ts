@@ -1,9 +1,10 @@
 import { disposeOf } from 'utils-disposables';
 import { describe, expect, test } from 'vitest';
 
-import { map, rx } from '.';
-import { createEmitter } from './createFunctions';
-import { createSubscribableView } from './SubscribableView';
+import { createEmitter } from './createFunctions.js';
+import { map } from './operators/index.js';
+import { rx } from './rx.js';
+import { createSubscribableView } from './SubscribableView.js';
 
 describe('SubscribableView', () => {
     test('SubscribableView auto', () => {

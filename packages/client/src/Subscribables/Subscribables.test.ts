@@ -1,8 +1,8 @@
 import { describe, expect, test, vi } from 'vitest';
 
-import { createEmitter, createSubscribable } from './createFunctions';
-import { awaitSubscribable } from './helpers/awaitSubscribable';
-import { delayUnsubscribe } from './operators/delayUnsubscribe';
+import { createEmitter, createSubscribable } from './createFunctions.js';
+import { awaitSubscribable } from './helpers/awaitSubscribable.js';
+import { delayUnsubscribe } from './operators/delayUnsubscribe.js';
 
 describe('Subscribables', () => {
     test('createEmitter', () => {
