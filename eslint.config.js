@@ -84,7 +84,16 @@ export default tsEslint.config(
         },
     },
     {
-        files: ['**/*.test.*', '**/__mocks__/**', '**/test/**', '**/test.*', '**/rollup.config.mjs', '**/build.mjs', '**/tsup.config.*'],
+        files: [
+            '**/__mocks__/**',
+            '**/*.test.*',
+            '**/build.mjs',
+            '**/rollup.config.mjs',
+            '**/test.*',
+            '**/test/**',
+            '**/tsdown.config.*',
+            '**/tsup.config.*',
+        ],
         rules: {
             'n/no-extraneous-require': 'off', // Mostly for __mocks__ and test files
             'n/no-extraneous-import': 'off',
