@@ -1,7 +1,7 @@
 import type { MessageItem, MessageOptions } from 'vscode';
 import { window } from 'vscode';
 
-import { silenceErrors } from './errors.js';
+import { silenceErrors } from './errorHandlers.js';
 import { pVoid } from './pVoid.js';
 
 /**

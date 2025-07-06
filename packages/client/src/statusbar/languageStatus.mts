@@ -8,7 +8,8 @@ import { knownCommands } from '../commands.mjs';
 import { extensionId } from '../constants.js';
 import { getClient, getIssueTracker } from '../di.mjs';
 import type { IssuesStats } from '../issueTracker.mjs';
-import { handleErrors, squelch } from '../util/errors.js';
+import { handleErrors } from '../util/errorHandlers.js';
+import { squelch } from '../util/errors.js';
 
 const showLanguageStatus = true;
 

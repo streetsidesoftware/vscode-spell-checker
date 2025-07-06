@@ -22,7 +22,8 @@ import { ConfigFields, inspectConfigKeys, sectionCSpell } from '../settings/inde
 import * as LanguageIds from '../settings/languageIds.js';
 import { createBroadcaster } from '../util/broadcaster.js';
 import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri.js';
-import { logErrors, silenceErrors, squelch, toError } from '../util/errors.js';
+import { logErrors, silenceErrors } from '../util/errorHandlers.js';
+import { squelch, toError } from '../util/errors.js';
 import type { Maybe } from '../util/index.mjs';
 import type { CodeActionParams, ForkOptions, LanguageClientOptions, ServerOptions } from '../vscode-languageclient/node.cjs';
 import {

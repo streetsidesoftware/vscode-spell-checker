@@ -4,7 +4,7 @@ import { commands, Location, TextEdit, window, workspace, WorkspaceEdit } from '
 
 import * as di from './di.mjs';
 import * as Settings from './settings/index.mjs';
-import { logErrors, showErrors } from './util/errors.js';
+import { logErrors, showErrors } from './util/errorHandlers.js';
 import { toRegExp } from './util/toRegExp.js';
 import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers.js';
 import { findEditor, findTextDocument } from './vscode/findEditor.js';

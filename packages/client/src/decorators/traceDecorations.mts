@@ -6,7 +6,8 @@ import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import type { Disposable } from '../disposable.js';
 import { createEmitter, map, pipe, throttle } from '../Subscribables/index.js';
-import { logError, squelch } from '../util/errors.js';
+import { logError } from '../util/errorHandlers.js';
+import { squelch } from '../util/errors.js';
 
 const ignoreSchemes: Record<string, boolean> = {
     output: true,

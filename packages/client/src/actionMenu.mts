@@ -7,7 +7,8 @@ import vscode from 'vscode';
 import { generateOpenSettingsCommand, knownCommands } from './commands.mjs';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
-import { handleErrors, squelch } from './util/errors.js';
+import { handleErrors } from './util/errorHandlers.js';
+import { squelch } from './util/errors.js';
 
 const debug = false;
 const consoleLog = debug ? console.log : () => undefined;

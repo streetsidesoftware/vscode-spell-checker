@@ -1,7 +1,8 @@
 import type { Disposable } from 'vscode';
 import { env, Uri } from 'vscode';
 
-import { logErrors, squelch } from '../util/errors.js';
+import { logErrors } from '../util/errorHandlers.js';
+import { squelch } from '../util/errors.js';
 import type { LogEntry, LogEntryBase } from './EventLog.mjs';
 import { MementoFile } from './mementoFile.mjs';
 
