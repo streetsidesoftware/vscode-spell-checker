@@ -1,10 +1,6 @@
 <!-- @migration-task Error while migrating Svelte code: migrating this component would require adding a `$props` rune but there's already a variable named props.
      Rename the variable and try again or migrate by hand. -->
 <script lang="ts">
-  import { createBubbler } from 'svelte/legacy';
-
-  const bubble = createBubbler();
-  import { createEventDispatcher } from 'svelte';
   import type { TextInputEvent } from '../types';
 
   interface Props {
@@ -31,6 +27,10 @@
     start?: import('svelte').Snippet;
     children?: import('svelte').Snippet;
     end?: import('svelte').Snippet;
+    oninput?: (e: TextInputEvent) => void;
+    onchange?: (e: Event) => void;
+    onfocus?: (e: FocusEvent) => void;
+    onblur?: (e: FocusEvent) => void;
   }
 
   let {
@@ -47,17 +47,14 @@
     start,
     children,
     end,
+    oninput,
+    onblur,
+    onchange,
+    onfocus,
   }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ input: TextInputEvent }>();
 
   let extraProps = $derived({ autofocus, disabled, readonly: makeReadonly, maxlength, name, placeholder, size, type: inputType });
   let itemProps = $derived(Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined')));
-
-  function handleInput(e: TextInputEvent) {
-    value = e.target.value;
-    return dispatch('input', e);
-  }
 
   function init(node: HTMLInputElement, useFocus: boolean | undefined) {
     function update(focus: boolean | undefined) {
@@ -76,15 +73,7 @@
 </script>
 
 <!-- svelte-ignore a11y_autofocus -->
-<vscode-text-field
-  {...itemProps}
-  {value}
-  oninput={handleInput}
-  onchange={bubble('change')}
-  use:init={focus}
-  onfocus={bubble('focus')}
-  onblur={bubble('blur')}
->
+<vscode-text-field {...itemProps} {value} {oninput} {onchange} use:init={focus} {onfocus} {onblur}>
   {#if start}
     <section slot="start">{@render start_render?.()}</section>
   {/if}

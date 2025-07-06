@@ -1,8 +1,4 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
-
   interface Props {
     /**
      * Determines the visual appearance (primary, secondary, icon) of the button.
@@ -39,6 +35,7 @@
     /** See MDN. */
     value?: string | undefined;
     children?: import('svelte').Snippet;
+    onclick?: (e: Event) => void;
   }
 
   let {
@@ -56,6 +53,7 @@
     inputType = undefined,
     value = undefined,
     children,
+    onclick = () => {},
   }: Props = $props();
 
   let extraProps = $derived({
@@ -74,14 +72,10 @@
     value,
   });
   let itemProps = $derived(Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined')));
-
-  function click(e: Event) {
-    return dispatch('click', e);
-  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-<vscode-button {...itemProps} onclick={click}>{@render children?.()}</vscode-button>
+<vscode-button {...itemProps} {onclick}>{@render children?.()}</vscode-button>
 
 <style>
 </style>

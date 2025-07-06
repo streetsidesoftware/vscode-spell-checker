@@ -75,18 +75,18 @@
               inputType="text"
               placeholder="What needs to be done?"
               bind:value={todo.text}
-              on:change={() => changed(index)}
-              on:blur={() => selectTodo(todo, false)}
-              on:focus={() => selectTodo(todo, true)}
-              on:input={onInput}
+              onchange={() => changed(index)}
+              onblur={() => selectTodo(todo, false)}
+              onfocus={() => selectTodo(todo, true)}
+              oninput={onInput}
               focus={todo === focusTodo}
               >{#snippet start()}
                 <section class="slot">
                   <VscodeCheckbox
                     bind:checked={todo.done}
-                    on:blur={() => selectTodo(todo, false)}
-                    on:focus={() => selectTodo(todo, true)}
-                    on:change={onInput}
+                    onblur={() => selectTodo(todo, false)}
+                    onfocus={() => selectTodo(todo, true)}
+                    onchange={onInput}
                   />
                 </section>
               {/snippet}</VscodeTextField
@@ -106,13 +106,13 @@
 
     <div class="todo-actions">
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-      <VscodeButton on:click={add}>Add New</VscodeButton>
+      <VscodeButton onclick={add}>Add New</VscodeButton>
 
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-      <VscodeButton on:click={clear}>Clear Completed</VscodeButton>
+      <VscodeButton onclick={clear}>Clear Completed</VscodeButton>
 
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-      <VscodeButton on:click={reset}>Reset the List</VscodeButton>
+      <VscodeButton onclick={reset}>Reset the List</VscodeButton>
     </div>
   </form>
 </div>

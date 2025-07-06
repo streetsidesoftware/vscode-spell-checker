@@ -1,8 +1,4 @@
 <script lang="ts">
-  import { createBubbler } from 'svelte/legacy';
-
-  const bubble = createBubbler();
-  import { createEventDispatcher } from 'svelte';
   import type { ChangeEvent } from '../types';
   import type { Checkbox } from '@vscode/webview-ui-toolkit';
 
@@ -20,6 +16,11 @@
     /** The string to use as the value of the checkbox when submitting the form */
     value?: string | undefined;
     children?: import('svelte').Snippet;
+
+    onchange?: (e: ChangeEvent<Checkbox>) => void;
+    onfocus?: (e: FocusEvent) => void;
+    onblur?: (e: FocusEvent) => void;
+    oninput?: (e: InputEvent) => void;
   }
 
   let {
@@ -30,25 +31,16 @@
     required = undefined,
     value = undefined,
     children,
+    onchange,
+    onfocus,
+    onblur,
+    oninput,
   }: Props = $props();
 
   let extraProps = $derived({ autofocus, disabled, readonly: makeReadonly, required, value });
   let itemProps = $derived(Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined')));
-
-  const dispatch = createEventDispatcher();
-
-  function handleChecked(e: ChangeEvent<Checkbox>) {
-    checked = e.currentTarget.checked;
-    return dispatch('change', e.currentTarget);
-  }
 </script>
 
 <!-- svelte-ignore a11y_autofocus -->
-<vscode-checkbox
-  onchange={handleChecked}
-  onfocus={bubble('focus')}
-  onblur={bubble('blur')}
-  oninput={bubble('input')}
-  {checked}
-  {...itemProps}>{@render children?.()}</vscode-checkbox
->
+<vscode-checkbox {onchange} {onfocus} {onblur} {oninput} {checked} {...itemProps}>{@render children?.()}</vscode-checkbox>
+<checkbox {onchange}></checkbox>
