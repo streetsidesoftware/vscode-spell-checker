@@ -79,7 +79,7 @@ export class AppView {
         const { webview, viewName } = this;
         // The CSS file from the Svelte build output
         const stylesUris = webViewInfo.css.map((file) => this.webViewUri(file));
-        const stylesCodiconUri = this.webViewUri('css/codicon.css');
+        const stylesCodiconUri = this.webViewUri(webViewInfo.assetsDir + '/css/codicon.css');
         const allStyleSheets = [...stylesUris, stylesCodiconUri];
         // The JS file from the Svelte build output
         const scriptUri = this.webViewUri(webViewInfo.main);

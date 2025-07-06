@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { appState } from '../state/appState';
   import { createMutation, createQuery, getQueryClientContext } from '@tanstack/svelte-query';
   import { getServerApi, getServerNotificationApi } from '../api';
@@ -101,7 +99,7 @@
   let dictionaries = $derived(settings?.configs.file?.dictionaries);
   let dictionariesInUse = $derived(new Set(dictionaries?.map((d) => d.name) || []));
   let unusedDictionaries = $derived(settings?.dictionaries.filter((d) => !dictionariesInUse.has(d.name)));
-  run(() => {
+  $effect(() => {
     fileInfo = calcDisplayInfo($currentDoc || undefined, settings);
   });
   let languageIdEnabled = $derived(settings?.configs.file?.languageIdEnabled);
@@ -117,7 +115,7 @@
       <dt>{entry.key}:</dt>
       <dd>
         {#if entry.url}
-          <VscodeLink href={entry.url} click={() => openTextDocument(entry.url || '', entry.line)}>{entry.value}</VscodeLink>
+          <VscodeLink href={entry.url} onclick={() => openTextDocument(entry.url || '', entry.line)}>{entry.value}</VscodeLink>
         {:else}
           {entry.value}
         {/if}
@@ -131,7 +129,7 @@
         <ul>
           {#each configFiles as configFile}
             <li>
-              <VscodeLink href={configFile.uri} click={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
+              <VscodeLink href={configFile.uri} onclick={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
             </li>
           {/each}
         </ul>
@@ -149,7 +147,7 @@
                 {#if excluded.configUri}
                   <dd>
                     Config File:
-                    <VscodeLink href={excluded.configUri} click={() => openTextDocument(excluded.configUri || '')}
+                    <VscodeLink href={excluded.configUri} onclick={() => openTextDocument(excluded.configUri || '')}
                       >{excluded.configUri?.split('/').slice(-2).join('/')}</VscodeLink
                     >
                   </dd>
@@ -165,8 +163,8 @@
   {#if languageIdEnabled !== undefined}
     <VscodeCheckbox
       checked={languageIdEnabled}
-      on:change={(e) => {
-        return e.detail.checked === !languageIdEnabled && updateEnabledFileType(languageId, !languageIdEnabled, docUrl);
+      onchange={(e) => {
+        return e.currentTarget.checked === !languageIdEnabled && updateEnabledFileType(languageId, !languageIdEnabled, docUrl);
       }}>{languageId}</VscodeCheckbox
     >
   {/if}
@@ -184,7 +182,7 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <VscodeLink href={dictionary.uri} click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                  <VscodeLink href={dictionary.uri} onclick={() => dictionary.uri && openTextDocument(dictionary.uri)}
                     >{dictionary.uriName}</VscodeLink
                   >
                 {:else}
@@ -209,7 +207,7 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <VscodeLink href={dictionary.uri} click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                  <VscodeLink href={dictionary.uri} onclick={() => dictionary.uri && openTextDocument(dictionary.uri)}
                     >{dictionary.uriName}</VscodeLink
                   >
                 {:else}

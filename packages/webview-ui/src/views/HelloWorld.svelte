@@ -35,8 +35,8 @@
 
 <div>
   <h1>Hello {name}!</h1>
-  <VscodeButton on:click={handleHowdyClick}>Howdy!</VscodeButton>
-  <VscodeButton on:click={handleWhatTimeIsIt}>What time is it?</VscodeButton>
+  <VscodeButton onclick={handleHowdyClick}>Howdy!</VscodeButton>
+  <VscodeButton onclick={handleWhatTimeIsIt}>What time is it?</VscodeButton>
 
   <ul>
     {#each reversed as msg}

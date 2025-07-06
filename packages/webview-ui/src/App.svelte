@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
   import { allComponents, provideVSCodeDesignSystem } from '@vscode/webview-ui-toolkit';
-  import { supportedViewsByName, getLogger } from './api';
+  import { onDestroy } from 'svelte';
+  import { createDisposableList } from 'utils-disposables';
+  import { supportedViewsByName } from './api';
   import CSpellInfo from './views/CSpellInfo.svelte';
   import HelloWorld from './views/HelloWorld.svelte';
   import Todo from './views/Todo.svelte';
-  import { createDisposableList } from 'utils-disposables';
-  import { appState } from './state/appState';
-  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
-  import { LogLevel } from 'utils-logger';
 
   // In order to use the Webview UI Toolkit web components they
   // must be registered with the browser (i.e. webview) using the
