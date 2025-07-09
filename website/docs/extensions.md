@@ -15,6 +15,7 @@ id: extensions
 - [Austrian German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-austrian-german) - Austrian German dictionary extension for VS Code.
 - [Basque](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-basque) - Basque dictionary extension for VS Code.
 - [British English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-british-english) - British English dictionary extension for VS Code.
+- [British English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-british-english-ise) - British English -ise dictionary extension for VS Code.
 - [Bulgarian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-bulgarian) - Bulgarian dictionary extension for VS Code.
 - [Canadian English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-canadian-english) - Canadian English dictionary extension for VS Code.
 - [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan) - Catalan dictionary extension for VS Code.
