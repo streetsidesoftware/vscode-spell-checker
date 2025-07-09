@@ -20,7 +20,7 @@
     "test": "npm run check"
   },
   "dependencies": {
-    "@tanstack/svelte-query": "^5.81.5",
+    "@tanstack/svelte-query": "^5.82.0",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "fast-equals": "^5.2.2",
     "utils-disposables": "file:../utils-disposables",
@@ -33,7 +33,7 @@
     "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.36",
-    "svelte": "^5.35.4",
+    "svelte": "^5.35.5",
     "svelte-check": "^4.2.2",
     "svelte-preprocess": "^6.0.3",
     "typescript": "~5.8.3",
