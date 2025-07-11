@@ -48,11 +48,11 @@ export function clearDown() {
     return ansiEscapes.eraseDown;
 }
 
-export function moveCursor(dx: number, dy?: number | undefined) {
+export function moveCursor(dx: number, dy?: number  ) {
     return ansiEscapes.cursorMove(dx, dy);
 }
 
-export function cursorTo(x: number, y?: number | undefined) {
+export function cursorTo(x: number, y?: number  ) {
     return ansiEscapes.cursorTo(x, y);
 }
 

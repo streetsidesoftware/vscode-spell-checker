@@ -11,6 +11,7 @@ import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import type { CSpellSettings } from '../settings/index.mjs';
 import { ConfigFields } from '../settings/index.mjs';
 import { setContext } from '../storage/context.mjs';
+import { squelch } from '../util/errors.js';
 import { findEditor } from '../vscode/findEditor.js';
 
 const defaultHideIssuesWhileTyping: Required<PartialCSpellUserSettings<'hideIssuesWhileTyping'>>['hideIssuesWhileTyping'] = 'Word';
@@ -48,14 +49,30 @@ export class SpellingIssueDecorator implements Disposable {
         this.decorationTypeForSuggestions = decorators?.decoratorSuggestions;
         this.decorationTypeForDebug = decorators?.decoratorDebug;
         this.disposables.push(
-            () => this.clearDecoration(),
-            workspace.onDidChangeConfiguration((e) => this.#onConfigChange(e)),
-            window.onDidChangeActiveColorTheme(() => this.resetDecorator()),
-            issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
-            window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
-            window.onDidChangeVisibleTextEditors((e) => this.handleOnDidChangeVisibleTextEditors(e)),
-            window.onDidChangeTextEditorSelection((e) => this.#onSelectionChange(e)),
-            workspace.onDidChangeTextDocument((e) => this.#onDocumentChange(e)),
+            () => {
+                this.clearDecoration();
+            },
+            workspace.onDidChangeConfiguration((e) => {
+                this.#onConfigChange(e);
+            }),
+            window.onDidChangeActiveColorTheme(() => {
+                this.resetDecorator();
+            }),
+            issueTracker.onDidChangeDiagnostics((e) => {
+                this.handleOnDidChangeDiagnostics(e);
+            }),
+            window.onDidChangeActiveTextEditor((e) => {
+                this.refreshEditor(e);
+            }),
+            window.onDidChangeVisibleTextEditors((e) => {
+                this.handleOnDidChangeVisibleTextEditors(e);
+            }),
+            window.onDidChangeTextEditorSelection((e) => {
+                this.#onSelectionChange(e);
+            }),
+            workspace.onDidChangeTextDocument((e) => {
+                this.#onDocumentChange(e);
+            }),
             workspace.onDidCloseTextDocument((doc) => this.docChanges.delete(doc.uri.toString())),
         );
         this.setContext(this._visible);
@@ -75,7 +92,7 @@ export class SpellingIssueDecorator implements Disposable {
     refreshEditor(e: vscode.TextEditor | undefined) {
         e ??= window.activeTextEditor;
         if (!e) return;
-        return this.refreshDiagnostics([e.document.uri]);
+        this.refreshDiagnostics([e.document.uri]);
     }
 
     refreshDiagnostics(docUris?: readonly Uri[]) {
@@ -90,7 +107,9 @@ export class SpellingIssueDecorator implements Disposable {
         docUris ??= window.visibleTextEditors.map((e) => e.document.uri);
         const updated = new Set(docUris.map((uri) => uri.toString()));
         const editors = window.visibleTextEditors.filter((editor) => updated.has(editor.document.uri.toString()));
-        editors.forEach((editor) => this.refreshDiagnosticsInEditor(editor));
+        editors.forEach((editor) => {
+            this.refreshDiagnosticsInEditor(editor);
+        });
     }
 
     refreshDiagnosticsInEditor(editor: TextEditor) {
@@ -194,7 +213,7 @@ export class SpellingIssueDecorator implements Disposable {
     private setContext(value: boolean) {
         this.context.globalState.update(SpellingIssueDecorator.globalStateKey, value);
         this.emitterVisibility.fire(value);
-        Promise.resolve(setContext({ showDecorations: value })).catch(() => undefined);
+        Promise.resolve(setContext({ showDecorations: value })).catch(squelch());
     }
 
     private clearDecoration() {

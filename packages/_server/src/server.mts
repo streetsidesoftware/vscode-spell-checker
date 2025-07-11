@@ -217,8 +217,8 @@ export function run(): void {
                         .pipe(
                             filter((doc) => uri === doc.uri),
                             take(1),
-                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
-                            tap((doc) => log('Ignoring:', doc.uri)),
+                            tap((doc) => { progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore'); }),
+                            tap((doc) => { log('Ignoring:', doc.uri); }),
                         )
                         .subscribe(),
                 );
@@ -228,13 +228,13 @@ export function run(): void {
                     validationRequestStream
                         .pipe(
                             filter((doc) => uri === doc.uri),
-                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
-                            tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
+                            tap((doc) => { progressNotifier.emitSpellCheckDocumentStep(doc, 'start'); }),
+                            tap((doc) => { log(`Request Validate: v${doc.version}`, doc.uri); }),
                         )
                         .pipe(
                             throttleTime(defaultDebounceMs, undefined, { leading: true, trailing: true }),
                             mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
-                            tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
+                            tap((dsp) => { progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined'); }),
                             throttle(
                                 (dsp) =>
                                     interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
@@ -252,9 +252,9 @@ export function run(): void {
     ds(
         triggerUpdateConfig
             .pipe(
-                tap(() => log('Trigger Update Config')),
+                tap(() => { log('Trigger Update Config'); }),
                 throttleTime(1000, undefined, { leading: true, trailing: true }),
-                tap(() => log('Update Config Triggered')),
+                tap(() => { log('Update Config Triggered'); }),
                 mergeMap(updateActiveSettings),
             )
             .subscribe(() => {
@@ -266,7 +266,7 @@ export function run(): void {
     ds(
         triggerValidateAll.pipe(debounceTime(250)).subscribe(() => {
             log('Validate all documents');
-            documents.all().forEach((doc) => validationRequestStream.next(doc));
+            documents.all().forEach((doc) => { validationRequestStream.next(doc); });
         }),
     );
 
@@ -785,7 +785,7 @@ export function run(): void {
     }
 
     function ds<T extends { unsubscribe: () => void }>(v: T): T {
-        disposables.push(() => v.unsubscribe());
+        disposables.push(() => { v.unsubscribe(); });
         return v;
     }
 

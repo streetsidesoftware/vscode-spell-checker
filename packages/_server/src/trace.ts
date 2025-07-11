@@ -94,7 +94,7 @@ export async function handleTraceRequest(
 }
 
 function errorsToString(errors: Error[] | undefined): string | undefined {
-    if (!errors || !errors.length) return undefined;
+    if (!errors?.length) return undefined;
     return errors.map((e) => e.message).join('\n');
 }
 

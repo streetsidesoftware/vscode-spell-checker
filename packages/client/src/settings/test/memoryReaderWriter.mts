@@ -20,15 +20,18 @@ class MemoryReaderWriter implements ConfigReaderWriter {
     }
 
     async read<K extends keyof CSpellUserSettings>(keys: K[]) {
+        await Promise.resolve(); // Ensure the function is async.
         return extractKeys(this.data, keys);
     }
 
     async _read() {
+        await Promise.resolve(); // Ensure the function is async.
         return this.data;
     }
 
     async write(data: CSpellUserSettings) {
         this._data = data;
+        await Promise.resolve(); // Ensure the function is async.
     }
 
     update<K extends keyof CSpellUserSettings>(fn: ConfigUpdateFn, keys: K[]): Promise<void> {
@@ -37,6 +40,7 @@ class MemoryReaderWriter implements ConfigReaderWriter {
 
     async _update(fn: ConfigUpdateFn) {
         Object.assign(this._data, fn(this._data));
+        await Promise.resolve(); // Ensure the function is async.
     }
 }
 

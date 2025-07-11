@@ -9,5 +9,5 @@ export function toSubscriber<T>(subscriberLike: SubscriberLike<T>): Subscriber<T
 
 export function toSubscriberFn<T>(subscriberLike: SubscriberLike<T>): SubscriberFn<T> {
     if (typeof subscriberLike === 'function') return subscriberLike;
-    return (value) => subscriberLike.notify(value);
+    return (value) => { subscriberLike.notify(value); };
 }

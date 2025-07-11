@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 import type { CSpellUserSettings } from '@cspell/cspell-types';
 import { describe, expect, test, vi } from 'vitest';
 import { ConfigurationTarget, Uri } from 'vscode';

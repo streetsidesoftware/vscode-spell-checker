@@ -6,6 +6,7 @@ import { commands, workspace } from 'vscode';
 import type { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { getCSpellDiags } from '../diags.mjs';
+import { squelch } from '../util/errors.js';
 import { toUri } from '../util/uriHelper.mjs';
 
 const prefix = extensionId;
@@ -52,7 +53,7 @@ function* flatten(key: string, value: ContextValue): Generator<[key: string, val
     if (typeof value !== 'object') {
         yield [key, value];
     }
-    for (const [k, v] of Object.entries(value)) {
+    for (const [k, v] of Object.entries(value) as [string, ContextValue][]) {
         yield* flatten(`${key}.${k}`, v);
     }
 }
@@ -160,7 +161,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
         stale: false,
     };
 
-    entry.value.finally(() => {
+    entry.value.catch(squelch()).finally(() => {
         entry.pending = false;
         setTimeout(cleanup, cachedTimeout);
     });
@@ -168,7 +169,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     function cleanup() {
         cachedUpdateDocumentRelatedContext.delete(_doc);
         if (entry.stale) {
-            updateDocumentRelatedContext(client, _doc);
+            updateDocumentRelatedContext(client, _doc).catch(squelch());
         }
     }
 
@@ -238,7 +239,7 @@ async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocu
     context.editorMenuContext.hasIssues = hasIssues;
     context.editorMenuContext.hasMultipleIssues = hasMultipleIssues;
 
-    context.editorMenuContext.showSuggestions = (show || cfg.settings?.showSuggestionsLinkInEditorContextMenu || false) && hasIssues;
+    context.editorMenuContext.showSuggestions = !!(show || cfg.settings?.showSuggestionsLinkInEditorContextMenu) && hasIssues;
 
     await _setContext(context);
     return;

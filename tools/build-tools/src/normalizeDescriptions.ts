@@ -1,7 +1,7 @@
 import type { JSONSchema7 } from 'json-schema';
 import traverse from 'json-schema-traverse';
 
-type SchemaObj = traverse.SchemaObject;
+type SchemaObj = traverse.SchemaObject & { description?: string | undefined; markdownDescription?: string | undefined };
 
 export function normalizeDescriptions(schema: JSONSchema7) {
     function cb(schemaObj: SchemaObj, _jsonPtr: string) {

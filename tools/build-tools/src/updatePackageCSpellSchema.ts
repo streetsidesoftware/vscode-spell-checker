@@ -33,8 +33,8 @@ Update Package Cspell Schema
   Schema File: ${Path.resolve(_schemaFile)}
 `);
 
-    const packageJson: PackageJson = JSON.parse(await fs.readFile(_packageFile, 'utf8'));
-    const schemaJson: JSONSchema7 = JSON.parse(await fs.readFile(_schemaFile, 'utf8'));
+    const packageJson: PackageJson = JSON.parse(await fs.readFile(_packageFile, 'utf8')) as PackageJson;
+    const schemaJson: JSONSchema7 = JSON.parse(await fs.readFile(_schemaFile, 'utf8')) as JSONSchema7;
 
     normalizeDescriptions(schemaJson);
 

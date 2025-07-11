@@ -24,8 +24,8 @@ export class DocumentValidationController {
         readonly documents: TextDocuments<TextDocument>,
     ) {
         this.disposables.push(
-            documents.onDidClose((e) => this.handleOnDidClose(e)),
-            documents.onDidChangeContent((e) => this.handleOnDidChangeContent(e)),
+            documents.onDidClose((e) => { this.handleOnDidClose(e); }),
+            documents.onDidChangeContent((e) => { this.handleOnDidChangeContent(e); }),
         );
     }
 

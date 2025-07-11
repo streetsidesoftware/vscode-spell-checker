@@ -15,6 +15,6 @@ export class WebviewApiViewProvider implements WebviewViewProvider {
     public resolveWebviewView(webviewView: WebviewView, _context: WebviewViewResolveContext, _token: CancellationToken) {
         this._view = webviewView;
         const appView = AppView.bindView(webviewView.webview, this.extensionUri, this.viewName);
-        this._view.onDidDispose(() => appView.dispose());
+        this._view.onDidDispose(() => { appView.dispose(); });
     }
 }

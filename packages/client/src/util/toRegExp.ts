@@ -1,7 +1,7 @@
 export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
     if (isRegExp(r)) return r;
 
-    const match = r.match(/^\/(.*)\/([gimsuy]*)$/);
+    const match = /^\/(.*)\/([gimsuy]*)$/.exec(r);
     if (match) {
         return new RegExp(match[1], match[2] || undefined);
     }

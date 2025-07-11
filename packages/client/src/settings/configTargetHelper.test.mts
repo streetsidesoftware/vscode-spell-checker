@@ -100,16 +100,16 @@ describe('configTargetHelper', () => {
     });
 
     test('buildMatchTargetFn best dictionary user canceled quickPick', async () => {
-        mockedShowQuickPick.mockImplementation(async () => undefined);
+        mockedShowQuickPick.mockImplementation(() => Promise.resolve(undefined));
         const targets = sampleTargets();
         const r = await dictionaryTargetBestMatches(targets);
         expect(r).toBeUndefined();
     });
 
     test('buildMatchTargetFn best no match', async () => {
-        mockedShowQuickPick.mockImplementation(async () => undefined);
+        mockedShowQuickPick.mockImplementation(() => Promise.resolve(undefined));
         const targets = sampleTargets();
-        const fn = await _buildQuickPickBestMatchTargetFn(matchKindNone, matchScopeNone);
+        const fn = _buildQuickPickBestMatchTargetFn(matchKindNone, matchScopeNone);
         await expect(() => fn(targets)).rejects.toEqual(new UnableToFindTarget('No matching configuration found.'));
     });
 

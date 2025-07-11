@@ -10,7 +10,9 @@ const _schemeBlocked = {
     vscode: true,
 } as const;
 
-const schemeBlocked: Record<string, true> = Object.freeze(Object.assign(Object.create(null), _schemeBlocked));
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const schemeBlocked: Record<string, true | undefined> = Object.assign(Object.create(null), _schemeBlocked);
+Object.freeze(schemeBlocked);
 
 export function findConicalDocumentScope(docUri: Uri | undefined): ConfigurationScope | undefined {
     if (docUri === undefined) return undefined;

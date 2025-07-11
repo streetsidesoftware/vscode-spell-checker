@@ -54,7 +54,7 @@ import { setContext } from './storage/index.mjs';
 import { about, rateTheSpellChecker, releaseNotes, reportIssue, sponsor, supportRequest } from './support/index.mjs';
 import { experimentWithSymbols } from './symbolServer/index.mjs';
 import { findNotebookCell } from './util/documentUri.js';
-import { catchErrors, handleErrors } from './util/errors.js';
+import { catchErrors, handleErrors } from './util/errorHandlers.js';
 import { performance, toMilliseconds } from './util/perf.js';
 import { pVoid } from './util/pVoid.js';
 import { scrollToText } from './util/textEditor.js';
@@ -606,6 +606,7 @@ export type ExecuteCommand = Omit<Command, 'title'>;
 
 async function execCommand<T = unknown>(command: ExecuteCommand): Promise<T> {
     const args = command.arguments || [];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return commands.executeCommand<T>(command.command, ...args);
 }
 

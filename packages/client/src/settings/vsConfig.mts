@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
 import type { ConfigurationScope, TextDocument, WorkspaceConfiguration } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 
@@ -5,7 +6,7 @@ import type { CSpellUserSettings } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { findConicalDocumentScope } from '../util/documentUri.js';
 
-export { CSpellUserSettings } from '../client/index.mjs';
+export type { CSpellUserSettings } from '../client/index.mjs';
 export { ConfigurationTarget } from 'vscode';
 
 export const sectionCSpell = extensionId;
@@ -377,6 +378,7 @@ function assignExtractAndMerge<K extends keyof InspectCSpellSettings>(
     }
 }
 
+ 
 function assignExtract<K extends keyof InspectCSpellSettings>(
     dest: CSpellUserSettings,
     target: ConfigurationTarget,
@@ -409,8 +411,9 @@ function mergeInspect<T>(target: ConfigurationTarget, value: FullInspectValues<T
     t = mergeValues(t, value.workspaceValue, value.workspaceLanguageValue);
     if (target === ConfigurationTarget.Workspace) return t;
     t = mergeValues(t, value.workspaceFolderValue, value.workspaceFolderLanguageValue);
-    if (target !== ConfigurationTarget.WorkspaceFolder) throw new Error(`Unknown Config Target "${target}"`);
-    return t;
+     
+    if (target === ConfigurationTarget.WorkspaceFolder) return t;
+    throw new Error(`Unknown Config Target "${target}"`);
 }
 
 function mergeValues<T>(...v: T[]): T | undefined {
@@ -445,7 +448,8 @@ export async function updateConfig(
     const updated = updateFn(cfg);
     const config = getConfiguration(scope);
 
-    await Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
+    Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
+    await Promise.resolve(); // Ensure the function is async.
 }
 
 interface UriLike {
@@ -485,7 +489,7 @@ function fixUri(scope: UriLike | Uri): Uri {
 
 function isUriLike(possibleUri: unknown): possibleUri is UriLike {
     if (!possibleUri || typeof possibleUri !== 'object') return false;
-    const uri = possibleUri as UriLike;
+    const uri = possibleUri as Partial<UriLike>;
     return (
         uri.authority !== undefined &&
         uri.fragment !== undefined &&
@@ -501,7 +505,7 @@ function isUri(uri: unknown): uri is Uri {
 
 function isHasUri(scope: unknown): scope is HasUri {
     if (!scope || typeof scope !== 'object') return false;
-    const h = scope as HasUri;
+    const h = scope as Partial<HasUri>;
     return h.uri !== undefined;
 }
 

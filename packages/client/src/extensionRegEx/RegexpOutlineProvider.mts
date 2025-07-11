@@ -73,7 +73,7 @@ function trimName(name: string) {
     if (name.length <= maxLen) {
         return name;
     }
-    return name.substr(0, maxLen - 1) + '…';
+    return name.slice(0, maxLen - 1) + '…';
 }
 
 function createChildren(parent: PatternOutlineItem): OutlineItem[] | undefined {

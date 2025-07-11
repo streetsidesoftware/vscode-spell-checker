@@ -156,7 +156,7 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
         vscode.workspace.onDidChangeConfiguration(updateConfig),
         vscode.window.onDidChangeVisibleTextEditors(onDidChange),
         vscode.window.tabGroups.onDidChangeTabs(onDidChange),
-        issueTracker.onDidChangeDiagnostics(({ uris }) => updateDiags(uris)),
+        issueTracker.onDidChangeDiagnostics(({ uris }) => { updateDiags(uris); }),
     );
 
     updateConfig();

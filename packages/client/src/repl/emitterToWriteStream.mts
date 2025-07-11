@@ -35,9 +35,9 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
     #dimensions: vscode.TerminalDimensions = { columns: 80, rows: 24 };
     constructor(emitter: vscode.EventEmitter<string>) {
         super({
-            write: (chunk, encoding, callback) => {
+            write: (chunk: Buffer, encoding, callback) => {
                 const enc = encoding in allowedEncodings ? encoding : undefined;
-                const str = chunk.toString(enc);
+                const str: string = chunk.toString(enc);
                 consoleDebug('write: %o', mapAnsiSequence(str));
                 emitter.fire(str);
                 setTimeout(callback, 0);
@@ -251,5 +251,6 @@ const charMap: Record<string, string> = {
 };
 
 function mapAnsiSequence(seq: string): string {
+    // eslint-disable-next-line @typescript-eslint/no-misused-spread
     return [...seq].map((char) => charMap[char] || char).join('');
 }

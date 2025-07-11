@@ -6,6 +6,7 @@ import type {
 } from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
 
+import { squelch } from '../../util/errors.js';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from '../../vscode-languageclient/node.cjs';
 import { CodeActionRequest } from '../../vscode-languageclient/node.cjs';
 import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs.js';
@@ -122,12 +123,14 @@ export function createServerApi(client: LanguageClient): ServerApi {
         registerConfigurationFile: log2Sfn(serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
         traceWord: log2Sfn(serverRequest.traceWord, 'traceWord'),
         checkDocument: log2Sfn(serverRequest.checkDocument, 'checkDocument'),
-        onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
-        onDocumentConfigChange: (fn) => clientNotification.onDocumentConfigChange.subscribe(log2Cfn(fn, 'onDocumentConfigChange')),
-        onBlockFile: (fn) => clientNotification.onBlockFile.subscribe(log2Cfn(fn, 'onBlockFile')),
+        onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2CfnVoid(fn, 'onSpellCheckDocument')),
+        onDocumentConfigChange: (fn) => clientNotification.onDocumentConfigChange.subscribe(log2CfnVoid(fn, 'onDocumentConfigChange')),
+        onBlockFile: (fn) => clientNotification.onBlockFile.subscribe(log2CfnVoid(fn, 'onBlockFile')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
             clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
-        dispose: rpcApi.dispose,
+        dispose: () => {
+            rpcApi.dispose();
+        },
     };
 
     return api;
@@ -145,6 +148,13 @@ function log2Sfn<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: s
 
 function log2S<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise<T> {
     return logCommunication<P, T>('Server R/N', params, value, reqName, debugServerComms);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function log2CfnVoid<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: string): (...p: P) => void {
+    return (...params: P) => {
+        log2C<P, T>(params, fn(...params), reqName).catch(squelch());
+    };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

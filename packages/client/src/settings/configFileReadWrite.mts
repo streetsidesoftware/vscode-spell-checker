@@ -53,7 +53,7 @@ export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSe
         if (fs.isFileNotFoundError(e)) {
             return Promise.resolve(defaultValueIfNotFound);
         }
-        return Promise.reject(e);
+        throw e;
     }
 }
 
@@ -101,7 +101,7 @@ interface PackageWithCSpell {
 }
 
 function orDefault<T>(p: Promise<T>, defaultValue: T): Promise<T> {
-    return p.catch((e) => {
+    return p.catch((e: unknown) => {
         if (!fs.isFileNotFoundError(e)) throw e;
         return defaultValue;
     });
@@ -135,7 +135,7 @@ export function parseJson(content: string): CSpellSettings {
     return injectFormatting<CSpellSettings>(json as CSpellSettings, formatting);
 }
 
-export function stringifyJson(obj: unknown, spaces?: string | number | undefined, keepComments = true): string {
+export function stringifyJson(obj: unknown, spaces?: string | number, keepComments = true): string {
     const formatting = retrieveFormatting(obj);
     spaces = formatting?.spaces || spaces || spacesJson;
     const newlineAtEndOfFile = formatting?.newlineAtEndOfFile ?? true;
@@ -160,11 +160,11 @@ interface ContentFormat {
 }
 
 function hasTrailingNewline(content: string): boolean {
-    return /\n$/.test(content);
+    return content.endsWith('\n');
 }
 
 function detectIndent(json: string): string | undefined {
-    const s = json.match(/^[ \t]+(?=")/m);
+    const s = /^[ \t]+(?=")/m.exec(json);
     if (!s) return undefined;
     return s[0];
 }
@@ -199,7 +199,7 @@ abstract class AbstractConfigFileReaderWriter implements ConfigFileReaderWriter 
     abstract _update(fn: ConfigUpdateFn): Promise<void>;
 
     async mkdir(): Promise<void> {
-        return await fs.createDirectory(Uri.joinPath(this.uri, '..'));
+        await fs.createDirectory(Uri.joinPath(this.uri, '..'));
     }
 }
 
@@ -213,14 +213,14 @@ class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
     async write(cfg: CSpellSettings): Promise<void> {
         await this.mkdir();
         const json = stringifyJson(cfg);
-        const content = json[json.length - 1] !== '\n' ? json + '\n' : json;
+        const content = !json.endsWith('\n') ? json + '\n' : json;
         return fs.writeFile(this.uri, content);
     }
 
     async _read(): Promise<CSpellSettings> {
         const uri = this.uri;
         const content = await fs.readFile(uri, 'utf8');
-        const s = parseJson(content) as CSpellSettings;
+        const s = parseJson(content);
         return s;
     }
 }

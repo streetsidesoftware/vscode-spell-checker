@@ -15,7 +15,7 @@ describe('Validate Helpers', () => {
 
     test('mustBeDefined', () => {
         expect(mustBeDefined('hello')).toBe('hello');
-        expect(() => mustBeDefined(undefined)).toThrow('Value must be defined.');
+        expect(() => { mustBeDefined(undefined); }).toThrow('Value must be defined.');
     });
 
     test('getPathToTemp', () => {

@@ -23,6 +23,7 @@ export interface Storage {
 
 const debug = false;
 
+ 
 if (debug) getLogger().setLogLevelMask(LogLevelMasks.everything);
 
 let store: Storage | undefined = undefined;
@@ -39,7 +40,9 @@ export function getWebviewGlobalStore(): Storage {
         const _store = store;
         store = undefined;
         if (!_store) return;
-        Object.values(_store.state).forEach((s) => disposeOf(s));
+        Object.values(_store.state).forEach((s) => {
+            disposeOf(s);
+        });
     }
 
     const writableState = {
@@ -71,10 +74,9 @@ function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['cur
     disposables.push(disposeClassic(window.onDidChangeActiveTextEditor(setCurrentDocument, undefined)));
     disposables.push(
         disposeClassic(
-            window.onDidChangeTextEditorSelection(
-                (event) => event.textEditor === window.activeTextEditor && setCurrentDocument(event.textEditor),
-                undefined,
-            ),
+            window.onDidChangeTextEditorSelection((event) => {
+                if (event.textEditor === window.activeTextEditor) setCurrentDocument(event.textEditor);
+            }, undefined),
         ),
     );
 
@@ -97,6 +99,7 @@ function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['cur
 }
 
 export async function calcDocSettings(doc?: string) {
+     
     const textDoc = (doc && findMatchTextDocument(doc)) || undefined;
     const di = getDependencies();
     return calcSettings(textDoc, undefined, di.client, console.log);
@@ -123,7 +126,9 @@ export function watchFieldList(fieldsToWatch: Set<WatchFields>, onChange: (chang
     const disposables = list
         .map((field) => ({ field, sub: store.state[field] }))
         .map((ss) => {
-            return ss.sub.subscribe(() => onChange([ss.field]));
+            return ss.sub.subscribe(() => {
+                onChange([ss.field]);
+            });
         });
 
     return createDisposableFromList(disposables);
@@ -151,5 +156,11 @@ function normalizeUrlToString(url: UrlLike): string {
 }
 
 function disposeClassic(disposable: DisposableClassic): DisposableHybrid {
-    return createDisposable(() => disposable.dispose(), undefined, 'disposeClassic');
+    return createDisposable(
+        () => {
+            disposable.dispose();
+        },
+        undefined,
+        'disposeClassic',
+    );
 }

@@ -31,7 +31,7 @@ export class HelloWorldPanel {
 
         // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
         // the panel or when the panel is closed programmatically)
-        this._disposables.push(this._panel.onDidDispose(() => this.dispose()));
+        this._disposables.push(this._panel.onDidDispose(() => { this.dispose(); }));
         this._disposables.push(HelloWorldView.bindView(this._panel.webview, extensionUri));
     }
 

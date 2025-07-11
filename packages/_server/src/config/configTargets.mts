@@ -69,11 +69,11 @@ export interface ConfigTargetVSCode extends TargetBaseWithHas {
 export type ConfigTarget = ConfigTargetDictionary | ConfigTargetCSpell | ConfigTargetVSCode;
 
 type ConfigKinds = {
-    [key in ConfigKind as `${Capitalize<key>}`]: key;
+    [key in ConfigKind as Capitalize<key>]: key;
 };
 
 type ConfigScopes = {
-    [key in ConfigScope as `${Capitalize<key>}`]: key;
+    [key in ConfigScope as Capitalize<key>]: key;
 };
 
 type ConfigKindToTarget = {

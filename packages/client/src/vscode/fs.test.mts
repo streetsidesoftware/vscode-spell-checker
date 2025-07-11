@@ -60,7 +60,7 @@ describe('fs', () => {
         ${{ code: 'ENOENT' }}             | ${true}
         ${FileSystemError.FileExists()}   | ${false}
         ${FileSystemError.FileNotFound()} | ${true}
-    `('isFileNotFoundError $error', async ({ error, expected }) => {
+    `('isFileNotFoundError $error', ({ error, expected }) => {
         expect(vscodeFs.isFileNotFoundError(error)).toBe(expected);
     });
 });

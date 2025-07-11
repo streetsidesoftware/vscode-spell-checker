@@ -60,7 +60,7 @@ describe('Validate configFileReadWrite', () => {
         const sample = sampleJsoncObj();
         await writeConfigFile(uri, sample);
         const r = await readConfigFile(uri);
-        delete (r as any)[__testing__.SymbolFormat];
+        delete (r as Record<typeof __testing__.SymbolFormat, unknown>)[__testing__.SymbolFormat];
         expect(r).toEqual(sample);
         expect(await readFile(uri)).toMatchSnapshot();
     });
@@ -70,7 +70,7 @@ describe('Validate configFileReadWrite', () => {
         const uri = getPathToTemp('cspell.jsonc');
         await writeFile(uri, sampleJsonc());
         const parsedJson = parseJsonc(sampleJsonc());
-        const sample = parsedJson !== null && typeof parsedJson === 'object' ? { ...parsedJson } : parsedJson;
+        const sample = parsedJson !== null && typeof parsedJson === 'object' ? Object.assign({}, parsedJson) : parsedJson;
         const sampleWithSpacesSymbol = __testing__.injectFormatting(sample, { spaces: '    ', newlineAtEndOfFile: true });
         await expect(readConfigFile(uri)).resolves.toEqual(sampleWithSpacesSymbol);
 

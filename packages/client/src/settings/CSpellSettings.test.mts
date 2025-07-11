@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Uri } from 'vscode';
 

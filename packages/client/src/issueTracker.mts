@@ -24,8 +24,8 @@ export class IssueTracker {
     private cachedSuggestions = new Map<UriString, Map<string, Promise<Suggestion[]>>>();
 
     constructor(readonly client: CSpellClient) {
-        this.disposables.push(client.onDiagnostics((diags) => this.handleDiagsFromServer(diags)));
-        this.disposables.push(workspace.onDidCloseTextDocument((doc) => this.handleDocClose(doc)));
+        this.disposables.push(client.onDiagnostics((diags) => { this.handleDiagsFromServer(diags); }));
+        this.disposables.push(workspace.onDidCloseTextDocument((doc) => { this.handleDocClose(doc); }));
     }
 
     public getSpellingIssues(uri?: Uri): SpellingCheckerIssuesCollection | undefined {

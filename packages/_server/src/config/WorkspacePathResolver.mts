@@ -141,7 +141,7 @@ function createWorkspaceNameToGlobResolver(
                 };
             }
 
-            const matchGlob = glob.glob.match(regEx);
+            const matchGlob = regEx.exec(glob.glob);
             if (matchGlob) {
                 const root = lookUpWorkspaceFolder(matchGlob[0]);
                 return {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { uriToName } from '@internal/common-utils/uriHelper';
 import type { EnabledFileTypes } from 'code-spell-checker-server/lib';
 import { extractEnabledFileTypes } from 'code-spell-checker-server/lib';
@@ -284,7 +285,7 @@ function isConfigTargetCSpell(t: ConfigTarget): t is ConfigTargetCSpell {
     return t.kind === 'cspell';
 }
 
-const regIsTextFile = /\.txt$/;
+// const regIsTextFile = /\.txt$/;
 const regIsCspellDict = /(?:@|%40)cspell\//;
 
 function extractDictionariesFromConfig(config: PartialCSpellUserSettings<ConfigFields> | undefined): DictionaryEntry[] {
@@ -314,8 +315,7 @@ function mapDict(def: DictionaryDefinition): DictionaryEntry {
     const dictUri = getDictUri(def);
     const dictUriStr = dictUri?.toString();
     const isCustomDict =
-        dictUriStr &&
-        ((def as DictionaryDefinitionCustom).addWords || (regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr)));
+        dictUriStr && ((def as DictionaryDefinitionCustom).addWords || (dictUriStr.endsWith('.txt') && !regIsCspellDict.test(dictUriStr)));
 
     return {
         name: def.name,

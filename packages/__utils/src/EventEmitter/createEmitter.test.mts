@@ -58,11 +58,11 @@ describe('createEmitter', () => {
         emitter.dispose();
 
         expect(emitter.isDisposed).toBe(true);
-        expect(() => emitter.fire('test2')).not.toThrowError();
+        expect(() => { emitter.fire('test2'); }).not.toThrowError();
         expect(listener).toHaveBeenCalledTimes(1);
         expect(listener).toHaveBeenLastCalledWith('test');
 
-        expect(() => disposable.dispose()).not.toThrowError();
+        expect(() => { disposable.dispose(); }).not.toThrowError();
 
         expect(() => emitter.event(listener)).toThrowError('EventEmitter is disposed');
     });
@@ -123,7 +123,7 @@ describe('createEmitter', () => {
 
     test('assert', () => {
         expect(assert(true)).toBeUndefined();
-        expect(() => assert(false)).toThrowError('assertion failed');
-        expect(() => assert(false, 'Value Required')).toThrowError('Value Required');
+        expect(() => { assert(false); }).toThrowError('assertion failed');
+        expect(() => { assert(false, 'Value Required'); }).toThrowError('Value Required');
     });
 });

@@ -74,7 +74,7 @@ export function resolvePath(relPath: string | Uri | undefined, cwd?: Uri): Uri {
     return typeof relPath === 'string' ? Uri.joinPath(cwd || currentDirectory(), relPath) : relPath || currentDirectory();
 }
 
-export async function readDir(relUri?: string | Uri | undefined, cwd?: Uri): Promise<DirEntry[]> {
+export async function readDir(relUri?: string | Uri, cwd?: Uri): Promise<DirEntry[]> {
     const uri = resolvePath(relUri, cwd);
     return await vscode.workspace.fs.readDirectory(uri);
 }
@@ -82,7 +82,7 @@ export async function readDir(relUri?: string | Uri | undefined, cwd?: Uri): Pro
 export async function* readDirStats(dirUri: Uri, extendedStats = false, cancellationToken?: CancellationToken): AsyncGenerator<ExDirEntry> {
     if (cancellationToken?.isCancellationRequested) return;
 
-    for await (const [name, type] of await vscode.workspace.fs.readDirectory(dirUri)) {
+    for (const [name, type] of await vscode.workspace.fs.readDirectory(dirUri)) {
         if (cancellationToken?.isCancellationRequested) return;
         const stat = extendedStats ? await vscode.workspace.fs.stat(Uri.joinPath(dirUri, name)) : { type };
         yield [name, stat] as ExDirEntry;

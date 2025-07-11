@@ -5,7 +5,7 @@ import { awaitSubscribable } from './helpers/awaitSubscribable.js';
 import { createStoreValue } from './StoreValue.js';
 
 describe('StoreValue', () => {
-    test('createStoreValue', async () => {
+    test('createStoreValue', () => {
         const store = createStoreValue(5);
         expect(store.value).toBe(5);
         store.set(7);

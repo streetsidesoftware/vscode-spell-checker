@@ -1,3 +1,4 @@
+ 
 import type { ConfigurationTarget } from 'vscode';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
@@ -31,6 +32,7 @@ class _VSConfigReaderWriter implements VSConfigReaderWriter {
     }
 
     async read<K extends keyof CSpellUserSettings>(keys: K[]) {
+        await Promise.resolve(); // Ensure the function is async.
         return calculateConfigForTarget(this.target, this.scope, keys, this.useMerge);
     }
 

@@ -1,4 +1,4 @@
-export { Settings } from './models/settings.js';
+export type { Settings } from './models/settings.js';
 
 export interface Todo {
     uuid: number;

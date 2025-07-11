@@ -51,7 +51,7 @@ async function getPackageJson(): Promise<PackageJson> {
 
 async function getVSCodeVersionFromPackage(): Promise<string> {
     const extPkg = await getPackageJson();
-    return extPkg.engines['vscode'].replace('^', '');
+    return extPkg.engines.vscode.replace('^', '');
 }
 
 async function getVsixName(location = ''): Promise<string> {
@@ -76,9 +76,9 @@ async function resolveExtension(vsixLocation: string | undefined): Promise<strin
 
 async function main() {
     try {
-        const ENV_VSCODE_VERSION = process.env['VSCODE_VERSION'];
+        const ENV_VSCODE_VERSION = process.env.VSCODE_VERSION;
         const versions = ENV_VSCODE_VERSION ? [ENV_VSCODE_VERSION] : ['stable', 'package.json'];
-        const extensionDevelopmentPath = await resolveExtension(process.env['VSIX_LOCATION']);
+        const extensionDevelopmentPath = await resolveExtension(process.env.VSIX_LOCATION);
         for (const version of versions) {
             const vscVersion = version === 'package.json' ? await getVSCodeVersionFromPackage() : version;
             console.log('Versions: %o', { version, vscVersion, extensionDevelopmentPath });

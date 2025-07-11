@@ -19,7 +19,7 @@ import { configurationTargetToClientConfigScope, configurationTargetToClientConf
 
 export async function targetsAndScopeFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
-    docUri?: string | null | Uri | undefined,
+    docUri?: string | null | Uri  ,
     configScope?: ConfigurationScope,
     cfgTargetIsExact?: boolean,
 ): Promise<TargetsAndScopes> {
@@ -38,7 +38,7 @@ export async function targetsAndScopeFromConfigurationTarget(
 
 export async function targetsFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
-    docUri?: string | null | Uri | undefined,
+    docUri?: string | null | Uri  ,
     configScope?: ConfigurationScope,
 ): Promise<ClientConfigTarget[]> {
     const r = await targetsAndScopeFromConfigurationTarget(cfgTarget, docUri, configScope);
@@ -69,7 +69,7 @@ export async function targetsForTextDocument(
  * @param patternMatch - optional pattern match to filter out specific targets. By default, dictionary targets are filtered out.
  * @returns list of targets.
  */
-export async function targetsForUri(docUri?: string | null | Uri | undefined, patternMatch = patternMatchNoDictionaries) {
+export async function targetsForUri(docUri?: string | null | Uri  , patternMatch = patternMatchNoDictionaries) {
     docUri = toUri(docUri);
     const document = docUri ? await uriToTextDocInfo(docUri) : window.activeTextEditor?.document;
     return targetsForTextDocument(document, patternMatch);

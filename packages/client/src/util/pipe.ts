@@ -1,5 +1,5 @@
 export function defaultTo<T>(value: T): (v: T | undefined) => T {
-    return (v: T | undefined) => (v === undefined ? value : v);
+    return (v: T | undefined) => v ?? value;
 }
 
 type Obj = object;
@@ -27,13 +27,15 @@ export function extract<
 export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undefined) => T[K] | undefined {
     if (arguments.length > 1) {
         // eslint-disable-next-line prefer-rest-params
-        const args: string[] = [...arguments];
+        const args: string[] = [...arguments] as string[];
         return (t: T | undefined) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
             let v = t as any;
             for (const k of args) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 v = v === undefined ? undefined : v[k];
             }
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return v;
         };
     }
@@ -55,11 +57,13 @@ export function pipe<T>(t: T): T {
         // eslint-disable-next-line prefer-rest-params, @typescript-eslint/no-explicit-any
         const fns = [...arguments].slice(1) as ((v: any) => any)[];
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
         let v = t as any;
         for (const fn of fns) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             v = fn(v);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return v;
     }
     return t;

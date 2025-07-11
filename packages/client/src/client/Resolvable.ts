@@ -1,5 +1,7 @@
 import assert from 'assert';
 
+import { squelch } from '../util/errors.js';
+
 export enum ResolutionState {
     pending,
     resolved,
@@ -26,7 +28,7 @@ export class Resolvable<T> {
         if (this._attached === value) return;
         assert(this._attached === undefined, 'Already Resolved');
         this._attached = value;
-        this._attached.then(this._resolve, this._reject).catch(() => undefined);
+        this._attached.then(this._resolve, this._reject).catch(squelch());
     }
 
     public isPending(): boolean {

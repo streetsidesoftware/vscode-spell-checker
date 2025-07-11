@@ -66,7 +66,7 @@ describe('infoHelper', () => {
         );
     });
 
-    test('extractDictionariesFromConfig undefined', async () => {
+    test('extractDictionariesFromConfig undefined', () => {
         expect(extractDictionariesFromConfig(undefined)).toEqual([]);
     });
 });

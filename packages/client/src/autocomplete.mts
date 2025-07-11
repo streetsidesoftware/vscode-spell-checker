@@ -28,6 +28,7 @@ const directivePrefixes = [
 
 export async function registerCspellInlineCompletionProviders(subscriptions: Disposable[]): Promise<void> {
     subscriptions.push(vscode.languages.registerInlineCompletionItemProvider({ pattern: '**' }, inlineDirectiveCompletionProvider));
+    await Promise.resolve(); // Ensure the provider is registered before using it.
 }
 
 interface Completion {

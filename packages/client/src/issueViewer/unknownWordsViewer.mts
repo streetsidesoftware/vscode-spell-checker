@@ -8,7 +8,8 @@ import { commandHandlers, knownCommands } from '../commands.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import { createEmitter, debounce, rx } from '../Subscribables/index.js';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
-import { logErrors } from '../util/errors.js';
+import { logErrors } from '../util/errorHandlers.js';
+import { squelch } from '../util/errors.js';
 import { getIconForIssues, icons } from './icons.mjs';
 import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
@@ -54,19 +55,29 @@ class UnknownWordsExplorer {
                 this.treeView.message = msg;
             },
         });
-        issueTracker.then((tracker) => this.treeDataProvider.setIssuesTracker(tracker));
+        issueTracker
+            .then((tracker) => {
+                this.treeDataProvider.setIssuesTracker(tracker);
+            })
+            .catch(squelch());
         this.treeView = vscode.window.createTreeView(UnknownWordsExplorer.viewID, {
             treeDataProvider: this.treeDataProvider,
             showCollapseAll: true,
         });
         this.disposeList.push(
             this.treeView,
-            rx(this.uiEventFnEmitter, debounce(debounceUIDelay)).subscribe((fn) => fn()),
-            this.listenEvent(vscode.window.onDidChangeTextEditorSelection, (e) => this.handleOnDidChangeTextEditorSelection(e)),
-            this.listenEvent(vscode.window.onDidChangeActiveTextEditor, (e) => this.handleTextEditorChange(e)),
-            this.listenEvent(this.treeDataProvider.onDidChangeTreeData.bind(this.treeDataProvider), () =>
-                this.handleTextEditorChange(vscode.window.activeTextEditor),
-            ),
+            rx(this.uiEventFnEmitter, debounce(debounceUIDelay)).subscribe((fn) => {
+                fn();
+            }),
+            this.listenEvent(vscode.window.onDidChangeTextEditorSelection, (e) => {
+                this.handleOnDidChangeTextEditorSelection(e);
+            }),
+            this.listenEvent(vscode.window.onDidChangeActiveTextEditor, (e) => {
+                this.handleTextEditorChange(e);
+            }),
+            this.listenEvent(this.treeDataProvider.onDidChangeTreeData.bind(this.treeDataProvider), () => {
+                this.handleTextEditorChange(vscode.window.activeTextEditor);
+            }),
         );
         this.treeView.title = 'Words with Issues';
         this.treeView.message = 'No open documents.';
@@ -87,7 +98,11 @@ class UnknownWordsExplorer {
     }
 
     private listenEvent<T>(event: vscode.Event<T>, fn: (e: T) => void) {
-        return event((e) => this.uiEventFnEmitter.notify(() => fn(e)));
+        return event((e) => {
+            this.uiEventFnEmitter.notify(() => {
+                fn(e);
+            });
+        });
     }
 
     static viewID = 'cSpellIssuesViewByIssue';
@@ -121,8 +136,12 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         this.issueTracker = undefined;
         this.disposeList.push(
             this.emitOnDidChange,
-            vscode.window.onDidChangeVisibleTextEditors(() => this.refresh()),
-            vscode.window.tabGroups.onDidChangeTabs(() => this.refresh()),
+            vscode.window.onDidChangeVisibleTextEditors(() => {
+                this.refresh();
+            }),
+            vscode.window.tabGroups.onDidChangeTabs(() => {
+                this.refresh();
+            }),
         );
         if (this.options.issueTracker) {
             this.setIssuesTracker(this.options.issueTracker);
@@ -131,7 +150,11 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
 
     setIssuesTracker(issueTracker: IssueTracker) {
         this.issueTracker = issueTracker;
-        this.disposeList.push(this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)));
+        this.disposeList.push(
+            this.issueTracker.onDidChangeDiagnostics((e) => {
+                this.handleOnDidChangeDiagnostics(e);
+            }),
+        );
         this.refresh();
     }
 
@@ -139,7 +162,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         return element.getTreeItem();
     }
 
-    getChildren(element?: IssueTreeItemBase | undefined): ProviderResult<IssueTreeItemBase[]> {
+    getChildren(element?: IssueTreeItemBase): ProviderResult<IssueTreeItemBase[]> {
         if (!this.issueTracker) return undefined;
         if (element) {
             return element.getChildren();
@@ -147,9 +170,11 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         const context: Context = {
             onlyVisible: true, // Maybe add a setting for this.
             issueTracker: this.issueTracker,
-            invalidate: (item) => this.emitOnDidChange.notify(item),
+            invalidate: (item) => {
+                this.emitOnDidChange.notify(item);
+            },
             requestSuggestions: (item) => {
-                logErrors(this.fetchSuggestions(item), 'IssuesTreeDataProvider requestSuggestions');
+                logErrors(this.fetchSuggestions(item), 'IssuesTreeDataProvider requestSuggestions').catch(squelch());
                 return this.suggestions.get(item.word);
             },
         };
@@ -168,7 +193,9 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     onDidChangeTreeData(listener: (e: OnDidChangeEventType) => void, thisArg?: unknown, disposables?: Disposable[]): Disposable {
         this.children = undefined;
         const fn = thisArg ? listener.bind(thisArg) : listener;
-        const d = this.emitOnDidChange.subscribe((e) => fn(e));
+        const d = this.emitOnDidChange.subscribe((e) => {
+            fn(e);
+        });
         if (disposables) {
             disposables.push(d);
         }
@@ -226,7 +253,9 @@ class WordIssueTreeItem extends IssueTreeItemBase {
         const suggestions = this.context.requestSuggestions({
             word: this.word,
             document,
-            onUpdate: (sugs) => this.onUpdate(document, sugs),
+            onUpdate: (sugs) => {
+                this.onUpdate(document, sugs);
+            },
         });
         this.suggestionsByDocument.set(document, suggestions || []);
         this.conicalDocuments.add(findConicalDocument(document));
@@ -426,7 +455,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         return `IssueLocationTreeItem ${this.issue.word}`;
     }
 
-    static compare(a: IssueLocationTreeItem, b: IssueLocationTreeItem) {
+    static compare = (a: IssueLocationTreeItem, b: IssueLocationTreeItem) => {
         const uriA = a.cell?.document.uri || a.doc.uri;
         const uriB = b.cell?.document.uri || b.doc.uri;
         const d = uriA.toString().localeCompare(uriB.toString());
@@ -437,7 +466,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         const ra = a.issue.range;
         const rb = b.issue.range;
         return ra.start.line - rb.start.line || ra.start.character - rb.start.character;
-    }
+    };
 }
 
 class IssueSuggestionTreeItem extends IssueTreeItemBase {
@@ -507,9 +536,9 @@ function collectIssues(context: Context): WordIssueTreeItem[] {
     const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(context, word));
     issues.forEach(groupIssue);
 
-    const comp = new Intl.Collator().compare;
+    const col = new Intl.Collator();
 
-    const sorted = [...groupedByWord.values()].sort((a, b) => comp(a.word, b.word));
+    const sorted = [...groupedByWord.values()].sort((a, b) => col.compare(a.word, b.word));
 
     return sorted;
 

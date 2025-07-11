@@ -211,7 +211,7 @@ export class DictionaryHelper {
         return cfgTarget && configTargetsToDictionaryTargets(cfgTarget);
     }
 
-    public addWordsToTargetServerConfigTarget(words: string | string[], target: ConfigTarget, docUri?: Uri | undefined): Promise<void> {
+    public addWordsToTargetServerConfigTarget(words: string | string[], target: ConfigTarget, docUri?: Uri): Promise<void> {
         docUri = docUri || (target.docUri && Uri.parse(target.docUri)) || undefined;
         return this.addWordsToTargets(words, [configTargetToClientConfigTarget(target, docUri)], docUri);
     }
@@ -348,6 +348,7 @@ interface CombineCustomDictionariesResult extends Required<Pick<CSpellUserSettin
 }
 
 function combineCustomDictionaries(s: PartialCSpellUserSettings<RequiredKeys>): CombineCustomDictionariesResult {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { customDictionaries = {}, customFolderDictionaries = [], customWorkspaceDictionaries = [], customUserDictionaries = [] } = s;
 
     const cdLegacy = [

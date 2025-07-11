@@ -52,7 +52,7 @@ export class LogFile implements Console {
 
     close(): Promise<void> {
         this.fh = undefined;
-        return this.pfh.then((fh) => fh?.close()).catch((e) => console.error(e));
+        return this.pfh.then((fh) => fh?.close()).catch((e) => { console.error(e); });
     }
 
     private _log(level: Level, message: string) {

@@ -18,7 +18,7 @@ export function createAutoLoadCache<K, T>(loader: (key: K) => T): AutoLoadCache<
     getter.get = getter;
     getter.has = (key: K) => cache.has(key);
     getter.delete = (key: K) => cache.delete(key);
-    getter.clear = () => cache.clear();
+    getter.clear = () => { cache.clear(); };
     return getter;
 }
 

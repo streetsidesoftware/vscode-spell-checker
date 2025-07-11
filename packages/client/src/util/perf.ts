@@ -27,8 +27,8 @@ export class PerformanceTimeline {
     }
 
     public measure(name: string, nameStart: string, nameEnd: string): void {
-        const eventStart = this.timeLineEvents.get(nameStart) || this.startEvent;
-        const eventEnd = this.timeLineEvents.get(nameEnd) || this.startEvent;
+        const eventStart = this.timeLineEvents.get(nameStart) ?? this.startEvent;
+        const eventEnd = this.timeLineEvents.get(nameEnd) ?? this.startEvent;
         const duration = calcDuration(eventStart.startTime, eventEnd.startTime);
         const event = { name, startTime: process.hrtime(moduleStartTime), duration };
         this.addEvent(event);

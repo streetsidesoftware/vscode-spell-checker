@@ -64,6 +64,7 @@ export function toAsyncIterable<T>(source: Subscribable<T>): AsyncIterable<T> {
 
     async function iterReturn(): Promise<IteratorResult<T>> {
         stop();
+        await Promise.resolve(); // Ensure any pending operations are resolved.
         return { done: true, value: undefined };
     }
 

@@ -87,7 +87,7 @@ export class AppView {
         const nonce = getNonce();
 
         function getStylesheetUri(stylesheet: Uri) {
-            return /*html*/ `<link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesheet}">`;
+            return /*html*/ `<link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesheet.toString()}">`;
         }
 
         // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
@@ -111,7 +111,7 @@ export class AppView {
           <script nonce="${nonce}">
             var process = { env: { NODE_ENV: 'production' } };
           </script>
-          <script defer nonce="${nonce}" src="${scriptUri}"></script>
+          <script defer nonce="${nonce}" src="${scriptUri.toString()}"></script>
         </head>
         <body>
         </body>

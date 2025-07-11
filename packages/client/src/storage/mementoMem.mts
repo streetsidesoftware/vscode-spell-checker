@@ -6,7 +6,7 @@ import type { Memento } from './memento.mjs';
 export class MementoMem<T> implements Memento<T> {
     #data: T | undefined;
     #emitter: EventEmitter<readonly (keyof T)[] | undefined>;
-    constructor(data?: T | undefined) {
+    constructor(data?: T) {
         this.#data = data;
         this.#emitter = createEmitter();
     }
@@ -23,7 +23,8 @@ export class MementoMem<T> implements Memento<T> {
 
     async update<K extends keyof T>(key: K, value: T[K] | undefined): Promise<void>;
     async update(data: Partial<T>): Promise<void>;
-    async update<K extends keyof T>(keyOrData: K | Partial<T>, value?: T[K] | undefined): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    async update<K extends keyof T>(keyOrData: K | Partial<T>, value?: T[K]): Promise<void> {
         const keys: (keyof T)[] = [];
         if (typeof keyOrData === 'string') {
             const key: K = keyOrData;

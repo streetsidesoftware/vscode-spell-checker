@@ -16,7 +16,7 @@ export function mapCustomDictionaryEntryToCustomDictionaries(
 
     const customDict: CustomDictionaries = entries
         .map((entry) => (typeof entry === 'string' ? { [entry]: true } : { [entry.name]: { ...entry, scope: entry.scope || scope } }))
-        .reduce((agg, cur) => Object.assign(agg, cur), {} as CustomDictionaries);
+        .reduce<CustomDictionaries>((agg, cur) => Object.assign(agg, cur), {});
 
     return customDict;
 }
@@ -46,7 +46,7 @@ export function extractDictionaryDefinitions(settings: CSpellUserAndExtensionSet
         if (typeof dict === 'boolean') {
             const entry = dicts.get(name);
             const addWords = dict;
-            if (entry && entry.path && entry.addWords !== addWords) {
+            if (entry?.path && entry.addWords !== addWords) {
                 dicts.set(name, { ...entry, addWords });
             }
             continue;

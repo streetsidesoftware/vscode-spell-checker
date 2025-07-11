@@ -58,7 +58,7 @@ const regExpParseCode = /^(?<lang>[a-z]{2})(?:[-_]?(?<script>[a-z]{4}))?[-_]?(?<
 const langCodesMap = new Map<string, LangCountryPair>(
     codes.map((parts) => {
         const [code, lang, country = ''] = parts;
-        const locale = code.match(regExpParseCode)?.groups?.locale || '';
+        const locale = (regExpParseCode.exec(code))?.groups?.locale || '';
         const lcp: LangCountryPair = {
             code,
             language: lang,
@@ -155,7 +155,7 @@ function toTitleCase(s: string): string {
 
 export function parseLocale(code: string): Locale | undefined {
     code = code.trim();
-    const match = code.match(regExpParseCode);
+    const match = regExpParseCode.exec(code);
     if (!match) return parseLorem(code);
     const { lang = '', script = '', locale = '' } = match.groups || {};
     return {
