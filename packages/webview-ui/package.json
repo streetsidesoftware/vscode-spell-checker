@@ -29,7 +29,7 @@
     "webview-api": "file:../webview-api"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^5.1.0",
+    "@sveltejs/vite-plugin-svelte": "^6.0.0",
     "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.36",
