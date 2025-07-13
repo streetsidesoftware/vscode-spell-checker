@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.2.0...code-spell-checker-v4.2.1) (2025-07-13)
+
+
+### Updates and Bug Fixes
+
+* Remove legacy svelte code ([#4586](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4586)) ([2076268](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2076268a1f67ef5214e4a6ed43360dd937f173e4))
+* Update CSpell from `9.1.1` to `9.1.2` and other dependencies ([8f471b2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8f471b2f210460167504bcd7b2e10ed65e8c83da))
+* Update CSpell from `9.1.2` to `9.1.2` and other dependencies ([967c2f3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/967c2f3b0d9b126335de1951314abed8cabecb9d))
+* Update CSpell from `9.1.2` to `9.1.2` and other dependencies ([76a5a9c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/76a5a9ccdc0003dd8115599f83431d7fc56fb785))
+* Update CSpell from `9.1.2` to `9.1.2` and other dependencies ([1c31970](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1c319704e52d7fea3306da481e772a8926bab463))
+* Update CSpell from `9.1.2` to `9.1.3` and other dependencies ([b52fe7f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b52fe7feea779bbab45f2934c506032187b06876))
+* Update CSpell from `9.1.3` to `9.1.5` and other dependencies ([2848190](https://github.com/streetsidesoftware/vscode-spell-checker/commit/284819026199b208ff7cf0fb73de7ccc68d97faa))
+* Update RegExp Pattern Matcher. ([#4556](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4556)) ([60ea77c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/60ea77cc6a95bed113e1ee29ed10661df1c1358c))
+* Use cspell reporting levels ([#4609](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4609)) ([d0204fd](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d0204fd9572333d3037c89bcf06f49e72a7e2614))
+
+
+### Code Refactoring
+
+* drop commonjs ([#4581](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4581)) ([bb1adfe](https://github.com/streetsidesoftware/vscode-spell-checker/commit/bb1adfeb26fd25f9437adddfabd61e786e8a15db))
+* use tsdown ([#4580](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4580)) ([2818552](https://github.com/streetsidesoftware/vscode-spell-checker/commit/28185520571028434977d968727591852576be1a))
+* Use vite to build webview-ui ([#4576](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4576)) ([ddaaf5b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ddaaf5b736577aae878d671ab670a2ee8c1b6f2b))
+
 ## [4.2.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.1.0...code-spell-checker-v4.2.0) (2025-06-16)
 
 
