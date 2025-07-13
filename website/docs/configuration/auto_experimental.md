@@ -169,8 +169,10 @@ Description
 By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only
 reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.
 
-- `true` - report unknown words as misspelled
-- `false` - report unknown words as suggestions
+- `all` - report all unknown words as misspelled
+- `simple` - report unknown words with simple fixes and the rest as suggestions
+- `typos` - report on known typo words and the rest as suggestions
+- `flagged` - report only flagged words as misspelled
 
 </dd>
 
@@ -180,7 +182,7 @@ Type
 </dt>
 <dd>
 
-`boolean`
+`( "all" | "simple" | "typos" | "flagged" )`
 
 </dd>
 
@@ -202,7 +204,7 @@ Default
 </dt>
 <dd>
 
-_`true`_
+_`"undefined"`_
 
 </dd>
 
