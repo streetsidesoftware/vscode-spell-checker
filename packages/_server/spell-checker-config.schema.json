@@ -1474,13 +1474,19 @@
           "type": "boolean"
         },
         "cSpell.reportUnknownWords": {
-          "default": true,
-          "description": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
-          "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
+          "default": "undefined",
+          "description": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `all` - report all unknown words as misspelled\n- `simple` - report unknown words with simple fixes and the rest as suggestions\n- `typos` - report on known typo words and the rest as suggestions\n- `flagged` - report only flagged words as misspelled",
+          "enum": [
+            "all",
+            "simple",
+            "typos",
+            "flagged"
+          ],
+          "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `all` - report all unknown words as misspelled\n- `simple` - report unknown words with simple fixes and the rest as suggestions\n- `typos` - report on known typo words and the rest as suggestions\n- `flagged` - report only flagged words as misspelled",
           "scope": "language-overridable",
           "since": "4.0.2",
           "title": "Strict Spell Checking",
-          "type": "boolean"
+          "type": "string"
         }
       },
       "title": "Experimental",

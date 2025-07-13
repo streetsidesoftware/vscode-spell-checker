@@ -1,10 +1,13 @@
-import { getDictionary, Text as TextUtil } from 'cspell-lib';
+import type { UnknownWordsConfiguration } from '@cspell/cspell-types';
+import type { ValidationIssue } from 'cspell-lib';
+import { Text as TextUtil, unknownWordsChoices } from 'cspell-lib';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { Diagnostic } from 'vscode-languageserver-types';
 import { DiagnosticSeverity } from 'vscode-languageserver-types';
 
 import type { SpellCheckerDiagnosticData, SpellingDiagnostic, Suggestion } from './api.js';
 import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
+import type { UnknownWordsReportingLevel } from './config/cspellConfig/SpellCheckerSettings.mjs';
 import { diagnosticSource } from './constants.mjs';
 import { createDocumentValidator } from './DocumentValidationController.mjs';
 
@@ -25,8 +28,7 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
     const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
     const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
-    const strictMode = options.reportUnknownWords ?? true;
-    const dictionary = await getDictionary(options);
+    const reportUnknownWords = calcReportingLevel(options.reportUnknownWords, options);
     const diags = r
         // Convert the offset into a position
         .map((issue) => ({ ...issue, position: textDocument.positionAt(issue.offset) }))
@@ -40,18 +42,11 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
             severity: issue.isFlagged ? severityFlaggedWords : severity,
         }))
         // Convert it to a Diagnostic
-        .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity }) => {
+        .map((issue) => {
+            const { text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity } = issue;
             const isKnown = suggestionsEx?.some((sug) => sug.isPreferred) || false;
             const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : isKnown ? 'Misspelled' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
-
-            let useStrict = strictMode;
-            if (!useStrict) {
-                // turn strict on if there are simple suggestions.
-                const s = dictionary.suggest(text, { numSuggestions: 1, numChanges: 1.8, compoundMethod: 0 });
-                // console.log('%o', { s });
-                useStrict = s.some((sug) => sug.cost < 200);
-            }
 
             const data: SpellCheckerDiagnosticData = {
                 text,
@@ -59,7 +54,7 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
                 isFlagged,
                 isKnown,
                 isSuggestion: undefined, // This is a future enhancement to CSpell.
-                strict: useStrict,
+                strict: calcIssueReportingLevel(issue, reportUnknownWords),
                 suggestions: haveSuggestionsMatchCase(text, sugs),
             };
             const diag: SpellingDiagnostic = { severity, range, message: diagMessage, source: diagSource, data };
@@ -68,6 +63,33 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
         .filter((diag) => !!diag.severity);
 
     return diags;
+}
+
+function calcIssueReportingLevel(issue: ValidationIssue, reportUnknownWords: UnknownWordsReportingLevel): boolean {
+    if (reportUnknownWords === 'all') return true;
+    if (issue.isFlagged) return true;
+    if (issue.hasPreferredSuggestions && reportUnknownWords !== 'flagged') return true;
+    if (issue.hasSimpleSuggestions && reportUnknownWords === 'simple') return true;
+    return false;
+}
+
+function calcReportingLevel(
+    reportUnknownWords: UnknownWordsReportingLevel | undefined,
+    reportOptions: UnknownWordsConfiguration,
+): UnknownWordsReportingLevel {
+    if (reportUnknownWords) {
+        return reportUnknownWords;
+    }
+    if (!reportOptions.unknownWords || reportOptions.unknownWords === unknownWordsChoices.ReportAll) {
+        return 'all';
+    }
+    if (reportOptions.unknownWords === unknownWordsChoices.ReportSimple) {
+        return 'simple';
+    }
+    if (reportOptions.unknownWords === unknownWordsChoices.ReportCommonTypos) {
+        return 'typos';
+    }
+    return 'flagged';
 }
 
 function haveSuggestionsMatchCase(example: string, suggestions: Suggestion[] | undefined): Suggestion[] | undefined {
