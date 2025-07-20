@@ -1,7 +1,8 @@
 import type { RegExpPatternDefinition } from '@cspell/cspell-types';
 import { isDefined } from '@internal/common-utils';
 import { consoleError, consoleLog } from '@internal/common-utils/log';
-import { type MatchAllRegExpResult, RegExpWorker, type TimeoutError } from 'regexp-worker';
+import type { MatchAllRegExpIndicesResult } from 'regexp-worker';
+import { RegExpWorker, type TimeoutError } from 'regexp-worker';
 
 import type { PatternSettings } from './api.js';
 
@@ -93,9 +94,9 @@ interface ExecMatchRegExpResultTimeout {
 type ExecMatchRegExpResults = ExecMatchRegExpResult | ExecMatchRegExpResultTimeout;
 
 function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
-    if (text.length > 1_000) {
-        return execMatchRegExpArrayOneByOne(worker, text, regexpArray);
-    }
+    // if (text.length > 1_000) {
+    //     return execMatchRegExpArrayOneByOne(worker, text, regexpArray);
+    // }
     return execMatchRegExpArray(worker, text, regexpArray).catch((e) => {
         if (!isTimeoutError(e)) {
             return Promise.reject(e);
@@ -106,7 +107,7 @@ function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[
 
 function execMatchRegExpArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResult[]> {
     return worker
-        .matchAllArray(text, regexpArray)
+        .matchAllArrayIndices(text, regexpArray)
         .then((r) => r.results.map((result, index) => toExecMatchRegExpResult(result, regexpArray[index])));
 }
 
@@ -115,7 +116,7 @@ function execMatchRegExpArrayOneByOne(worker: RegExpWorker, text: string, regexp
     return Promise.all(results);
 }
 
-function toExecMatchRegExpResult(result: MatchAllRegExpResult, regexp: RegExp): ExecMatchRegExpResult {
+function toExecMatchRegExpResult(result: MatchAllRegExpIndicesResult, regexp: RegExp): ExecMatchRegExpResult {
     const { elapsedTimeMs, matches } = result;
     const ranges = matches.map(mapRegExpMatchArrayToRange);
     return toExecMatchRegExpArrayResult({ elapsedTimeMs, ranges }, regexp);
@@ -240,8 +241,6 @@ interface MultiPattern {
     regexp: RegExp[];
 }
 
-function mapRegExpMatchArrayToRange(match: RegExpMatchArray): Range {
-    const index = match.index ?? 0;
-    const end = index + match[0].length;
-    return [index, end];
+function mapRegExpMatchArrayToRange(match: RegExpIndicesArray): Range {
+    return match[0];
 }
