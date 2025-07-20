@@ -94,11 +94,11 @@ export interface FileTypesAndSchemeSettings {
     enabledFileTypes?: EnabledFileTypes;
 
     /**
-     * By default, the spell checker checks only enabled file types. Use `#cSpell.enableFiletypes#`
+     * By default, the spell checker checks only enabled file types. Use `#cSpell.enabledFileTypes#`
      * to turn on / off various file types.
      *
      * When this setting is `false`, all file types are checked except for the ones disabled by `#cSpell.enabledFileTypes#`.
-     * See `#cSpell.enableFiletypes#` on how to disable a file type.
+     * See `#cSpell.enabledFileTypes#` on how to disable a file type.
      * @title Check Only Enabled File Types
      * @scope resource
      * @default true
