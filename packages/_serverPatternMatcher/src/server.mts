@@ -1,4 +1,6 @@
-import { log, setWorkspaceBase } from '@internal/common-utils/log';
+import { format } from 'node:util';
+
+import { consoleLog, logger, setWorkspaceBase } from '@internal/common-utils/log';
 import type { Disposable, InitializeParams, InitializeResult, ServerCapabilities } from 'vscode-languageserver/node.js';
 import { createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node.js';
 import { TextDocument } from 'vscode-languageserver-textdocument';
@@ -7,7 +9,15 @@ import type * as Api from './api.js';
 import type { MatchResult, RegExpMatches } from './PatternMatcher.mjs';
 import { PatternMatcher } from './PatternMatcher.mjs';
 
+const log = consoleLog;
 log('Starting Pattern Matcher Server');
+
+// function sigFault(event: unknown): void {
+//     console.error(event);
+// }
+
+// process.on('SIGTRAP', sigFault);
+// process.on('SIGINT', sigFault);
 
 export function run(): void {
     const disposables: Disposable[] = [];
@@ -19,6 +29,7 @@ export function run(): void {
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
     const connection = createConnection(ProposedFeatures.all);
+    logger.setConnection(connection);
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
@@ -33,14 +44,37 @@ export function run(): void {
             textDocumentSync: {
                 openClose: true,
                 change: TextDocumentSyncKind.Incremental,
-                willSave: true,
-                save: { includeText: true },
+                // willSave: true,
+                // save: { includeText: true },
             },
         };
         return { capabilities };
     });
 
     async function handleMatchPatternsInDocument(params: Api.MatchPatternsToDocumentRequest): Promise<Api.MatchPatternsToDocumentResult> {
+        try {
+            if (params.uri.startsWith('output:')) {
+                return {
+                    uri: params.uri,
+                    version: -1,
+                    patternMatches: [],
+                };
+            }
+            // log(`Match patterns in document`, params.uri);
+            return await _handleMatchPatternsInDocument(params);
+        } catch (err) {
+            const errorMessage = format('Error handling matchPatternsInDocument: %s', err);
+            log(errorMessage);
+            return {
+                uri: params.uri,
+                version: -1,
+                patternMatches: [],
+                message: errorMessage,
+            };
+        }
+    }
+
+    async function _handleMatchPatternsInDocument(params: Api.MatchPatternsToDocumentRequest): Promise<Api.MatchPatternsToDocumentResult> {
         const { uri, patterns, settings } = params;
         const doc = uri && documents.get(uri);
         if (!doc) {
@@ -53,6 +87,16 @@ export function run(): void {
         }
         const text = doc.getText();
         const version = doc.version;
+        if (text.length > 1_000_000) {
+            const message = `Document is too large to process. Length: ${text.length}.`;
+            log(message, uri);
+            return {
+                uri,
+                version: -1,
+                patternMatches: [],
+                message,
+            };
+        }
         const result = await patternMatcher.matchPatternsInText(patterns, text, settings);
         const emptyResult = { ranges: [], message: undefined };
         function mapMatch(r: RegExpMatches): Api.RegExpMatchResults {

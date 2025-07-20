@@ -1,5 +1,6 @@
+import { format } from 'node:util';
+
 import { logError } from '@internal/common-utils/log';
-import { format } from 'util';
 import type { Command, ConfigurationScope, Diagnostic, Disposable, TextEdit, TextEditor, TextEditorEdit } from 'vscode';
 import { commands, NotebookRange, Position, Range, Selection, SnippetString, TextEditorRevealType, Uri, window } from 'vscode';
 

@@ -1,4 +1,5 @@
-import { promisify } from 'util';
+import { promisify } from 'node:util';
+
 import { describe, expect, test } from 'vitest';
 
 import { debounce } from './debounce.mjs';

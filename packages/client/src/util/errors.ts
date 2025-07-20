@@ -1,4 +1,5 @@
-import { format } from 'util';
+import { format } from 'node:util';
+
 import { window } from 'vscode';
 
 export function isError(e: unknown): e is Error {
