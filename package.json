@@ -4250,7 +4250,7 @@
     "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "^9.31.0",
     "@tsconfig/node20": "^20.1.6",
-    "@types/node": "^20.19.8",
+    "@types/node": "^20.19.9",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "~3.2.4",
@@ -4258,7 +4258,7 @@
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.0",
-    "esbuild": "^0.25.6",
+    "esbuild": "^0.25.8",
     "eslint": "^9.31.0",
     "eslint-plugin-n": "^17.21.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
@@ -4270,14 +4270,14 @@
     "patch-package": "^8.0.0",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
-    "rollup": "^4.45.0",
+    "rollup": "^4.45.1",
     "rollup-plugin-dts": "^6.2.1",
     "shx": "^0.4.0",
     "tsdown": "^0.12.9",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.37.0",
-    "vite": "^7.0.4",
+    "vite": "^7.0.5",
     "vitest": "~3.2.4"
   },
   "dependencies": {
@@ -4285,7 +4285,7 @@
     "@cspell/cspell-types": "^9.2.0",
     "@cspell/dict-cspell-bundle": "^2.0.19",
     "cspell": "^9.2.0",
-    "regexp-worker": "^4.1.8"
+    "regexp-worker": "^4.2.0"
   },
   "vsce": {
     "preRelease": true
