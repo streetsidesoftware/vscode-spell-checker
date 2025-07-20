@@ -4285,7 +4285,7 @@
     "@cspell/cspell-types": "^9.2.0",
     "@cspell/dict-cspell-bundle": "^2.0.19",
     "cspell": "^9.2.0",
-    "regexp-worker": "^4.2.0"
+    "regexp-worker": "^4.2.1"
   },
   "vsce": {
     "preRelease": true
