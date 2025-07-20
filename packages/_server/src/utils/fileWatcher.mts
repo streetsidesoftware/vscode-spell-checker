@@ -1,5 +1,6 @@
+import { format } from 'node:util';
+
 import { logError } from '@internal/common-utils/log';
-import { format } from 'util';
 import type { Disposable } from 'vscode-languageserver/node.js';
 
 import type { EventType, Listener, Watcher } from './watchFile.mjs';

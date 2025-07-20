@@ -1,8 +1,9 @@
+import { format } from 'node:util';
+
 import { log, logDebug, logError } from '@internal/common-utils/log';
 import { capitalize } from '@internal/common-utils/util';
 import type { SpellingDictionary } from 'cspell-lib';
 import { constructSettingsForText, getDictionary, IssueType, Text } from 'cspell-lib';
-import { format } from 'util';
 import type { CodeActionParams, Range as LangServerRange, TextDocuments } from 'vscode-languageserver/node.js';
 import { Command as LangServerCommand } from 'vscode-languageserver/node.js';
 import type { TextDocument } from 'vscode-languageserver-textdocument';

@@ -1,5 +1,6 @@
+import { format } from 'node:util';
+
 import type { PartialCSpellUserSettings } from 'code-spell-checker-server/api';
-import { format } from 'util';
 import * as vscode from 'vscode';
 
 import type { CSpellClient } from '../client/index.mjs';

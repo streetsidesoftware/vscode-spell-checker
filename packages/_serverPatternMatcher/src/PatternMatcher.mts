@@ -1,8 +1,7 @@
 import type { RegExpPatternDefinition } from '@cspell/cspell-types';
 import { isDefined } from '@internal/common-utils';
-import { logError } from '@internal/common-utils/log';
+import { consoleError, consoleLog } from '@internal/common-utils/log';
 import { type MatchAllRegExpResult, RegExpWorker, type TimeoutError } from 'regexp-worker';
-import { format } from 'util';
 
 import type { PatternSettings } from './api.js';
 
@@ -52,7 +51,11 @@ export class PatternMatcher {
         const resolvedPatterns = resolvePatterns(patterns, settings);
         const uniqueRegExpArray = extractUniqueRegExps(resolvedPatterns);
 
-        return execMatchArray(this.worker, text, uniqueRegExpArray).then((r) => pairWithPatterns(r, resolvedPatterns));
+        consoleLog(`Matching patterns in text. Patterns: ${patterns.length}, Unique RegExps: ${uniqueRegExpArray.length}`);
+        const r = await execMatchArray(this.worker, text, uniqueRegExpArray);
+        consoleLog(`Matched patterns %i`, r.length);
+
+        return pairWithPatterns(r, resolvedPatterns);
     }
 }
 
@@ -90,6 +93,9 @@ interface ExecMatchRegExpResultTimeout {
 type ExecMatchRegExpResults = ExecMatchRegExpResult | ExecMatchRegExpResultTimeout;
 
 function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
+    if (text.length > 1_000) {
+        return execMatchRegExpArrayOneByOne(worker, text, regexpArray);
+    }
     return execMatchRegExpArray(worker, text, regexpArray).catch((e) => {
         if (!isTimeoutError(e)) {
             return Promise.reject(e);
@@ -207,7 +213,7 @@ export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp | un
         }
         return new RegExp(r, defaultFlags);
     } catch (e) {
-        logError(format(e));
+        consoleError(e);
     }
     return undefined;
 }

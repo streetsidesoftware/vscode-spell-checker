@@ -1,6 +1,7 @@
+import { format } from 'node:util';
+
 import { isErrnoException } from '@internal/common-utils';
 import { uriToFilePathOrHref, uriToName } from '@internal/common-utils/uriHelper';
-import { format } from 'util';
 import type { Uri } from 'vscode';
 import { window, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';

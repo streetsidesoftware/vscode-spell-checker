@@ -1,5 +1,6 @@
+import { format } from 'node:util';
+
 import { Chalk } from 'chalk';
-import { format } from 'util';
 
 export const chalk = new Chalk({ level: 1 });
 
