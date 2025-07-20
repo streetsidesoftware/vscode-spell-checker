@@ -51,11 +51,11 @@ Description
 </dt>
 <dd>
 
-By default, the spell checker checks only enabled file types. Use [`cSpell.enableFiletypes`](files-folders-and-workspaces#cspellenablefiletypes)
+By default, the spell checker checks only enabled file types. Use [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes)
 to turn on / off various file types.
 
 When this setting is `false`, all file types are checked except for the ones disabled by [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes).
-See [`cSpell.enableFiletypes`](files-folders-and-workspaces#cspellenablefiletypes) on how to disable a file type.
+See [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes) on how to disable a file type.
 
 </dd>
 
