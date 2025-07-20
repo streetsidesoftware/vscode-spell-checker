@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.2.1...code-spell-checker-v4.2.2) (2025-07-20)
+
+
+### Updates and Bug Fixes
+
+* Regexp Checker blows up on large docs ([#4629](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4629)) ([347946d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/347946df2a0441205e13a59f96b74b1ec7a18263))
+* Update CSpell from `9.1.5` to `9.2.0` and other dependencies ([41bb33f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/41bb33fda6c51fede8451b29c24ac5bbad54c8a7))
+* use matchAllArrayIndices to match patterns ([#4631](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4631)) ([b43419d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b43419d0b45324753f459788b6385caeeea34dc0))
+
 ## [4.2.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.2.0...code-spell-checker-v4.2.1) (2025-07-13)
 
 
