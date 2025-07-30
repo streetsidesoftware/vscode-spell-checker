@@ -43,7 +43,7 @@
     "@types/camelize": "^1.0.1",
     "@types/kefir": "^3.8.11",
     "@types/source-map-support": "^0.5.10",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "lorem-ipsum": "^2.0.8",
     "rfdc": "^1.4.1",
     "source-map-support": "^0.5.21",

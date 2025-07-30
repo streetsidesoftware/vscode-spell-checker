@@ -31,7 +31,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.19.9",
     "chai": "^5.2.1",
-    "cross-env": "^7.0.3"
+    "cross-env": "^10.0.0"
   },
   "peerDependenciesMeta": {},
   "dependencies": {
