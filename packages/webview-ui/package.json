@@ -36,7 +36,7 @@
     "svelte": "^5.37.1",
     "svelte-check": "^4.3.0",
     "svelte-preprocess": "^6.0.3",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9.2",
     "vite": "^7.0.6"
   },
   "engines": {
