@@ -36,7 +36,7 @@
   "peerDependenciesMeta": {},
   "dependencies": {
     "@vscode/test-electron": "^2.5.2",
-    "chalk": "^5.4.1",
+    "chalk": "^5.5.0",
     "decompress": "^4.2.1",
     "glob": "^11.0.3",
     "kefir": "^3.8.8",

@@ -76,7 +76,7 @@
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api",
     "webview-ui": "file:../webview-ui",
-    "yaml": "^2.8.0",
+    "yaml": "^2.8.1",
     "yargs": "^18.0.0"
   },
   "engines": {
