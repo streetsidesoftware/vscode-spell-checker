@@ -4273,7 +4273,7 @@
     "rollup": "^4.46.2",
     "rollup-plugin-dts": "^6.2.1",
     "shx": "^0.4.0",
-    "tsdown": "^0.13.5",
+    "tsdown": "^0.14.0",
     "tsup": "^8.5.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.39.0",
