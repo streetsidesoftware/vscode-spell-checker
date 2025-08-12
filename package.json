@@ -4276,7 +4276,7 @@
     "tsdown": "^0.14.1",
     "tsup": "^8.5.0",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.39.0",
+    "typescript-eslint": "^8.39.1",
     "vite": "^7.1.1",
     "vitest": "~3.2.4"
   },
