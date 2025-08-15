@@ -4258,7 +4258,7 @@
     "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.0",
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.25.9",
     "eslint": "^9.33.0",
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-simple-import-sort": "^12.1.1",
@@ -4276,8 +4276,8 @@
     "tsdown": "^0.14.1",
     "tsup": "^8.5.0",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.39.0",
-    "vite": "^7.1.1",
+    "typescript-eslint": "^8.39.1",
+    "vite": "^7.1.2",
     "vitest": "~3.2.4"
   },
   "dependencies": {
