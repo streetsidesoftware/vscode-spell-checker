@@ -4283,7 +4283,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.2.0",
     "@cspell/cspell-types": "^9.2.0",
-    "@cspell/dict-cspell-bundle": "^2.0.22",
+    "@cspell/dict-cspell-bundle": "^2.0.23",
     "cspell": "^9.2.0",
     "regexp-worker": "^4.2.1"
   },
