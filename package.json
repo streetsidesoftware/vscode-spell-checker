@@ -4271,7 +4271,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
     "rollup": "^4.46.2",
-    "rollup-plugin-dts": "^6.2.1",
+    "rollup-plugin-dts": "^6.2.3",
     "shx": "^0.4.0",
     "tsdown": "^0.14.1",
     "tsup": "^8.5.0",
@@ -4283,7 +4283,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.2.0",
     "@cspell/cspell-types": "^9.2.0",
-    "@cspell/dict-cspell-bundle": "^2.0.22",
+    "@cspell/dict-cspell-bundle": "^2.0.23",
     "cspell": "^9.2.0",
     "regexp-worker": "^4.2.1"
   },
