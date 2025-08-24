@@ -30,7 +30,7 @@
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.19.11",
-    "chai": "^5.3.1",
+    "chai": "^5.3.3",
     "cross-env": "^10.0.0"
   },
   "peerDependenciesMeta": {},
