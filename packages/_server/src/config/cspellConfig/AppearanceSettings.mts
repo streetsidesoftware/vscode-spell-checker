@@ -149,7 +149,7 @@ interface Decoration {
      *
      * @scope application
      * @since 4.0.2
-     * @default "#8884"
+     * @default "#cf88"
      */
     textDecorationColorSuggestion?: string;
 }

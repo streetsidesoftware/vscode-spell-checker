@@ -73,11 +73,18 @@ function calcIssueReportingLevel(issue: ValidationIssue, reportUnknownWords: Unk
     return false;
 }
 
+const keysUnknownWordsReportingLevel: Record<UnknownWordsReportingLevel, true> = {
+    all: true,
+    simple: true,
+    typos: true,
+    flagged: true,
+};
+
 function calcReportingLevel(
     reportUnknownWords: UnknownWordsReportingLevel | undefined,
     reportOptions: UnknownWordsConfiguration,
 ): UnknownWordsReportingLevel {
-    if (reportUnknownWords) {
+    if (reportUnknownWords && reportUnknownWords in keysUnknownWordsReportingLevel) {
         return reportUnknownWords;
     }
     if (!reportOptions.unknownWords || reportOptions.unknownWords === unknownWordsChoices.ReportAll) {
