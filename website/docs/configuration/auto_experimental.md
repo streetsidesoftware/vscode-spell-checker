@@ -14,7 +14,6 @@ Experimental settings that may change or be removed in the future.
 | ------- | ----- | ----------- |
 | [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
 | [`cSpell.experimental.symbols`](#cspellexperimentalsymbols) | application | Experiment with `executeDocumentSymbolProvider` |
-| [`cSpell.reportUnknownWords`](#cspellreportunknownwords) | language-overridable | Strict Spell Checking |
 
 
 ## Settings
@@ -147,7 +146,7 @@ _`false`_
 ---
 
 
-### `cSpell.reportUnknownWords`
+### ~~`cSpell.reportUnknownWords`~~
 
 <dl>
 
@@ -156,7 +155,7 @@ Name
 </dt>
 <dd>
 
-`cSpell.reportUnknownWords` -- Strict Spell Checking
+~~`cSpell.reportUnknownWords`~~ -- Strict Spell Checking
 
 </dd>
 
@@ -173,6 +172,8 @@ reporting unknown words as suggestions. Common spelling errors are still flagged
 - `simple` - report unknown words with simple fixes and the rest as suggestions
 - `typos` - report on known typo words and the rest as suggestions
 - `flagged` - report only flagged words as misspelled
+
+**Note:** This setting is deprecated. Use [`cSpell.unknownWords`](cspell#cspellunknownwords) instead.
 
 </dd>
 
@@ -197,6 +198,14 @@ language-overridable - Resource settings that can be overridable at a language l
 </dd>
 
 
+<dt>
+Deprecation Message
+</dt>
+<dd>
+
+Use Unknown Words settings instead.
+
+</dd>
 
 
 <dt>
@@ -204,19 +213,11 @@ Default
 </dt>
 <dd>
 
-_`"undefined"`_
+_- none -_
 
 </dd>
 
 
-<dt>
-Since Version
-</dt>
-<dd>
-
-4.0.2
-
-</dd>
 
 
 </dl>
