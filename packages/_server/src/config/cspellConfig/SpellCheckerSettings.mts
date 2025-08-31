@@ -363,10 +363,13 @@ export interface SpellCheckerSettings
      * - `simple` - report unknown words with simple fixes and the rest as suggestions
      * - `typos` - report on known typo words and the rest as suggestions
      * - `flagged` - report only flagged words as misspelled
+     *
+     * **Note:** This setting is deprecated. Use `#cSpell.unknownWords#` instead.
+     *
      * @title Strict Spell Checking
      * @scope language-overridable
-     * @since 4.0.2
-     * @default undefined
+     * @deprecated true
+     * @deprecationMessage  Use Unknown Words settings instead.
      */
     reportUnknownWords?: UnknownWordsReportingLevel | undefined;
 }

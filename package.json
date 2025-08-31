@@ -2030,16 +2030,16 @@
             "type": "boolean"
           },
           "cSpell.reportUnknownWords": {
-            "default": "undefined",
+            "deprecated": true,
+            "deprecationMessage": "Use Unknown Words settings instead.",
             "enum": [
               "all",
               "simple",
               "typos",
               "flagged"
             ],
-            "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `all` - report all unknown words as misspelled\n- `simple` - report unknown words with simple fixes and the rest as suggestions\n- `typos` - report on known typo words and the rest as suggestions\n- `flagged` - report only flagged words as misspelled",
+            "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `all` - report all unknown words as misspelled\n- `simple` - report unknown words with simple fixes and the rest as suggestions\n- `typos` - report on known typo words and the rest as suggestions\n- `flagged` - report only flagged words as misspelled\n\n**Note:** This setting is deprecated. Use `#cSpell.unknownWords#` instead.",
             "scope": "language-overridable",
-            "since": "4.0.2",
             "title": "Strict Spell Checking",
             "type": "string"
           }
@@ -3239,7 +3239,7 @@
                 "type": "string"
               },
               "textDecorationColorSuggestion": {
-                "default": "#8884",
+                "default": "#cf88",
                 "markdownDescription": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
                 "since": "4.0.2",
@@ -3328,7 +3328,7 @@
                 "type": "string"
               },
               "textDecorationColorSuggestion": {
-                "default": "#8884",
+                "default": "#cf88",
                 "markdownDescription": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
                 "since": "4.0.2",
@@ -3407,7 +3407,7 @@
             "type": "string"
           },
           "cSpell.textDecorationColorSuggestion": {
-            "default": "#8884",
+            "default": "#cf88",
             "markdownDescription": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
             "scope": "application",
             "since": "4.0.2",
