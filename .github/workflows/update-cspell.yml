@@ -34,7 +34,7 @@ jobs:
         with:
           ref: ${{ env.REF_BRANCH }}
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -64,7 +64,7 @@ jobs:
 
       - name: Update Type
         id: cspell-update-type
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           CURRENT: ${{ steps.cspell-current-version.outputs.value }}
           NEW: ${{ steps.cspell-new-version.outputs.value }}
@@ -84,7 +84,7 @@ jobs:
 
       - name: Build List of CSpell Releases
         id: cspell-releases
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           CURRENT: ${{ steps.cspell-current-version.outputs.value }}
           NEW: ${{ steps.cspell-new-version.outputs.value }}
