@@ -4250,7 +4250,7 @@
     "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "^9.34.0",
     "@tsconfig/node20": "^20.1.6",
-    "@types/node": "^20.19.11",
+    "@types/node": "^20.19.12",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "~3.2.4",
@@ -4276,8 +4276,8 @@
     "tsdown": "^0.14.2",
     "tsup": "^8.5.0",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.41.0",
-    "vite": "^7.1.3",
+    "typescript-eslint": "^8.42.0",
+    "vite": "^7.1.4",
     "vitest": "~3.2.4"
   },
   "dependencies": {
