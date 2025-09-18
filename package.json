@@ -4250,7 +4250,7 @@
     "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "^9.35.0",
     "@tsconfig/node20": "^20.1.6",
-    "@types/node": "^20.19.16",
+    "@types/node": "^20.19.17",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "~3.2.4",
