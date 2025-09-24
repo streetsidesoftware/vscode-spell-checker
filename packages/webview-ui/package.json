@@ -20,24 +20,24 @@
     "test": "npm run check"
   },
   "dependencies": {
-    "@tanstack/svelte-query": "^5.89.0",
+    "@tanstack/svelte-query": "^5.90.2",
     "@vscode/webview-ui-toolkit": "^1.4.0",
-    "fast-equals": "^5.2.2",
+    "fast-equals": "^5.3.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
     "@tsconfig/svelte": "^5.0.5",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.40",
-    "svelte": "^5.39.4",
-    "svelte-check": "^4.3.1",
+    "svelte": "^5.39.6",
+    "svelte-check": "^4.3.2",
     "svelte-preprocess": "^6.0.3",
     "typescript": "~5.9.2",
-    "vite": "^7.1.6"
+    "vite": "^7.1.7"
   },
   "engines": {
     "node": ">20.0.0"
