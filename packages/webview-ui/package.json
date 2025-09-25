@@ -22,7 +22,7 @@
   "dependencies": {
     "@tanstack/svelte-query": "^5.89.0",
     "@vscode/webview-ui-toolkit": "^1.4.0",
-    "fast-equals": "^5.2.2",
+    "fast-equals": "^5.3.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-webview-rpc": "file:../webview-rpc",
