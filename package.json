@@ -4267,7 +4267,7 @@
     "inject-markdown": "^4.0.0",
     "jest-mock-vscode": "^4.7.0",
     "ovsx": "^0.10.5",
-    "patch-package": "^8.0.0",
+    "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
     "rollup": "^4.52.3",
