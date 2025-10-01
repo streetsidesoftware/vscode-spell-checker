@@ -29,9 +29,9 @@
     "@types/chai": "^5.2.2",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.19.17",
+    "@types/node": "^20.19.19",
     "chai": "^6.2.0",
-    "cross-env": "^10.0.0"
+    "cross-env": "^10.1.0"
   },
   "peerDependenciesMeta": {},
   "dependencies": {
@@ -40,7 +40,7 @@
     "decompress": "^4.2.1",
     "glob": "^11.0.3",
     "kefir": "^3.8.8",
-    "mocha": "^11.7.2"
+    "mocha": "^11.7.3"
   },
   "engines": {
     "node": ">20.0.0"
