@@ -33,11 +33,11 @@
     "@tsconfig/svelte": "^5.0.5",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.40",
-    "svelte": "^5.39.11",
+    "svelte": "^5.41.0",
     "svelte-check": "^4.3.3",
     "svelte-preprocess": "^6.0.3",
     "typescript": "~5.9.3",
-    "vite": "^7.1.9"
+    "vite": "^7.1.10"
   },
   "engines": {
     "node": ">20.0.0"
