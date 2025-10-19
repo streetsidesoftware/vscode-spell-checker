@@ -9,39 +9,17 @@ updates:
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
-
-  - package-ecosystem: 'github-actions'
-    # Workflow files stored in the
-    # default location of `.github/workflows`
-    directory: '/'
-    schedule:
-      interval: 'daily'
     groups:
       production-dependencies:
         dependency-type: 'production'
       development-dependencies:
         dependency-type: 'development'
 
-  # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
-  - package-ecosystem: github-actions
-    directory: /.github/actions/pr
+  - package-ecosystem: 'github-actions'
+    # Workflow files stored in the
+    # default location of `.github/workflows`
+    directories:
+      - '/'
+      - '/.github/actions/pr/*'
     schedule:
-      interval: daily
-    commit-message:
-      prefix: chore
-
-  # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
-  - package-ecosystem: github-actions
-    directory: /.github/actions/github-app-token
-    schedule:
-      interval: daily
-    commit-message:
-      prefix: chore
-
-  # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
-  - package-ecosystem: github-actions
-    directory: /.github/actions/is-prerelease
-    schedule:
-      interval: daily
-    commit-message:
-      prefix: chore
+      interval: 'daily'
