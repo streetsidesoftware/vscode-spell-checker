@@ -1,4 +1,5 @@
 {
     "cSpell.diagnosticLevel": "Hint",
-    "cSpell.diagnosticLevelFlaggedWords": "Information"
+    "cSpell.diagnosticLevelFlaggedWords": "Information",
+    "cSpell.autoCorrect": true
 }

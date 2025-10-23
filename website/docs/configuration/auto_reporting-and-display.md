@@ -12,6 +12,7 @@ Settings that control how the spell checker reports and displays errors.
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
+| [`cSpell.autoCorrect`](#cspellautocorrect) | resource | Autocorrect |
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile) | window | Auto Format Configuration File |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel) | resource | Set Diagnostic Reporting Level |
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords) | resource | Set Diagnostic Reporting Level for Flagged Words |
@@ -32,6 +33,69 @@ Settings that control how the spell checker reports and displays errors.
 
 
 ## Settings
+
+
+### `cSpell.autoCorrect`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.autoCorrect` -- Autocorrect
+
+</dd>
+
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable autocorrect while typing.
+
+</dd>
+
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+
+</dd>
+
+
+
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`false`_
+
+</dd>
+
+
+
+
+</dl>
+
+---
 
 
 ### `cSpell.autoFormatConfigFile`
