@@ -1,6 +1,6 @@
 import { uriToName } from '@internal/common-utils';
 import { logger } from '@internal/common-utils/log';
-import type { ConfigFieldSelector, ConfigurationFields, OnBlockFile } from 'code-spell-checker-server/api';
+import type { ConfigFieldSelector, ConfigurationFields, OnBlockFile, SpellingDiagnostic } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
@@ -41,6 +41,8 @@ const debugMode = false;
 let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
+
+const AUTOCORRECT_TIRGGER = /\W/;
 
 /**
  * Activate the extension
@@ -193,8 +195,46 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         client.onBlockFile(notifyUserOfBlockedFile),
     );
 
+    // If autocorrect is enabled, add the handler for it.
+    const config = vscode.workspace.getConfiguration();
+    if (config.get('cSpell.autoCorrect', false)) {
+        context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(handleOnDidChangeTextDocument));
+    }
+
     performance.mark('registerCspellInlineCompletionProviders');
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
+
+    function handleOnDidChangeTextDocument({ document, contentChanges }: vscode.TextDocumentChangeEvent) {
+        // Check if the change should trigger autocorrect.
+        if (contentChanges.length === 0) return;
+        const lastChange = contentChanges[contentChanges.length - 1];
+        if (!AUTOCORRECT_TIRGGER.test(lastChange.text)) return;
+
+        // Get cursor position prior to the change.
+        const position = lastChange.range.start;
+        const prevPosition = position.character > 0 ? new vscode.Position(position.line, position.character - 1) : undefined;
+        if (!prevPosition) return;
+
+        // Check if the cursor was at the end of a word.
+        const wordRange = document.getWordRangeAtPosition(prevPosition);
+        if (!wordRange) return;
+        if (!wordRange.end.isEqual(prevPosition.translate(0, 1))) return;
+
+        // Check if there were any cSpell diagnostics for that word.
+        const diagnostics = vscode.languages.getDiagnostics(document.uri);
+        const spellingDiagnostics = diagnostics.filter((d) => d.source === 'cSpell' && d.range.isEqual(wordRange));
+        if (spellingDiagnostics.length === 0) return;
+
+        // Check if there was a suggestion associated with the diagnostic.
+        const diagnostic = spellingDiagnostics[0] as unknown as SpellingDiagnostic;
+        const suggestions = diagnostic.data?.suggestions;
+        if (!suggestions || suggestions.length === 0) return;
+
+        // Apply the suggestion.
+        const edit = new vscode.WorkspaceEdit();
+        edit.replace(document.uri, wordRange, suggestions[0].word);
+        vscode.workspace.applyEdit(edit);
+    }
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {

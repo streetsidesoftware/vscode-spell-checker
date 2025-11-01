@@ -4009,6 +4009,13 @@
         "markdownDescription": "Settings that control how the spell checker reports and displays errors.",
         "order": 2,
         "properties": {
+          "cSpell.autoCorrect": {
+            "default": false,
+            "markdownDescription": "Enable / Disable autocorrect while typing.",
+            "scope": "resource",
+            "title": "Autocorrect",
+            "type": "boolean"
+          },
           "cSpell.autoFormatConfigFile": {
             "default": false,
             "markdownDescription": "If a `cspell` configuration file is updated, format the configuration file\nusing the VS Code Format Document Provider. This will cause the configuration\nfile to be saved prior to being updated.",
