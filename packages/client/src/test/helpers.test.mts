@@ -7,6 +7,8 @@ import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace } from './h
 
 const __filename = path.normalize(fileURLToPath(import.meta.url));
 
+console.error('__filename %o', __filename);
+
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
