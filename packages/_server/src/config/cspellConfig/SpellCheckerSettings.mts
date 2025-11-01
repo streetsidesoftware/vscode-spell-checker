@@ -35,8 +35,8 @@ export interface SpellCheckerSettings
         ExperimentalSettings,
         AdvancedSettings {
     /**
-     * Enable / Disable autocorrect while typing.
-     * @title Autocorrect
+     * Enable / Disable auto-correct while typing.
+     * @title Auto-correct
      * @scope resource
      * @default false
      */

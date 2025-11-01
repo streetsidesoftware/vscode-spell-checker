@@ -42,7 +42,7 @@ let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
 
-const AUTOCORRECT_TIRGGER = /\W/;
+const AUTO_CORRECT_TRIGGER = /\W/;
 
 /**
  * Activate the extension
@@ -195,7 +195,7 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         client.onBlockFile(notifyUserOfBlockedFile),
     );
 
-    // If autocorrect is enabled, add the handler for it.
+    // If auto-correct is enabled, add the handler for it.
     const config = vscode.workspace.getConfiguration();
     if (config.get('cSpell.autoCorrect', false)) {
         context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(handleOnDidChangeTextDocument));
@@ -205,10 +205,10 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
 
     function handleOnDidChangeTextDocument({ document, contentChanges }: vscode.TextDocumentChangeEvent) {
-        // Check if the change should trigger autocorrect.
+        // Check if the change should trigger auto-correct.
         if (contentChanges.length === 0) return;
         const lastChange = contentChanges[contentChanges.length - 1];
-        if (!AUTOCORRECT_TIRGGER.test(lastChange.text)) return;
+        if (!AUTO_CORRECT_TRIGGER.test(lastChange.text)) return;
 
         // Get cursor position prior to the change.
         const position = lastChange.range.start;

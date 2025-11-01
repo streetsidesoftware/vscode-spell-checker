@@ -4011,9 +4011,9 @@
         "properties": {
           "cSpell.autoCorrect": {
             "default": false,
-            "markdownDescription": "Enable / Disable autocorrect while typing.",
+            "markdownDescription": "Enable / Disable auto-correct while typing.",
             "scope": "resource",
-            "title": "Autocorrect",
+            "title": "Auto-correct",
             "type": "boolean"
           },
           "cSpell.autoFormatConfigFile": {
