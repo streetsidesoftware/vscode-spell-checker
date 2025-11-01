@@ -28,15 +28,14 @@ const {
     isTextDocument,
 } = __testing__;
 
-vi.mock('../client/client.mjs', () => {
-    return {
-        CSpellClient: vi.fn().mockImplementation(() => {
-            return {
-                getConfigurationForDocument: vi.fn(),
-                notifySettingsChanged: () => Promise.resolve(),
-            };
-        }),
-    };
+vi.mock(import('../client/client.mjs'), () => {
+    const CSpellClient = vi.fn(
+        class {
+            getConfigurationForDocument = vi.fn();
+            notifySettingsChanged = () => Promise.resolve();
+        },
+    );
+    return { CSpellClient } as any;
 });
 
 const fakeExtensionContext: ExtensionContext = {} as any;
