@@ -5,9 +5,7 @@ import { describe, expect, test, vi } from 'vitest';
 import type { StackItem } from './helpers.mjs';
 import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace } from './helpers.mjs';
 
-const __filename = path.normalize(fileURLToPath(import.meta.url));
-
-console.error('__filename %o', __filename);
+const __filename = fileURLToPath(import.meta.url);
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
@@ -15,7 +13,7 @@ vi.mock('vscode-languageclient/node');
 describe('Validate Helpers', () => {
     test('getCallStack', () => {
         const stack = getCallStack();
-        expect(stack[0]).toEqual(expect.objectContaining({ file: __filename }));
+        expect(stack[0]).toEqual(expect.objectContaining({ file: __filename.replaceAll('\\', '/') }));
     });
 
     test('mustBeDefined', () => {
