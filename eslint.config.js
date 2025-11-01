@@ -1,6 +1,7 @@
 // @ts-check
 
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import nodePlugin from 'eslint-plugin-n';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsEslint from 'typescript-eslint';
@@ -10,7 +11,7 @@ import tsEslint from 'typescript-eslint';
 // const __dirname = fileURLToPath(new URL('.', import.meta.url));
 // const compat = new FlatCompat({baseDirectory: __dirname, recommendedConfig: eslint.configs.recommended});
 
-export default tsEslint.config(
+export default defineConfig(
     eslint.configs.recommended,
     nodePlugin.configs['flat/recommended'],
     ...tsEslint.configs.recommended,
