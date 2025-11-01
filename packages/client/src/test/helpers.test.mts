@@ -5,7 +5,7 @@ import { describe, expect, test, vi } from 'vitest';
 import type { StackItem } from './helpers.mjs';
 import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace } from './helpers.mjs';
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = path.normalize(fileURLToPath(import.meta.url));
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
