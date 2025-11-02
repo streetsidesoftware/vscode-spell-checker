@@ -9,6 +9,7 @@ import { Utils as UriUtils } from 'vscode-uri';
 import { registerActionsMenu } from './actionMenu.mjs';
 import * as addWords from './addWords.mjs';
 import { checkDocument } from './api.mjs';
+import { actionAutoFixSpellingIssuesInDocument } from './applyCorrections.mjs';
 import { registerCspellInlineCompletionProviders } from './autocomplete.mjs';
 import { CSpellClient } from './client/index.mjs';
 import { registerSpellCheckerCodeActionProvider } from './codeAction.mjs';
@@ -201,6 +202,9 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
 
     function handleOnDidChangeTextDocument({ document, contentChanges }: vscode.TextDocumentChangeEvent) {
+        // TODO: Currently we don't wait for suggestions that are still being generated when this handler runs.
+        // We may want to consider waiting for these in the future.
+
         // Check if autocorrect is enabled.
         if (!vscode.workspace.getConfiguration().get('cSpell.autocorrect', false)) return;
 
@@ -219,24 +223,8 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         if (!wordRange) return;
         if (!wordRange.end.isEqual(prevPosition.translate(0, 1))) return;
 
-        // Check if there were any spelling issues for that word.
-        const spellingIssues = issueTracker.getSpellingIssues(document.uri)?.getSpellingIssues() ?? [];
-        const fixableIssue = spellingIssues.find((d) => {
-            // Check for overlap between the suggestion and the current word.
-            // This accounts for spelling corrections that only affect part of the word
-            // (for example a single hump in a camelCase word).
-            return d.hasPreferredSuggestions() && d.range.intersection(wordRange) !== undefined;
-        });
-        if (!fixableIssue) return;
-
-        // Check if there was a suggestion associated with the diagnostic.
-        const suggestions = fixableIssue.getPreferredSuggestions();
-        if (!suggestions || suggestions.length === 0) return;
-
-        // Apply the suggestion.
-        const edit = new vscode.WorkspaceEdit();
-        edit.replace(document.uri, wordRange, suggestions[0]);
-        vscode.workspace.applyEdit(edit);
+        // Apply any fixes for the word that was just typed.
+        actionAutoFixSpellingIssuesInDocument(document.uri, wordRange);
     }
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {

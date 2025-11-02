@@ -188,11 +188,10 @@ export async function handleFixSpellingIssue(docUri: Uri, text: string, withText
     return success ? undefined : failed();
 }
 
-export async function actionAutoFixSpellingIssues(uri?: Uri) {
-    // console.error('actionAutoFixSpellingIssues %o', { uri });
+export async function actionAutoFixSpellingIssuesInDocument(uri?: Uri, autoFixRange?: Range) {
     uri ??= window.activeTextEditor?.document.uri;
-    const doc = findEditor(uri)?.document || findTextDocument(uri);
-    if (!uri || !doc) {
+    const document = findEditor(uri)?.document || findTextDocument(uri);
+    if (!uri || !document) {
         return pvShowInformationMessage('Unable to fix spelling issues in current document, document not found.');
     }
 
@@ -200,23 +199,17 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
 
     const autoFixes = issueTracker
         .getSpellingIssues(uri)
-        ?.map((issue) => ({
-            issue,
-            suggestions: issue.providedSuggestions(),
-        }))
-        .filter(
-            ({ issue, suggestions }) =>
-                suggestions?.[0]?.isPreferred &&
-                !suggestions?.[1]?.isPreferred &&
-                issue.word &&
-                issue.isIssueTypeSpelling() &&
-                !issue.isSuggestion(),
-        )
-        .filter(({ issue }) => doc.getText(issue.range) === issue.word)
-        .map(({ issue }) => {
-            const sug = issue.providedSuggestions()?.[0].word;
-            assert(sug !== undefined);
-            return new TextEdit(issue.range, sug);
+        ?.filter((issue) => {
+            // Issue is within the range to be autofixed.
+            if (autoFixRange && !autoFixRange.contains(issue.range)) return false;
+            // Issue is not stale.
+            if (document.getText(issue.range) !== issue.word) return false;
+            return issue.hasPreferredSuggestions();
+        })
+        .map((issue) => {
+            const suggestion = issue.getPreferredSuggestions()?.[0];
+            assert(suggestion !== undefined, 'Suggestion does not exist.');
+            return new TextEdit(issue.range, suggestion);
         });
 
     if (!autoFixes?.length) {
@@ -224,7 +217,7 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
         return pvShowInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }
 
-    const success = await applyTextEditsToDocumentWithRename(doc, autoFixes, calcUseRefInfo(doc));
+    const success = await applyTextEditsToDocumentWithRename(document, autoFixes, calcUseRefInfo(document));
     await showUnsuccessfulMessage(success, 'Failed to apply spelling changes to the document.');
 }
 
