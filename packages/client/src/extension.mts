@@ -1,6 +1,6 @@
 import { uriToName } from '@internal/common-utils';
 import { logger } from '@internal/common-utils/log';
-import type { ConfigFieldSelector, ConfigurationFields, OnBlockFile, SpellingDiagnostic } from 'code-spell-checker-server/api';
+import type { ConfigFieldSelector, ConfigurationFields, OnBlockFile } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
@@ -193,26 +193,25 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         createLanguageStatus({ areIssuesVisible: () => decorator.visible, onDidChangeVisibility: decorator.onDidChangeVisibility }),
         registerActionsMenu({ areIssuesVisible: () => decorator.visible }),
         client.onBlockFile(notifyUserOfBlockedFile),
+        /** Listen to document changes to trigger autocorrect. */
+        vscode.workspace.onDidChangeTextDocument(handleOnDidChangeTextDocument),
     );
-
-    // If auto-correct is enabled, add the handler for it.
-    const config = vscode.workspace.getConfiguration();
-    if (config.get('cSpell.autoCorrect', false)) {
-        context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(handleOnDidChangeTextDocument));
-    }
 
     performance.mark('registerCspellInlineCompletionProviders');
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
 
     function handleOnDidChangeTextDocument({ document, contentChanges }: vscode.TextDocumentChangeEvent) {
-        // Check if the change should trigger auto-correct.
+        // Check if autocorrect is enabled.
+        if (!vscode.workspace.getConfiguration().get('cSpell.autocorrect', false)) return;
+
+        // Check if the change should trigger autocorrect.
         if (contentChanges.length === 0) return;
         const lastChange = contentChanges[contentChanges.length - 1];
         if (!AUTO_CORRECT_TRIGGER.test(lastChange.text)) return;
 
         // Get cursor position prior to the change.
         const position = lastChange.range.start;
-        const prevPosition = position.character > 0 ? new vscode.Position(position.line, position.character - 1) : undefined;
+        const prevPosition = position.character > 0 ? position.translate(0, -1) : undefined;
         if (!prevPosition) return;
 
         // Check if the cursor was at the end of a word.
@@ -220,19 +219,23 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         if (!wordRange) return;
         if (!wordRange.end.isEqual(prevPosition.translate(0, 1))) return;
 
-        // Check if there were any cSpell diagnostics for that word.
-        const diagnostics = vscode.languages.getDiagnostics(document.uri);
-        const spellingDiagnostics = diagnostics.filter((d) => d.source === 'cSpell' && d.range.isEqual(wordRange));
-        if (spellingDiagnostics.length === 0) return;
+        // Check if there were any spelling issues for that word.
+        const spellingIssues = issueTracker.getSpellingIssues(document.uri)?.getSpellingIssues() ?? [];
+        const fixableIssue = spellingIssues.find((d) => {
+            // Check for overlap between the suggestion and the current word.
+            // This accounts for spelling corrections that only affect part of the word
+            // (for example a single hump in a camelCase word).
+            return d.hasPreferredSuggestions() && d.range.intersection(wordRange) !== undefined;
+        });
+        if (!fixableIssue) return;
 
         // Check if there was a suggestion associated with the diagnostic.
-        const diagnostic = spellingDiagnostics[0] as unknown as SpellingDiagnostic;
-        const suggestions = diagnostic.data?.suggestions;
+        const suggestions = fixableIssue.getPreferredSuggestions();
         if (!suggestions || suggestions.length === 0) return;
 
         // Apply the suggestion.
         const edit = new vscode.WorkspaceEdit();
-        edit.replace(document.uri, wordRange, suggestions[0].word);
+        edit.replace(document.uri, wordRange, suggestions[0]);
         vscode.workspace.applyEdit(edit);
     }
 

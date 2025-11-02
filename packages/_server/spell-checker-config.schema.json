@@ -3693,20 +3693,20 @@
       "description": "Settings that control how the spell checker reports and displays errors.",
       "order": 2,
       "properties": {
-        "cSpell.autoCorrect": {
-          "default": false,
-          "description": "Enable / Disable auto-correct while typing.",
-          "markdownDescription": "Enable / Disable auto-correct while typing.",
-          "scope": "resource",
-          "title": "Auto-correct",
-          "type": "boolean"
-        },
         "cSpell.autoFormatConfigFile": {
           "default": false,
           "description": "If a `cspell` configuration file is updated, format the configuration file using the VS Code Format Document Provider. This will cause the configuration file to be saved prior to being updated.",
           "markdownDescription": "If a `cspell` configuration file is updated, format the configuration file\nusing the VS Code Format Document Provider. This will cause the configuration\nfile to be saved prior to being updated.",
           "scope": "window",
           "title": "Auto Format Configuration File",
+          "type": "boolean"
+        },
+        "cSpell.autocorrect": {
+          "default": false,
+          "description": "Enable / Disable autocorrect while typing.",
+          "markdownDescription": "Enable / Disable autocorrect while typing.",
+          "scope": "resource",
+          "title": "Autocorrect",
           "type": "boolean"
         },
         "cSpell.diagnosticLevel": {

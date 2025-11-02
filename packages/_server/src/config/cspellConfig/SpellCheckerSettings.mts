@@ -35,12 +35,12 @@ export interface SpellCheckerSettings
         ExperimentalSettings,
         AdvancedSettings {
     /**
-     * Enable / Disable auto-correct while typing.
-     * @title Auto-correct
+     * Enable / Disable autocorrect while typing.
+     * @title Autocorrect
      * @scope resource
      * @default false
      */
-    autoCorrect?: boolean;
+    autocorrect?: boolean;
 
     /**
      * If a `cspell` configuration file is updated, format the configuration file

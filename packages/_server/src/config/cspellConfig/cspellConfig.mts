@@ -158,7 +158,7 @@ type _VSConfigLanguageAndDictionaries = Pick<
 type VSConfigReporting = PrefixWithCspell<_VSConfigReporting>;
 type _VSConfigReporting = Pick<
     SpellCheckerSettingsVSCodeBase,
-    | 'autoCorrect'
+    | 'autocorrect'
     | 'autoFormatConfigFile'
     | 'diagnosticLevel'
     | 'diagnosticLevelFlaggedWords'

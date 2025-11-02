@@ -12,7 +12,7 @@ Settings that control how the spell checker reports and displays errors.
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
-| [`cSpell.autoCorrect`](#cspellautocorrect) | resource | Auto-correct |
+| [`cSpell.autocorrect`](#cspellautocorrect) | resource | Autocorrect |
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile) | window | Auto Format Configuration File |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel) | resource | Set Diagnostic Reporting Level |
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords) | resource | Set Diagnostic Reporting Level for Flagged Words |
@@ -35,7 +35,7 @@ Settings that control how the spell checker reports and displays errors.
 ## Settings
 
 
-### `cSpell.autoCorrect`
+### `cSpell.autocorrect`
 
 <dl>
 
@@ -44,7 +44,7 @@ Name
 </dt>
 <dd>
 
-`cSpell.autoCorrect` -- Auto-correct
+`cSpell.autocorrect` -- Autocorrect
 
 </dd>
 
@@ -54,7 +54,7 @@ Description
 </dt>
 <dd>
 
-Enable / Disable auto-correct while typing.
+Enable / Disable autocorrect while typing.
 
 </dd>
 
