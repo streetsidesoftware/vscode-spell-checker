@@ -7,9 +7,9 @@ import * as Settings from './settings/index.mjs';
 import { logErrors, showErrors } from './util/errors.js';
 import { toRegExp } from './util/toRegExp.js';
 import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers.js';
-import { findEditor, findTextDocument } from './vscode/findEditor.js';
 import type { TextEdit as LsTextEdit } from './vscode-languageclient/node.cjs';
 import type { Converter } from './vscode-languageclient/types.js';
+import { findEditor, findTextDocument } from './vscode/findEditor.js';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
 const propertyUseReferenceProviderWithRename = Settings.ConfigFields['advanced.feature.useReferenceProviderWithRename'];
@@ -149,8 +149,7 @@ async function applyTextEditsWithRename(uri: Uri | string, edits: TextEdit[], do
         return pvShowErrorMessage('Spelling changes are outdated and cannot be applied to the document.');
     }
 
-    const refInfo = calcUseRefInfo(doc);
-    const success = await applyTextEditsToDocumentWithRename(doc, edits, refInfo);
+    const success = await applyTextEditsToDocumentWithRename(doc, edits);
     await showUnsuccessfulMessage(success, 'Failed to apply spelling changes to the document.');
 }
 
@@ -183,25 +182,23 @@ export async function handleFixSpellingIssue(docUri: Uri, text: string, withText
 
     const edits = ranges.map((range) => new TextEdit(range, withText));
 
-    const success = await applyTextEditsToDocumentWithRename(document, edits, calcUseRefInfo(document));
+    const success = await applyTextEditsToDocumentWithRename(document, edits);
 
     return success ? undefined : failed();
 }
 
-export async function actionAutoFixSpellingIssuesInDocument(uri?: Uri, autoFixRange?: Range) {
-    uri ??= window.activeTextEditor?.document.uri;
-    const document = findEditor(uri)?.document || findTextDocument(uri);
-    if (!uri || !document) {
-        return pvShowInformationMessage('Unable to fix spelling issues in current document, document not found.');
-    }
-
+/**
+ * Gets fixes for spelling issues in the given document.
+ * If autoFixRange is specified, only fixes for issues that overlap wth the given range are returned.
+ */
+export function getAutoFixesForSpellingIssuesInDocument(document: TextDocument, autoFixRange?: Range) {
     const issueTracker = di.get('issueTracker');
 
-    const autoFixes = issueTracker
-        .getSpellingIssues(uri)
+    return issueTracker
+        .getSpellingIssues(document.uri)
         ?.filter((issue) => {
             // Issue is within the range to be autofixed.
-            if (autoFixRange && !autoFixRange.contains(issue.range)) return false;
+            if (autoFixRange && !autoFixRange.intersection(issue.range)) return false;
             // Issue is not stale.
             if (document.getText(issue.range) !== issue.word) return false;
             return issue.hasPreferredSuggestions();
@@ -211,13 +208,24 @@ export async function actionAutoFixSpellingIssuesInDocument(uri?: Uri, autoFixRa
             assert(suggestion !== undefined, 'Suggestion does not exist.');
             return new TextEdit(issue.range, suggestion);
         });
+}
+
+export async function actionAutoFixSpellingIssues(uri?: Uri) {
+    // console.error('actionAutoFixSpellingIssues %o', { uri });
+    uri ??= window.activeTextEditor?.document.uri;
+    const doc = findEditor(uri)?.document || findTextDocument(uri);
+    if (!uri || !doc) {
+        return pvShowInformationMessage('Unable to fix spelling issues in current document, document not found.');
+    }
+
+    const autoFixes = getAutoFixesForSpellingIssuesInDocument(doc);
 
     if (!autoFixes?.length) {
         const name = uriToName(uri);
         return pvShowInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }
 
-    const success = await applyTextEditsToDocumentWithRename(document, autoFixes, calcUseRefInfo(document));
+    const success = await applyTextEditsToDocumentWithRename(doc, autoFixes);
     await showUnsuccessfulMessage(success, 'Failed to apply spelling changes to the document.');
 }
 
@@ -291,7 +299,11 @@ async function calcWorkspaceEditsForDocument(doc: TextDocument, edits: TextEdit[
     return wsEdit;
 }
 
-async function applyTextEditsToDocumentWithRename(doc: TextDocument, edits: TextEdit[], refInfo: UseRefInfo): Promise<boolean | undefined> {
+export async function applyTextEditsToDocumentWithRename(
+    doc: TextDocument,
+    edits: TextEdit[],
+    refInfo?: UseRefInfo,
+): Promise<boolean | undefined> {
     const eventLogger = di.get('eventLogger');
 
     for (const edit of edits) {
@@ -301,7 +313,7 @@ async function applyTextEditsToDocumentWithRename(doc: TextDocument, edits: Text
         }
     }
 
-    const wsEdit = await calcWorkspaceEditsForDocument(doc, edits, refInfo);
+    const wsEdit = await calcWorkspaceEditsForDocument(doc, edits, refInfo ?? calcUseRefInfo(doc));
     return applyWorkspaceEdit(wsEdit, 'applyTextEditsToDocumentWithRename');
 }
 

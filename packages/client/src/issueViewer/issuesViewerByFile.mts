@@ -5,7 +5,7 @@ import type { ExtensionContext, ProviderResult, Range, TextDocument, TreeDataPro
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
-import { actionAutoFixSpellingIssuesInDocument } from '../applyCorrections.mjs';
+import { actionAutoFixSpellingIssues } from '../applyCorrections.mjs';
 import { commandHandlers, knownCommands } from '../commands.mjs';
 import * as di from '../di.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
@@ -610,7 +610,7 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
 
 function handleAutoFixSpellingIssues(item?: unknown) {
     if (!(item instanceof FileWithIssuesTreeItem)) return;
-    return actionAutoFixSpellingIssuesInDocument(item.document.uri);
+    return actionAutoFixSpellingIssues(item.document.uri);
 }
 
 function handleAddWordToDictionary(item?: unknown) {

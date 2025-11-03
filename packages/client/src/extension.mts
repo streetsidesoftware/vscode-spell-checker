@@ -9,7 +9,7 @@ import { Utils as UriUtils } from 'vscode-uri';
 import { registerActionsMenu } from './actionMenu.mjs';
 import * as addWords from './addWords.mjs';
 import { checkDocument } from './api.mjs';
-import { actionAutoFixSpellingIssuesInDocument } from './applyCorrections.mjs';
+import { applyTextEditsToDocumentWithRename, getAutoFixesForSpellingIssuesInDocument } from './applyCorrections.mjs';
 import { registerCspellInlineCompletionProviders } from './autocomplete.mjs';
 import { CSpellClient } from './client/index.mjs';
 import { registerSpellCheckerCodeActionProvider } from './codeAction.mjs';
@@ -230,7 +230,10 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         if (!wordRange.end.isEqual(prevPosition.translate(0, 1))) return;
 
         // Apply any fixes for the word that was just typed.
-        actionAutoFixSpellingIssuesInDocument(document.uri, wordRange);
+        const fixes = getAutoFixesForSpellingIssuesInDocument(document, wordRange);
+        if (fixes?.length) {
+            applyTextEditsToDocumentWithRename(document, fixes);
+        }
     }
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
