@@ -19,6 +19,8 @@ dictionaryDefinitions:
   - name: forbid
     flagWords:
       - codding->coding
+      - cafë->café
+      - auto-correct->autocorrect
 dictionaries:
   - sample-words
   - forbid

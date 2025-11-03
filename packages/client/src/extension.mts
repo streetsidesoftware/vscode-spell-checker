@@ -43,7 +43,13 @@ let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
 
-const AUTO_CORRECT_TRIGGER = /\W/;
+/**
+ * Trigger autocomplete if the text begins with anything other than:
+ * - A letter
+ * - A diacritical mark
+ * - One of the characters: `.`, `'`, or `-` which cSpell considers to be part of a word
+ */
+const AUTO_CORRECT_TRIGGER = /^[^\p{L}\p{M}.'-]/u;
 
 /**
  * Activate the extension
