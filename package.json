@@ -4248,7 +4248,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
-    "@eslint/js": "~9.38.0",
+    "@eslint/js": "~9.39.1",
     "@tsconfig/node20": "^20.1.6",
     "@types/node": "^20.19.24",
     "@types/vscode": "1.90.0",
@@ -4259,7 +4259,7 @@
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.1",
     "esbuild": "^0.25.12",
-    "eslint": "~9.38.0",
+    "eslint": "~9.39.1",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^62.0.0",
@@ -4276,7 +4276,7 @@
     "tsdown": "^0.15.12",
     "tsup": "^8.5.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.2",
+    "typescript-eslint": "^8.46.3",
     "vite": "^7.1.12",
     "vitest": "~4.0.6"
   },
