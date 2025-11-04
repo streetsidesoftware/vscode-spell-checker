@@ -4016,6 +4016,13 @@
             "title": "Auto Format Configuration File",
             "type": "boolean"
           },
+          "cSpell.autocorrect": {
+            "default": false,
+            "markdownDescription": "Enable / Disable autocorrect while typing.",
+            "scope": "resource",
+            "title": "Autocorrect",
+            "type": "boolean"
+          },
           "cSpell.diagnosticLevel": {
             "default": "Information",
             "enum": [

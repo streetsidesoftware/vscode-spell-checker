@@ -35,6 +35,14 @@ export interface SpellCheckerSettings
         ExperimentalSettings,
         AdvancedSettings {
     /**
+     * Enable / Disable autocorrect while typing.
+     * @title Autocorrect
+     * @scope resource
+     * @default false
+     */
+    autocorrect?: boolean;
+
+    /**
      * If a `cspell` configuration file is updated, format the configuration file
      * using the VS Code Format Document Provider. This will cause the configuration
      * file to be saved prior to being updated.

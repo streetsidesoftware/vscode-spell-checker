@@ -3701,6 +3701,14 @@
           "title": "Auto Format Configuration File",
           "type": "boolean"
         },
+        "cSpell.autocorrect": {
+          "default": false,
+          "description": "Enable / Disable autocorrect while typing.",
+          "markdownDescription": "Enable / Disable autocorrect while typing.",
+          "scope": "resource",
+          "title": "Autocorrect",
+          "type": "boolean"
+        },
         "cSpell.diagnosticLevel": {
           "default": "Information",
           "description": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document. Set the level to `Hint` to hide the issues from the Problems Pane.\n\nNote: `#cSpell.useCustomDecorations#` must be `false` to use VS Code Diagnostic Severity Levels.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",

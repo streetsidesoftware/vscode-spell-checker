@@ -9,6 +9,7 @@ import { Utils as UriUtils } from 'vscode-uri';
 import { registerActionsMenu } from './actionMenu.mjs';
 import * as addWords from './addWords.mjs';
 import { checkDocument } from './api.mjs';
+import { applyTextEditsToDocumentWithRename, getAutoFixesForSpellingIssuesInDocument } from './applyCorrections.mjs';
 import { registerCspellInlineCompletionProviders } from './autocomplete.mjs';
 import { CSpellClient } from './client/index.mjs';
 import { registerSpellCheckerCodeActionProvider } from './codeAction.mjs';
@@ -41,6 +42,14 @@ const debugMode = false;
 let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
+
+/**
+ * Trigger autocomplete if the text begins with anything other than:
+ * - A letter
+ * - A diacritical mark
+ * - One of the characters: `.`, `'`, or `-` which cSpell considers to be part of a word
+ */
+const AUTO_CORRECT_TRIGGER = /^[^\p{L}\p{M}.'-]/u;
 
 /**
  * Activate the extension
@@ -191,10 +200,41 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         createLanguageStatus({ areIssuesVisible: () => decorator.visible, onDidChangeVisibility: decorator.onDidChangeVisibility }),
         registerActionsMenu({ areIssuesVisible: () => decorator.visible }),
         client.onBlockFile(notifyUserOfBlockedFile),
+        /** Listen to document changes to trigger autocorrect. */
+        vscode.workspace.onDidChangeTextDocument(handleOnDidChangeTextDocument),
     );
 
     performance.mark('registerCspellInlineCompletionProviders');
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
+
+    function handleOnDidChangeTextDocument({ document, contentChanges }: vscode.TextDocumentChangeEvent) {
+        // TODO: Currently we don't wait for suggestions that are still being generated when this handler runs.
+        // We may want to consider waiting for these in the future.
+
+        // Check if autocorrect is enabled.
+        if (!vscode.workspace.getConfiguration().get('cSpell.autocorrect', false)) return;
+
+        // Check if the change should trigger autocorrect.
+        if (contentChanges.length === 0) return;
+        const lastChange = contentChanges[contentChanges.length - 1];
+        if (!AUTO_CORRECT_TRIGGER.test(lastChange.text)) return;
+
+        // Get cursor position prior to the change.
+        const position = lastChange.range.start;
+        const prevPosition = position.character > 0 ? position.translate(0, -1) : undefined;
+        if (!prevPosition) return;
+
+        // Check if the cursor was at the end of a word.
+        const wordRange = document.getWordRangeAtPosition(prevPosition);
+        if (!wordRange) return;
+        if (!wordRange.end.isEqual(prevPosition.translate(0, 1))) return;
+
+        // Apply any fixes for the word that was just typed.
+        const fixes = getAutoFixesForSpellingIssuesInDocument(document, wordRange);
+        if (fixes?.length) {
+            applyTextEditsToDocumentWithRename(document, fixes);
+        }
+    }
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {

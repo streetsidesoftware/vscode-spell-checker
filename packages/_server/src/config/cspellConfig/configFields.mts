@@ -18,6 +18,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     'advanced.feature.useReferenceProviderRemove': 'advanced.feature.useReferenceProviderRemove',
     'advanced.feature.useReferenceProviderWithRename': 'advanced.feature.useReferenceProviderWithRename',
     'experimental.symbols': 'experimental.symbols',
+    autocorrect: 'autocorrect',
     autoFormatConfigFile: 'autoFormatConfigFile',
     blockCheckingWhenAverageChunkSizeGreaterThan: 'blockCheckingWhenAverageChunkSizeGreaterThan',
     blockCheckingWhenLineLengthGreaterThan: 'blockCheckingWhenLineLengthGreaterThan',
