@@ -58,7 +58,7 @@
     "@internal/common-utils": "file:../__utils",
     "@internal/locale-resolver": "file:../__locale-resolver",
     "@internal/server-pattern-matcher": "file:../_serverPatternMatcher",
-    "ansi-escapes": "^7.1.1",
+    "ansi-escapes": "^7.2.0",
     "ansi-styles": "^6.2.3",
     "as-table": "^1.0.55",
     "camelize": "^1.0.1",
