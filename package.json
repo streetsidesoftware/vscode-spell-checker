@@ -4260,7 +4260,7 @@
     "@types/node": "^20.19.24",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~4.0.6",
+    "@vitest/coverage-istanbul": "~4.0.7",
     "@vscode/vsce": "^3.6.2",
     "ansi-styles": "^6.2.3",
     "chokidar-cli": "^3.0.0",
@@ -4285,7 +4285,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.3",
     "vite": "^7.1.12",
-    "vitest": "~4.0.6"
+    "vitest": "~4.0.7"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.2.2",
