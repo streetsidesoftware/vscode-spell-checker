@@ -37,7 +37,7 @@
     "svelte-check": "^4.3.3",
     "svelte-preprocess": "^6.0.3",
     "typescript": "~5.9.3",
-    "vite": "^7.1.12"
+    "vite": "^7.2.1"
   },
   "engines": {
     "node": ">20.0.0"
