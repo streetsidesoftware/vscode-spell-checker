@@ -24,7 +24,7 @@
     "node": ">=20.18.1",
     "pnpm": "0",
     "yarn": "0",
-    "vscode": "^1.90.0"
+    "vscode": "^1.104.0"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/streetsidesoftware"
@@ -4258,7 +4258,7 @@
     "@eslint/js": "~9.38.0",
     "@tsconfig/node20": "^20.1.6",
     "@types/node": "^20.19.24",
-    "@types/vscode": "1.90.0",
+    "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "~4.0.8",
     "@vscode/vsce": "^3.7.0",
