@@ -40,6 +40,7 @@ const optionsBase = {
     platform: 'node',
     sourcemap: true,
     external: ['vscode'],
+    target: 'node22',
 };
 
 async function buildAll() {
