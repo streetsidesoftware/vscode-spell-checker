@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
     "display": "Spell Checker Base Config",
-    "extends": "@tsconfig/node20/tsconfig.json",
+    "extends": "@tsconfig/node22/tsconfig.json",
     "compilerOptions": {
         "strict": true,
         "strictFunctionTypes": true,
