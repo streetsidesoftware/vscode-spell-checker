@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.2.6...code-spell-checker-v4.3.0) (2025-11-10)
+
+
+### Features
+
+* Add an autocorrect as you type option ([#4837](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4837)) ([95ec705](https://github.com/streetsidesoftware/vscode-spell-checker/commit/95ec705b7456a8e381619505c64a588e49f228dc))
+* Require VSCode 1.104.0 or newer ([#4871](https://github.com/streetsidesoftware/vscode-spell-checker/issues/4871)) ([ba41e54](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ba41e549913e72e037e8ea0c5060c7c75f2f39e4))
+* Update CSpell from `9.2.2` to `9.3.0` and other dependencies ([bb4f779](https://github.com/streetsidesoftware/vscode-spell-checker/commit/bb4f779ed75fd7498f5bbe70aa394ebf0c2a8d34))
+
+
+### Updates and Bug Fixes
+
+* Update CSpell from `9.2.1` to `9.2.1` and other dependencies ([0ae6f3a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0ae6f3ad218ff98be4a367481da045e4e583a9d7))
+* Update CSpell from `9.2.1` to `9.2.2` and other dependencies ([41979f8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/41979f8e81f441ba90a02d31b8756c40c69f2533))
+
 ## [4.2.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.2.5...code-spell-checker-v4.2.6) (2025-08-31)
 
 
