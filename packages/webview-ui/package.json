@@ -20,7 +20,7 @@
     "test": "npm run check"
   },
   "dependencies": {
-    "@tanstack/svelte-query": "^5.90.2",
+    "@tanstack/svelte-query": "^6.0.5",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "fast-equals": "^5.3.2",
     "utils-disposables": "file:../utils-disposables",
