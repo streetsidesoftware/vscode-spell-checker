@@ -35,9 +35,9 @@
     "ts-json-schema-generator": "^2.4.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.3.0",
+    "@cspell/cspell-bundled-dicts": "^9.3.1",
     "@cspell/cspell-pipe": "^9.3.0",
-    "@cspell/cspell-types": "^9.3.0",
+    "@cspell/cspell-types": "^9.3.1",
     "@cspell/url": "^9.3.0",
     "@internal/common-utils": "file:../__utils",
     "cspell-config-lib": "^9.3.0",
@@ -45,7 +45,7 @@
     "cspell-glob": "^9.3.0",
     "cspell-io": "^9.3.0",
     "cspell-lib": "^9.3.0",
-    "gensequence": "^7.0.0",
+    "gensequence": "^8.0.8",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
     "utils-disposables": "file:../utils-disposables",
