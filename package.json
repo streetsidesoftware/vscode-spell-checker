@@ -4256,11 +4256,11 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "~9.38.0",
-    "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^20.19.24",
+    "@tsconfig/node22": "^22.0.3",
+    "@types/node": "^20.19.25",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~4.0.8",
+    "@vitest/coverage-istanbul": "~4.0.9",
     "@vscode/vsce": "^3.7.0",
     "ansi-styles": "^6.2.3",
     "chokidar-cli": "^3.0.0",
@@ -4281,17 +4281,17 @@
     "rollup-plugin-dts": "^6.2.3",
     "shx": "^0.4.0",
     "tsdown": "^0.15.12",
-    "tsup": "^8.5.0",
+    "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.3",
+    "typescript-eslint": "^8.46.4",
     "vite": "^7.2.2",
-    "vitest": "~4.0.8"
+    "vitest": "~4.0.9"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.3.0",
-    "@cspell/cspell-types": "^9.3.0",
+    "@cspell/cspell-bundled-dicts": "^9.3.1",
+    "@cspell/cspell-types": "^9.3.1",
     "@cspell/dict-cspell-bundle": "^2.0.34",
-    "cspell": "^9.3.0",
+    "cspell": "^9.3.1",
     "regexp-worker": "^4.2.1"
   },
   "vsce": {}
