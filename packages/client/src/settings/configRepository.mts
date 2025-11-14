@@ -5,6 +5,7 @@ import type { TextEdit, WorkspaceFolder } from 'vscode';
 import { commands, ConfigurationTarget, Uri, window, workspace, WorkspaceEdit } from 'vscode';
 
 import type { CSpellUserSettings, CustomDictionaryScope } from '../client/index.mjs';
+import { logError } from '../util/errors.js';
 import { findOpenDocument } from '../vscode/fs.mjs';
 import { ConfigFields } from './configFields.mjs';
 import type { ConfigFileReaderWriter } from './configFileReadWrite.mjs';
@@ -128,7 +129,9 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
             await workspace.save(doc.uri);
         }
         await this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
-        if (formatConfig) await formatDocument(uri);
+        if (formatConfig) {
+            await formatDocument(uri).catch((err) => logError(err, 'CSpellConfigRepository.update formatDocument'));
+        }
     }
 
     static isCSpellConfigRepository(rep: ConfigRepository): rep is CSpellConfigRepository {
