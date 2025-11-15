@@ -195,7 +195,7 @@ export function normalizeWords(words: string | string[]): string[] {
 export function isUpdateSupportedForConfigFileFormat(uri: Uri): boolean {
     return isHandled(uri);
 }
-export class FailedToUpdateConfigFile extends Error { }
+export class FailedToUpdateConfigFile extends Error {}
 
 export function dictionaryDefinitionToCustomDictDef(def: DictionaryDefinitionCustom): CustomDictDef {
     return {
