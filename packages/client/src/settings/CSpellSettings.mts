@@ -36,6 +36,8 @@ export const configFileLocations = [
     'cspell.config.js',
     'cspell.config.cjs',
     'cspell.config.mjs',
+    'cspell.config.ts',
+    'cspell.config.mts',
     // .config
     '.config/.cspell.json',
     '.config/cspell.json',
@@ -51,6 +53,9 @@ export const configFileLocations = [
     '.config/cspell.yml',
     '.config/cspell.config.js',
     '.config/cspell.config.cjs',
+    '.config/cspell.config.mjs',
+    '.config/cspell.config.ts',
+    '.config/cspell.config.mts',
 ] as const;
 
 const setOfConfigFilesNames = new Set(configFileLocations.map((filename) => filename.split('/').slice(-1)[0]));
@@ -190,7 +195,7 @@ export function normalizeWords(words: string | string[]): string[] {
 export function isUpdateSupportedForConfigFileFormat(uri: Uri): boolean {
     return isHandled(uri);
 }
-export class FailedToUpdateConfigFile extends Error {}
+export class FailedToUpdateConfigFile extends Error { }
 
 export function dictionaryDefinitionToCustomDictDef(def: DictionaryDefinitionCustom): CustomDictDef {
     return {
