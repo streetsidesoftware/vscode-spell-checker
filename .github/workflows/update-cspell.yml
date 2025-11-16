@@ -116,7 +116,7 @@ jobs:
           path: package.json
 
       - name: PR
-        uses: ./.github/actions/pr
+        uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
           commit-message: 'ci: Update CSpell'
           branch: ${{ env.NEW_BRANCH }}
