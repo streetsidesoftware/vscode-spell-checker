@@ -4272,7 +4272,7 @@
     "eslint-plugin-unicorn": "^62.0.0",
     "globals": "^16.5.0",
     "inject-markdown": "^4.0.0",
-    "jest-mock-vscode": "^4.8.2",
+    "jest-mock-vscode": "^4.9.4",
     "ovsx": "^0.10.6",
     "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
