@@ -55,7 +55,7 @@ jobs:
           title: Build Website Docs
 
       - name: PR
-        uses: ./.github/actions/pr
+        uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
           commit-message: 'ci: Build Website Docs'
           branch: ${{ env.NEW_BRANCH }}

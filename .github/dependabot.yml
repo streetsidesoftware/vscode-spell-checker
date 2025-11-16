@@ -20,6 +20,6 @@ updates:
     # default location of `.github/workflows`
     directories:
       - '/'
-      - '/.github/actions/pr/*'
+      - '/.github/actions/*'
     schedule:
       interval: 'daily'
