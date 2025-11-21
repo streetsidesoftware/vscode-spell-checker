@@ -38,7 +38,7 @@ jobs:
 
       - name: Checkout code
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: tag versions
         if: ${{ steps.release.outputs.release_created }}
@@ -100,7 +100,7 @@ jobs:
     if: ${{ !needs.release-please.outputs.release_created }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Find PR
         id: find-pr
         uses: actions/github-script@v8
