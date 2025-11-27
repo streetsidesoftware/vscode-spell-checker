@@ -4260,8 +4260,8 @@
     "@types/node": "^20.19.25",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~4.0.13",
-    "@vscode/vsce": "^3.7.0",
+    "@vitest/coverage-istanbul": "~4.0.14",
+    "@vscode/vsce": "^3.7.1",
     "ansi-styles": "^6.2.3",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.1",
@@ -4283,9 +4283,9 @@
     "tsdown": "^0.15.12",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.47.0",
+    "typescript-eslint": "^8.48.0",
     "vite": "^7.2.4",
-    "vitest": "~4.0.13"
+    "vitest": "~4.0.14"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.3.2",
