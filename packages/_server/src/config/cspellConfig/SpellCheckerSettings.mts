@@ -28,7 +28,8 @@ export type DiagnosticLevelExt = 'Error' | 'Warning' | 'Information' | 'Hint' | 
 export type UseVSCodeDiagnosticSeverity = Record<string, DiagnosticLevelExt>;
 
 export interface SpellCheckerSettings
-    extends SpellCheckerShouldCheckDocSettings,
+    extends
+        SpellCheckerShouldCheckDocSettings,
         FileTypesAndSchemeSettings,
         SpellCheckerBehaviorSettings,
         AppearanceSettings,
