@@ -107,7 +107,8 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'version';
 
 export interface SpellCheckerSettingsVSCodeBase
-    extends Omit<
+    extends
+        Omit<
             CSpellUserAndExtensionSettings,
             CSpellOmitFieldsFromExtensionContributesInPackageJson | keyof DictionaryDefinitions | keyof LanguageSettings | keyof Overrides
         >,
