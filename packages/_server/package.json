@@ -45,7 +45,7 @@
     "cspell-glob": "^9.3.2",
     "cspell-io": "^9.3.2",
     "cspell-lib": "^9.3.2",
-    "gensequence": "^7.0.0",
+    "gensequence": "^8.0.8",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
     "utils-disposables": "file:../utils-disposables",
@@ -68,7 +68,7 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": ">20.0.0"
+    "node": ">=22.20.0"
   },
   "files": [
     "dist",
