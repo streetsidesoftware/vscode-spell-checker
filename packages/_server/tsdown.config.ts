@@ -12,6 +12,7 @@ export default defineConfig([
         noExternal: [/.*/],
         clean: true,
         target: 'node22',
+        fixedExtension: false,
     },
     {
         // This is the non-bundled version used for the API to the client.
@@ -22,5 +23,6 @@ export default defineConfig([
         sourcemap: true,
         clean: true,
         target: 'node22',
+        fixedExtension: false,
     },
 ]);
