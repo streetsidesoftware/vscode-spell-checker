@@ -4275,7 +4275,7 @@
     "jest-mock-vscode": "^4.9.4",
     "ovsx": "^0.10.7",
     "patch-package": "^8.0.1",
-    "prettier": "^3.7.1",
+    "prettier": "^3.7.3",
     "prettier-plugin-svelte": "^3.4.0",
     "rollup": "^4.53.3",
     "rollup-plugin-dts": "^6.3.0",
@@ -4290,7 +4290,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.3.2",
     "@cspell/cspell-types": "^9.3.2",
-    "@cspell/dict-cspell-bundle": "^2.0.39",
+    "@cspell/dict-cspell-bundle": "^2.0.40",
     "cspell": "^9.3.2",
     "regexp-worker": "^4.3.0"
   },
