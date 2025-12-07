@@ -832,6 +832,14 @@
             "scope": "resource",
             "type": "array"
           },
+          "cSpell.maxFileSize": {
+            "markdownDescription": "The Maximum size of a file to spell check. This is used to prevent spell checking very large files.\n\nThe value can be number or a string formatted `<number>[units]`, number with optional units.\n\nSupported units:\n\n- K, KB - value * 1024\n- M, MB - value * 2^20\n- G, GB - value * 2^30\n\nSpecial values:\n- `0` - has the effect of removing the limit.\n\nExamples:\n- `1000000` - 1 million bytes\n- `1000K` or `1000KB` - 1 thousand kilobytes\n- `0.5M` or `0.5MB` - 0.5 megabytes\n\ndefault: no limit",
+            "since": "9.4.0",
+            "type": [
+              "number",
+              "string"
+            ]
+          },
           "cSpell.minRandomLength": {
             "default": 40,
             "markdownDescription": "The minimum length of a random string to be ignored.",
@@ -1816,6 +1824,14 @@
                   "default": 5,
                   "markdownDescription": "The maximum number of times the same word can be flagged as an error in a file.",
                   "type": "number"
+                },
+                "maxFileSize": {
+                  "markdownDescription": "The Maximum size of a file to spell check. This is used to prevent spell checking very large files.\n\nThe value can be number or a string formatted `<number>[units]`, number with optional units.\n\nSupported units:\n\n- K, KB - value * 1024\n- M, MB - value * 2^20\n- G, GB - value * 2^30\n\nSpecial values:\n- `0` - has the effect of removing the limit.\n\nExamples:\n- `1000000` - 1 million bytes\n- `1000K` or `1000KB` - 1 thousand kilobytes\n- `0.5M` or `0.5MB` - 0.5 megabytes\n\ndefault: no limit",
+                  "since": "9.4.0",
+                  "type": [
+                    "number",
+                    "string"
+                  ]
                 },
                 "maxNumberOfProblems": {
                   "default": 10000,
@@ -4288,10 +4304,10 @@
     "vitest": "~4.0.14"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.3.2",
-    "@cspell/cspell-types": "^9.3.2",
+    "@cspell/cspell-bundled-dicts": "^9.4.0",
+    "@cspell/cspell-types": "^9.4.0",
     "@cspell/dict-cspell-bundle": "^2.0.40",
-    "cspell": "^9.3.2",
+    "cspell": "^9.4.0",
     "regexp-worker": "^4.3.0"
   },
   "vsce": {}
