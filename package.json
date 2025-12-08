@@ -4296,11 +4296,11 @@
     "rollup": "^4.53.3",
     "rollup-plugin-dts": "^6.3.0",
     "shx": "^0.4.0",
-    "tsdown": "^0.16.8",
+    "tsdown": "^0.17.1",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.1",
-    "vite": "^7.2.6",
+    "vite": "^7.2.7",
     "vitest": "~4.0.15"
   },
   "dependencies": {
