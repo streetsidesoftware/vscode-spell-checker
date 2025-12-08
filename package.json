@@ -4299,7 +4299,7 @@
     "tsdown": "^0.16.8",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.48.1",
+    "typescript-eslint": "^8.49.0",
     "vite": "^7.2.7",
     "vitest": "~4.0.15"
   },
