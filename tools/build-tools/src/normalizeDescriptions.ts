@@ -3,6 +3,8 @@ import traverse from 'json-schema-traverse';
 
 type SchemaObj = traverse.SchemaObject;
 
+const deleteKeys = ['description', 'since', 'sinceVersion'];
+
 export function normalizeDescriptions(schema: JSONSchema7) {
     function cb(schemaObj: SchemaObj, _jsonPtr: string) {
         // console.log('%o', { jsonPtr, keys: Object.keys(schemaObj) });
@@ -12,7 +14,8 @@ export function normalizeDescriptions(schema: JSONSchema7) {
         const newKeys = replaceKey(Object.keys(schemaObj), 'description', 'markdownDescription');
         schemaObj.markdownDescription = schemaObj.markdownDescription ?? schemaObj.description;
         schemaObj.markdownDescription?.replace(/\u200B/g, ''); // remove zero width spaces
-        delete schemaObj.description;
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        deleteKeys.forEach((key) => delete schemaObj[key]);
         orderFieldsInObject(schemaObj, newKeys);
     }
 
