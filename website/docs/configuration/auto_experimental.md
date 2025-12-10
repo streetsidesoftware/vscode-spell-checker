@@ -32,7 +32,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -41,7 +40,6 @@ Description
 Show Regular Expression Explorer
 
 </dd>
-
 
 <dt>
 Type
@@ -52,7 +50,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -62,9 +59,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -73,9 +67,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -95,7 +86,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -106,7 +96,6 @@ This feature is experimental and will be removed in the future.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -115,7 +104,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -126,9 +114,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -137,9 +122,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -159,7 +141,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -177,7 +158,6 @@ reporting unknown words as suggestions. Common spelling errors are still flagged
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -186,7 +166,6 @@ Type
 `( "all" | "simple" | "typos" | "flagged" )`
 
 </dd>
-
 
 <dt>
 Scope
@@ -197,7 +176,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -207,7 +185,6 @@ Use Unknown Words settings instead.
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -216,9 +193,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 

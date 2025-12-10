@@ -36,7 +36,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -55,7 +54,6 @@ This feature is used in connection with [`cSpell.advanced.feature.useReferencePr
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -64,7 +62,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -75,9 +72,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -86,9 +80,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -108,7 +99,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -119,7 +109,6 @@ This feature is used in connection with [`cSpell.fixSpellingWithRenameProvider`]
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -128,7 +117,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -139,9 +127,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -150,9 +135,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -172,7 +154,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -181,7 +162,6 @@ Description
 Use Rename Provider when fixing spelling issues.
 
 </dd>
-
 
 <dt>
 Type
@@ -192,7 +172,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -202,9 +181,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -213,9 +189,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -235,7 +208,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -244,7 +216,6 @@ Description
 Have the logs written to a file instead of to VS Code.
 
 </dd>
-
 
 <dt>
 Type
@@ -255,7 +226,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -265,9 +235,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -276,9 +243,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -298,7 +262,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -307,7 +270,6 @@ Description
 Set the Debug Level for logging messages.
 
 </dd>
-
 
 <dt>
 Type
@@ -323,9 +285,7 @@ Type
 | `Information` | Log errors, warnings, and info |
 | `Debug` | Log everything (noisy) |
 
-
 </dd>
-
 
 <dt>
 Scope
@@ -336,9 +296,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -347,9 +304,6 @@ Default
 _`"Error"`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -369,7 +323,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -386,7 +339,6 @@ See:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -395,7 +347,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -406,9 +357,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -418,16 +366,14 @@ _`true`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 

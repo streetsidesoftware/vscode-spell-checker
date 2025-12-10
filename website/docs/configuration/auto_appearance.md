@@ -43,7 +43,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -57,7 +56,6 @@ See:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -66,7 +64,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -77,9 +74,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -89,16 +83,14 @@ _- none -_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -118,7 +110,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -131,7 +122,6 @@ This setting allows the use of the VS Code Diagnostic Collection to render spell
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -140,7 +130,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -151,9 +140,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -163,16 +149,14 @@ _`{"vscode-scm":true}`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -192,7 +176,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -206,7 +189,6 @@ See:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -215,7 +197,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -226,9 +207,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -238,16 +216,14 @@ _- none -_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -266,7 +242,6 @@ Name
 `cSpell.overviewRulerColor`
 
 </dd>
-
 
 <dt>
 Description
@@ -291,7 +266,6 @@ Examples:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -300,7 +274,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -311,9 +284,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -323,16 +293,14 @@ _`"#348feb80"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -352,7 +320,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -366,7 +333,6 @@ Note: To set the color of the ruler, use [`cSpell.overviewRulerColor`](appearanc
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -375,7 +341,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -386,9 +351,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -398,16 +360,14 @@ _`true`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.35
 
 </dd>
-
 
 </dl>
 
@@ -426,7 +386,6 @@ Name
 `cSpell.textDecoration`
 
 </dd>
-
 
 <dt>
 Description
@@ -459,7 +418,6 @@ To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspellov
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -468,7 +426,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -479,9 +436,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -491,16 +445,14 @@ _- none -_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -519,7 +471,6 @@ Name
 `cSpell.textDecorationColor`
 
 </dd>
-
 
 <dt>
 Description
@@ -540,7 +491,6 @@ Examples:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -549,7 +499,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -560,9 +509,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -572,16 +518,14 @@ _`"#348feb"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -601,7 +545,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -619,7 +562,6 @@ Examples:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -628,7 +570,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -639,9 +580,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -651,16 +589,14 @@ _`"#f44"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -679,7 +615,6 @@ Name
 `cSpell.textDecorationColorSuggestion`
 
 </dd>
-
 
 <dt>
 Description
@@ -700,7 +635,6 @@ Examples:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -709,7 +643,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -720,9 +653,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -732,16 +662,14 @@ _`"#cf88"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.2
 
 </dd>
-
 
 </dl>
 
@@ -761,7 +689,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -774,7 +701,6 @@ See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozi
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -783,7 +709,6 @@ Type
 `( "underline" | "overline" | "line-through" )`
 
 </dd>
-
 
 <dt>
 Scope
@@ -794,9 +719,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -806,16 +728,14 @@ _`"underline"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -835,7 +755,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -848,7 +767,6 @@ See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozi
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -857,7 +775,6 @@ Type
 `( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
 
 </dd>
-
 
 <dt>
 Scope
@@ -868,9 +785,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -880,16 +794,14 @@ _`"dashed"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -908,7 +820,6 @@ Name
 `cSpell.textDecorationThickness`
 
 </dd>
-
 
 <dt>
 Description
@@ -929,7 +840,6 @@ Examples:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -938,7 +848,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -949,9 +858,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -961,16 +867,14 @@ _`"auto"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -990,7 +894,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1004,7 +907,6 @@ Note: This setting overrides the VS Code Diagnostics setting: [`cSpell.diagnosti
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -1013,7 +915,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -1024,9 +925,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1036,16 +934,14 @@ _`false`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 

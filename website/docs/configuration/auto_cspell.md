@@ -15,6 +15,7 @@ Settings related to CSpell Command Line Tool.
 | [`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings) |  | Ignore sequences of characters that look like random strings. |
 | [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in [`cSpell.patterns`](cspell#cspellpatterns))… |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking. |
+| [`cSpell.maxFileSize`](#cspellmaxfilesize) |  | The Maximum size of a file to spell check. This is used to prevent spell checking very large… |
 | [`cSpell.minRandomLength`](#cspellminrandomlength) |  | The minimum length of a random string to be ignored. |
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)… |
@@ -37,7 +38,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -46,7 +46,6 @@ Description
 Ignore sequences of characters that look like random strings.
 
 </dd>
-
 
 <dt>
 Type
@@ -57,7 +56,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -67,9 +65,6 @@ _- none -_
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -78,9 +73,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -99,7 +91,6 @@ Name
 `cSpell.ignoreRegExpList`
 
 </dd>
-
 
 <dt>
 Description
@@ -123,7 +114,6 @@ The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicod
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -132,7 +122,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -143,9 +132,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -154,9 +140,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -176,7 +159,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -188,7 +170,6 @@ If this property is defined, only text matching the included patterns will be ch
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -197,7 +178,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -208,8 +188,77 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+</dl>
+
+---
 
 
+### `cSpell.maxFileSize`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.maxFileSize`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The Maximum size of a file to spell check. This is used to prevent spell checking very large files.
+
+The value can be number or a string formatted `<number>[units]`, number with optional units.
+
+Supported units:
+
+- K, KB - value * 1024
+- M, MB - value * 2^20
+- G, GB - value * 2^30
+
+Special values:
+- `0` - has the effect of removing the limit.
+
+Examples:
+- `1000000` - 1 million bytes
+- `1000K` or `1000KB` - 1 thousand kilobytes
+- `0.5M` or `0.5MB` - 0.5 megabytes
+
+default: no limit
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( number | string )`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
 
 <dt>
 Default
@@ -220,8 +269,14 @@ _- none -_
 
 </dd>
 
+<dt>
+CSpell Version
+</dt>
+<dd>
 
+9.4.0
 
+</dd>
 
 </dl>
 
@@ -241,7 +296,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -250,7 +304,6 @@ Description
 The minimum length of a random string to be ignored.
 
 </dd>
-
 
 <dt>
 Type
@@ -261,7 +314,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -271,9 +323,6 @@ _- none -_
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -282,9 +331,6 @@ Default
 _`40`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -303,7 +349,6 @@ Name
 `cSpell.overrides`
 
 </dd>
-
 
 <dt>
 Description
@@ -331,7 +376,6 @@ Overrides are used to apply settings for specific files in your project.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -340,7 +384,6 @@ Type
 `object[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -351,9 +394,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -362,9 +402,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -383,7 +420,6 @@ Name
 `cSpell.patterns`
 
 </dd>
-
 
 <dt>
 Description
@@ -410,7 +446,6 @@ Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`]
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -419,7 +454,6 @@ Type
 `object[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -430,9 +464,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -441,9 +472,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -463,7 +491,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -478,7 +505,6 @@ Controls how unknown words are handled.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -487,7 +513,6 @@ Type
 `( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
 
 </dd>
-
 
 <dt>
 Scope
@@ -498,9 +523,6 @@ _- none -_
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -510,16 +532,14 @@ _`"report-all"`_
 
 </dd>
 
-
 <dt>
-Since Version
+CSpell Version
 </dt>
 <dd>
 
 9.1.0
 
 </dd>
-
 
 </dl>
 

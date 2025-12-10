@@ -36,7 +36,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -44,22 +43,17 @@ Description
 
 The maximum average length of chunks of text without word breaks.
 
-
 A chunk is the characters between absolute word breaks.
 Absolute word breaks match: `/[\s,{}[\]]/`
 
-
 **Error Message:** _Average word length is too long._
-
 
 If you are seeing this message, it means that the file contains mostly long lines
 without many word breaks.
 
-
 Hide this message using [`cSpell.enabledNotifications`](reporting-and-display#cspellenablednotifications)
 
 </dd>
-
 
 <dt>
 Type
@@ -70,7 +64,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -80,9 +73,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -91,9 +81,6 @@ Default
 _`200`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -113,7 +100,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -121,18 +107,14 @@ Description
 
 The maximum line length.
 
-
 Block spell checking if lines are longer than the value given.
 This is used to prevent spell checking generated files.
 
-
 **Error Message:** _Lines are too long._
-
 
 Hide this message using [`cSpell.enabledNotifications`](reporting-and-display#cspellenablednotifications)
 
 </dd>
-
 
 <dt>
 Type
@@ -143,7 +125,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -153,9 +134,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -164,9 +142,6 @@ Default
 _`20000`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -186,7 +161,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -194,25 +168,19 @@ Description
 
 The maximum length of a chunk of text without word breaks.
 
-
 It is used to prevent spell checking of generated files.
-
 
 A chunk is the characters between absolute word breaks.
 Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
 
-
 **Error Message:** _Maximum word length exceeded._
-
 
 If you are seeing this message, it means that the file contains a very long line
 without many word breaks.
 
-
 Hide this message using [`cSpell.enabledNotifications`](reporting-and-display#cspellenablednotifications)
 
 </dd>
-
 
 <dt>
 Type
@@ -223,7 +191,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -233,9 +200,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -244,9 +208,6 @@ Default
 _`1000`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -266,7 +227,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -277,7 +237,6 @@ Each block is 1024 characters.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -286,7 +245,6 @@ Type
 `number`
 
 </dd>
-
 
 <dt>
 Scope
@@ -297,9 +255,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -308,9 +263,6 @@ Default
 _`500`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -330,7 +282,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -339,7 +290,6 @@ Description
 Delay in ms after a document has changed before checking it for spelling errors.
 
 </dd>
-
 
 <dt>
 Type
@@ -350,7 +300,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -360,9 +309,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -371,9 +317,6 @@ Default
 _`50`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -393,7 +336,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -402,7 +344,6 @@ Description
 The maximum amount of time in milliseconds to generate suggestions for a word.
 
 </dd>
-
 
 <dt>
 Type
@@ -413,7 +354,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -423,9 +363,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -434,9 +371,6 @@ Default
 _`400`_
 
 </dd>
-
-
-
 
 </dl>
 

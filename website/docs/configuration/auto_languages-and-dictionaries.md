@@ -43,7 +43,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -59,7 +58,6 @@ Determines if words must match case and accent rules.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -68,7 +66,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -79,9 +76,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -90,9 +84,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -112,7 +103,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -120,7 +110,6 @@ Description
 
 Define custom dictionaries to be included by default.
 If `addWords` is `true` words will be added to this dictionary.
-
 
 **Example:**
 
@@ -139,7 +128,6 @@ If `addWords` is `true` words will be added to this dictionary.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -148,7 +136,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -159,9 +146,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -170,9 +154,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -192,7 +173,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -205,7 +185,6 @@ Each entry should match the name of the dictionary.
 To remove a dictionary from the list add `!` before the name.
 i.e. `!typescript` will turn off the dictionary with the name `typescript`.
 
-
 Example:
 
 ```json5
@@ -214,7 +193,6 @@ Example:
 ```
 
 </dd>
-
 
 <dt>
 Type
@@ -225,7 +203,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -235,9 +212,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -246,9 +220,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -267,7 +238,6 @@ Name
 `cSpell.dictionaryDefinitions` -- Dictionary Definitions
 
 </dd>
-
 
 <dt>
 Description
@@ -296,7 +266,6 @@ It is better to use [`cSpell.customDictionaries`](languages-and-dictionaries#csp
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -305,7 +274,6 @@ Type
 `object[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -316,9 +284,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -327,9 +292,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -348,7 +310,6 @@ Name
 `cSpell.flagWords`
 
 </dd>
-
 
 <dt>
 Description
@@ -373,7 +334,6 @@ Example:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -382,7 +342,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -393,9 +352,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -404,9 +360,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -426,7 +379,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -435,7 +387,6 @@ Description
 A list of words to be ignored by the spell checker.
 
 </dd>
-
 
 <dt>
 Type
@@ -446,7 +397,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -456,9 +406,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -467,9 +414,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -489,7 +433,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -503,7 +446,6 @@ Example: `en,nl` to enable both English and Dutch
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -512,7 +454,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -523,9 +464,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -534,9 +472,6 @@ Default
 _`"en"`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -556,7 +491,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -565,7 +499,6 @@ Description
 Additional settings for individual programming languages and locales.
 
 </dd>
-
 
 <dt>
 Type
@@ -576,7 +509,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -586,9 +518,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -597,9 +526,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -619,7 +545,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -635,7 +560,6 @@ possible suggestions.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -644,7 +568,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -655,9 +578,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -666,9 +586,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -687,7 +604,6 @@ Name
 `cSpell.suggestWords`
 
 </dd>
-
 
 <dt>
 Description
@@ -708,7 +624,6 @@ Format of `suggestWords`
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -717,7 +632,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -728,9 +642,6 @@ _- none -_
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -739,9 +650,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -761,7 +669,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -770,7 +677,6 @@ Description
 Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
 
 </dd>
-
 
 <dt>
 Type
@@ -781,7 +687,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -790,9 +695,6 @@ Scope
 resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
-
-
-
 
 <dt>
 Default
@@ -803,16 +705,14 @@ _`true`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -832,7 +732,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -841,7 +740,6 @@ Description
 Words to add to global dictionary -- should only be in the user config file.
 
 </dd>
-
 
 <dt>
 Type
@@ -852,7 +750,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -862,9 +759,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -873,9 +767,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -895,7 +786,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -904,7 +794,6 @@ Description
 List of words to be considered correct.
 
 </dd>
-
 
 <dt>
 Type
@@ -915,7 +804,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -925,9 +813,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -936,9 +821,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
