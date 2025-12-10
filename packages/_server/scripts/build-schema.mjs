@@ -43,7 +43,7 @@ const config = defConfig({
         'deprecated',
         'order',
         'since',
-        'sinceVersion'
+        'sinceVersion',
     ],
 });
 
