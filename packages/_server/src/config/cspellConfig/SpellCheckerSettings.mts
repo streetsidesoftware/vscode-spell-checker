@@ -15,7 +15,7 @@ export type DiagnosticLevel = 'Error' | 'Warning' | 'Information' | 'Hint';
  *
  * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
  * @title Set Diagnostic Reporting Level
- * @since 4.0.0
+ * @sinceVersion 4.0.0
  * @enumDescriptions [
  *  "Report Spelling Issues as Errors",
  *  "Report Spelling Issues as Warnings",
@@ -86,7 +86,7 @@ export interface SpellCheckerSettings
      * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
      * @title Set Diagnostic Reporting Level for Flagged Words
      * @scope resource
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
@@ -309,7 +309,7 @@ export interface SpellCheckerSettings
      * Note: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.
      *
      * @scope resource
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default true
      */
     mergeCSpellSettings?: boolean;
@@ -328,7 +328,7 @@ export interface SpellCheckerSettings
      * ```
      *
      * @scope resource
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default {
      * "allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,
      * "enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,
@@ -344,7 +344,7 @@ export interface SpellCheckerSettings
     /**
      * Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
      * @scope resource
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default true
      */
     useLocallyInstalledCSpellDictionaries?: boolean;
@@ -359,7 +359,7 @@ export interface SpellCheckerSettings
      * - [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)
      * - [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)
      * @scope window
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default true
      */
     trustedWorkspace?: boolean;
@@ -434,7 +434,7 @@ export interface SpellCheckerBehaviorSettings {
      * See: `#cSpell.revealIssuesAfterDelayMS#` to control when issues are revealed.
      * @title Hide Issues While Typing
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "Word"
      * @enumDescriptions [
      *  "Show issues while typing",
@@ -448,7 +448,7 @@ export interface SpellCheckerBehaviorSettings {
      * Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.
      * @title Reveal Issues After a Delay in Milliseconds
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default 1500
      */
     revealIssuesAfterDelayMS?: number;
@@ -464,7 +464,7 @@ export interface SpellCheckerBehaviorSettings {
      *
      * @title Enabled Notifications
      * @scope resource
-     * @since 4.0.41
+     * @sinceVersion 4.0.41
      * @default { "Lines too Long": true, "Average Word Length too Long": true, "Maximum Word Length Exceeded": true }
      */
     enabledNotifications?: EnabledNotifications;
@@ -524,7 +524,7 @@ export type UnknownWordsReportingLevel = 'all' | 'simple' | 'typos' | 'flagged';
  * Control which notifications are displayed.
  * @title Enabled Notifications
  * @scope resource
- * @since 4.0.41
+ * @sinceVersion 4.0.41
  */
 export interface EnabledNotifications {
     /**

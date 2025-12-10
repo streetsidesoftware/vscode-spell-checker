@@ -20,7 +20,7 @@ interface Decoration {
      * - `rgb(255 153 0 / 80%)`
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "#348feb80"
      */
     overviewRulerColor?: string;
@@ -51,7 +51,7 @@ interface Decoration {
      * To change the ruler color, use `#cSpell.overviewRulerColor#`.
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      */
     textDecoration?: string;
 
@@ -62,7 +62,7 @@ interface Decoration {
      * - line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "underline"
      */
     textDecorationLine?: 'underline' | 'overline' | 'line-through';
@@ -74,7 +74,7 @@ interface Decoration {
      * - style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "dashed"
      */
     textDecorationStyle?: 'solid' | 'wavy' | 'dotted' | 'dashed' | 'double';
@@ -93,7 +93,7 @@ interface Decoration {
      * - `10%`
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "auto"
      */
     textDecorationThickness?: 'auto' | 'from-font' | string;
@@ -112,7 +112,7 @@ interface Decoration {
      * - `#ff0c`
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "#348feb"
      */
     textDecorationColor?: string;
@@ -129,7 +129,7 @@ interface Decoration {
      * - `#ff0c`
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default "#f44"
      */
     textDecorationColorFlagged?: string;
@@ -148,7 +148,7 @@ interface Decoration {
      * - `#ff0c`
      *
      * @scope application
-     * @since 4.0.2
+     * @sinceVersion 4.0.2
      * @default "#cf88"
      */
     textDecorationColorSuggestion?: string;
@@ -165,7 +165,7 @@ interface Appearance extends Decoration {
      * - `#cSpell.overviewRulerColor#`
      * - `#cSpell.textDecoration#`
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      */
     light?: Decoration;
 
@@ -176,7 +176,7 @@ interface Appearance extends Decoration {
      * - `#cSpell.overviewRulerColor#`
      * - `#cSpell.textDecoration#`
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      */
     dark?: Decoration;
 }
@@ -190,7 +190,7 @@ export interface AppearanceSettings extends Appearance {
      * Note: To set the color of the ruler, use `#cSpell.overviewRulerColor#`.
      *
      * @scope application
-     * @since 4.0.35
+     * @sinceVersion 4.0.35
      * @default true
      */
     showInRuler?: boolean;
@@ -203,7 +203,7 @@ export interface AppearanceSettings extends Appearance {
      * Note: This setting overrides the VS Code Diagnostics setting: `#cSpell.diagnosticLevel#`.
      *
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default false
      */
     useCustomDecorations?: boolean;
@@ -216,7 +216,7 @@ export interface AppearanceSettings extends Appearance {
      *
      * @title Use VS Code to Render Spelling Issues
      * @scope application
-     * @since 4.0.0
+     * @sinceVersion 4.0.0
      * @default { "vscode-scm": true }
      */
     doNotUseCustomDecorationForScheme?: Record<string, boolean>;

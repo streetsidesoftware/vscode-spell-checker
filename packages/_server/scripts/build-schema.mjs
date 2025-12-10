@@ -43,6 +43,7 @@ const config = defConfig({
         'deprecated',
         'order',
         'since',
+        'sinceVersion'
     ],
 });
 
@@ -52,6 +53,11 @@ const schema = tsj.createGenerator(config).createSchema(config.type);
 const schemaString = stringify(schema, null, 2) + '\n';
 await fs.writeFile(outputPath, cleanJson(schemaString));
 
+/**
+ *
+ * @param {string} filePath
+ * @returns
+ */
 function p(filePath) {
     return path.resolve(rootDir, filePath);
 }
@@ -65,6 +71,11 @@ function defConfig(a) {
     return a;
 }
 
+/**
+ *
+ * @param {string} json
+ * @returns
+ */
 function cleanJson(json) {
     /** Remove zero width space */
     return json.replaceAll(/\u200B/g, '');
