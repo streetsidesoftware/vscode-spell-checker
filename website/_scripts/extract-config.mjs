@@ -264,7 +264,7 @@ function definition(entry, refs) {
         </dl>
 
         ---
-    `;
+    `.replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
 }
 
 /**
