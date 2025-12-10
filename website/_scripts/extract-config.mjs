@@ -228,7 +228,8 @@ function configDefinitions(entries, refs) {
 function definition(entry, refs) {
     const [key, value] = entry;
     const description = value.markdownDescription || value.description || value.title || '';
-    const since = value.since || '';
+    const since = value.sinceVersion || '';
+    const sinceCSpellVersion = value.since || '';
     const defaultValue = formatDefaultValue(value.default);
 
     const title = value.title ? `-- ${value.title}` : '';
@@ -256,7 +257,9 @@ function definition(entry, refs) {
 
         ${singleDef('Default', defaultValue, true)}
 
-        ${since ? singleDef('Since Version', since) : ''}
+        ${since ? singleDef('Since Extension Version', since) : ''}
+
+        ${sinceCSpellVersion ? singleDef('CSpell Version', sinceCSpellVersion) : ''}
 
         </dl>
 
