@@ -48,7 +48,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -57,7 +56,6 @@ Description
 Enable / Disable autocorrect while typing.
 
 </dd>
-
 
 <dt>
 Type
@@ -68,7 +66,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -78,9 +75,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -89,9 +83,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -111,7 +102,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -123,7 +113,6 @@ file to be saved prior to being updated.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -132,7 +121,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -143,9 +131,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -154,9 +139,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -176,7 +158,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -191,7 +172,6 @@ See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/refer
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -205,9 +185,7 @@ Type
 | `Information` | Report Spelling Issues as Information |
 | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
 
-
 </dd>
-
 
 <dt>
 Scope
@@ -218,9 +196,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -229,9 +204,6 @@ Default
 _`"Information"`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -251,7 +223,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -263,7 +234,6 @@ By default, flagged words will use the same diagnostic level as general issues. 
 See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
 
 </dd>
-
 
 <dt>
 Type
@@ -278,9 +248,7 @@ Type
 | `Information` | Report Spelling Issues as Information |
 | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
 
-
 </dd>
-
 
 <dt>
 Scope
@@ -291,9 +259,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -303,16 +268,14 @@ _- none -_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -332,7 +295,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -347,7 +309,6 @@ See:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -356,7 +317,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -367,14 +327,10 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
 <dd>
-
 
 ```json5
 {
@@ -383,19 +339,16 @@ Default
 }
 ```
 
-
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.41
 
 </dd>
-
 
 </dl>
 
@@ -415,7 +368,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -424,7 +376,6 @@ Description
 Hide the options to add words to dictionaries or settings.
 
 </dd>
-
 
 <dt>
 Type
@@ -435,7 +386,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -445,9 +395,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -456,9 +403,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -478,7 +422,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -488,7 +431,6 @@ Control how spelling issues are displayed while typing.
 See: [`cSpell.revealIssuesAfterDelayMS`](reporting-and-display#cspellrevealissuesafterdelayms) to control when issues are revealed.
 
 </dd>
-
 
 <dt>
 Type
@@ -503,9 +445,7 @@ Type
 | `Line` | Hide issues while typing on the line |
 | `Document` | Hide all issues while typing in the document |
 
-
 </dd>
-
 
 <dt>
 Scope
@@ -516,9 +456,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -528,16 +465,14 @@ _`"Word"`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -557,7 +492,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -566,7 +500,6 @@ Description
 The maximum number of times the same word can be flagged as an error in a file.
 
 </dd>
-
 
 <dt>
 Type
@@ -577,7 +510,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -587,9 +519,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -598,9 +527,6 @@ Default
 _`20`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -620,7 +546,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -629,7 +554,6 @@ Description
 Controls the maximum number of spelling errors per document.
 
 </dd>
-
 
 <dt>
 Type
@@ -640,7 +564,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -650,9 +573,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -661,9 +581,6 @@ Default
 _`100`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -683,7 +600,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -692,7 +608,6 @@ Description
 The minimum length of a word before checking it against a dictionary.
 
 </dd>
-
 
 <dt>
 Type
@@ -703,7 +618,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -713,9 +627,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -724,9 +635,6 @@ Default
 _`4`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -746,7 +654,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -755,7 +662,6 @@ Description
 Controls the number of suggestions shown.
 
 </dd>
-
 
 <dt>
 Type
@@ -766,7 +672,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -776,9 +681,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -787,9 +689,6 @@ Default
 _`8`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -809,7 +708,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -818,7 +716,6 @@ Description
 Reveal hidden issues related to [`cSpell.hideIssuesWhileTyping`](reporting-and-display#cspellhideissueswhiletyping) after a delay in milliseconds.
 
 </dd>
-
 
 <dt>
 Type
@@ -829,7 +726,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -838,9 +734,6 @@ Scope
 application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
-
-
-
 
 <dt>
 Default
@@ -851,16 +744,14 @@ _`1500`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -880,7 +771,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -892,7 +782,6 @@ Show CSpell in-document directives as you type.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -901,7 +790,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -912,9 +800,6 @@ language-overridable - Resource settings that can be overridable at a language l
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -923,9 +808,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -945,7 +827,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -954,7 +835,6 @@ Description
 Show Spell Checker actions in Editor Context Menu
 
 </dd>
-
 
 <dt>
 Type
@@ -965,7 +845,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -975,9 +854,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -986,9 +862,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1008,7 +881,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1017,7 +889,6 @@ Description
 Show Spelling Suggestions link in the top level context menu.
 
 </dd>
-
 
 <dt>
 Type
@@ -1028,7 +899,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -1038,9 +908,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1049,9 +916,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1071,7 +935,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1080,7 +943,6 @@ Description
 The type of menu used to display spelling suggestions.
 
 </dd>
-
 
 <dt>
 Type
@@ -1093,9 +955,7 @@ Type
 | `quickPick` | Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings) |
 | `quickFix` | Suggestions will appear inline near the word, inside the text editor. |
 
-
 </dd>
-
 
 <dt>
 Scope
@@ -1106,9 +966,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1117,9 +974,6 @@ Default
 _`"quickPick"`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1139,7 +993,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1153,7 +1006,6 @@ Range: between 1 and 5.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -1162,7 +1014,6 @@ Type
 `number`
 
 </dd>
-
 
 <dt>
 Scope
@@ -1173,9 +1024,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1184,9 +1032,6 @@ Default
 _`3`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1206,7 +1051,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1215,7 +1059,6 @@ Description
 Verify that the in-document directives are correct.
 
 </dd>
-
 
 <dt>
 Type
@@ -1226,7 +1069,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -1236,9 +1078,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1247,9 +1086,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 

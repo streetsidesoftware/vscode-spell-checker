@@ -45,7 +45,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -59,7 +58,6 @@ See [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfilety
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -68,7 +66,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -79,9 +76,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -90,9 +84,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -112,7 +103,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -125,7 +115,6 @@ These include:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -134,7 +123,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -145,9 +133,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -156,9 +141,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -177,7 +159,6 @@ Name
 `cSpell.enabledFileTypes` -- Enabled File Types to Check
 
 </dd>
-
 
 <dt>
 Description
@@ -203,7 +184,6 @@ A file type of `*` is a wildcard that enables all file types.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -212,7 +192,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -223,9 +202,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -234,9 +210,6 @@ Default
 _`{"*":true,"markdown":true}`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -256,14 +229,12 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
 <dd>
 
 Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
-
 
 Some schemes have special meaning like:
 - `untitled` - Used for new documents that have not yet been saved
@@ -274,7 +245,6 @@ Some schemes have special meaning like:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -283,7 +253,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -294,14 +263,10 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
 <dd>
-
 
 ```json5
 {
@@ -311,11 +276,7 @@ Default
 }
 ```
 
-
 </dd>
-
-
-
 
 </dl>
 
@@ -335,7 +296,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -346,7 +306,6 @@ Glob patterns are relative to the [`cSpell.globRoot`](files-folders-and-workspac
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -355,7 +314,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -366,9 +324,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -377,9 +332,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -399,7 +351,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -417,7 +368,6 @@ Special Values:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -426,7 +376,6 @@ Type
 `string`
 
 </dd>
-
 
 <dt>
 Scope
@@ -437,9 +386,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -448,9 +394,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -470,7 +413,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -479,7 +421,6 @@ Description
 Glob patterns of files to be ignored. The patterns are relative to the [`cSpell.globRoot`](files-folders-and-workspaces#cspellglobroot) of the configuration file that defines them.
 
 </dd>
-
 
 <dt>
 Type
@@ -490,7 +431,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -500,14 +440,10 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
 <dd>
-
 
 ```json5
 [
@@ -517,11 +453,7 @@ Default
 ]
 ```
 
-
 </dd>
-
-
-
 
 </dl>
 
@@ -541,7 +473,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -553,7 +484,6 @@ See [Importing / Extending Configuration](https://cspell.org/configuration/impor
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -562,7 +492,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -573,9 +502,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -584,9 +510,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -605,7 +528,6 @@ Name
 `cSpell.mergeCSpellSettings`
 
 </dd>
-
 
 <dt>
 Description
@@ -626,7 +548,6 @@ Note: this setting is used in conjunction with [`cSpell.mergeCSpellSettingsField
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -635,7 +556,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -646,9 +566,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -658,16 +575,14 @@ _`true`_
 
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -686,7 +601,6 @@ Name
 `cSpell.mergeCSpellSettingsFields`
 
 </dd>
-
 
 <dt>
 Description
@@ -707,7 +621,6 @@ Example:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -716,7 +629,6 @@ Type
 `object`
 
 </dd>
-
 
 <dt>
 Scope
@@ -727,14 +639,10 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
 <dd>
-
 
 ```json5
 {
@@ -751,19 +659,16 @@ true, "overrides": true, "patterns": true, "pnpFiles": true, "reporters": true,
 }
 ```
 
-
 </dd>
 
-
 <dt>
-Since Version
+Since Extension Version
 </dt>
 <dd>
 
 4.0.0
 
 </dd>
-
 
 </dl>
 
@@ -783,7 +688,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -792,7 +696,6 @@ Description
 Prevents searching for local configuration when checking individual documents.
 
 </dd>
-
 
 <dt>
 Type
@@ -803,7 +706,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -813,9 +715,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -824,9 +723,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -846,7 +742,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -855,13 +750,11 @@ Description
 Only spell check files that are in the currently open workspace.
 This same effect can be achieved using the [`cSpell.files`](files-folders-and-workspaces#cspellfiles) setting.
 
-
 ```js
 "cSpell.files": ["/**"]
 ```
 
 </dd>
-
 
 <dt>
 Type
@@ -872,7 +765,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -882,9 +774,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -893,9 +782,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -915,7 +801,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -924,7 +809,6 @@ Description
 Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.
 
 </dd>
-
 
 <dt>
 Type
@@ -935,7 +819,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -945,9 +828,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -956,9 +836,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -978,7 +855,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -992,7 +868,6 @@ of a PnP file and load it.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -1001,7 +876,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -1012,9 +886,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1023,9 +894,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1045,7 +913,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1056,14 +923,12 @@ By default it is the first folder.
 
 This is used to find the `cspell.json` file for the workspace.
 
-
 **Example: use the `client` folder**
 ```
 ${workspaceFolder:client}
 ```
 
 </dd>
-
 
 <dt>
 Type
@@ -1074,7 +939,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -1084,9 +948,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -1095,9 +956,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1117,14 +975,12 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
 <dd>
 
 Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
-
 
 Some schemes have special meaning like:
 - `untitled` - Used for new documents that have not yet been saved
@@ -1135,7 +991,6 @@ Some schemes have special meaning like:
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -1144,7 +999,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -1155,7 +1009,6 @@ window - Windows (instance) specific settings which can be configured in user, w
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -1165,7 +1018,6 @@ Deprecation Message
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -1174,9 +1026,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -1196,7 +1045,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -1206,7 +1054,6 @@ Enable / Disable checking file types (languageIds).
 
 These are in additional to the file types specified by [`cSpell.enabledLanguageIds`](legacy#cspellenabledlanguageids).
 To disable a language, prefix with `!` as in `!json`,
-
 
 **Example: individual file types**
 
@@ -1225,7 +1072,6 @@ kotlin      // enable checking for kotlin
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -1234,7 +1080,6 @@ Type
 `string[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -1245,7 +1090,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -1255,7 +1099,6 @@ Deprecation Message
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -1264,9 +1107,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 

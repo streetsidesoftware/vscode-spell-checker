@@ -31,7 +31,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -40,7 +39,6 @@ Description
 Enable / Disable the spell checker.
 
 </dd>
-
 
 <dt>
 Type
@@ -51,7 +49,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -61,9 +58,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -72,9 +66,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 

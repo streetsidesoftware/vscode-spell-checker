@@ -31,7 +31,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -45,7 +44,6 @@ Note: this can also cause many misspelled words to seem correct.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -54,7 +52,6 @@ Type
 `boolean`
 
 </dd>
-
 
 <dt>
 Scope
@@ -65,9 +62,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
-
-
 <dt>
 Default
 </dt>
@@ -76,9 +70,6 @@ Default
 _`false`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -98,7 +89,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -109,7 +99,6 @@ If `addWords` is `true` words will be added to this dictionary.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -118,7 +107,6 @@ Type
 `( object | string )[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -129,7 +117,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -139,7 +126,6 @@ Deprecation Message
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -148,9 +134,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -170,7 +153,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -181,7 +163,6 @@ If `addWords` is `true` words will be added to this dictionary.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -190,7 +171,6 @@ Type
 `( object | string )[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -201,7 +181,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -211,7 +190,6 @@ Deprecation Message
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -220,9 +198,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -242,7 +217,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -253,7 +227,6 @@ If `addWords` is `true` words will be added to this dictionary.
 
 </dd>
 
-
 <dt>
 Type
 </dt>
@@ -262,7 +235,6 @@ Type
 `( object | string )[]`
 
 </dd>
-
 
 <dt>
 Scope
@@ -273,7 +245,6 @@ resource - Resource settings, which apply to files and folders, and can be confi
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -283,7 +254,6 @@ Deprecation Message
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -292,9 +262,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -314,7 +281,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -323,7 +289,6 @@ Description
 Specify a list of file types to spell check. It is better to use [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes) to Enable / Disable checking files types.
 
 </dd>
-
 
 <dt>
 Type
@@ -334,7 +299,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -343,7 +307,6 @@ Scope
 resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
-
 
 <dt>
 Deprecation Message
@@ -354,7 +317,6 @@ Deprecation Message
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -363,9 +325,6 @@ Default
 _- none -_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -385,7 +344,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -394,7 +352,6 @@ Description
 Display the spell checker status on the status bar.
 
 </dd>
-
 
 <dt>
 Type
@@ -405,7 +362,6 @@ Type
 
 </dd>
 
-
 <dt>
 Scope
 </dt>
@@ -414,7 +370,6 @@ Scope
 application - Settings that apply to all instances of VS Code and can only be configured in user settings.
 
 </dd>
-
 
 <dt>
 Deprecation Message
@@ -425,7 +380,6 @@ No longer used.
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -434,9 +388,6 @@ Default
 _`true`_
 
 </dd>
-
-
-
 
 </dl>
 
@@ -456,7 +407,6 @@ Name
 
 </dd>
 
-
 <dt>
 Description
 </dt>
@@ -465,7 +415,6 @@ Description
 The side of the status bar to display the spell checker status.
 
 </dd>
-
 
 <dt>
 Type
@@ -478,9 +427,7 @@ Type
 | `Left` | Left Side of Statusbar |
 | `Right` | Right Side of Statusbar |
 
-
 </dd>
-
 
 <dt>
 Scope
@@ -491,7 +438,6 @@ application - Settings that apply to all instances of VS Code and can only be co
 
 </dd>
 
-
 <dt>
 Deprecation Message
 </dt>
@@ -501,7 +447,6 @@ No longer supported.
 
 </dd>
 
-
 <dt>
 Default
 </dt>
@@ -510,9 +455,6 @@ Default
 _`"Right"`_
 
 </dd>
-
-
-
 
 </dl>
 
