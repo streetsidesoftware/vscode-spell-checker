@@ -7,7 +7,7 @@ import vscode from 'vscode';
 import { generateOpenSettingsCommand, knownCommands } from './commands.mjs';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
-import { handleErrors } from './util/errors.js';
+import { handleErrors, logErrors } from './util/errors.js';
 
 const debug = false;
 const consoleLog = debug ? console.log : () => undefined;
@@ -25,7 +25,13 @@ export function registerActionsMenu(options: ActionsMenuOptions): Disposable {
 type Action = () => Promise<void>;
 
 interface ActionMenuItem extends QuickPickItem {
-    resourceUri?: vscode.Uri;
+    /**
+     * This was conflicting with QuickPickItem we can add it back later.
+     * See: https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.quickPickItemResource.d.ts
+     *
+     * Related to: https://github.com/microsoft/vscode/pull/271598
+     */
+    _resourceUri?: vscode.Uri;
     action?: Action | undefined;
 }
 
@@ -63,7 +69,7 @@ async function actionMenu(options: ActionsMenuOptions) {
         }),
     ].filter(isDefined);
 
-    return quickPickMenu({ items, title: 'Spell Checker Actions Menu' }).catch(() => undefined);
+    return logErrors(quickPickMenu({ items, title: 'Spell Checker Actions Menu' }), 'Actions Menu');
 }
 
 type QuickPick = vscode.QuickPick<QuickPickItem>;
@@ -199,7 +205,7 @@ class MenuItem implements ActionMenuItem {
     iconPath?: QuickPickItem['iconPath'] | undefined;
     alwaysShow?: boolean | undefined;
     buttons?: readonly vscode.QuickInputButton[] | undefined;
-    resourceUri?: vscode.Uri | undefined;
+    _resourceUri?: vscode.Uri | undefined;
     constructor(
         public label: string,
         public description?: string,
@@ -285,7 +291,7 @@ function itemsConfigFiles(configUris?: vscode.Uri[]) {
         );
         item.iconPath = vscode.ThemeIcon.File;
         item.detail = vscode.workspace.asRelativePath(uri, true);
-        item.resourceUri = uri;
+        item._resourceUri = uri;
         return item;
     });
 }
