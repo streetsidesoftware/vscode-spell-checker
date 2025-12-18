@@ -4260,8 +4260,8 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.4.0",
-    "@cspell/cspell-types": "^9.4.0",
-    "@cspell/dict-cspell-bundle": "^2.0.41",
+    "@cspell/cspell-types": "^9.5.0",
+    "@cspell/dict-cspell-bundle": "^2.0.43",
     "cspell": "^9.4.0",
     "regexp-worker": "^4.3.0"
   },
