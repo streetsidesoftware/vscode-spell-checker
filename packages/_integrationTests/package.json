@@ -24,13 +24,13 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@cspell/cspell-types": "^9.4.0",
+    "@cspell/cspell-types": "^9.5.0",
     "@cspell/dict-de-de": "^4.1.2",
     "@types/chai": "^5.2.3",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.19.27",
-    "chai": "^6.2.1",
+    "chai": "^6.2.2",
     "cross-env": "^10.1.0"
   },
   "peerDependenciesMeta": {},
