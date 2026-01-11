@@ -4265,5 +4265,7 @@
     "cspell": "^9.4.0",
     "regexp-worker": "^4.3.0"
   },
-  "vsce": {}
+  "vsce": {
+    "preRelease": true
+  }
 }
