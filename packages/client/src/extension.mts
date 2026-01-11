@@ -27,7 +27,7 @@ import * as modules from './modules.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
 import * as settings from './settings/index.mjs';
-import { sectionCSpell } from './settings/index.mjs';
+import { ConfigFields, sectionCSpell } from './settings/index.mjs';
 import { getSectionName } from './settings/vsConfig.mjs';
 import { createLanguageStatus } from './statusbar/languageStatus.mjs';
 import { createEventLogger, updateDocumentRelatedContext } from './storage/index.mjs';
@@ -212,7 +212,8 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         // We may want to consider waiting for these in the future.
 
         // Check if autocorrect is enabled.
-        if (!vscode.workspace.getConfiguration().get('cSpell.autocorrect', false)) return;
+        const cfg = vscode.workspace.getConfiguration(sectionCSpell, document.uri);
+        if (!cfg.get(ConfigFields.autocorrect, false)) return;
 
         // Check if the change should trigger autocorrect.
         if (contentChanges.length === 0) return;
