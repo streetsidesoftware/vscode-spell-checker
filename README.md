@@ -6,10 +6,11 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
-- [![GitHub Sponsors](https://img.shields.io/badge/-black?style=social&logo=githubsponsors&label=GitHub%20Sponsor%3A%20Street%20Side%20Software)](https://github.com/sponsors/streetsidesoftware)
-- [![Patreon](https://img.shields.io/badge/-black?style=social&logo=patreon&label=Patreon%3A%20Street%20Side%20Software)](https://patreon.com/streetsidesoftware)
-- [![PayPal](https://img.shields.io/badge/-black?style=social&logo=paypal&label=PayPal%20Donate%3A%20Street%20Side%20Software)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
-- [![Open Collective](https://img.shields.io/badge/-black?style=social&logo=opencollective&label=Open%20Collective%3A%20Code%20Spell%20Checker)](https://opencollective.com/code-spell-checker)
+- [![GitHub Sponsors](https://img.shields.io/badge/-Street_Side_Software-white?style=for-the-badge&logo=githubsponsors&label=GitHub%20Sponsor%3A)](https://github.com/sponsors/streetsidesoftware)
+- [![PayPal](https://img.shields.io/badge/-Street_Side_Software-black?style=for-the-badge&logo=paypal&label=PayPal%20Donate%3A)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+- [![Open Collective](https://img.shields.io/badge/-Code_Spell_Checker-black?style=for-the-badge&logo=opencollective&label=Open%20Collective%3A)](https://opencollective.com/code-spell-checker)
+
+- [![Street Side Software](https://img.shields.io/badge/Street_Side_Software-Sponsor-black.svg?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIj48bWFzayBpZD0iYSIgbWFzay10eXBlPSJsdW1pbmFuY2UiPjxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjxjaXJjbGUgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNTAlIiBmaWxsPSIjZmZmIi8+PC9tYXNrPjxtYXNrIGlkPSJiIiBtYXNrLXR5cGU9Imx1bWluYW5jZSI+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PGNpcmNsZSBjeD0iNTAlIiBjeT0iNTAlIiByPSI0NyUiIGZpbGw9IiNmZmYiLz48L21hc2s+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgcng9IjI0IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIuNCIgbWFzaz0idXJsKCNhKSIvPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmYiIG1hc2s9InVybCgjYikiLz48cmVjdCB4PSI3MCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTI4IiBmaWxsPSIjZjNlYzRlIiBtYXNrPSJ1cmwoI2IpIi8+PHJlY3QgeT0iMTI4IiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjYTYyYzE3IiBtYXNrPSJ1cmwoI2IpIi8+PHJlY3QgeD0iNjIiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDAwIiBtYXNrPSJ1cmwoI2IpIi8+PHJlY3QgeT0iMTIxIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxNCIgZmlsbD0iIzAwMCIgbWFzaz0idXJsKCNiKSIvPjwvc3ZnPg==)](https://streetsidesoftware.com/sponsor/)
 
 ## Functionality
 
