@@ -229,6 +229,12 @@
                           "title": "Add Words to Dictionary",
                           "type": "boolean"
                         },
+                        "btrie": {
+                          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                          "since": "9.6.0",
+                          "type": "string"
+                        },
                         "description": {
                           "description": "Optional: A human readable description.",
                           "markdownDescription": "Optional: A human readable description.",
@@ -303,6 +309,12 @@
                     {
                       "additionalProperties": false,
                       "properties": {
+                        "btrie": {
+                          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                          "since": "9.6.0",
+                          "type": "string"
+                        },
                         "description": {
                           "description": "Optional description of the contents / purpose of the dictionary.",
                           "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -324,8 +336,8 @@
                           "type": "boolean"
                         },
                         "path": {
-                          "description": "Path to the file.",
-                          "markdownDescription": "Path to the file.",
+                          "description": "Path or url to the dictionary file.",
+                          "markdownDescription": "Path or url to the dictionary file.",
                           "type": "string"
                         },
                         "supportNonStrictSearches": {
@@ -349,6 +361,12 @@
                           "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                           "type": "boolean"
                         },
+                        "btrie": {
+                          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                          "since": "9.6.0",
+                          "type": "string"
+                        },
                         "description": {
                           "description": "Optional description of the contents / purpose of the dictionary.",
                           "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -370,8 +388,8 @@
                           "type": "boolean"
                         },
                         "path": {
-                          "description": "Path to custom dictionary text file.",
-                          "markdownDescription": "Path to custom dictionary text file.",
+                          "description": "A file path or url to a custom dictionary file.",
+                          "markdownDescription": "A file path or url to a custom dictionary file.",
                           "type": "string"
                         },
                         "scope": {
@@ -730,6 +748,12 @@
                                 "title": "Add Words to Dictionary",
                                 "type": "boolean"
                               },
+                              "btrie": {
+                                "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                                "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                                "since": "9.6.0",
+                                "type": "string"
+                              },
                               "description": {
                                 "description": "Optional: A human readable description.",
                                 "markdownDescription": "Optional: A human readable description.",
@@ -804,6 +828,12 @@
                           {
                             "additionalProperties": false,
                             "properties": {
+                              "btrie": {
+                                "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                                "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                                "since": "9.6.0",
+                                "type": "string"
+                              },
                               "description": {
                                 "description": "Optional description of the contents / purpose of the dictionary.",
                                 "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -825,8 +855,8 @@
                                 "type": "boolean"
                               },
                               "path": {
-                                "description": "Path to the file.",
-                                "markdownDescription": "Path to the file.",
+                                "description": "Path or url to the dictionary file.",
+                                "markdownDescription": "Path or url to the dictionary file.",
                                 "type": "string"
                               },
                               "supportNonStrictSearches": {
@@ -850,6 +880,12 @@
                                 "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                                 "type": "boolean"
                               },
+                              "btrie": {
+                                "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                                "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                                "since": "9.6.0",
+                                "type": "string"
+                              },
                               "description": {
                                 "description": "Optional description of the contents / purpose of the dictionary.",
                                 "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -871,8 +907,8 @@
                                 "type": "boolean"
                               },
                               "path": {
-                                "description": "Path to custom dictionary text file.",
-                                "markdownDescription": "Path to custom dictionary text file.",
+                                "description": "A file path or url to a custom dictionary file.",
+                                "markdownDescription": "A file path or url to a custom dictionary file.",
                                 "type": "string"
                               },
                               "scope": {
@@ -1866,6 +1902,12 @@
                     "title": "Add Words to Dictionary",
                     "type": "boolean"
                   },
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "Optional: A human readable description.",
                     "markdownDescription": "Optional: A human readable description.",
@@ -1977,6 +2019,12 @@
                     "title": "Add Words to Dictionary",
                     "type": "boolean"
                   },
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "Optional: A human readable description.",
                     "markdownDescription": "Optional: A human readable description.",
@@ -2051,6 +2099,12 @@
               {
                 "additionalProperties": false,
                 "properties": {
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "Optional description of the contents / purpose of the dictionary.",
                     "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -2072,8 +2126,8 @@
                     "type": "boolean"
                   },
                   "path": {
-                    "description": "Path to the file.",
-                    "markdownDescription": "Path to the file.",
+                    "description": "Path or url to the dictionary file.",
+                    "markdownDescription": "Path or url to the dictionary file.",
                     "type": "string"
                   },
                   "supportNonStrictSearches": {
@@ -2097,6 +2151,12 @@
                     "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                     "type": "boolean"
                   },
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "Optional description of the contents / purpose of the dictionary.",
                     "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -2118,8 +2178,8 @@
                     "type": "boolean"
                   },
                   "path": {
-                    "description": "Path to custom dictionary text file.",
-                    "markdownDescription": "Path to custom dictionary text file.",
+                    "description": "A file path or url to a custom dictionary file.",
+                    "markdownDescription": "A file path or url to a custom dictionary file.",
                     "type": "string"
                   },
                   "scope": {
@@ -2256,6 +2316,12 @@
                           "title": "Add Words to Dictionary",
                           "type": "boolean"
                         },
+                        "btrie": {
+                          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                          "since": "9.6.0",
+                          "type": "string"
+                        },
                         "description": {
                           "description": "Optional: A human readable description.",
                           "markdownDescription": "Optional: A human readable description.",
@@ -2330,6 +2396,12 @@
                     {
                       "additionalProperties": false,
                       "properties": {
+                        "btrie": {
+                          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                          "since": "9.6.0",
+                          "type": "string"
+                        },
                         "description": {
                           "description": "Optional description of the contents / purpose of the dictionary.",
                           "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -2351,8 +2423,8 @@
                           "type": "boolean"
                         },
                         "path": {
-                          "description": "Path to the file.",
-                          "markdownDescription": "Path to the file.",
+                          "description": "Path or url to the dictionary file.",
+                          "markdownDescription": "Path or url to the dictionary file.",
                           "type": "string"
                         },
                         "supportNonStrictSearches": {
@@ -2376,6 +2448,12 @@
                           "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                           "type": "boolean"
                         },
+                        "btrie": {
+                          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                          "since": "9.6.0",
+                          "type": "string"
+                        },
                         "description": {
                           "description": "Optional description of the contents / purpose of the dictionary.",
                           "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
@@ -2397,8 +2475,8 @@
                           "type": "boolean"
                         },
                         "path": {
-                          "description": "Path to custom dictionary text file.",
-                          "markdownDescription": "Path to custom dictionary text file.",
+                          "description": "A file path or url to a custom dictionary file.",
+                          "markdownDescription": "A file path or url to a custom dictionary file.",
                           "type": "string"
                         },
                         "scope": {
@@ -3186,6 +3264,12 @@
                     "title": "Add Words to Dictionary",
                     "type": "boolean"
                   },
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "Optional: A human readable description.",
                     "markdownDescription": "Optional: A human readable description.",
@@ -3356,6 +3440,12 @@
                     "title": "Add Words to Dictionary",
                     "type": "boolean"
                   },
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "Optional: A human readable description.",
                     "markdownDescription": "Optional: A human readable description.",
@@ -3525,6 +3615,12 @@
                     "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
                     "title": "Add Words to Dictionary",
                     "type": "boolean"
+                  },
+                  "btrie": {
+                    "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+                    "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+                    "since": "9.6.0",
+                    "type": "string"
                   },
                   "description": {
                     "description": "Optional: A human readable description.",
