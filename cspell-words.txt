@@ -11,6 +11,7 @@ autocorrect
 autocrlf
 autofix
 Bing
+btrie
 cfml
 codeblock
 codicon
