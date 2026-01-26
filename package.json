@@ -914,7 +914,7 @@
                     ],
                     "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                   },
-                  "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
+                  "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries/custom-dictionaries/) for more details.",
                   "type": "array"
                 },
                 "dictionaryDefinitions": {
@@ -1364,7 +1364,7 @@
                           ],
                           "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                         },
-                        "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
+                        "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries/custom-dictionaries/) for more details.",
                         "type": "array"
                       },
                       "dictionaryDefinitions": {
@@ -2747,7 +2747,7 @@
                     ],
                     "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                   },
-                  "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
+                  "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries/custom-dictionaries/) for more details.",
                   "type": "array"
                 },
                 "dictionaryDefinitions": {
@@ -4323,10 +4323,10 @@
     "vitest": "~4.0.18"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.6.0",
-    "@cspell/cspell-types": "^9.6.0",
-    "@cspell/dict-cspell-bundle": "^2.0.47",
-    "cspell": "^9.6.0",
+    "@cspell/cspell-bundled-dicts": "^9.6.2",
+    "@cspell/cspell-types": "^9.6.2",
+    "@cspell/dict-cspell-bundle": "^2.0.48",
+    "cspell": "^9.6.2",
     "regexp-worker": "^4.3.0"
   },
   "vsce": {

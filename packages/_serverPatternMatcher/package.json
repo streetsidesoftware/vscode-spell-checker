@@ -23,7 +23,7 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^9.6.0",
+    "@cspell/cspell-types": "^9.6.2",
     "@internal/common-utils": "file:../__utils",
     "regexp-worker": "^4.3.0",
     "vscode-languageserver": "^9.0.1",
