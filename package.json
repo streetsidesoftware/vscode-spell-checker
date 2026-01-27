@@ -4315,10 +4315,10 @@
     "rollup": "^4.56.0",
     "rollup-plugin-dts": "^6.3.0",
     "shx": "^0.4.0",
-    "tsdown": "^0.19.0",
+    "tsdown": "^0.20.1",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.53.1",
+    "typescript-eslint": "^8.54.0",
     "vite": "^7.3.1",
     "vitest": "~4.0.18"
   },
