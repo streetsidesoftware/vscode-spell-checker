@@ -142,24 +142,33 @@ jobs:
               body.slice(tableAt).trimStart();
             return body;
 
-      # - name: Get Release Notes
-      #   id: release-notes
-      #   uses: actions/github-script@v8
-      #   env:
-      #     RELEASE_ID: ${{ steps.release-id.outputs.value }}
-      #   with:
-      #     result-encoding: string
-      #     script: |
-      #       const release_id = process.env.RELEASE_ID;
-      #       const result = await github.request('GET /repos/{owner}/{repo}/releases/{release_id}', {
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         release_id: release_id,
-      #         headers: {
-      #           'X-GitHub-Api-Version': '2022-11-28'
-      #         }
-      #       });
-      #       return result.data.body;
+      - name: Patch Release Notes
+        id: patch-release-notes
+        uses: actions/github-script@v8
+        env:
+          RELEASE: ${{ steps.release.outputs.result }}
+          BODY: ${{ steps.release-notes.outputs.result }}
+        with:
+          result-encoding: string
+          script: |
+            const release = JSON.parse(process.env.RELEASE);
+            const updatedBody = process.env.BODY;
+            const release_id = release.id;
+            const result = await github.request('PATCH /repos/{owner}/{repo}/releases/{release_id}', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release_id,
+              tag_name: release.tag_name,
+              target_commitish: release.target_commitish,
+              name: release.name,
+              body: updatedBody,
+              draft: release.draft,
+              prerelease: release.prerelease,
+              headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            });
+            return result.data.body;
 
       - name: Summary
         uses: streetsidesoftware/actions/public/summary@v1
