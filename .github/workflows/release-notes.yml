@@ -122,4 +122,6 @@ jobs:
 
             ## Release Notes
 
+            ```json
             ${{ steps.release-notes.outputs.result }}
+            ```
