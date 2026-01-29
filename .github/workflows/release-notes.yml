@@ -99,7 +99,7 @@ jobs:
         with:
           script: |
             const tag = process.env.TAG;
-            github.rest.request('GET /repos/{owner}/{repo}/releases/{tag}', {
+            github.request('GET /repos/{owner}/{repo}/releases/{tag}', {
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag: tag,
