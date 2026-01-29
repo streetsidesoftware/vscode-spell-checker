@@ -9,7 +9,7 @@ import {
     fetchWorkspaceSymbols,
 } from './fetchSymbols.mjs';
 
-export async function experimentWithSymbols() {
+export async function experimentWithSymbols(): Promise<void> {
     const doc = window.activeTextEditor?.document;
     const uri = doc?.uri;
     const position = window.activeTextEditor?.selection.active;

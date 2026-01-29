@@ -24,7 +24,7 @@ function isEmitterLike<T>(obj: unknown): obj is EventEmitter<T> {
 }
 
 class _EventEmitter<T> implements EventEmitter<T> {
-    #listeners = new Set<{ fn: EventListener<T> }>();
+    #listeners: Set<{ fn: EventListener<T> }> = new Set();
     #isDisposed = false;
 
     constructor(readonly name?: string) {}

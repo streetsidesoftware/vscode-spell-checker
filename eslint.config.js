@@ -61,9 +61,18 @@ export default defineConfig(
             'no-unused-vars': 'off',
             '@typescript-eslint/no-empty-interface': 'off',
             '@typescript-eslint/no-empty-function': 'off',
+            '@typescript-eslint/no-inferrable-types': 'off',
             '@typescript-eslint/no-non-null-assertion': 'error',
             '@typescript-eslint/prefer-literal-enum-member': 'off',
-            '@typescript-eslint/consistent-type-imports': ['error'],
+            '@typescript-eslint/consistent-generic-constructors': ['error', 'type-annotation'],
+            '@typescript-eslint/consistent-type-imports': [
+                'error',
+                {
+                    disallowTypeAnnotations: true,
+                    fixStyle: 'separate-type-imports',
+                    prefer: 'type-imports',
+                },
+            ],
             '@typescript-eslint/no-unused-vars': [
                 'error',
                 {

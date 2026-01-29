@@ -77,17 +77,23 @@ const KindKeys = Object.freeze(Object.values(ConfigKinds));
 // const ScopeKeys = Object.freeze(Object.keys(matchScopeAll) as ClientConfigScope[]);
 const AllKeys = Object.freeze(Object.values(configTargetMatchPatternKeyNames));
 
-export const dictionaryTargetBestMatches = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeAllButUser);
-export const dictionaryTargetBestMatchesUser = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeUser);
-export const dictionaryTargetBestMatchesWorkspace = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeWorkspace);
-export const dictionaryTargetBestMatchesFolder = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeFolder);
-export const dictionaryTargetBestMatchesCSpell = _buildQuickPickBestMatchTargetFn(matchKindCSpell, matchScopeAll);
-export const dictionaryTargetBestMatchesVSCodeUser = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeUser);
-export const dictionaryTargetBestMatchesVSCodeWorkspace = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeWorkspace);
-export const dictionaryTargetBestMatchesVSCodeFolder = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeFolder);
+export const dictionaryTargetBestMatches: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeAllButUser);
+export const dictionaryTargetBestMatchesUser: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeUser);
+export const dictionaryTargetBestMatchesWorkspace: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeWorkspace);
+export const dictionaryTargetBestMatchesFolder: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeFolder);
+export const dictionaryTargetBestMatchesCSpell: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindCSpell, matchScopeAll);
+export const dictionaryTargetBestMatchesVSCodeUser: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeUser);
+export const dictionaryTargetBestMatchesVSCodeWorkspace: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(
+    matchKindVSCode,
+    matchScopeWorkspace,
+);
+export const dictionaryTargetBestMatchesVSCodeFolder: MatchTargetsFn = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeFolder);
 
-export const patternMatchNoDictionaries = createConfigTargetMatchPattern(negateKind(matchKindDictionary), matchScopeAll);
-export const patternMatchAll = createConfigTargetMatchPattern(matchKindAll, matchScopeAll);
+export const patternMatchNoDictionaries: ConfigTargetMatchPattern = createConfigTargetMatchPattern(
+    negateKind(matchKindDictionary),
+    matchScopeAll,
+);
+export const patternMatchAll: ConfigTargetMatchPattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAll);
 
 export function findBestMatchingConfigTargets(
     pattern: ConfigTargetMatchPattern,

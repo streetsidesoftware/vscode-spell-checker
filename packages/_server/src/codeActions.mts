@@ -281,7 +281,7 @@ function calcScopeText(t: ConfigTarget) {
 }
 
 function generateTargetActions(doc: TextDocument, spellCheckerDiags: Diagnostic[], word: string, targets: ConfigTarget[]): CodeAction[] {
-    const handled = new Set<ConfigScope>();
+    const handled: Set<ConfigScope> = new Set();
 
     const filtered = targets.filter((t) => {
         if (t.kind === 'dictionary' || !handled.has(t.scope) || t.has.words) {

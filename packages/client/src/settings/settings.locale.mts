@@ -122,7 +122,12 @@ function calcInheritedDefault<K extends keyof CSpellUserSettings>(
     return value as undefined /* TypeScript bug workaround */;
 }
 
-export const __testing__ = {
+export const __testing__: {
+    addLocaleToCurrentLocale: typeof addLocaleToCurrentLocale;
+    removeLocaleFromCurrentLocale: typeof removeLocaleFromCurrentLocale;
+    doLocalesIntersect: typeof doLocalesIntersect;
+    isLocaleSubsetOf: typeof isLocaleSubsetOf;
+} = {
     addLocaleToCurrentLocale,
     removeLocaleFromCurrentLocale,
     doLocalesIntersect,

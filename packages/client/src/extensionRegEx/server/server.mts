@@ -22,7 +22,7 @@ export async function requestCodeAction(client: LanguageClient, params: CodeActi
 
 export function createServerApi(client: LanguageClient): PatternMatcherServerApi {
     async function sendRequest<M extends keyof ServerMethods>(method: M, param: Req<ServerMethods[M]>): Promise<Res<ServerMethods[M]>> {
-        const r = new RequestType<Req<ServerMethods[M]>, Res<ServerMethods[M]>, void>(method);
+        const r: RequestType<Req<ServerMethods[M]>, Res<ServerMethods[M]>, void> = new RequestType(method);
         const result = await client.sendRequest(r, param);
         return result;
     }

@@ -12,7 +12,7 @@ export class WebviewApiViewProvider implements WebviewViewProvider {
         readonly viewType: string,
     ) {}
 
-    public resolveWebviewView(webviewView: WebviewView, _context: WebviewViewResolveContext, _token: CancellationToken) {
+    public resolveWebviewView(webviewView: WebviewView, _context: WebviewViewResolveContext, _token: CancellationToken): void {
         this._view = webviewView;
         const appView = AppView.bindView(webviewView.webview, this.extensionUri, this.viewName);
         this._view.onDidDispose(() => appView.dispose());

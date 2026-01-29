@@ -32,7 +32,7 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
         this.#handler = handler;
     }
 
-    handler(fn: HandlerFn<ArgDefs, OptDefs>) {
+    handler(fn: HandlerFn<ArgDefs, OptDefs>): this {
         this.#handler = fn;
         return this;
     }
@@ -99,14 +99,14 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
         return { args, options, argv };
     }
 
-    async exec(argv: string[]) {
+    async exec(argv: string[]): Promise<void> {
         assert(this.#handler, 'handler not set');
         assert(argv[0] == this.name);
         const parsedArgs = this.parse(argv);
         await this.#handler(parsedArgs);
     }
 
-    getArgString() {
+    getArgString(): string {
         return this.#arguments.join(' ');
     }
 
@@ -120,8 +120,8 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
 }
 
 export class Application {
-    #commands = new Map<string, Command>();
-    public displayWidth = defaultWidth;
+    #commands: Map<string, Command> = new Map();
+    public displayWidth: number = defaultWidth;
 
     constructor(
         public name: string,
@@ -130,7 +130,7 @@ export class Application {
     ) {}
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    addCommand(...commands: Command<any, any>[]) {
+    addCommand(...commands: Command<any, any>[]): this {
         for (const cmd of commands) {
             this.#commands.set(cmd.name, cmd);
         }
@@ -138,7 +138,7 @@ export class Application {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    addCommands(commands: Command<any, any>[]) {
+    addCommands(commands: Command<any, any>[]): this {
         return this.addCommand(...commands);
     }
 
@@ -149,7 +149,7 @@ export class Application {
         return cmd ? this.#formatCommandHelp(cmd, width) : this.#formatHelp(width);
     }
 
-    getApplicationHeader(width = this.displayWidth) {
+    getApplicationHeader(width: number = this.displayWidth): string {
         return this.#formatApplicationHeader(width);
     }
 
@@ -203,7 +203,7 @@ export class Application {
         return this.#commands.get(cmdName);
     }
 
-    parseArgs(args: string[]) {
+    parseArgs(args: string[]): ParsedResults<ArgsDefinitions, OptionDefinitions> {
         const cmdName = args[0];
         const cmd = this.getCommand(cmdName);
         if (!cmd) {
@@ -212,7 +212,7 @@ export class Application {
         return cmd.parse(args);
     }
 
-    async exec(argv: string[], log: typeof console.log) {
+    async exec(argv: string[], log: typeof console.log): Promise<void> {
         const cmdName = argv[0];
         const cmd = this.getCommand(cmdName);
         if (!cmd) {
@@ -226,7 +226,7 @@ export class Application {
         await cmd.exec(argv);
     }
 
-    getCommandNames() {
+    getCommandNames(): string[] {
         return [...this.#commands.keys()];
     }
 }
@@ -251,7 +251,7 @@ class Argument<K extends string = string, V extends ArgTypeNames = ArgTypeNames>
         this.required = def.required || false;
         this.multiple = this.type.endsWith('[]');
     }
-    toString() {
+    toString(): string {
         const variadic = this.multiple ? '...' : '';
         const name = `${this.name}${variadic}`;
         return this.required ? `<${name}>` : `[${name}]`;

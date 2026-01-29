@@ -17,12 +17,12 @@ export function sanitizeSettings(
     fields: ConfigFieldFilter,
 ): CSpellUserAndExtensionSettings | undefined {
     if (!settings) return settings;
-    const includeKeys = new Set<string>(
+    const includeKeys: Set<string> = new Set(
         Object.entries(fields)
             .filter(([, value]) => value)
             .map(([key]) => key),
     );
-    const excludeKeys = new Set<string>((['words', 'ignoreWords', 'userWords'] as const).filter((key) => !includeKeys.has(key)));
+    const excludeKeys: Set<string> = new Set((['words', 'ignoreWords', 'userWords'] as const).filter((key) => !includeKeys.has(key)));
     const s = Object.fromEntries(
         Object.entries(settings).filter(([key]) => key in ConfigFields && !excludeKeys.has(key) && includeKeys.has(key)),
     );
@@ -52,12 +52,12 @@ function sanitizeDictionaryDefinition(def: DictionaryDefinition | undefined): Di
 }
 
 export function objectKeysNested(obj: unknown): string[] {
-    const visited = new Set<unknown>();
+    const visited: Set<unknown> = new Set();
 
     function _objectKeysNested(obj: unknown, depthRemaining: number): string[] {
         if (!depthRemaining || visited.has(obj) || !obj || typeof obj !== 'object') return [];
         visited.add(obj);
-        const keys = new Set<string>();
+        const keys: Set<string> = new Set();
         if (Array.isArray(obj)) {
             const nested = obj.flatMap((o) => _objectKeysNested(o, depthRemaining - 1));
             nested.map((k) => keys.add('[*].' + k));

@@ -69,7 +69,7 @@ class WordListImpl implements WordList {
     }
 
     sort(): void {
-        const knownWords = new Set<string>();
+        const knownWords: Set<string> = new Set();
 
         const sections = wordListEntriesToSections(this._entries);
 

@@ -45,7 +45,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
         });
     }
 
-    get dimensions() {
+    get dimensions(): vscode.TerminalDimensions {
         return this.#dimensions;
     }
 

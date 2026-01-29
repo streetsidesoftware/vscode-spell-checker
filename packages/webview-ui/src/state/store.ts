@@ -86,8 +86,8 @@ class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
     readonly name: N;
     private _value: T | SymbolNotSet;
     private _busy = false;
-    private subServer = new Set<Subscriber<T>>();
-    private subClient = new Set<Subscriber<T>>();
+    private subServer: Set<Subscriber<T>> = new Set();
+    private subClient: Set<Subscriber<T>> = new Set();
     private disposables: DisposableLike[] = [];
     private mutate: (value: T, set: SetMethod<T>, update: UpdateMethod<T>) => Promise<void> = () => Promise.resolve();
     readonly dispose: () => void;
@@ -208,8 +208,8 @@ class ReadonlyClientServerStoreImpl<T, N> implements ReadonlyClientServerStore<T
     readonly name: N;
     private _value: T | SymbolNotSet;
     private _busy = false;
-    private subServer = new Set<Subscriber<T>>();
-    private subClient = new Set<Subscriber<T>>();
+    private subServer: Set<Subscriber<T>> = new Set();
+    private subClient: Set<Subscriber<T>> = new Set();
     private disposables: DisposableLike[] = [];
     readonly dispose: () => void;
 
@@ -311,7 +311,7 @@ interface PubSub<T> extends Subscribable<T> {
 }
 
 function createPubSub<T>(): PubSub<T> {
-    const subscriptions = new Set<Subscriber<T>>();
+    const subscriptions: Set<Subscriber<T>> = new Set();
     let busy = false;
 
     function notify(value: T) {

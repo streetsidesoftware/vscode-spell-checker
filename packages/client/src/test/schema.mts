@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
-export const schemaFile = path.join(__dirname, '../../../_server/spell-checker-config.schema.json');
+export const schemaFile: string = path.join(__dirname, '../../../_server/spell-checker-config.schema.json');
 
 export async function readExtensionSchema(): Promise<Item> {
     const schema = await readJsonFile(schemaFile);
@@ -20,7 +20,7 @@ export async function readDefaults(): Promise<Map<string, unknown | undefined>> 
 
     const items = Array.isArray(schema.items) ? schema.items : schema.items ? [schema.items] : [];
 
-    const results = new Map<string, unknown | undefined>();
+    const results: Map<string, unknown | undefined> = new Map();
 
     function processItem(item: Item) {
         if (!item.properties) return;

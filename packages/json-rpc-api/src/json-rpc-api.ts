@@ -301,7 +301,7 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
     name: string,
     logger: Logger | undefined,
 ): PubSub<Subscriber> {
-    const subscribers = new Set<Subscriber>();
+    const subscribers: Set<Subscriber> = new Set();
 
     async function publish(..._p: Parameters<Subscriber>) {
         for (const s of subscribers) {

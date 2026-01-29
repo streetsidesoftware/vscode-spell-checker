@@ -1,9 +1,9 @@
 import { IssueType } from '@cspell/cspell-types';
 import { autoResolve, logError } from '@internal/common-utils';
-import type { Suggestion } from 'code-spell-checker-server/api';
+import type { GetConfigurationTargetsResult, Suggestion } from 'code-spell-checker-server/api';
 import type { DisposableHybrid } from 'utils-disposables';
 import { createDisposableList } from 'utils-disposables';
-import type { Diagnostic, DiagnosticChangeEvent, TextDocument, Uri } from 'vscode';
+import type { Diagnostic, DiagnosticChangeEvent, DiagnosticSeverity, TextDocument, Uri } from 'vscode';
 import { workspace } from 'vscode';
 
 import type { CSpellClient, DiagnosticsFromServer, SpellCheckerDiagnosticData } from './client/index.mjs';
@@ -16,12 +16,12 @@ export type IssueTrackerChangeEvent = DiagnosticChangeEvent;
 
 export class IssueTracker {
     private disposables = createDisposableList();
-    private issues = new Map<UriString, FileIssues>();
+    private issues: Map<UriString, FileIssues> = new Map();
     private subscribable = createEmitter<IssueTrackerChangeEvent>();
     /**
      * cached suggestions for a given word in a given document uri.
      */
-    private cachedSuggestions = new Map<UriString, Map<string, Promise<Suggestion[]>>>();
+    private cachedSuggestions: Map<UriString, Map<string, Promise<Suggestion[]>>> = new Map();
 
     constructor(readonly client: CSpellClient) {
         this.disposables.push(client.onDiagnostics((diags) => this.handleDiagsFromServer(diags)));
@@ -85,7 +85,7 @@ export class IssueTracker {
         return results.suggestions;
     }
 
-    public readonly dispose = this.disposables.dispose;
+    public readonly dispose: () => void = this.disposables.dispose;
 
     private handleDiagsFromServer(diags: DiagnosticsFromServer) {
         const fileIssue = this.mapToFileIssues(diags);
@@ -124,7 +124,7 @@ export class IssueTracker {
         return [...this.issues.values()].flatMap((d) => d.issues);
     }
 
-    getConfigurationTargets(uri: Uri) {
+    getConfigurationTargets(uri: Uri): Promise<GetConfigurationTargetsResult> {
         return this.client.getConfigurationTargets({ uri });
     }
 }
@@ -231,7 +231,7 @@ export class SpellingCheckerIssue {
         return this.version !== this.document.version;
     }
 
-    get severity() {
+    get severity(): DiagnosticSeverity {
         return this.diag.severity;
     }
 

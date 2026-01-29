@@ -12,7 +12,7 @@ import { createCSpellConfigRepository, createVSCodeConfigRepository } from './co
 import type { ConfigKeys, ConfigUpdater } from './configUpdater.mjs';
 import { dictionaryScopeToConfigurationTarget } from './targetAndScope.mjs';
 
-const KnownTargetKinds = new Set<ClientConfigKind>(['dictionary', 'cspell', 'vscode']);
+const KnownTargetKinds: Set<ClientConfigKind> = new Set(['dictionary', 'cspell', 'vscode']);
 
 export function configTargetToConfigRepo(target: ClientConfigTargetDictionary): undefined;
 export function configTargetToConfigRepo(target: ClientConfigTargetVSCode): VSCodeRepository;

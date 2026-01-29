@@ -92,7 +92,7 @@ function clearEnabledLanguageIds(settings: CSpellUserAndExtensionSettings) {
 }
 
 // This is to filter out the "Off" severity that is used to hide issues from the VS Code Problems panel.
-const knownDiagnosticSeverityLevels = new Set<number | undefined>([
+const knownDiagnosticSeverityLevels: Set<number | undefined> = new Set([
     DiagnosticSeverity.Error,
     DiagnosticSeverity.Warning,
     DiagnosticSeverity.Information,
@@ -102,16 +102,16 @@ const knownDiagnosticSeverityLevels = new Set<number | undefined>([
 export function run(): void {
     // debounce buffer
     const disposables = createDisposableList();
-    const validationRequestStream = new ReplaySubject<TextDocument>(1);
-    const triggerUpdateConfig = new ReplaySubject<void>(1);
-    const triggerValidateAll = new ReplaySubject<void>(1);
-    const validationByDoc = new Map<string, Subscription>();
-    const blockValidation = new Map<string, number>();
+    const validationRequestStream: ReplaySubject<TextDocument> = new ReplaySubject(1);
+    const triggerUpdateConfig: ReplaySubject<void> = new ReplaySubject(1);
+    const triggerValidateAll: ReplaySubject<void> = new ReplaySubject(1);
+    const validationByDoc: Map<string, Subscription> = new Map();
+    const blockValidation: Map<string, number> = new Map();
     let isValidationBusy = false;
     const dictionaryWatcher = dd(new DictionaryWatcher());
     dd(disposeValidationByDoc);
 
-    const blockedFiles = new Map<string, Api.BlockedFileReason>();
+    const blockedFiles: Map<string, Api.BlockedFileReason> = new Map();
 
     const configWatcher = dd(new ConfigWatcher());
 
@@ -270,7 +270,7 @@ export function run(): void {
         }),
     );
 
-    const knownErrors = new Set<string>();
+    const knownErrors: Set<string> = new Set();
 
     // Make the text document manager listen on the connection
     // for open, change and close text document events

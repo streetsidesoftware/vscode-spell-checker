@@ -2,7 +2,18 @@ import * as vscode from 'vscode';
 
 import type { SpellingCheckerIssue } from '../issueTracker.mjs';
 
-export const icons = {
+interface Icons {
+    readonly issue: vscode.ThemeIcon;
+    readonly info: vscode.ThemeIcon;
+    readonly warning: vscode.ThemeIcon;
+    readonly error: vscode.ThemeIcon;
+    readonly doc: vscode.ThemeIcon;
+    readonly applySuggestion: vscode.ThemeIcon;
+    readonly applySuggestionPreferred: vscode.ThemeIcon;
+    readonly gear: vscode.ThemeIcon;
+}
+
+export const icons: Icons = {
     issue: new vscode.ThemeIcon('issues', new vscode.ThemeColor('list.warningForeground')),
     info: new vscode.ThemeIcon('info'),
     warning: new vscode.ThemeIcon('warning', new vscode.ThemeColor('list.warningForeground')),
@@ -27,7 +38,7 @@ interface IssueInfo {
     isSuggestion(): boolean;
 }
 
-export function getIconForIssues(issue: IssueInfo) {
+export function getIconForIssues(issue: IssueInfo): vscode.ThemeIcon {
     if (issue.isFlagged()) return icons.error;
     if (issue.isKnown()) return icons.warning;
     if (issue.isSuggestion()) return icons.info;

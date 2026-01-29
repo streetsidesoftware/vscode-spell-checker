@@ -57,7 +57,7 @@ function* flatten(key: string, value: ContextValue): Generator<[key: string, val
     }
 }
 
-const currentContext = new Map<string, string | boolean | number>();
+const currentContext: Map<string, string | boolean | number> = new Map();
 const defaultDocumentConfigContext: DocumentContext = Object.freeze({
     usesConfigFile: false,
     usesCustomDictionary: false,
@@ -122,7 +122,7 @@ interface DebounceEntry {
     pending: boolean;
     stale: boolean;
 }
-const cachedUpdateDocumentRelatedContext = new WeakMap<TextDocument, DebounceEntry>();
+const cachedUpdateDocumentRelatedContext: WeakMap<TextDocument, DebounceEntry> = new WeakMap();
 const cachedTimeout = 1000;
 
 /**

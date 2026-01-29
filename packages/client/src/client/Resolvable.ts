@@ -18,7 +18,7 @@ export class Resolvable<T> {
         });
     }
 
-    get promise() {
+    get promise(): Promise<T> {
         return this._promise;
     }
 

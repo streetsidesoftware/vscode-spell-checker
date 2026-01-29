@@ -9,7 +9,7 @@ export class TodoViewProvider implements WebviewViewProvider {
 
     constructor(private readonly extensionUri: Uri) {}
 
-    public resolveWebviewView(webviewView: WebviewView, _context: WebviewViewResolveContext, _token: CancellationToken) {
+    public resolveWebviewView(webviewView: WebviewView, _context: WebviewViewResolveContext, _token: CancellationToken): void {
         this._view = webviewView;
         const appView = TodoView.bindView(webviewView.webview, this.extensionUri);
         this._view.onDidDispose(() => appView.dispose());

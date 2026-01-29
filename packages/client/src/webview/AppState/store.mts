@@ -3,7 +3,7 @@ import { createDisposable, createDisposableFromList, disposeOf, injectDisposable
 import { LogLevelMasks } from 'utils-logger';
 import type { TextDocument, TextEditor, Uri } from 'vscode';
 import { window, workspace } from 'vscode';
-import type { WatchFieldList, WatchFields } from 'webview-api';
+import type { Settings, WatchFieldList, WatchFields } from 'webview-api';
 
 import { getDependencies } from '../../di.mjs';
 import { calcSettings } from '../../infoViewer/infoHelper.mjs';
@@ -96,7 +96,7 @@ function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['cur
     }
 }
 
-export async function calcDocSettings(doc?: string) {
+export async function calcDocSettings(doc?: string): Promise<Settings> {
     const textDoc = (doc && findMatchTextDocument(doc)) || undefined;
     const di = getDependencies();
     return calcSettings(textDoc, undefined, di.client, console.log);

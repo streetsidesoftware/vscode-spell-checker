@@ -67,11 +67,11 @@ const setOfConfigFilesNames = new Set(configFileLocations.map((filename) => file
  */
 export const configFilesToWatch: Set<string> = Object.freeze(setOfConfigFilesNames);
 
-export const configFileLocationGlob = `**/{${[...setOfConfigFilesNames].join(',')}}`;
+export const configFileLocationGlob: string = `**/{${[...setOfConfigFilesNames].join(',')}}`;
 
 type ConfigFileNames = (typeof configFileLocations)[number];
 
-export const nestedConfigLocations = ['package.json'];
+export const nestedConfigLocations: string[] = ['package.json'];
 
 export const cspellConfigDirectory = '.cspell';
 

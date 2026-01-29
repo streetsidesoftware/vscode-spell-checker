@@ -7,7 +7,7 @@ interface CacheItem<T> {
 }
 
 export class DocumentConfigCache<T> {
-    private configs = new Map<string, CacheItem<T>>();
+    private configs: Map<string, CacheItem<T>> = new Map();
 
     constructor(
         public getConfigurationForDocument: (uri: Uri) => Promise<T>,
@@ -17,7 +17,7 @@ export class DocumentConfigCache<T> {
         this.configs = new Map();
     }
 
-    get(uri: Uri) {
+    get(uri: Uri): NonNullable<T> | undefined {
         const item = this.configs.get(uri.toString());
         if (!item || !item.config || this.isTooOld(item)) {
             this.fetch(uri);
@@ -29,19 +29,19 @@ export class DocumentConfigCache<T> {
         return item.config;
     }
 
-    set(uri: Uri, config: T) {
+    set(uri: Uri, config: T): void {
         const key = uri.toString();
         const item = this.configs.get(key) || { config, timestamp: performance.now(), pending: undefined };
         item.config = config;
         this.configs.set(key, item);
     }
 
-    delete(uri: Uri) {
+    delete(uri: Uri): boolean {
         const key = uri.toString();
         return this.configs.delete(key);
     }
 
-    clear() {
+    clear(): void {
         this.configs.clear();
     }
 

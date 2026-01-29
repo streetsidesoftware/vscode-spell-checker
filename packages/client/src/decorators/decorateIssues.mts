@@ -25,12 +25,12 @@ export class SpellingIssueDecorator implements Disposable {
     private decorationTypeForSuggestions: TextEditorDecorationType | undefined;
     private decorationTypeForDebug: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
-    private visibleEditors = new Set<TextEditor>();
+    private visibleEditors: Set<TextEditor> = new Set();
     private _visible = true;
-    public dispose = this.disposables.dispose;
-    private docChanges = new Map<string, LastDocumentChange>();
+    public dispose: () => void = this.disposables.dispose;
+    private docChanges: Map<string, LastDocumentChange> = new Map();
     private refreshTimeout: NodeJS.Timeout | undefined;
-    private urisToRefresh = new Set<vscode.Uri>();
+    private urisToRefresh: Set<vscode.Uri> = new Set();
     private hideIssuesWhileTyping = defaultHideIssuesWhileTyping;
     private revealIssuesAfterDelayMS = defaultRevealIssuesAfterDelayMS;
     private emitterVisibility: vscode.EventEmitter<boolean> = new vscode.EventEmitter();
@@ -72,13 +72,13 @@ export class SpellingIssueDecorator implements Disposable {
         this.refreshDiagnostics([...added].map((e) => e.document.uri));
     }
 
-    refreshEditor(e: vscode.TextEditor | undefined) {
+    refreshEditor(e: vscode.TextEditor | undefined): void {
         e ??= window.activeTextEditor;
         if (!e) return;
         return this.refreshDiagnostics([e.document.uri]);
     }
 
-    refreshDiagnostics(docUris?: readonly Uri[]) {
+    refreshDiagnostics(docUris?: readonly Uri[]): void {
         // log('refreshDiagnostics %o', {
         //     docUris: docUris?.map((u) => u.toString(true)),
         //     docs: workspace.textDocuments.map((d) => ({ uri: d.uri.toString(true), languageId: d.languageId })),
@@ -93,7 +93,7 @@ export class SpellingIssueDecorator implements Disposable {
         editors.forEach((editor) => this.refreshDiagnosticsInEditor(editor));
     }
 
-    refreshDiagnosticsInEditor(editor: TextEditor) {
+    refreshDiagnosticsInEditor(editor: TextEditor): void {
         if (
             !this.decorationTypeForIssues ||
             !this.decorationTypeForFlagged ||
@@ -185,11 +185,11 @@ export class SpellingIssueDecorator implements Disposable {
         this.resetDecorator();
     }
 
-    toggleVisible() {
+    toggleVisible(): void {
         this.visible = !this.visible;
     }
 
-    onDidChangeVisibility = this.emitterVisibility.event;
+    onDidChangeVisibility: vscode.Event<boolean> = this.emitterVisibility.event;
 
     private setContext(value: boolean) {
         this.context.globalState.update(SpellingIssueDecorator.globalStateKey, value);
@@ -371,7 +371,7 @@ export class SpellingIssueDecorator implements Disposable {
         this.resetDecorator();
     }
 
-    public clearActiveChanges() {
+    public clearActiveChanges(): void {
         this.docChanges.clear();
     }
 

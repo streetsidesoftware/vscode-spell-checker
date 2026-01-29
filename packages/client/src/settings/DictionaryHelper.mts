@@ -435,7 +435,14 @@ export class UnableToAddWordError extends DictionaryTargetError {
     }
 }
 
-export const __testing__ = {
+export const __testing__: {
+    addCustomDictionaryToConfig: typeof addCustomDictionaryToConfig;
+    calcDictInfoForConfigRep: typeof calcDictInfoForConfigRep;
+    combineCustomDictionaries: typeof combineCustomDictionaries;
+    createCustomDictionaryFile: typeof createCustomDictionaryFile;
+    createCustomDictionaryForConfigRep: typeof createCustomDictionaryForConfigRep;
+    isTextDocument: typeof isTextDocument;
+} = {
     addCustomDictionaryToConfig,
     calcDictInfoForConfigRep,
     combineCustomDictionaries,

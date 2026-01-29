@@ -26,7 +26,7 @@ export function extractDictionariesByLocale(config: PartialCSpellUserSettings<'l
 }
 
 export function extractDictionariesByLocaleLanguageSettings(langSettings: LanguageSetting[] = []): Map<string, string[]> {
-    const mapOfDict = new Map<string, string[]>();
+    const mapOfDict: Map<string, string[]> = new Map();
     langSettings
         .map(({ local, locale, dictionaries = [] }) => ({ locale: normalizeLocale(locale || local), dictionaries }))
         .filter((s) => !!s.locale)

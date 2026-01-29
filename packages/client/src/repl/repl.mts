@@ -20,7 +20,7 @@ import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine
 
 const defaultWidth = 80;
 
-export function createTerminal() {
+export function createTerminal(): void {
     const pty = new Repl();
     const terminal = vscode.window.createTerminal({ name: 'Spell Checker REPL', pty });
     terminal.show();

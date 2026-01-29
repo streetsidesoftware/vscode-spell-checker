@@ -4,8 +4,8 @@ import { createDisposable, InheritableDisposable } from 'utils-disposables';
 import type { EventListener, EventType, Subscribable, SubscribableEvent, SubscriberLike } from '../Subscribables.js';
 
 export abstract class AbstractSubscribable<T> extends InheritableDisposable implements Subscribable<T> {
-    private _subscriptions = new Set<SubscriberLike<T>>();
-    private _eventListeners = new Set<EventListener>();
+    private _subscriptions: Set<SubscriberLike<T>> = new Set();
+    private _eventListeners: Set<EventListener> = new Set();
 
     protected _isRunning = false;
     protected _isNotifyBusy = false;
@@ -14,16 +14,16 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
         super([() => this.done(), () => this._eventListeners.clear()], 'AbstractSubscribable');
     }
 
-    protected _hasSubscribers() {
+    protected _hasSubscribers(): boolean {
         return !!this._subscriptions.size;
     }
 
-    protected _stop() {
+    protected _stop(): void {
         this._isRunning = false;
         this.sendEvents({ name: 'onStop' });
     }
 
-    protected _tryToStop() {
+    protected _tryToStop(): void {
         if (this._hasSubscribers()) return;
         this._stop();
     }
@@ -46,13 +46,13 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
         this._tryToStop();
     }
 
-    protected _start() {
+    protected _start(): void {
         if (this._isRunning) return;
         this.sendEvents({ name: 'onStart' });
         this._isRunning = true;
     }
 
-    protected _notifySubscriber(s: SubscriberLike<T>, value: T) {
+    protected _notifySubscriber(s: SubscriberLike<T>, value: T): void {
         return typeof s === 'function' ? s(value) : s.notify(value);
     }
 
@@ -86,7 +86,7 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
         this._stop();
     }
 
-    protected sendEvents(event: SubscribableEvent) {
+    protected sendEvents(event: SubscribableEvent): void {
         for (const listener of this._eventListeners) {
             listener(event);
         }

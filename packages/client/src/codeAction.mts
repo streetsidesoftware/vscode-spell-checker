@@ -1,5 +1,5 @@
 import type { Suggestion } from 'code-spell-checker-server/api';
-import type { CodeActionContext, CodeActionProvider, Command, Range, Selection, TextDocument } from 'vscode';
+import type { CodeActionContext, CodeActionProvider, Command, Disposable, Range, Selection, TextDocument } from 'vscode';
 import { CodeAction, CodeActionKind, languages } from 'vscode';
 
 import { requestSpellingSuggestions } from './codeActions/actionSuggestSpellingCorrections.mjs';
@@ -8,7 +8,7 @@ import { filterDiags } from './diags.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from './issueTracker.mjs';
 
 export class SpellCheckerCodeActionProvider implements CodeActionProvider {
-    public static readonly providedCodeActionKinds = [CodeActionKind.QuickFix];
+    public static readonly providedCodeActionKinds: CodeActionKind[] = [CodeActionKind.QuickFix];
 
     constructor(readonly issueTracker: IssueTracker) {}
 
@@ -49,7 +49,7 @@ function suggestionToAction(doc: TextDocument, range: Range, sug: Suggestion): C
     return action;
 }
 
-export function registerSpellCheckerCodeActionProvider(issueTracker: IssueTracker) {
+export function registerSpellCheckerCodeActionProvider(issueTracker: IssueTracker): Disposable {
     return languages.registerCodeActionsProvider('*', new SpellCheckerCodeActionProvider(issueTracker), {
         providedCodeActionKinds: SpellCheckerCodeActionProvider.providedCodeActionKinds,
     });

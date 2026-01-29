@@ -61,7 +61,7 @@ export class PatternMatcher {
 }
 
 function pairWithPatterns(execResults: ExecMatchRegExpResults[], patterns: MultiPattern[]): MatchResults {
-    const byRegExp = new Map<string, RegExpMatches>(execResults.map((r) => [r.regexp.toString(), r]));
+    const byRegExp: Map<string, RegExpMatches> = new Map(execResults.map((r) => [r.regexp.toString(), r]));
 
     function mapRegExp(r: RegExp): RegExpMatches {
         return byRegExp.get(r.toString()) || { regexp: r, message: 'not found', elapsedTimeMs: 0 };
@@ -231,7 +231,7 @@ function* flatten<T>(a: T[][]): Iterable<T> {
 
 function extractUniqueRegExps(patterns: MultiPattern[]): RegExp[] {
     const nested: [string, RegExp][][] = patterns.map((p) => p.regexp.map((r) => [r.toString(), r]));
-    const collection = new Map<string, RegExp>(flatten(nested));
+    const collection: Map<string, RegExp> = new Map(flatten(nested));
     return [...collection.values()];
 }
 

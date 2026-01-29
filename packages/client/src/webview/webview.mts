@@ -18,7 +18,7 @@ type RegisteredCommandNames = {
 
 const rCommands = Object.fromEntries(registeredCommands.map((name) => [name, name] as const)) as RegisteredCommandNames;
 
-export function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext): void {
     const { subscriptions, extensionUri } = context;
 
     // subscriptions.push(debugDispose('Dispose Activate 0'));

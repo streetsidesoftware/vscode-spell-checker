@@ -88,7 +88,7 @@ interface Options {
 }
 
 export function addNodeWatchMockImplementation(mock: MockedNodeWatch): NodeWatchMock {
-    const callbacks = new Map<string, Set<WatcherInternal>>();
+    const callbacks: Map<string, Set<WatcherInternal>> = new Map();
 
     function getWatchedPaths() {
         return [...callbacks.keys()];

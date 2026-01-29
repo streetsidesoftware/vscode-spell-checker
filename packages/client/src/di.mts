@@ -93,6 +93,8 @@ function init(): void {
 
 init();
 
-export const __testing__ = {
+export const __testing__: {
+    init: typeof init;
+} = {
     init,
 };

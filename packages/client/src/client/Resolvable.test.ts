@@ -9,7 +9,7 @@ describe('ResolvablePromise', () => {
         ${undefined}
         ${Promise.resolve('hello')}
     `('ResolvablePromise resolve', async ({ resolveWith }) => {
-        const r = new Resolvable<string>();
+        const r: Resolvable<string> = new Resolvable();
         expect(r.isPending()).toBe(true);
         expect(r.isResolved()).toBe(false);
         r.attach(Promise.resolve(resolveWith));
@@ -24,7 +24,7 @@ describe('ResolvablePromise', () => {
         ${undefined}
         ${Error('ResolvablePromise reject')}
     `('ResolvablePromise reject', async ({ rejectWith }) => {
-        const r = new Resolvable<string>();
+        const r: Resolvable<string> = new Resolvable();
         expect(r.isPending()).toBe(true);
         expect(r.isResolved()).toBe(false);
         const p = Promise.reject(rejectWith);
@@ -36,7 +36,7 @@ describe('ResolvablePromise', () => {
 
     test('Double resolve', async () => {
         try {
-            const r = new Resolvable<string>();
+            const r: Resolvable<string> = new Resolvable();
             const pOne = Promise.resolve('one');
             r.attach(pOne);
             // Attaching the same promise is ok.

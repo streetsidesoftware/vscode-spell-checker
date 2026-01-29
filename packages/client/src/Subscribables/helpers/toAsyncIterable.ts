@@ -56,7 +56,7 @@ export function toAsyncIterable<T>(source: Subscribable<T>): AsyncIterable<T> {
 
         listen();
 
-        const pNext = new Promise<IteratorResult<T>>((resolve) => {
+        const pNext: Promise<IteratorResult<T>> = new Promise((resolve) => {
             pNextResolve = resolve;
         });
         return pNext;

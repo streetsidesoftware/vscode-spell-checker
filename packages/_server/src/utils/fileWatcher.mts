@@ -7,8 +7,8 @@ import type { EventType, Listener, Watcher } from './watchFile.mjs';
 import { watchFile } from './watchFile.mjs';
 
 export class FileWatcher implements Disposable {
-    private watchedFile = new Map<string, Watcher>();
-    private listeners = new Set<Listener>();
+    private watchedFile: Map<string, Watcher> = new Map();
+    private listeners: Set<Listener> = new Set();
 
     /**
      * Stops watching all files.

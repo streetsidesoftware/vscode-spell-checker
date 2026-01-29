@@ -225,14 +225,14 @@ export function commandLineBuilder(line: string): CommandLineBuilder {
 export class CommandLineBuilder {
     constructor(readonly tokens: Readonly<ArgToken>[] = []) {}
 
-    get line() {
+    get line(): string {
         return this.tokens.map((t) => t.original).join('');
     }
-    get args() {
+    get args(): string[] {
         return argTokensToArgs(this.tokens);
     }
 
-    setArg(index: number, value: string, quote?: QuoteChar) {
+    setArg(index: number, value: string, quote?: QuoteChar): void {
         const args = argTokensToArgWithTokens(this.tokens);
         const arg = args[index];
         assert(arg, 'Invalid index');
@@ -240,7 +240,7 @@ export class CommandLineBuilder {
         this.tokens.splice(arg.startTokenIndex, arg.tokens.length, { value, original: encodeArg(value, quote), quote, separator: false });
     }
 
-    pushArg(value: string, quote: QuoteChar = '') {
+    pushArg(value: string, quote: QuoteChar = ''): void {
         const token: ArgToken = { value, original: encodeArg(value, quote), quote, separator: false };
         const lastToken = this.tokens[this.tokens.length - 1];
         if (lastToken && !lastToken.separator) {
@@ -249,20 +249,20 @@ export class CommandLineBuilder {
         this.tokens.push(token);
     }
 
-    hasTrailingSeparator() {
+    hasTrailingSeparator(): boolean {
         return this.tokens[this.tokens.length - 1]?.separator || false;
     }
 
-    pushSeparator(value: ' ' | '\t' | '\n' | '\r' = ' ') {
+    pushSeparator(value: ' ' | '\t' | '\n' | '\r' = ' '): void {
         this.tokens.push({ value, original: value, quote: '', separator: true });
     }
 
-    clone() {
+    clone(): CommandLineBuilder {
         return new CommandLineBuilder([...this.tokens]);
     }
 }
 
-export function encodeArg(arg: string, quote: QuoteChar = '') {
+export function encodeArg(arg: string, quote: QuoteChar = ''): string {
     if (!arg) return quote + quote || '""';
 
     if (quote) {
