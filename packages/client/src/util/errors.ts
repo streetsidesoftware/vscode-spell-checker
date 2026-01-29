@@ -31,7 +31,7 @@ export const ErrorHandlers: IErrorHandlers = {
     logErrors,
     silenceErrors,
     showErrors,
-} as const;
+};
 
 /*
  * Rejected Promise Resolvers

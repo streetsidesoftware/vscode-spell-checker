@@ -22,8 +22,7 @@
   "scripts": {
     "build": "npm run build:tsdown && npm run build:tsc",
     "build-production": "npm run clean-build-production",
-    "build:production": "npm run build:esbuild -- --production",
-    "build:esbuild": "node ./build.mjs",
+    "build:production": "npm run build:tsdown",
     "build:tsdown": "tsdown",
     "build:tsc": "tsc -p tsconfig.json",
     "clean-build-production": "npm run clean && npm run build:production",
@@ -32,9 +31,8 @@
     "version": "npm run package-extension",
     "test": "vitest run",
     "test-watch": "vitest",
-    "watch": "concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
-    "watch:esbuild": "npm run build:esbuild -- --watch",
-    "watch:api": "npm run build:api.d.ts -- --watch",
+    "watch": "concurrently npm:watch:tsdown npm:watch:tsc",
+    "watch:tsdown": "npm run build:tsdown -- --watch",
     "watch:tsc": "npm run build:tsc -- --watch"
   },
   "devDependencies": {
