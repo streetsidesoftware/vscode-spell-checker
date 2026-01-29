@@ -1,0 +1,95 @@
+name: '📦 Update Release Notes'
+
+# Add extra information to release notes, such as links to the VS Code Marketplace.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag of the release to be updated.
+        type: string
+        required: true
+  release:
+    types:
+      - published
+  # push:
+  #   # Sequence of patterns matched against refs/tags
+  #   tags:
+  #     - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+
+permissions:
+  actions: read
+  checks: write
+  contents: write
+  issues: read
+  packages: write
+  pull-requests: read
+  repository-projects: read
+  statuses: read
+
+jobs:
+  build:
+    name: Update Release Notes
+    env:
+      REF: ${{ inputs.ref || github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.REF }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Read package.json File
+        id: package-json
+        uses: streetsidesoftware/actions/public/read-file@v1
+        with:
+          # Relative to the root of the repository
+          path: 'package.json'
+
+      - name: CSpell Version
+        id: cspell-version
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.package-json.outputs.result).dependencies['@cspell/cspell-types'] }}
+
+      - name: VSCode Engine Version
+        id: vscode-version
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.package-json.outputs.result).engines.vscode }}
+
+      - name: Extension Version
+        id: extension-version
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.package-json.outputs.result).version }}
+
+      - name: VSCode Version Table
+        id: version-table
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: |
+            | Extension Version | VSCode Version | CSpell Version |
+            | ----------------- | -------------- | -------------- |
+            | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} |
+
+      - name: Summary
+        uses: streetsidesoftware/actions/public/summary@v1
+        with:
+          text: |
+            # Summary
+
+            ## Version Information
+
+            ${{ steps.version-table.outputs.value }}
