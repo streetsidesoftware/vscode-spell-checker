@@ -115,6 +115,7 @@ jobs:
         env:
           RELEASE_ID: ${{ steps.release-id.outputs.result }}
         with:
+          result-encoding: string
           script: |
             const release_id = process.env.RELEASE_ID;
             const result = await github.request('GET /repos/{owner}/{repo}/releases/{release_id}', {
