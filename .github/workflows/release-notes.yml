@@ -47,7 +47,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .nvmrc
+          # This is to match the node runner version, not necessarily the extension's target version
+          node-version: 24.x
           cache: npm
 
       - name: Read package.json File
@@ -75,14 +76,99 @@ jobs:
         with:
           value: ${{ fromJson(steps.package-json.outputs.result).version }}
 
+      - name: Is PreRelease
+        id: is-prerelease
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.package-json.outputs.result).vsce.prerelease && '**prerelease**' || '' }}
+
       - name: VSCode Version Table
         id: version-table
         uses: streetsidesoftware/actions/public/output@v1
         with:
           value: |
-            | Extension Version | VSCode Version | CSpell Version |
-            | ----------------- | -------------- | -------------- |
-            | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} |
+            | Extension Version | VSCode Version | CSpell Version | PreRelease |
+            | ----------------- | -------------- | -------------- | ---------- |
+            | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} | ${{ steps.is-prerelease.outputs.value }} |
+
+      - name: Get Release
+        id: release
+        uses: actions/github-script@v8
+        env:
+          TAG: ${{ env.REF }}
+        with:
+          script: |
+            const tag = process.env.TAG;
+            const result = await github.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: tag,
+              headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            });
+            return result.data;
+
+      - name: Get Release ID
+        id: release-id
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.release.outputs.result).id }}
+
+      - name: Update Release Notes
+        id: release-notes
+        uses: actions/github-script@v8
+        env:
+          RELEASE: ${{ steps.release.outputs.result }}
+          VERSION_TABLE: ${{ steps.version-table.outputs.value }}
+        with:
+          result-encoding: string
+          script: |
+            const release = JSON.parse(process.env.RELEASE);
+            let body = release.body;
+            let tableAt = body.length;
+            const tableMarker = '<!-- RELEASE NOTES VERSION TABLE -->';
+            if (body.includes(tableMarker)) {
+              const beforeTable = body.split(tableMarker)[0];
+              const afterTable = body.split(tableMarker)[1].split(tableMarker)[1];
+              body = `${beforeTable}${tableMarker}`;
+              tableAt = beforeTable.length;
+            }
+
+            body = body.slice(0, tableAt).trimEnd() + '\n\n' +
+              tableMarker + '\n\n' +
+              process.env.VERSION_TABLE.trim() + '\n\n' +
+              tableMarker + '\n\n' +
+              body.slice(tableAt).trimStart();
+            return body;
+
+      - name: Patch Release Notes
+        id: patch-release-notes
+        uses: actions/github-script@v8
+        env:
+          RELEASE: ${{ steps.release.outputs.result }}
+          BODY: ${{ steps.release-notes.outputs.result }}
+        with:
+          result-encoding: string
+          script: |
+            const release = JSON.parse(process.env.RELEASE);
+            const updatedBody = process.env.BODY;
+            const release_id = release.id;
+            const result = await github.request('PATCH /repos/{owner}/{repo}/releases/{release_id}', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release_id,
+              tag_name: release.tag_name,
+              target_commitish: release.target_commitish,
+              name: release.name,
+              body: updatedBody,
+              draft: release.draft,
+              prerelease: release.prerelease,
+              headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            });
+            return result.data.body;
 
       - name: Summary
         uses: streetsidesoftware/actions/public/summary@v1
@@ -93,3 +179,11 @@ jobs:
             ## Version Information
 
             ${{ steps.version-table.outputs.value }}
+
+            ## Release ID
+
+            ${{ steps.release-id.outputs.result }}
+
+            # Release Notes
+
+            ${{ steps.release-notes.outputs.result }}
