@@ -131,7 +131,7 @@ jobs:
             if (body.includes(tableMarker)) {
               const beforeTable = body.split(tableMarker)[0];
               const afterTable = body.split(tableMarker)[1].split(tableMarker)[1];
-              body = `${beforeTable}${tableMarker}
+              body = `${beforeTable}${tableMarker}`;
               tableAt = beforeTable.length;
             }
 
