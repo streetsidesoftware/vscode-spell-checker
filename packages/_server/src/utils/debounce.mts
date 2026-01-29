@@ -12,7 +12,7 @@ export function debounce<V, R>(fn: FN<V, R>, timeoutMs: number, extractKey: (k: 
     interface Box<T> {
         v: T;
     }
-    const m = new Map<V, Box<R>>();
+    const m: Map<V, Box<R>> = new Map();
     return (value: V) => {
         const key = extractKey(value);
         const v = m.get(key);

@@ -125,10 +125,10 @@ export class DocumentSettings {
     private readonly fetchSettingsForUri = this.createCache((docUri: string | undefined) => this._fetchSettingsForUri(docUri));
     private readonly fetchVSCodeConfiguration = this.createCache((uri?: string) => this._fetchVSCodeConfiguration(uri));
     private readonly fetchRepoRootForDir = this.createCache((dir: Uri) => findRepoRoot(dir));
-    private readonly pendingUrisToRelease = new Map<string, NodeJS.Timeout>();
+    private readonly pendingUrisToRelease: Map<string, NodeJS.Timeout> = new Map();
     public readonly fetchWorkspaceConfiguration = this.createCache((docUri: DocumentUri) => this._fetchWorkspaceConfiguration(docUri));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
-    readonly configsToImport = new Set<string>();
+    readonly configsToImport: Set<string> = new Set();
     private readonly importedSettings = this.createLazy(() => this._importSettings());
     private _version = 0;
     private gitIgnore = new GitIgnore();

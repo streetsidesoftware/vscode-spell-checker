@@ -14,7 +14,7 @@ import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
-export function activate(context: ExtensionContext, issueTracker: Promise<IssueTracker>) {
+export function activate(context: ExtensionContext, issueTracker: Promise<IssueTracker>): void {
     context.subscriptions.push(UnknownWordsExplorer.register(issueTracker));
     context.subscriptions.push(
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.openSuggestionsForIssue'], handleOpenSuggestionsForIssue),
@@ -113,7 +113,7 @@ interface ProviderOptions {
 class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     private emitOnDidChange = createEmitter<OnDidChangeEventType>();
     private disposeList = createDisposableList();
-    private suggestions = new Map<string, Suggestion[]>();
+    private suggestions: Map<string, Suggestion[]> = new Map();
     private issueTracker: IssueTracker | undefined;
     private children: WordIssueTreeItem[] | undefined;
 
@@ -208,8 +208,8 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
 
 class WordIssueTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
-    suggestionsByDocument = new Map<TextDocument, Suggestion[]>();
-    conicalDocuments = new Set<TextDocument | vscode.NotebookDocument>();
+    suggestionsByDocument: Map<TextDocument, Suggestion[]> = new Map();
+    conicalDocuments: Set<TextDocument | vscode.NotebookDocument> = new Set();
     readonly issues: SpellingCheckerIssue[] = [];
 
     constructor(
@@ -503,7 +503,7 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 function collectIssues(context: Context): WordIssueTreeItem[] {
     const isVisible = createIsItemVisibleFilter(context.onlyVisible);
     const issues = (context.issueTracker.getSpellingIssues() || []).filter(isVisible);
-    const groupedByWord = new Map<string, WordIssueTreeItem>();
+    const groupedByWord: Map<string, WordIssueTreeItem> = new Map();
     const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(context, word));
     issues.forEach(groupIssue);
 
@@ -555,7 +555,7 @@ function nText(n: number, singular: string, plural: string): string {
 }
 
 function gatherSuggestions(suggestionsByDocument: Map<TextDocument, Suggestion[]>) {
-    const sugMap = new Map<string, boolean | undefined>();
+    const sugMap: Map<string, boolean | undefined> = new Map();
     for (const sugs of suggestionsByDocument.values()) {
         for (const sug of sugs) {
             const isPreferred = sugMap.get(sug.word) || sug.isPreferred;

@@ -3,7 +3,7 @@
  * @param word - word to clean
  * @returns string
  */
-export function cleanWord(word: string) {
+export function cleanWord(word: string): string {
     const inlineWord = markdownInlineCode(word);
     return inlineWord.replace(/^`+/g, '').replace(/`+$/g, '');
 }

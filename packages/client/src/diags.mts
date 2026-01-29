@@ -26,7 +26,7 @@ export function getCSpellDiags(docUri: Uri | undefined, issueType?: IssueType): 
     return collection?.map((issue) => issue.diag) || [];
 }
 
-export function filterDiags<D extends Diagnostic>(diags: readonly D[], source = diagnosticSource): D[] {
+export function filterDiags<D extends Diagnostic>(diags: readonly D[], source: string = diagnosticSource): D[] {
     return diags.filter((d) => d.source === source);
 }
 
@@ -163,7 +163,10 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
     return dList;
 }
 
-export const __testing__ = {
+export const __testing__: {
+    determineWordRangeToAddToDictionaryFromSelection: typeof determineWordRangeToAddToDictionaryFromSelection;
+    extractMatchingDiagTexts: typeof extractMatchingDiagTexts;
+} = {
     determineWordRangeToAddToDictionaryFromSelection,
     extractMatchingDiagTexts,
 };

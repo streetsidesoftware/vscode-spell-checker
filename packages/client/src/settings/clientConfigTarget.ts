@@ -84,7 +84,9 @@ export const ConfigScopes: ClientConfigScopes = {
     Folder: 'folder',
 };
 
-function isA<T extends ClientConfigTarget>(kind: T['kind']) {
+type IsA<T extends ClientConfigTarget> = (t: T | ClientConfigTarget) => t is T;
+
+function isA<T extends ClientConfigTarget>(kind: T['kind']): IsA<T> {
     return (t: T | ClientConfigTarget): t is T => typeof t === 'object' && t.kind === kind;
 }
 
@@ -95,9 +97,9 @@ export function isClientConfigTargetOfKind<K extends ClientConfigKind>(
     return typeof t === 'object' && t.kind === kind;
 }
 
-export const isClientConfigTargetDictionary = isA<ClientConfigTargetDictionary>(ConfigKinds.Dictionary);
-export const isClientConfigTargetCSpell = isA<ClientConfigTargetCSpell>(ConfigKinds.Cspell);
-export const isClientConfigTargetVSCode = isA<ClientConfigTargetVSCode>(ConfigKinds.Vscode);
+export const isClientConfigTargetDictionary: IsA<ClientConfigTargetDictionary> = isA<ClientConfigTargetDictionary>(ConfigKinds.Dictionary);
+export const isClientConfigTargetCSpell: IsA<ClientConfigTargetCSpell> = isA<ClientConfigTargetCSpell>(ConfigKinds.Cspell);
+export const isClientConfigTargetVSCode: IsA<ClientConfigTargetVSCode> = isA<ClientConfigTargetVSCode>(ConfigKinds.Vscode);
 
 type ScopeToOrder = Record<ClientConfigScope, number>;
 

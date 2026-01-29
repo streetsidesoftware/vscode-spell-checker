@@ -4,7 +4,7 @@ import { FileType, window, workspace } from 'vscode';
 import * as di from '../di.mjs';
 import { toUri } from '../util/uriHelper.mjs';
 import { findMatchingDocument } from '../vscode/findDocument.mjs';
-import type { ClientConfigTarget } from './clientConfigTarget.js';
+import type { ClientConfigKind, ClientConfigScope, ClientConfigTarget } from './clientConfigTarget.js';
 import {
     createConfigTargetMatchPattern,
     filterClientConfigTargets,
@@ -55,8 +55,8 @@ export async function targetsFromConfigurationTarget(
  */
 export async function targetsForTextDocument(
     document: TextDocument | { uri: Uri; languageId?: string } | undefined,
-    patternMatch = patternMatchNoDictionaries,
-) {
+    patternMatch: Partial<Record<ClientConfigKind | ClientConfigScope, boolean>> = patternMatchNoDictionaries,
+): Promise<ClientConfigTarget[]> {
     const { uri, languageId } = document || {};
     const config = await di.get('client').getConfigurationForDocument({ uri, languageId }, {});
     const targets = config.configTargets.map(mapConfigTargetToClientConfigTarget);
@@ -69,7 +69,10 @@ export async function targetsForTextDocument(
  * @param patternMatch - optional pattern match to filter out specific targets. By default, dictionary targets are filtered out.
  * @returns list of targets.
  */
-export async function targetsForUri(docUri?: string | null | Uri | undefined, patternMatch = patternMatchNoDictionaries) {
+export async function targetsForUri(
+    docUri?: string | null | Uri | undefined,
+    patternMatch: Partial<Record<ClientConfigKind | ClientConfigScope, boolean>> = patternMatchNoDictionaries,
+): Promise<ClientConfigTarget[]> {
     docUri = toUri(docUri);
     const document = docUri ? await uriToTextDocInfo(docUri) : window.activeTextEditor?.document;
     return targetsForTextDocument(document, patternMatch);

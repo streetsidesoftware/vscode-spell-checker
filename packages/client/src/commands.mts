@@ -83,7 +83,7 @@ type CommandHandler =
     | ((...params: ExplicitAny[]) => void)
     | ((...params: ExplicitAny[]) => undefined)
     | ((...params: ExplicitAny[]) => Promise<unknown>);
-type CommandHandlers = Record<string, CommandHandler>;
+type CommandHandlers = Readonly<Record<string, CommandHandler>>;
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
 const tsFCfg = (configTarget: ConfigurationTarget, limitToTarget = false) =>
@@ -110,7 +110,7 @@ const actionAddIgnoreWordToUser = prompt('Ignore Words in User Settings', fnWTar
 const actionAddWordToCSpell = prompt('Add Words to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
 const actionAddWordToDictionary = prompt('Add Words to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatches));
 
-export const commandHandlers = {
+const _commandHandlers = {
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
     'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
     'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
@@ -131,25 +131,25 @@ export const commandHandlers = {
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
 
-    'cSpell.goToNextSpellingIssue': () => actionJumpToSpellingError('next', false),
-    'cSpell.goToPreviousSpellingIssue': () => actionJumpToSpellingError('previous', false),
-    'cSpell.goToNextSpellingIssueAndSuggest': () => actionJumpToSpellingError('next', true),
-    'cSpell.goToPreviousSpellingIssueAndSuggest': () => actionJumpToSpellingError('previous', true),
+    'cSpell.goToNextSpellingIssue': (): Promise<void> => actionJumpToSpellingError('next', false),
+    'cSpell.goToPreviousSpellingIssue': (): Promise<void> => actionJumpToSpellingError('previous', false),
+    'cSpell.goToNextSpellingIssueAndSuggest': (): Promise<void> => actionJumpToSpellingError('next', true),
+    'cSpell.goToPreviousSpellingIssueAndSuggest': (): Promise<void> => actionJumpToSpellingError('previous', true),
 
-    'cSpell.enableForGlobal': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), true),
-    'cSpell.disableForGlobal': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), false),
-    'cSpell.toggleEnableForGlobal': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global, true)),
-    'cSpell.enableForWorkspace': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), true),
-    'cSpell.disableForWorkspace': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), false),
-    'cSpell.toggleEnableForWorkspace': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Workspace)),
-    'cSpell.toggleEnableSpellChecker': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global)),
+    'cSpell.enableForGlobal': async (): Promise<void> => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), true),
+    'cSpell.disableForGlobal': async (): Promise<void> => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), false),
+    'cSpell.toggleEnableForGlobal': async (): Promise<void> => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global, true)),
+    'cSpell.enableForWorkspace': async (): Promise<void> => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), true),
+    'cSpell.disableForWorkspace': async (): Promise<void> => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), false),
+    'cSpell.toggleEnableForWorkspace': async (): Promise<void> => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Workspace)),
+    'cSpell.toggleEnableSpellChecker': async (): Promise<void> => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global)),
     'cSpell.enableCurrentFileType': enableCurrentFileType,
     'cSpell.disableCurrentFileType': disableCurrentFileType,
 
     'cSpell.editText': handleApplyLsTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
-    'cSpell.openSettings': async () => executeOpenSettingsCommand(),
+    'cSpell.openSettings': async (): Promise<void> => executeOpenSettingsCommand(),
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
@@ -207,6 +207,8 @@ export const commandHandlers = {
     'cSpell.disableCurrentLanguage': disableCurrentFileType, // legacy
 } as const satisfies CommandHandlers;
 
+export const commandHandlers: CommandHandlers = _commandHandlers;
+
 type ImplementedCommandHandlers = typeof commandHandlers;
 type ImplementedCommandNames = keyof ImplementedCommandHandlers;
 
@@ -217,8 +219,12 @@ export const knownCommands = Object.fromEntries(
 ) as Record<ImplementedCommandNames, ImplementedCommandNames>;
 
 export function registerCommands(injectCommands: InjectableCommandHandlers): Disposable[] {
-    const skipRegister = new Set<string>();
-    const registeredHandlers = Object.entries({ ...commandHandlers, ...injectCommands })
+    const skipRegister: Set<string> = new Set();
+    const toInject = Object.fromEntries(Object.entries(injectCommands).filter((pair): pair is [string, CommandHandler] => !!pair[1]));
+    const registeredHandlers = Object.entries({
+        ...commandHandlers,
+        ...toInject,
+    })
         .filter(([cmd]) => !skipRegister.has(cmd))
         .map(([cmd, fn]) => registerCmd(cmd, fn));
     const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
@@ -229,7 +235,7 @@ export function registerCommands(injectCommands: InjectableCommandHandlers): Dis
     ];
 }
 
-function handlerResolvedLater() {}
+function handlerResolvedLater(): void {}
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
     return handleErrors(di.get('dictionaryHelper').addWordsToConfigRep(words, cfg), 'addWordsToConfig');
@@ -411,7 +417,9 @@ async function createCSpellConfig(): Promise<void> {
     }
 }
 
-export const __testing__ = {
+export const __testing__: {
+    commandHandlers: CommandHandlers;
+} = {
     commandHandlers,
 };
 
@@ -617,24 +625,24 @@ function genExecCommandFn<T>(command: string | ExecuteCommand): () => Promise<T>
     };
 }
 
-async function handleDisplayCSpellInfo() {
+async function handleDisplayCSpellInfo(): Promise<void> {
     await setContext({ displayCSpellInfo: true });
     await commands.executeCommand('cSpellInfoView.focus');
 }
 
-async function handleHideCSpellInfo() {
+async function handleHideCSpellInfo(): Promise<void> {
     await setContext({ displayCSpellInfo: false });
 }
 
-function handleRestart() {
+function handleRestart(): Promise<void> {
     return handleErrors(di.getClient().restart(), 'handle restart server');
 }
 
-function handleReload() {
+function handleReload(): Promise<void> {
     return handleErrors(di.getClient().notifySettingsChanged(), 'handle restart server');
 }
 
-function handleCmdExperimentalExecuteDocumentSymbolProvider() {
+function handleCmdExperimentalExecuteDocumentSymbolProvider(): Promise<void> {
     return handleErrors(experimentWithSymbols(), 'handleCmdExperimentalExecuteDocumentSymbolProvider');
 }
 
@@ -646,6 +654,6 @@ export function generateOpenSettingsCommand(setting?: string): ExecuteCommand {
     };
 }
 
-export function executeOpenSettingsCommand(setting?: string) {
+export function executeOpenSettingsCommand(setting?: string): Promise<void> {
     return execCommand(generateOpenSettingsCommand(setting));
 }

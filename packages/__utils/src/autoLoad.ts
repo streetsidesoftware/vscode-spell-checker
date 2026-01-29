@@ -7,7 +7,7 @@ export interface AutoLoadCache<K, T> {
 }
 
 export function createAutoLoadCache<K, T>(loader: (key: K) => T): AutoLoadCache<K, T> {
-    const cache = new Map<K, T>();
+    const cache: Map<K, T> = new Map();
     const getter = ((key: K) => {
         const found = cache.get(key);
         if (found) return found;

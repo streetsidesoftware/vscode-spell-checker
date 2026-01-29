@@ -117,7 +117,7 @@ export function initVsCodeApi<T>(acquiredVsCodeApi?: WebviewApi<T>): VSCodeAPIWr
  */
 export function getVsCodeApi<T>(acquiredVsCodeApi?: WebviewApi<T>): VSCodeAPIWrapper<T> {
     if (vscode) return vscode;
-    const api = new VSCodeAPIWrapper<T>(acquiredVsCodeApi);
+    const api: VSCodeAPIWrapper<T> = new VSCodeAPIWrapper(acquiredVsCodeApi);
     vscode = api;
     return api;
 }

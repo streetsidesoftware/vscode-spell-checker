@@ -269,7 +269,12 @@ class ConfigFileReaderWriterYaml extends AbstractConfigFileReaderWriter {
     }
 }
 
-export const __testing__ = {
+export const __testing__: {
+    settingsFileTemplate: CSpellSettings;
+    detectIndent: typeof detectIndent;
+    injectFormatting: typeof injectFormatting;
+    SymbolFormat: symbol;
+} = {
     settingsFileTemplate,
     detectIndent,
     injectFormatting,

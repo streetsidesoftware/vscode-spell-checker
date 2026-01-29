@@ -36,7 +36,7 @@ const logLevels: [string, LogLevel][] = [
     ['INFORMATION', LogLevel.INFO],
 ];
 
-const levelMap = new Map<string, LogLevel>(logLevels);
+const levelMap: Map<string, LogLevel> = new Map(logLevels);
 
 const stub = () => undefined;
 

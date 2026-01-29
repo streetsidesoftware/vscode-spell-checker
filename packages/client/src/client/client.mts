@@ -43,7 +43,7 @@ import type {
 } from './server/index.mjs';
 import { createServerApi, requestCodeAction } from './server/index.mjs';
 
-export { GetConfigurationForDocumentResult } from './server/index.mjs';
+export type { GetConfigurationForDocumentResult } from './server/index.mjs';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -65,7 +65,7 @@ const uriSeparator = '||';
 
 export class CSpellClient implements Disposable {
     readonly client: LanguageClient;
-    readonly import = new Set<string>();
+    readonly import: Set<string> = new Set();
     readonly languageIds: Set<string>;
     readonly allowedSchemas: Set<string>;
 
@@ -74,8 +74,8 @@ export class CSpellClient implements Disposable {
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
     private broadcasterOnDocumentConfigChange = createBroadcaster<OnDocumentConfigChange>();
     private broadcasterOnBlockFile = createBroadcaster<OnBlockFile>();
-    private ready = new Resolvable<void>();
-    private diagEmitter = new EventEmitter<DiagnosticsFromServer>();
+    private ready: Resolvable<void> = new Resolvable();
+    private diagEmitter: EventEmitter<DiagnosticsFromServer> = new EventEmitter();
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -224,10 +224,8 @@ export class CSpellClient implements Disposable {
         }
     }
 
-    private cacheGetConfigurationForDocument = new Map<
-        string | undefined,
-        Promise<GetConfigurationForDocumentResult<ConfigurationFields>>
-    >();
+    private cacheGetConfigurationForDocument: Map<string | undefined, Promise<GetConfigurationForDocumentResult<ConfigurationFields>>> =
+        new Map();
 
     private factoryGetConfigurationForDocument(): (
         document: TextDocument | TextDocumentInfo | undefined,

@@ -3,7 +3,7 @@ import { Disposable } from 'vscode';
 type Listener<P> = (p: P) => void;
 
 export class Broadcaster<P> {
-    private listeners = new Set<Listener<P>>();
+    private listeners: Set<Listener<P>> = new Set();
 
     public send(p: P): void {
         for (const fn of this.listeners) {

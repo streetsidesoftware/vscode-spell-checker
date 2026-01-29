@@ -23,7 +23,7 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
     const dList = createDisposableList();
     if (!showLanguageStatus) return dList;
 
-    const statusItems = new Map<string, vscode.LanguageStatusItem>();
+    const statusItems: Map<string, vscode.LanguageStatusItem> = new Map();
     let pendingTimeout: NodeJS.Timeout | undefined = undefined;
     let isEnabledResponse: ServerResponseIsSpellCheckEnabledForFile | undefined = undefined;
     let currDocument: vscode.TextDocument | undefined = undefined;

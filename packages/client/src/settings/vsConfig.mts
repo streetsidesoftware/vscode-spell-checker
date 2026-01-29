@@ -5,10 +5,10 @@ import type { CSpellUserSettings } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { findConicalDocumentScope } from '../util/documentUri.js';
 
-export { CSpellUserSettings } from '../client/index.mjs';
+export type { CSpellUserSettings } from '../client/index.mjs';
 export { ConfigurationTarget } from 'vscode';
 
-export const sectionCSpell = extensionId;
+export const sectionCSpell: 'cSpell' = extensionId;
 
 export interface InspectValues<T> {
     defaultValue?: T;
@@ -28,7 +28,7 @@ export interface FullInspectValues<T> extends InspectValues<T> {
     languageIds?: string[];
 }
 
-export const GlobalTarget = ConfigurationTarget.Global;
+export const GlobalTarget: ConfigurationTarget.Global = ConfigurationTarget.Global;
 
 export interface ConfigTargetWithOptionalResource {
     target: ConfigurationTarget;
@@ -76,7 +76,7 @@ export type InspectScope = FullInspectScope | ScopeResourceFree;
  */
 const scopeOrder: Scope[] = ['defaultValue', 'globalValue', 'workspaceValue', 'workspaceFolderValue'];
 
-const scopeToOrderIndex = new Map<string, number>(scopeOrder.map((s, i) => [s, i] as [string, number]));
+const scopeToOrderIndex: Map<string, number> = new Map(scopeOrder.map((s, i) => [s, i] as [string, number]));
 
 export type InspectResult<T> = Inspect<T> | undefined;
 
@@ -505,6 +505,8 @@ function isHasUri(scope: unknown): scope is HasUri {
     return h.uri !== undefined;
 }
 
-export const __testing__ = {
+export const __testing__: {
+    mergeInspect: typeof mergeInspect;
+} = {
     mergeInspect,
 };

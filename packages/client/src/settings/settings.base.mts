@@ -17,7 +17,8 @@ import {
 import { configUpdaterForKey } from './configUpdater.mjs';
 import type { TargetsAndScopes } from './settings.types.mjs';
 
-export { CSpellUserSettings, normalizeLocale } from '../client/index.mjs';
+export type { CSpellUserSettings } from '../client/index.mjs';
+export { normalizeLocale } from '../client/index.mjs';
 
 export function readConfigTargetValues<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],

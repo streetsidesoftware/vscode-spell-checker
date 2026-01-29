@@ -6,6 +6,6 @@ export function log(...params: any[]): void {
     console.log(...params);
 }
 
-export function setDebugMode(mode: boolean) {
+export function setDebugMode(mode: boolean): void {
     debugMode = mode;
 }

@@ -25,7 +25,7 @@ const log = useConsoleLog ? console.log : consoleDebug;
 // const debounceRevealDelay = 100;
 const debounceUIDelay = 200;
 
-export function activate(context: ExtensionContext, issueTracker: Promise<IssueTracker>) {
+export function activate(context: ExtensionContext, issueTracker: Promise<IssueTracker>): void {
     context.subscriptions.push(IssueExplorerByFile.register(issueTracker));
     context.subscriptions.push(
         // vscode.commands.registerCommand(
@@ -589,7 +589,7 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
     return sorted;
 
     function groupIssues(fileIssues: FileIssue[]): Map<TextDocument | vscode.NotebookDocument, SpellingIssue[]> {
-        const groupedByFile = new Map<TextDocument | vscode.NotebookDocument, SpellingIssue[]>();
+        const groupedByFile: Map<TextDocument | vscode.NotebookDocument, SpellingIssue[]> = new Map();
 
         for (const fileIssue of fileIssues) {
             groupIssue(fileIssue);

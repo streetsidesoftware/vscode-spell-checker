@@ -68,7 +68,7 @@ export function activate(context: ExtensionContext): Promise<ExtensionApi> {
         setOutputChannelLogLevel();
 
         const eIssueTracker = new vscode.EventEmitter<IssueTracker>();
-        const pIssueTracker = new Promise<IssueTracker>((resolve) => eIssueTracker.event(resolve));
+        const pIssueTracker: Promise<IssueTracker> = new Promise((resolve) => eIssueTracker.event(resolve));
 
         performance.mark('activateIssueViewer');
         activateIssueViewer(context, pIssueTracker);

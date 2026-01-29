@@ -13,7 +13,7 @@ const moduleStartTime: HTime = process.hrtime();
 
 export class PerformanceTimeline {
     private timeLine: TimeLineEvent[] = [];
-    private timeLineEvents = new Map<string, TimeLineEvent>();
+    private timeLineEvents: Map<string, TimeLineEvent> = new Map();
     private startEvent: TimeLineEvent;
 
     constructor() {
@@ -72,4 +72,4 @@ export function toMilliseconds(t: HTime): number {
     return (t[0] + t[1] * 1e-9) * 1000;
 }
 
-export const performance = new PerformanceTimeline();
+export const performance: PerformanceTimeline = new PerformanceTimeline();

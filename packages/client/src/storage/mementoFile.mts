@@ -83,7 +83,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
         return this.#emitter.event(listener);
     }
 
-    dispose = () => {
+    dispose: () => void = () => {
         this.#watcher.dispose();
     };
 

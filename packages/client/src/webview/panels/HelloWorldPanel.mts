@@ -41,7 +41,7 @@ export class HelloWorldPanel {
      *
      * @param extensionUri The URI of the directory containing the extension.
      */
-    public static render(extensionUri: Uri) {
+    public static render(extensionUri: Uri): void {
         if (HelloWorldPanel.currentPanel) {
             // If the webview panel already exists reveal it
             HelloWorldPanel.currentPanel._panel.reveal(ViewColumn.One);
@@ -66,7 +66,7 @@ export class HelloWorldPanel {
     /**
      * Cleans up and disposes of webview resources when the webview panel is closed.
      */
-    public dispose() {
+    public dispose(): void {
         if (HelloWorldPanel.currentPanel === this) {
             HelloWorldPanel.currentPanel = undefined;
         }

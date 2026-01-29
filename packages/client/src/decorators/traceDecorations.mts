@@ -15,10 +15,10 @@ const ignoreSchemes: Record<string, boolean> = {
 export class SpellingExclusionsDecorator implements Disposable {
     private decorationType: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
-    public dispose = this.disposables.dispose;
+    public dispose: () => void = this.disposables.dispose;
     private eventEmitter = createEmitter<vscode.TextEditor | undefined>();
     private _visible = false;
-    private _pendingUpdates = new Set<vscode.TextEditor>();
+    private _pendingUpdates: Set<vscode.TextEditor> = new Set();
 
     constructor(
         readonly context: vscode.ExtensionContext,
@@ -50,7 +50,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         this.resetDecorator();
     }
 
-    toggleVisible() {
+    toggleVisible(): void {
         this.visible = !this.visible;
     }
 

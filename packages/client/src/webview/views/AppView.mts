@@ -1,3 +1,4 @@
+import type { DisposableClassic } from 'utils-disposables';
 import { createDisposableList, makeDisposable } from 'utils-disposables';
 import type { Webview, WebviewOptions } from 'vscode';
 import { Uri } from 'vscode';
@@ -21,7 +22,7 @@ import { getUri } from '../utilities/getUri.js';
  */
 export class AppView {
     private _disposables = createDisposableList(undefined, 'AppView');
-    public readonly dispose = this._disposables.dispose;
+    public readonly dispose: DisposableClassic['dispose'] = this._disposables.dispose;
 
     /**
      * The HelloWorldPanel class private constructor (called only from the render method).

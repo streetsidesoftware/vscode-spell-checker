@@ -16,7 +16,7 @@ export { createTextDocument, validateText } from 'cspell-lib';
 export const diagnosticCollectionName = diagnosticSource;
 export const diagSource = diagnosticCollectionName;
 
-const diagSeverityMap = new Map<string, DiagnosticSeverity | undefined>([
+const diagSeverityMap: Map<string, DiagnosticSeverity | undefined> = new Map([
     ['error', DiagnosticSeverity.Error],
     ['warning', DiagnosticSeverity.Warning],
     ['information', DiagnosticSeverity.Information],

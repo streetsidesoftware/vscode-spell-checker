@@ -9,13 +9,25 @@ export function isError(e: unknown): e is Error {
     return err.message !== undefined && err.name !== undefined;
 }
 
-export const Resolvers = {
+interface IResolvers {
+    logError: <T>(promise: Promise<T> | Thenable<T>, context: string) => Promise<T | undefined>;
+    ignoreError: <T>(promise: Promise<T> | Thenable<T>, context: string) => Promise<T | undefined>;
+    showError: <T>(promise: Promise<T> | Thenable<T>, context: string) => Promise<T | undefined>;
+}
+
+export const Resolvers: IResolvers = {
     logError,
     ignoreError,
     showError,
-};
+} as const;
 
-export const ErrorHandlers = {
+interface IErrorHandlers {
+    readonly logErrors: <T>(promise: Promise<T> | Thenable<T>, context: string) => Promise<T | undefined>;
+    readonly silenceErrors: <T>(promise: Promise<T> | Thenable<T>, context: string) => Promise<T | undefined>;
+    readonly showErrors: <T>(promise: Promise<T> | Thenable<T>, context: string) => Promise<T | undefined>;
+}
+
+export const ErrorHandlers: IErrorHandlers = {
     logErrors,
     silenceErrors,
     showErrors,

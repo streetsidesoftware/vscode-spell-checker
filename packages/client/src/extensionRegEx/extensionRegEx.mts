@@ -20,7 +20,7 @@ const MAX_HISTORY_LENGTH = 5;
 
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext, clientSpellChecker: CSpellClient): void {
-    const disposables = new Set<DisposableLike>();
+    const disposables: Set<DisposableLike> = new Set();
     const outline = new RegexpOutlineProvider();
     let patternMatcherClient: PatternMatcherClient | undefined;
 

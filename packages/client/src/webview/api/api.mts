@@ -1,4 +1,5 @@
 import { createDisposableList, type DisposableLike, disposeOf, injectDisposable, makeDisposable } from 'utils-disposables';
+import type { LoggerWithLogLevel } from 'utils-logger';
 import { createLogger, LogLevel } from 'utils-logger';
 import { Position, Range, Selection, Uri, window } from 'vscode';
 import type { MessageConnection } from 'vscode-jsonrpc/node' with { 'resolution-mode': 'require' };
@@ -13,7 +14,7 @@ import { awaitSubscribable, getWebviewGlobalStore } from '../AppState/index.mjs'
 import { calcDocSettings, type Storage, updateState, watchFieldList } from '../AppState/store.mjs';
 import { sampleList } from './staticTestData.mjs';
 
-export function createApi(connection: MessageConnection) {
+export function createApi(connection: MessageConnection): ServerSideApi {
     return bindApiAndStore(connection, getWebviewGlobalStore());
 }
 
@@ -24,13 +25,13 @@ const logging = {
 
 const logger = createLogger(logging, LogLevel.none);
 
-export function getLogger() {
+export function getLogger(): LoggerWithLogLevel {
     return logger;
 }
 
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
     let watcher: DisposableLike | undefined = undefined;
-    const fieldsToWatch = new Set<WatchFields>();
+    const fieldsToWatch: Set<WatchFields> = new Set();
     const disposables = createDisposableList([() => disposeOf(watcher)], 'bindApiAndStore');
     const dispose = disposables.dispose;
 

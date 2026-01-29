@@ -16,7 +16,7 @@ interface DocValEntry {
 }
 
 export class DocumentValidationController {
-    private docValMap = new Map<string, DocValEntry>();
+    private docValMap: Map<string, DocValEntry> = new Map();
     private disposables = new DisposableList();
 
     constructor(

@@ -191,7 +191,7 @@ export async function handleFixSpellingIssue(docUri: Uri, text: string, withText
  * Gets fixes for spelling issues in the given document.
  * If autoFixRange is specified, only fixes for issues that overlap wth the given range are returned.
  */
-export function getAutoFixesForSpellingIssuesInDocument(document: TextDocument, autoFixRange?: Range) {
+export function getAutoFixesForSpellingIssuesInDocument(document: TextDocument, autoFixRange?: Range): TextEdit[] | undefined {
     const issueTracker = di.get('issueTracker');
 
     return issueTracker
@@ -210,7 +210,7 @@ export function getAutoFixesForSpellingIssuesInDocument(document: TextDocument, 
         });
 }
 
-export async function actionAutoFixSpellingIssues(uri?: Uri) {
+export async function actionAutoFixSpellingIssues(uri?: Uri): Promise<void> {
     // console.error('actionAutoFixSpellingIssues %o', { uri });
     uri ??= window.activeTextEditor?.document.uri;
     const doc = findEditor(uri)?.document || findTextDocument(uri);
@@ -257,7 +257,7 @@ function filterEditsMatchingWorkspaceEdit(workspaceEdit: WorkspaceEdit, doc: Tex
     if (!wsEdits) return [];
 
     const uncoveredEdits = new Set(sortedEdits);
-    const coveredEdits = new Set<TextEdit>();
+    const coveredEdits: Set<TextEdit> = new Set();
 
     // todo: this should be a linear algorithm instead of a nested loop.
     for (const wsEdit of wsEdits) {

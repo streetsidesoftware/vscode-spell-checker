@@ -55,7 +55,7 @@ interface CountryInfo {
 const regExpParseCode = /^(?<lang>[a-z]{2})(?:[-_]?(?<script>[a-z]{4}))?[-_]?(?<locale>[a-z0-9]{0,2})$/i;
 // const regExValidate = /^([a-z]{2})(-[A-Z]{2})?$/;
 
-const langCodesMap = new Map<string, LangCountryPair>(
+const langCodesMap: Map<string, LangCountryPair> = new Map(
     codes.map((parts) => {
         const [code, lang, country = ''] = parts;
         const locale = code.match(regExpParseCode)?.groups?.locale || '';
@@ -70,17 +70,17 @@ const langCodesMap = new Map<string, LangCountryPair>(
     }),
 );
 
-const languageInfoMap = new Map<string, LangInfo>(
+const languageInfoMap: Map<string, LangInfo> = new Map(
     [...langCodesMap.values()].map(({ lang, language }) => [lang, { lang, language }] as const),
 );
 languageInfoMap.set('lorem', { lang: 'lorem', language: 'Lorem-Ipsum' });
 languageInfoMap.set('lorem-ipsum', { lang: 'lorem-ipsum', language: 'Lorem-Ipsum' });
 
-const countryInfoMap = new Map<string, CountryInfo>(
+const countryInfoMap: Map<string, CountryInfo> = new Map(
     [...langCodesMap.values()].map(({ locale, country }) => [locale, { locale, country }] as const),
 );
 
-const langScriptsMap = new Map<string, ScriptInfo>(scriptCodes.map(([script, scriptName]) => [script, { script, scriptName }]));
+const langScriptsMap: Map<string, ScriptInfo> = new Map(scriptCodes.map(([script, scriptName]) => [script, { script, scriptName }]));
 
 const langScriptCodeLookup = new Map(scriptCodes.map(([code]) => [code.toLowerCase(), code]));
 

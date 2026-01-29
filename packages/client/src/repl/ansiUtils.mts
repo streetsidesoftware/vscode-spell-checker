@@ -36,30 +36,30 @@ export function combine(fn: ColorFn, ...fns: ColorFn[]): ColorFn {
     return (text) => fns.reduce((acc, f) => f(acc), fn(text));
 }
 
-export function clearScreen() {
+export function clearScreen(): string {
     return ansiEscapes.clearScreen;
 }
 
-export function clearLine(dir: Direction) {
+export function clearLine(dir: Direction): string {
     return dir > 0 ? ansiEscapes.eraseEndLine : dir < 0 ? ansiEscapes.eraseStartLine : ansiEscapes.eraseLine;
 }
 
-export function clearDown() {
+export function clearDown(): string {
     return ansiEscapes.eraseDown;
 }
 
-export function moveCursor(dx: number, dy?: number | undefined) {
+export function moveCursor(dx: number, dy?: number | undefined): string {
     return ansiEscapes.cursorMove(dx, dy);
 }
 
-export function cursorTo(x: number, y?: number | undefined) {
+export function cursorTo(x: number, y?: number | undefined): string {
     return ansiEscapes.cursorTo(x, y);
 }
 
-export function eraseLines(n: number) {
+export function eraseLines(n: number): string {
     return ansiEscapes.eraseLines(n);
 }
 
-export function eraseLine() {
+export function eraseLine(): string {
     return ansiEscapes.eraseLine + '\r';
 }

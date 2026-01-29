@@ -121,7 +121,7 @@ function prefetchIterable<T>(size: number): (iterable: Iterable<T>) => Iterable<
 }
 
 function getConfigFileNames() {
-    const cfgFileNames = new Set<string>();
+    const cfgFileNames: Set<string> = new Set();
 
     for (const cfg of defaultConfigFilenames) {
         const parts = cfg.split('/');

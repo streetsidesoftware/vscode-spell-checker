@@ -22,7 +22,7 @@ export function addWordToUserDictionary(word: string): Promise<void> {
     return addWordToTarget(word, dictionaryTargetBestMatchesUser, undefined);
 }
 
-export function addWordToTarget(word: string, target: MatchTargetsFn, docUri: string | null | Uri | undefined) {
+export function addWordToTarget(word: string, target: MatchTargetsFn, docUri: string | null | Uri | undefined): Promise<void> {
     return handleErrors(_addWordToTarget(word, target, docUri), 'addWordToTarget');
 }
 

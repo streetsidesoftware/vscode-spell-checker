@@ -187,7 +187,7 @@ function extractFileConfig(
         uriUsed,
         workspaceFolderUri,
     } = docConfig;
-    const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
+    const enabledDicts: Set<string> = new Set((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
     // _log(`extractFileConfig languageIdEnabled: ${languageIdEnabled ? 'true' : 'false'}`);
 
@@ -404,7 +404,14 @@ function extractEnabledLanguageIds(...settings: (SelectedCSpellUserSettings | un
         .map(([k]) => k);
 }
 
-export const __testing__ = {
+export const __testing__: {
+    extractConfigFiles: typeof extractConfigFiles;
+    extractEnabledLanguageIds: typeof extractEnabledLanguageIds;
+    extractDictionariesFromConfig: typeof extractDictionariesFromConfig;
+    extractViewerConfigFromConfig: typeof extractViewerConfigFromConfig;
+    mapWorkspace: typeof mapWorkspace;
+    normalizeLocales: typeof normalizeLocales;
+} = {
     extractConfigFiles,
     extractEnabledLanguageIds,
     extractDictionariesFromConfig,

@@ -50,6 +50,6 @@ export async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?:
     }
 }
 
-export function requestSpellingSuggestions(document: TextDocument, range: Range, diags: Diagnostic[]) {
+export function requestSpellingSuggestions(document: TextDocument, range: Range, diags: Diagnostic[]): Promise<CodeAction[]> {
     return di.get('client').requestSpellingSuggestionsCodeActions(document, range, diags);
 }

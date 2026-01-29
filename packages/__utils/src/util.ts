@@ -5,7 +5,7 @@ export function unique<T>(values: T[]): T[] {
 export function uniqueFilter<T>(): (v: T) => boolean;
 export function uniqueFilter<T, U>(extractFn: (v: T) => U): (v: T) => boolean;
 export function uniqueFilter<T>(extractFn?: (v: T) => T): (v: T) => boolean {
-    const seen = new Set<T>();
+    const seen: Set<T> = new Set();
 
     if (!extractFn) {
         return (v: T) => !seen.has(v) && (seen.add(v), true);
@@ -18,7 +18,7 @@ export function uniqueFilter<T>(extractFn?: (v: T) => T): (v: T) => boolean {
 }
 
 export function freqCount<T>(values: T[]): [T, number][] {
-    const map = new Map<T, number>();
+    const map: Map<T, number> = new Map();
     values.forEach((v) => map.set(v, (map.get(v) || 0) + 1));
     return [...map.entries()];
 }

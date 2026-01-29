@@ -274,7 +274,12 @@ function isUri(u: Uri | unknown | undefined): u is Uri {
     return pUri.scheme !== undefined && pUri.authority !== undefined && pUri.path !== undefined;
 }
 
-export const __testing__ = {
+export const __testing__: {
+    fnUpdateFilterKeys: typeof fnUpdateFilterKeys;
+    hasUri: typeof hasUri;
+    isUri: typeof isUri;
+    isWorkspaceFolder: typeof isWorkspaceFolder;
+} = {
     fnUpdateFilterKeys,
     hasUri,
     isUri,
