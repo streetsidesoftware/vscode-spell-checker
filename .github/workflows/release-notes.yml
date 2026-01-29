@@ -115,24 +115,51 @@ jobs:
         with:
           value: ${{ fromJson(steps.release.outputs.result).id }}
 
-      - name: Get Release Notes
+      - name: Update Release Notes
         id: release-notes
         uses: actions/github-script@v8
         env:
-          RELEASE_ID: ${{ steps.release-id.outputs.value }}
+          RELEASE: ${{ steps.release.outputs.result }}
+          VERSION_TABLE: ${{ steps.version-table.outputs.value }}
         with:
           result-encoding: string
           script: |
-            const release_id = process.env.RELEASE_ID;
-            const result = await github.request('GET /repos/{owner}/{repo}/releases/{release_id}', {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: release_id,
-              headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-              }
-            });
-            return result.data.body;
+            const release = JSON.parse(process.env.RELEASE);
+            let body = release.body;
+            let tableAt = body.length;
+            const tableMarker = '<!-- RELEASE NOTES VERSION TABLE -->';
+            if (body.includes(tableMarker)) {
+              const beforeTable = body.split(tableMarker)[0];
+              const afterTable = body.split(tableMarker)[1].split(tableMarker)[1];
+              body = `${beforeTable}${tableMarker}
+              tableAt = beforeTable.length;
+            }
+
+            body = body.slice(0, tableAt).trimEnd() + '\n\n' +
+              tableMarker + '\n\n' +
+              process.env.VERSION_TABLE.trim() + '\n\n' +
+              tableMarker + '\n\n' +
+              body.slice(tableAt).trimStart();
+            return body;
+
+      # - name: Get Release Notes
+      #   id: release-notes
+      #   uses: actions/github-script@v8
+      #   env:
+      #     RELEASE_ID: ${{ steps.release-id.outputs.value }}
+      #   with:
+      #     result-encoding: string
+      #     script: |
+      #       const release_id = process.env.RELEASE_ID;
+      #       const result = await github.request('GET /repos/{owner}/{repo}/releases/{release_id}', {
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         release_id: release_id,
+      #         headers: {
+      #           'X-GitHub-Api-Version': '2022-11-28'
+      #         }
+      #       });
+      #       return result.data.body;
 
       - name: Summary
         uses: streetsidesoftware/actions/public/summary@v1
@@ -148,6 +175,6 @@ jobs:
 
             ${{ steps.release-id.outputs.result }}
 
-            ## Release Notes
+            # Release Notes
 
             ${{ steps.release-notes.outputs.result }}
