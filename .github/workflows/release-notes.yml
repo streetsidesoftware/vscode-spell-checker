@@ -76,14 +76,37 @@ jobs:
         with:
           value: ${{ fromJson(steps.package-json.outputs.result).version }}
 
+      - name: Is PreRelease
+        id: is-prerelease
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.package-json.outputs.result).vsce.prerelease && '**prerelease**' || '' }}
+
       - name: VSCode Version Table
         id: version-table
         uses: streetsidesoftware/actions/public/output@v1
         with:
           value: |
-            | Extension Version | VSCode Version | CSpell Version |
-            | ----------------- | -------------- | -------------- |
-            | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} |
+            | Extension Version | VSCode Version | CSpell Version | PreRelease |
+            | ----------------- | -------------- | -------------- | ---------- |
+            | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} | ${{ steps.is-prerelease.outputs.value }} |
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v8
+        env:
+          TAG: ${{ env.REF }}
+        with:
+          script: |
+            const tag = process.env.TAG;
+            github.rest..request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: tag,
+              headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            })
 
       - name: Summary
         uses: streetsidesoftware/actions/public/summary@v1
@@ -94,3 +117,7 @@ jobs:
             ## Version Information
 
             ${{ steps.version-table.outputs.value }}
+
+            ## Release Notes
+
+            ${{ steps.release-notes.outputs.result }}
