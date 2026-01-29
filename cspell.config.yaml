@@ -18,6 +18,7 @@ ignorePaths:
   - '**/scripts/ts-json-schema-generator.cjs'
   - /samples
   - CHANGELOG.md
+  - CHANGELOG.*.md
   - cspell.json
   - cspell*.{json,yaml}
   - .cspell*.{json,yaml}
