@@ -13,6 +13,7 @@ export default defineConfig([
         clean: true,
         target: 'node22',
         fixedExtension: false,
+        inlineOnly: false,
     },
     {
         // This is the non-bundled version used for the API to the client.
@@ -24,5 +25,6 @@ export default defineConfig([
         clean: true,
         target: 'node22',
         fixedExtension: false,
+        inlineOnly: false,
     },
 ]);
