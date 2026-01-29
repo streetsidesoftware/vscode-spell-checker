@@ -80,14 +80,14 @@ jobs:
         id: is-prerelease
         uses: streetsidesoftware/actions/public/output@v1
         with:
-          value: ${{ fromJson(steps.package-json.outputs.result).vsce.prerelease && '**prerelease**' || '' }}
+          value: ${{ fromJson(steps.package-json.outputs.result).vsce.prerelease && '**Prerelease**' || '' }}
 
       - name: VSCode Version Table
         id: version-table
         uses: streetsidesoftware/actions/public/output@v1
         with:
           value: |
-            | Extension Version | VSCode Version | CSpell Version | PreRelease |
+            | Extension Version | VSCode Version | CSpell Version | Notes |
             | ----------------- | -------------- | -------------- | ---------- |
             | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} | ${{ steps.is-prerelease.outputs.value }} |
 
