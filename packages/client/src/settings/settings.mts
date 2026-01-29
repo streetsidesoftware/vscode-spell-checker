@@ -13,7 +13,7 @@ import { targetsForUri } from './targetHelpers.mjs';
 export { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable.mjs';
 export { enableLocaleForTarget } from './settings.locale.mjs';
 export type { TargetsAndScopes } from './settings.types.mjs';
-export { ConfigTargetLegacy, InspectScope, Scope } from './vsConfig.mjs';
+export type { ConfigTargetLegacy, InspectScope, Scope } from './vsConfig.mjs';
 export interface SettingsInfo {
     path: Uri;
     settings: CSpellUserSettings;

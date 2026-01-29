@@ -1,25 +1,24 @@
 export { ConfigFields } from './configFields.mjs';
-export { configFileLocationGlob, configFilesToWatch, CSpellSettings } from './CSpellSettings.mjs';
+export type { CSpellSettings } from './CSpellSettings.mjs';
+export { configFileLocationGlob, configFilesToWatch } from './CSpellSettings.mjs';
+export type { ConfigTargetLegacy, TargetsAndScopes } from './settings.mjs';
 export {
     addIgnoreWordsToSettings,
-    ConfigTargetLegacy,
     createConfigFileRelativeToDocumentUri,
     enableLocaleForTarget,
     setEnableSpellChecking,
-    TargetsAndScopes,
     toggleEnableSpellChecker,
     updateEnabledFileTypeForResource,
     updateEnabledFileTypeForTarget,
 } from './settings.mjs';
+export type { Inspect, InspectValues } from './vsConfig.mjs';
 export {
     ConfigurationTarget,
     getScopedSettingFromVSConfig,
     getSettingFromVSConfig,
     getSettingsFromVSConfig,
-    Inspect,
     inspectConfig,
     inspectConfigKeys,
-    InspectValues,
     normalizeTarget,
     Scopes,
     sectionCSpell,

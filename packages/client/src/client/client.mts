@@ -43,7 +43,7 @@ import type {
 } from './server/index.mjs';
 import { createServerApi, requestCodeAction } from './server/index.mjs';
 
-export { GetConfigurationForDocumentResult } from './server/index.mjs';
+export type { GetConfigurationForDocumentResult } from './server/index.mjs';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];

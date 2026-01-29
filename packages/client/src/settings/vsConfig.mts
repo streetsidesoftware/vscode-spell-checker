@@ -5,7 +5,7 @@ import type { CSpellUserSettings } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { findConicalDocumentScope } from '../util/documentUri.js';
 
-export { CSpellUserSettings } from '../client/index.mjs';
+export type { CSpellUserSettings } from '../client/index.mjs';
 export { ConfigurationTarget } from 'vscode';
 
 export const sectionCSpell: 'cSpell' = extensionId;
