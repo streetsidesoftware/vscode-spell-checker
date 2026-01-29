@@ -137,7 +137,7 @@ jobs:
 
             body = body.slice(0, tableAt).trimEnd() + '\n\n' +
               tableMarker + '\n\n' +
-              '---\n\n'
+              '---\n\n' +
               process.env.VERSION_TABLE.trim() + '\n\n' +
               tableMarker + '\n\n' +
               body.slice(tableAt).trimStart();
