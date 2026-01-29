@@ -91,8 +91,8 @@ jobs:
             | ----------------- | -------------- | -------------- | ---------- |
             | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} | ${{ steps.is-prerelease.outputs.value }} |
 
-      - name: Get Release ID
-        id: release-id
+      - name: Get Release
+        id: release
         uses: actions/github-script@v8
         env:
           TAG: ${{ env.REF }}
@@ -107,13 +107,19 @@ jobs:
                 'X-GitHub-Api-Version': '2022-11-28'
               }
             });
-            return result.data.id;
+            return result.data;
+
+      - name: Get Release ID
+        id: release-id
+        uses: streetsidesoftware/actions/public/output@v1
+        with:
+          value: ${{ fromJson(steps.release.outputs.result).id }}
 
       - name: Get Release Notes
         id: release-notes
         uses: actions/github-script@v8
         env:
-          RELEASE_ID: ${{ steps.release-id.outputs.result }}
+          RELEASE_ID: ${{ steps.release-id.outputs.value }}
         with:
           result-encoding: string
           script: |
