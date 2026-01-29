@@ -47,7 +47,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .nvmrc
+          # This is to match the node runner version, not necessarily the extension's target version
+          node-version: 24.x
           cache: npm
 
       - name: Read package.json File
