@@ -91,8 +91,8 @@ jobs:
             | ----------------- | -------------- | -------------- | ---------- |
             | ${{ steps.extension-version.outputs.value }} | ${{ steps.vscode-version.outputs.value }} | ${{ steps.cspell-version.outputs.value }} | ${{ steps.is-prerelease.outputs.value }} |
 
-      - name: Get Release Notes
-        id: release-notes
+      - name: Get Release ID
+        id: release-id
         uses: actions/github-script@v8
         env:
           TAG: ${{ env.REF }}
@@ -107,8 +107,25 @@ jobs:
                 'X-GitHub-Api-Version': '2022-11-28'
               }
             });
-            console.log(`Release notes for tag ${tag}: %o`, result);
-            return result;
+            return result.data.id;
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v8
+        env:
+          RELEASE_ID: ${{ steps.release-id.outputs.result }}
+        with:
+          script: |
+            const release_id = process.env.RELEASE_ID;
+            const result = await github.request('GET /repos/{owner}/{repo}/releases/{release_id}', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release_id,
+              headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            });
+            return result.data.body;
 
       - name: Summary
         uses: streetsidesoftware/actions/public/summary@v1
@@ -120,8 +137,10 @@ jobs:
 
             ${{ steps.version-table.outputs.value }}
 
+            ## Release ID
+
+            ${{ steps.release-id.outputs.result }}
+
             ## Release Notes
 
-            ```json
             ${{ steps.release-notes.outputs.result }}
-            ```
