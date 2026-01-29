@@ -9,7 +9,6 @@ export default defineConfig([
         // dts: true,
         sourcemap: true,
         // splitting: false,
-        noExternal: [/.*/],
         clean: true,
         target: 'node22',
         fixedExtension: false,

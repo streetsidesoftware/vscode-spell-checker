@@ -22,7 +22,7 @@
   "scripts": {
     "build": "npm run build:tsdown && npm run build:tsc",
     "build-production": "npm run clean-build-production",
-    "build:production": "npm run build:tsdown",
+    "build:production": "npm run build:tsdown -- --production --minify",
     "build:tsdown": "tsdown",
     "build:tsc": "tsc -p tsconfig.json",
     "clean-build-production": "npm run clean && npm run build:production",

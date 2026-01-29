@@ -31,11 +31,6 @@
     }
   },
   "devDependencies": {
-    "safe-stable-stringify": "^2.5.0",
-    "ts-json-schema-generator": "^2.4.0"
-  },
-  "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.6.2",
     "@cspell/cspell-pipe": "^9.6.2",
     "@cspell/cspell-types": "^9.6.2",
     "@cspell/url": "^9.6.2",
@@ -48,12 +43,17 @@
     "gensequence": "^8.0.8",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
+    "safe-stable-stringify": "^2.5.0",
+    "ts-json-schema-generator": "^2.4.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
-    "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-languageserver-types": "^3.17.5",
+    "vscode-languageserver": "^9.0.1",
     "vscode-uri": "^3.1.0"
+  },
+  "dependencies": {
+    "@cspell/cspell-bundled-dicts": "^9.6.2"
   },
   "scripts": {
     "build": "tsdown && npm run build:tsc && npm run build-schema",
@@ -61,7 +61,6 @@
     "build-schema": "node ./scripts/build-schema.mjs",
     "build:production": "tsdown --production --minify && npm run build-schema",
     "build:tsc": "tsc -p tsconfig.test.json",
-    "#build:ts-json-schema-generator": "esbuild --bundle ../../../../code/clones/ts-json-schema-generator/dist/ts-json-schema-generator.js --outfile=scripts/ts-json-schema-generator.cjs  --platform=node --external:typescript",
     "clean-build-production": "npm run clean && npm run build:production",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf dist temp out coverage lib",
