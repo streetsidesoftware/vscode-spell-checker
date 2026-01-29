@@ -99,14 +99,16 @@ jobs:
         with:
           script: |
             const tag = process.env.TAG;
-            github.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {
+            const result = await github.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag: tag,
               headers: {
                 'X-GitHub-Api-Version': '2022-11-28'
               }
-            })
+            });
+            console.log(`Release notes for tag ${tag}: %o`, result);
+            return result;
 
       - name: Summary
         uses: streetsidesoftware/actions/public/summary@v1
