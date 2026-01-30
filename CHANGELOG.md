@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.5.0...code-spell-checker-v4.5.1) (2026-01-30)
+
+
+### Updates and Bug Fixes
+
+* Log Activation events to Plausible ([#5044](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5044)) ([9931586](https://github.com/streetsidesoftware/vscode-spell-checker/commit/99315860735628d3271cd66351064e37a4246c13))
+* Update CSpell from `9.6.0` to `9.6.2` and other dependencies ([777a688](https://github.com/streetsidesoftware/vscode-spell-checker/commit/777a688bfa3e8335df02fe97cd92e62ea10de736))
+
+
+### Code Refactoring
+
+* use tsdown instead of esbuild ([#5034](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5034)) ([9862304](https://github.com/streetsidesoftware/vscode-spell-checker/commit/98623040cda72ae92abc493e1bbebd5c3e7b9a52))
+
 ## [4.5.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.4.1...code-spell-checker-v4.5.0) (2026-01-25)
 
 
