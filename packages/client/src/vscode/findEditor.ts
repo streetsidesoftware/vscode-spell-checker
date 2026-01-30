@@ -1,5 +1,5 @@
-import type { TextDocument, TextEditor, Uri } from 'vscode';
-import { window, workspace } from 'vscode';
+import type { TextDocument, TextEditor } from 'vscode';
+import { Uri, window, workspace } from 'vscode';
 
 export function findEditor(uri?: Uri | string): TextEditor | undefined {
     if (!uri) return window.activeTextEditor;
@@ -18,6 +18,7 @@ export function findEditor(uri?: Uri | string): TextEditor | undefined {
 export function findTextDocument(uri?: Uri | string): TextDocument | undefined {
     if (!uri) return undefined;
 
+    uri = typeof uri === 'string' ? Uri.parse(uri) : uri;
     const uriStr = uri.toString();
 
     for (const document of workspace.textDocuments) {
