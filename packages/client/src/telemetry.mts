@@ -67,6 +67,7 @@ class TelemetrySenderImpl implements TelemetrySender {
                 cspell: this.cspellVersion,
                 extension_version: this.extensionVersion,
                 is_new_app_install: attrib['common.isnewappinstall'] || false,
+                insider: (attrib['common.vscodeversion'] || '').includes('insider'),
             },
             interactive: false,
         };
@@ -92,7 +93,7 @@ class TelemetrySenderImpl implements TelemetrySender {
         const extra: string[] = [...extraValues].filter((v): v is string => !!v);
 
         const agentSegments: string[] = [
-            `VSCode ${attrib['common.vscodeversion'] || '0.0.0'}`,
+            `VSCode ${extractVersion(attrib['common.vscodeversion']) || '0.0.0'}`,
             `(${extra.join('; ')})`,
             // `CodeSpellChecker/${attrib['common.extversion']}`,
             // `cspell/${this.cspellVersion}`,
@@ -106,10 +107,15 @@ class TelemetrySenderImpl implements TelemetrySender {
     }
 
     #getCSpellVersion(): string {
-        const found = this.#context.extension.packageJSON.dependencies?.['@cspell/cspell-types'] || '';
-        const m = found.match(/(\d+\.\d+\.\d+)/);
-        return m?.[0] || '0.0.0';
+        const depVersion = this.#context.extension.packageJSON.dependencies?.['@cspell/cspell-types'];
+        return extractVersion(depVersion) || '0.0.0';
     }
+}
+
+function extractVersion(version: string | undefined): string | undefined {
+    if (!version) return undefined;
+    const m = version.match(/(\d+\.\d+\.\d+)/);
+    return m?.[0] || undefined;
 }
 
 function toCommonDataAttributes(data?: Record<string, unknown>): Partial<CommonDataAttributes> {
@@ -123,7 +129,7 @@ async function sendEvent(agent: string, payload: unknown): Promise<void> {
     };
     const body = JSON.stringify(payload);
 
-    console.log('%s', JSON.stringify({ headers, body: payload }, null, 2));
+    // console.log('%s', JSON.stringify({ headers, body: payload }, null, 2));
 
     const request = new Request('https://plausible.io/api/event', { method: 'POST', headers, body });
     const response = await fetch(request);
