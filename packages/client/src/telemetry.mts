@@ -55,7 +55,7 @@ class TelemetrySenderImpl implements TelemetrySender {
     sendEventData(eventName: string, data?: Record<string, unknown>): void {
         const attrib = toCommonDataAttributes(data);
         const agent = this.#userAgent(attrib);
-        const url = `https://${domain}/${eventName}`;
+        const url = `app://vscode/${eventName}`;
 
         const requestData = {
             domain,
@@ -87,9 +87,9 @@ class TelemetrySenderImpl implements TelemetrySender {
     }
 
     #userAgent(attrib: Partial<CommonDataAttributes>): string {
-        const extra: string[] = ['code', attrib['common.uikind'], attrib['common.product'], os.platform(), os.arch(), os.release()].filter(
-            (v): v is string => !!v,
-        );
+        const osInfo = [os.platform(), os.arch(), os.release()].join(' ');
+        const extraValues = new Set(['code', attrib['common.uikind'], attrib['common.product'], osInfo]);
+        const extra: string[] = [...extraValues].filter((v): v is string => !!v);
 
         const agentSegments: string[] = [
             `VSCode ${attrib['common.vscodeversion'] || '0.0.0'}`,
@@ -117,14 +117,15 @@ function toCommonDataAttributes(data?: Record<string, unknown>): Partial<CommonD
 }
 
 async function sendEvent(agent: string, payload: unknown): Promise<void> {
-    const request = new Request('https://plausible.io/api/event', {
-        method: 'POST',
-        headers: {
-            'User-Agent': agent,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-    });
+    const headers = {
+        'User-Agent': agent,
+        'Content-Type': 'application/json',
+    };
+    const body = JSON.stringify(payload);
+
+    console.log('%s', JSON.stringify({ headers, body: payload }, null, 2));
+
+    const request = new Request('https://plausible.io/api/event', { method: 'POST', headers, body });
     const response = await fetch(request);
     const data = await response.text();
     consoleLog('Response: %o', {
