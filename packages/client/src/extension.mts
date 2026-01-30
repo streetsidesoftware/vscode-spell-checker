@@ -31,6 +31,7 @@ import { ConfigFields, sectionCSpell } from './settings/index.mjs';
 import { getSectionName } from './settings/vsConfig.mjs';
 import { createLanguageStatus } from './statusbar/languageStatus.mjs';
 import { createEventLogger, updateDocumentRelatedContext } from './storage/index.mjs';
+import { createTelemetrySender } from './telemetry.mjs';
 import { logErrors, silenceErrors } from './util/errors.js';
 import { performance } from './util/perf.js';
 import { isUriInAnyTab } from './vscode/tabs.mjs';
@@ -64,6 +65,9 @@ export function activate(context: ExtensionContext): Promise<ExtensionApi> {
         const eventLogger = createEventLogger(context.globalStorageUri);
         di.set('eventLogger', eventLogger);
         eventLogger.logActivate();
+        const logger = vscode.env.createTelemetryLogger(createTelemetrySender(context));
+        logger.logUsage('activate');
+        context.subscriptions.push(logger);
 
         setOutputChannelLogLevel();
 
@@ -344,6 +348,7 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
 
     performance.mark('cspell_activate_end');
     performance.measure('cspell_activation', 'cspell_activate_start', 'cspell_activate_end');
+
     return server;
 }
 
