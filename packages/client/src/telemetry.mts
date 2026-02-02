@@ -2,12 +2,15 @@ import os from 'node:os';
 
 import * as logger from '@internal/common-utils';
 import type { ExtensionContext, TelemetrySender } from 'vscode';
+import * as vscode from 'vscode';
 
 export function createTelemetrySender(context: ExtensionContext): TelemetrySender {
     return new TelemetrySenderImpl(context);
 }
 
 const debug = false;
+
+const isAnalyticsEnabled = false;
 
 const consoleLog = debug ? logger.consoleLog : () => {};
 const consoleError = debug ? logger.consoleError : () => {};
@@ -40,6 +43,7 @@ class TelemetrySenderImpl implements TelemetrySender {
     osType: string;
     cspellVersion: string;
     extensionVersion: string;
+    appName: string;
 
     constructor(context: ExtensionContext) {
         this.#context = context;
@@ -50,6 +54,7 @@ class TelemetrySenderImpl implements TelemetrySender {
         this.osType = os.type();
         this.cspellVersion = this.#getCSpellVersion();
         this.extensionVersion = this.#getExtensionVersion();
+        this.appName = vscode.env.appName || 'VSCode';
     }
 
     sendEventData(eventName: string, data?: Record<string, unknown>): void {
@@ -63,6 +68,7 @@ class TelemetrySenderImpl implements TelemetrySender {
             url,
             props: {
                 vscode: attrib['common.vscodeversion'] || '0.0.0',
+                app_name: this.appName,
                 platform: os.platform(),
                 cspell: this.cspellVersion,
                 extension_version: this.extensionVersion,
@@ -123,6 +129,8 @@ function toCommonDataAttributes(data?: Record<string, unknown>): Partial<CommonD
 }
 
 async function sendEvent(agent: string, payload: unknown): Promise<void> {
+    if (!isAnalyticsEnabled) return;
+
     const headers = {
         'User-Agent': agent,
         'Content-Type': 'application/json',
