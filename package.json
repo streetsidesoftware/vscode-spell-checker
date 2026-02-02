@@ -4326,7 +4326,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.6.2",
     "@cspell/cspell-types": "^9.6.2",
-    "@cspell/dict-cspell-bundle": "^2.0.48",
+    "@cspell/dict-cspell-bundle": "^2.0.49",
     "regexp-worker": "^4.3.0"
   },
   "vsce": {
