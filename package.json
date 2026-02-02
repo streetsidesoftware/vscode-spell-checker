@@ -810,6 +810,32 @@
         "markdownDescription": "Settings related to CSpell Command Line Tool.",
         "order": 5,
         "properties": {
+          "cSpell.engines": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "markdownDescription": "Semantic Version Predicate\n\nExamples:\n- `>=8`",
+                  "type": "string"
+                },
+                {
+                  "not": {}
+                }
+              ],
+              "markdownDescription": "Other engine version predicates."
+            },
+            "markdownDescription": "Specify compatible engine versions.\n\nThis allows dictionaries and other components to specify the versions of engines (like cspell) they are compatible with.\n\nIt does not enforce compatibility, it is up to the client to use this information as needed.",
+            "properties": {
+              "code-spell-checker": {
+                "markdownDescription": "The VSCode Spell Checker version predicate.",
+                "type": "string"
+              },
+              "cspell": {
+                "markdownDescription": "CSpell version predicate.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
           "cSpell.ignoreRandomStrings": {
             "default": true,
             "markdownDescription": "Ignore sequences of characters that look like random strings.",
@@ -2038,6 +2064,37 @@
             ],
             "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
             "type": "string"
+          },
+          "cSpell.vfs": {
+            "additionalProperties": {
+              "additionalProperties": false,
+              "markdownDescription": "An entry in the CSpell Virtual File System.\nIt may or may not have a URL.",
+              "properties": {
+                "data": {
+                  "markdownDescription": "The content data of the file.",
+                  "type": "string"
+                },
+                "encoding": {
+                  "enum": [
+                    "base64",
+                    "plaintext",
+                    "utf8"
+                  ],
+                  "markdownDescription": "The encoding of the data. In most cases the encoding is determined from the data type and filename url.",
+                  "type": "string"
+                },
+                "url": {
+                  "markdownDescription": "The optional file vfs url. It is already part of the CSpellVFS key.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "type": "object"
+            },
+            "markdownDescription": "Files to add to the CSpell Virtual File System.\n\nThey can be referenced using `cspell-vfs:///<module>/<path-to-file>/<file-name>` URLs.\n\nThey can be referenced in the `path` field of dictionary definitions.",
+            "type": "object"
           }
         },
         "title": "CSpell",
@@ -4300,7 +4357,7 @@
     "ansi-styles": "^6.2.3",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.1",
-    "cspell": "^9.6.2",
+    "cspell": "^9.6.3",
     "esbuild": "^0.27.2",
     "eslint": "~9.39.2",
     "eslint-plugin-n": "^17.23.2",
@@ -4324,9 +4381,9 @@
     "vitest": "~4.0.18"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.6.2",
-    "@cspell/cspell-types": "^9.6.2",
-    "@cspell/dict-cspell-bundle": "^2.0.48",
+    "@cspell/cspell-bundled-dicts": "^9.6.3",
+    "@cspell/cspell-types": "^9.6.3",
+    "@cspell/dict-cspell-bundle": "^2.0.49",
     "regexp-worker": "^4.3.0"
   },
   "vsce": {
