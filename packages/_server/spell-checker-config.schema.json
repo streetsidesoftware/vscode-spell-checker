@@ -91,6 +91,40 @@
       "description": "Settings related to CSpell Command Line Tool.",
       "order": 5,
       "properties": {
+        "cSpell.engines": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "description": "Semantic Version Predicate\n\nExamples:\n- `>=8`",
+                "markdownDescription": "Semantic Version Predicate\n\nExamples:\n- `>=8`",
+                "type": "string"
+              },
+              {
+                "not": {}
+              }
+            ],
+            "description": "Other engine version predicates.",
+            "markdownDescription": "Other engine version predicates."
+          },
+          "description": "Specify compatible engine versions.\n\nThis allows dictionaries and other components to specify the versions of engines (like cspell) they are compatible with.\n\nIt does not enforce compatibility, it is up to the client to use this information as needed.",
+          "markdownDescription": "Specify compatible engine versions.\n\nThis allows dictionaries and other components to specify the versions of engines (like cspell) they are compatible with.\n\nIt does not enforce compatibility, it is up to the client to use this information as needed.",
+          "properties": {
+            "code-spell-checker": {
+              "description": "The VSCode Spell Checker version predicate.",
+              "markdownDescription": "The VSCode Spell Checker version predicate.",
+              "since": "9.6.3",
+              "type": "string"
+            },
+            "cspell": {
+              "description": "CSpell version predicate.",
+              "markdownDescription": "CSpell version predicate.",
+              "since": "9.6.3",
+              "type": "string"
+            }
+          },
+          "since": "9.6.3",
+          "type": "object"
+        },
         "cSpell.ignoreRandomStrings": {
           "default": true,
           "description": "Ignore sequences of characters that look like random strings.",
@@ -1502,6 +1536,45 @@
           "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
           "since": "9.1.0",
           "type": "string"
+        },
+        "cSpell.vfs": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "description": "An entry in the CSpell Virtual File System. It may or may not have a URL.",
+            "markdownDescription": "An entry in the CSpell Virtual File System.\nIt may or may not have a URL.",
+            "properties": {
+              "data": {
+                "description": "The content data of the file.",
+                "markdownDescription": "The content data of the file.",
+                "type": "string"
+              },
+              "encoding": {
+                "description": "The encoding of the data. In most cases the encoding is determined from the data type and filename url.",
+                "enum": [
+                  "base64",
+                  "plaintext",
+                  "utf8"
+                ],
+                "markdownDescription": "The encoding of the data. In most cases the encoding is determined from the data type and filename url.",
+                "type": "string"
+              },
+              "url": {
+                "description": "The optional file vfs url. It is already part of the CSpellVFS key.",
+                "markdownDescription": "The optional file vfs url. It is already part of the CSpellVFS key.",
+                "since": "9.7.0",
+                "type": "string"
+              }
+            },
+            "required": [
+              "data"
+            ],
+            "since": "9.7.0",
+            "type": "object"
+          },
+          "description": "Files to add to the CSpell Virtual File System.\n\nThey can be referenced using `cspell-vfs:///<module>/<path-to-file>/<file-name>` URLs.\n\nThey can be referenced in the `path` field of dictionary definitions.",
+          "markdownDescription": "Files to add to the CSpell Virtual File System.\n\nThey can be referenced using `cspell-vfs:///<module>/<path-to-file>/<file-name>` URLs.\n\nThey can be referenced in the `path` field of dictionary definitions.",
+          "since": "9.7.0",
+          "type": "object"
         }
       },
       "title": "CSpell",
