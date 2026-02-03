@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@cspell/cspell-pipe": "^9.6.2",
-    "@cspell/cspell-types": "^9.6.2",
+    "@cspell/cspell-types": "^9.6.3",
     "@internal/common-utils": "file:../__utils",
     "@internal/locale-resolver": "file:../__locale-resolver",
     "@internal/server-pattern-matcher": "file:../_serverPatternMatcher",
@@ -74,7 +74,7 @@
     "yargs": "^18.0.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.6.2"
+    "@cspell/cspell-bundled-dicts": "^9.6.3"
   },
   "engines": {
     "node": ">=22.20.0"
