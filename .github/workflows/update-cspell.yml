@@ -46,7 +46,7 @@ jobs:
       - name: Get Current CSpell Version
         id: cspell-current-version
         run: |
-          echo "value=$(jq -r '.dependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
+          echo "value=$(jq -r '.devDependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
 
       - name: Update
         run: |
@@ -60,7 +60,7 @@ jobs:
       - name: Get New CSpell Version
         id: cspell-new-version
         run: |
-          echo "value=$(jq -r '.dependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
+          echo "value=$(jq -r '.devDependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
 
       - name: Update Type
         id: cspell-update-type
