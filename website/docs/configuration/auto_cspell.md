@@ -12,6 +12,7 @@ Settings related to CSpell Command Line Tool.
 
 | Setting | Scope | Description |
 | ------- | ----- | ----------- |
+| [`cSpell.engines`](#cspellengines) |  | Specify compatible engine versions. |
 | [`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings) |  | Ignore sequences of characters that look like random strings. |
 | [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in [`cSpell.patterns`](cspell#cspellpatterns))… |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking. |
@@ -20,9 +21,77 @@ Settings related to CSpell Command Line Tool.
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)… |
 | [`cSpell.unknownWords`](#cspellunknownwords) |  | Controls how unknown words are handled. |
+| [`cSpell.vfs`](#cspellvfs) |  | Files to add to the CSpell Virtual File System. |
 
 
 ## Settings
+
+
+### `cSpell.engines`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.engines`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Specify compatible engine versions.
+
+This allows dictionaries and other components to specify the versions of engines (like cspell) they are compatible with.
+
+It does not enforce compatibility, it is up to the client to use this information as needed.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`object`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.6.3
+
+</dd>
+
+</dl>
+
+---
 
 
 ### `cSpell.ignoreRandomStrings`
@@ -538,6 +607,73 @@ CSpell Version
 <dd>
 
 9.1.0
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.vfs`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.vfs`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Files to add to the CSpell Virtual File System.
+
+They can be referenced using `cspell-vfs:///<module>/<path-to-file>/<file-name>` URLs.
+
+They can be referenced in the `path` field of dictionary definitions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`object`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.7.0
 
 </dd>
 
