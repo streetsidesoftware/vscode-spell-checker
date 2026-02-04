@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
-    "@tsconfig/svelte": "^5.0.6",
+    "@tsconfig/svelte": "^5.0.7",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.44",
     "svelte": "^5.49.1",
