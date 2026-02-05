@@ -44,7 +44,7 @@
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
     "safe-stable-stringify": "^2.5.0",
-    "ts-json-schema-generator": "^2.4.0",
+    "ts-json-schema-generator": "^2.5.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-languageserver-textdocument": "^1.0.12",
