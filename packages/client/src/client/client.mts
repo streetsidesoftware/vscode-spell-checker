@@ -138,6 +138,7 @@ export class CSpellClient implements Disposable {
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
         context.subscriptions.push(this.serverApi);
+        this.serverApi.notifyConfigChange(workspace.isTrusted);
         this.initWhenReady();
     }
 
