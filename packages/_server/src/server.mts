@@ -126,7 +126,7 @@ export function run(): void {
 
     const handlers: PartialServerSideHandlers = {
         serverNotifications: {
-            notifyConfigChange: (...p) => (logInfo('notifyConfigChange'), onConfigChange(...p)),
+            notifyConfigChange,
             registerConfigurationFile,
         },
         serverRequests: {
@@ -149,6 +149,15 @@ export function run(): void {
     dd(bindFileSystemProvider(connection, clientServerApi, documents));
 
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
+
+    function notifyConfigChange(isWorkspaceTrusted: boolean | undefined) {
+        logInfo('notifyConfigChange');
+        if (isWorkspaceTrusted !== undefined) {
+            documentSettings.isWorkspaceTrusted = isWorkspaceTrusted;
+        }
+        onConfigChange();
+    }
+
     const docValidationController = dd(new DocumentValidationController(documentSettings, documents));
 
     const progressNotifier = createProgressNotifier(clientServerApi);

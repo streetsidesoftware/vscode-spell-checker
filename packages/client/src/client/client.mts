@@ -261,7 +261,7 @@ export class CSpellClient implements Disposable {
         this.clearCacheGetConfigurationForDocument();
         setTimeout(() => this.clearCacheGetConfigurationForDocument(), 250);
         return silenceErrors(
-            this.whenReady(() => this.serverApi.notifyConfigChange()),
+            this.whenReady(() => this.serverApi.notifyConfigChange(workspace.isTrusted)),
             'notifySettingsChanged',
         );
     }

@@ -176,6 +176,7 @@ async function _activate(options: ActivateOptions): Promise<ExtensionApi> {
         issueTracker,
         configWatcher,
         configWatcher.onDidChangeConfig(triggerConfigChange),
+        vscode.workspace.onDidGrantWorkspaceTrust(triggerGetSettingsNow),
         vscode.workspace.onDidSaveTextDocument(handleOnDidSaveTextDocument),
         vscode.workspace.onDidRenameFiles(handleRenameFile),
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),

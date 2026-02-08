@@ -134,6 +134,7 @@ export class DocumentSettings {
     private gitIgnore = new GitIgnore();
     private loader = getDefaultConfigLoader();
     private isTrusted: boolean | undefined;
+    #isWorkspaceTrusted: boolean | undefined;
     private pIsTrusted: Promise<boolean> | undefined;
     private emitterOnDidUpdateConfiguration = createEmitter<ExtSettings>();
     #rootHref: string | undefined;
@@ -554,14 +555,25 @@ export class DocumentSettings {
         return this.pIsTrusted;
     }
 
+    get isWorkspaceTrusted(): boolean {
+        return !!this.#isWorkspaceTrusted;
+    }
+
+    set isWorkspaceTrusted(value: boolean) {
+        this.#isWorkspaceTrusted = value;
+        this.isTrusted = undefined;
+        this.pIsTrusted = undefined;
+        this.determineIsTrusted();
+    }
+
     private async _determineIsTrusted(): Promise<boolean> {
         const isTrusted = await this.connection.workspace.getConfiguration(configKeyTrustedWorkspace);
-        log(`isTrusted: ${JSON.stringify(isTrusted)}`);
-        this.isTrusted = !!isTrusted;
+        this.isTrusted = this.isWorkspaceTrusted && !!isTrusted;
+        log(`isTrusted: ${JSON.stringify(this.isTrusted)}`);
         if (this.loader.isTrusted !== this.isTrusted) {
-            this.loader.setIsTrusted(this.isTrusted);
+            this.loader.setIsTrusted(!!this.isTrusted);
         }
-        return this.isTrusted;
+        return !!this.isTrusted;
     }
 }
 
