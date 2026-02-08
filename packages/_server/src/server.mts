@@ -150,6 +150,13 @@ export function run(): void {
 
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
 
+    /**
+     * Force the server to re-evaluate the configuration and re-check all documents.
+     * Used on startup to convey the workspace trust state changes as that can change which configuration
+     * files are loaded and what settings are applied.
+     * @param isWorkspaceTrusted - the current workspace trust state, or `undefined` to indicate that the
+     *   trust state should be treated as unchanged.
+     */
     function notifyConfigChange(isWorkspaceTrusted: boolean | undefined) {
         logInfo('notifyConfigChange');
         if (isWorkspaceTrusted !== undefined) {

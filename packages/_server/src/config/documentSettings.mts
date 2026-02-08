@@ -563,7 +563,7 @@ export class DocumentSettings {
         this.#isWorkspaceTrusted = value;
         this.isTrusted = undefined;
         this.pIsTrusted = undefined;
-        this.determineIsTrusted();
+        this.determineIsTrusted().catch(() => {});
     }
 
     private async _determineIsTrusted(): Promise<boolean> {
