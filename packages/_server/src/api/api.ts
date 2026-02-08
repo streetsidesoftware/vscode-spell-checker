@@ -63,7 +63,7 @@ export interface ServerNotificationsAPI {
      * check all documents.
      * @returns void
      */
-    notifyConfigChange: () => void;
+    notifyConfigChange: (isWorkspaceTrusted: boolean | undefined) => void;
     /**
      * Register a configuration file to be loaded.
      * This is how to add a configuration file to the spell checker. It is mainly used to add language dictionaries.
