@@ -47,7 +47,7 @@ jobs:
       - name: Corepack
         run: |
           corepack enable
-          corepack install
+          corepack install -g
 
       - name: Info
         run: |
