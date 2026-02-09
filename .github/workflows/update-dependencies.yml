@@ -44,12 +44,6 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Corepack
-        run: |
-          corepack enable
-          corepack install
-          corepack install -g npm
-
       - name: Info
         run: |
           npm -v
