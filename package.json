@@ -4386,6 +4386,11 @@
     "@cspell/dict-cspell-bundle": "^2.0.50",
     "regexp-worker": "^4.3.0"
   },
+  "overrides": {
+    "mocha@11.7.5": {
+      "diff": "8.0.3"
+    }
+  },
   "vsce": {
     "preRelease": true
   }
