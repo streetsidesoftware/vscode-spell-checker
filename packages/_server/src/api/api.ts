@@ -61,6 +61,12 @@ export interface ServerNotificationsAPI {
     /**
      * Tell the server that the configuration has changed. Causes the server to reload the configuration and
      * check all documents.
+     *
+     * @param isWorkspaceTrusted Indicates the current workspace trust state:
+     * - `true`  — the workspace is trusted; the server should reload configuration using rules for a trusted workspace.
+     * - `false` — the workspace is not trusted; the server should reload configuration using rules for an untrusted workspace.
+     * - `undefined` — the workspace trust state is not provided and should be treated as unchanged; the server should
+     *                 reload configuration without altering its existing notion of workspace trust.
      * @returns void
      */
     notifyConfigChange: (isWorkspaceTrusted: boolean | undefined) => void;
