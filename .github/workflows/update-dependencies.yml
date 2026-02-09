@@ -45,7 +45,9 @@ jobs:
           cache: npm
 
       - name: Corepack
-        run: corepack enable
+        run: |
+          corepack enable
+          corepack install
 
       - name: Info
         run: |
