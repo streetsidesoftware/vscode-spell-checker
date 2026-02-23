@@ -20,6 +20,8 @@ Settings related to CSpell Command Line Tool.
 | [`cSpell.minRandomLength`](#cspellminrandomlength) |  | The minimum length of a random string to be ignored. |
 | [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
 | [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)… |
+| [`cSpell.substitutionDefinitions`](#cspellsubstitutiondefinitions) |  | The set of available substitutions. This is a collection of substitution definitions that can… |
+| [`cSpell.substitutions`](#cspellsubstitutions) |  | The set of substitutions to apply to a document before spell checking. |
 | [`cSpell.unknownWords`](#cspellunknownwords) |  | Controls how unknown words are handled. |
 | [`cSpell.vfs`](#cspellvfs) |  | Files to add to the CSpell Virtual File System. |
 
@@ -539,6 +541,132 @@ Default
 <dd>
 
 _- none -_
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.substitutionDefinitions`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.substitutionDefinitions`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`object[]`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.7.0
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.substitutions`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.substitutions`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The set of substitutions to apply to a document before spell checking.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( [] | string )[]`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.7.0
 
 </dd>
 
