@@ -31,7 +31,7 @@
 
   async function updateEnabledFileType(fileType: string | undefined, enable: boolean, url: URL | undefined) {
     if (!fileType || !url) return;
-    return $mutation.mutateAsync({ enabledFileTypes: { [fileType]: enable }, url: url?.toString() });
+    return mutation.mutateAsync({ enabledFileTypes: { [fileType]: enable }, url: url?.toString() });
   }
 
   function calcDisplayInfo(doc: TextDocumentRef | undefined, settings: Settings | undefined | null): DisplayInfo[] {
@@ -76,24 +76,24 @@
   let currentDoc = $derived(appState.currentDocument());
   let docUrl = $derived($currentDoc?.url ? new URL($currentDoc.url) : undefined);
   let mutation = $derived(
-    createMutation({
+    createMutation(() => ({
       mutationFn: mutateEnabledFileType,
       onSettled: async () => {
         await queryClient.resetQueries({ queryKey: ['docSettings'] });
         delay = initialDelay;
-        // await $queryResult.refetch();
-        setTimeout(() => $queryResult.refetch().catch(() => undefined), 300);
+        // await queryResult.refetch();
+        setTimeout(() => queryResult.refetch().catch(() => undefined), 300);
       },
-    }),
+    })),
   );
   let queryResult = $derived(
-    createQuery({
+    createQuery(() => ({
       queryKey: ['docSettings', docUrl?.toString()],
       queryFn: (ctx) => getDocSettings(ctx.queryKey[1]),
       refetchInterval: delay,
-    }),
+    })),
   );
-  let settings = $derived($queryResult.data);
+  let settings = $derived(queryResult.data);
   let configFiles = $derived(settings?.configs.file?.configFiles);
   let excludedBy = $derived(settings?.configs.file?.excludedBy);
   let dictionaries = $derived(settings?.configs.file?.dictionaries);
