@@ -114,6 +114,9 @@ class CSpellFileSystemProvider implements VFileSystemProvider {
             dispose: () => {
                 this.disposables.dispose();
             },
+            [Symbol.dispose]: () => {
+                this.disposables.dispose();
+            },
         };
 
         return vfs;
