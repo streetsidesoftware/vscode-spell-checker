@@ -59,6 +59,7 @@ export default defineConfig(
         rules: {
             // Note: you must disable the base rule as it can report incorrect errors
             'no-unused-vars': 'off',
+            'no-useless-assignment': 'warn',
             '@typescript-eslint/no-empty-interface': 'off',
             '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/no-inferrable-types': 'off',
@@ -105,6 +106,7 @@ export default defineConfig(
             '**/tsup.config.*',
         ],
         rules: {
+            'no-useless-assignment': 'off',
             'n/no-extraneous-require': 'off', // Mostly for __mocks__ and test files
             'n/no-extraneous-import': 'off',
             'n/no-unpublished-import': 'off',

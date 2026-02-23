@@ -62,7 +62,7 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
     const fromSegments = splitUri(uriFrom);
     const toSegments = splitUri(uriTo);
     let i = 0;
-    for (i = 0; i < fromSegments.length && i < toSegments.length; ++i) {
+    for (; i < fromSegments.length && i < toSegments.length; ++i) {
         const a = fromSegments[i];
         const b = toSegments[i];
         if (a === b) continue;
