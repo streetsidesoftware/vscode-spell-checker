@@ -65,6 +65,7 @@ export async function findUp(name: string, options: FindUpOptions): Promise<URL 
     const root = new URL('.', options.root || new URL('/', cwd));
     const predicate = options.predicate || (() => true);
     assert(cwd.toString().startsWith(root.toString()), 'cwd must be a subdirectory of root');
+    // eslint-disable-next-line no-useless-assignment
     let last = cwd;
     do {
         last = cwd;

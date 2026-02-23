@@ -1262,6 +1262,93 @@
                       "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
                       "type": "array"
                     },
+                    "substitutionDefinitions": {
+                      "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+                      "items": {
+                        "additionalProperties": false,
+                        "description": "Allows for the definition of a substitution set. A substitution set is a collection of substitution entries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings, or other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`, the last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution for `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`, and the `&` substitution will be used for the string `&`.",
+                        "markdownDescription": "Allows for the definition of a substitution set. A substitution set is a collection of substitution\nentries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings,\nor other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`,\nthe last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution\nfor `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`,\nand the `&` substitution will be used for the string `&`.",
+                        "properties": {
+                          "description": {
+                            "description": "An optional description of the substitution definition. This is not used for anything, but can be useful for documentation purposes.",
+                            "markdownDescription": "An optional description of the substitution definition. This is not used for anything, but can be useful for\ndocumentation purposes.",
+                            "type": "string"
+                          },
+                          "entries": {
+                            "description": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a document before spell checking.",
+                            "items": {
+                              "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                              "items": [
+                                {
+                                  "title": "find",
+                                  "type": "string"
+                                },
+                                {
+                                  "title": "replacement",
+                                  "type": "string"
+                                }
+                              ],
+                              "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                              "maxItems": 2,
+                              "minItems": 2,
+                              "since": "9.7.0",
+                              "type": "array"
+                            },
+                            "markdownDescription": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a\ndocument before spell checking.",
+                            "type": "array"
+                          },
+                          "name": {
+                            "description": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                            "markdownDescription": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                            "since": "9.7.0",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "entries"
+                        ],
+                        "since": "9.7.0",
+                        "type": "object"
+                      },
+                      "markdownDescription": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+                      "since": "9.7.0",
+                      "type": "array"
+                    },
+                    "substitutions": {
+                      "description": "The set of substitutions to apply to a document before spell checking.",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                            "items": [
+                              {
+                                "title": "find",
+                                "type": "string"
+                              },
+                              {
+                                "title": "replacement",
+                                "type": "string"
+                              }
+                            ],
+                            "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                            "maxItems": 2,
+                            "minItems": 2,
+                            "since": "9.7.0",
+                            "type": "array"
+                          },
+                          {
+                            "description": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                            "markdownDescription": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                            "since": "9.7.0",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "markdownDescription": "The set of substitutions to apply to a document before spell checking.",
+                      "since": "9.7.0",
+                      "type": "array"
+                    },
                     "suggestWords": {
                       "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
                       "items": {
@@ -1426,6 +1513,93 @@
                 "markdownDescription": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
                 "type": "array"
               },
+              "substitutionDefinitions": {
+                "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Allows for the definition of a substitution set. A substitution set is a collection of substitution entries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings, or other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`, the last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution for `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`, and the `&` substitution will be used for the string `&`.",
+                  "markdownDescription": "Allows for the definition of a substitution set. A substitution set is a collection of substitution\nentries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings,\nor other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`,\nthe last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution\nfor `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`,\nand the `&` substitution will be used for the string `&`.",
+                  "properties": {
+                    "description": {
+                      "description": "An optional description of the substitution definition. This is not used for anything, but can be useful for documentation purposes.",
+                      "markdownDescription": "An optional description of the substitution definition. This is not used for anything, but can be useful for\ndocumentation purposes.",
+                      "type": "string"
+                    },
+                    "entries": {
+                      "description": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a document before spell checking.",
+                      "items": {
+                        "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                        "items": [
+                          {
+                            "title": "find",
+                            "type": "string"
+                          },
+                          {
+                            "title": "replacement",
+                            "type": "string"
+                          }
+                        ],
+                        "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                        "maxItems": 2,
+                        "minItems": 2,
+                        "since": "9.7.0",
+                        "type": "array"
+                      },
+                      "markdownDescription": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a\ndocument before spell checking.",
+                      "type": "array"
+                    },
+                    "name": {
+                      "description": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "markdownDescription": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "since": "9.7.0",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "entries"
+                  ],
+                  "since": "9.7.0",
+                  "type": "object"
+                },
+                "markdownDescription": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+                "since": "9.7.0",
+                "type": "array"
+              },
+              "substitutions": {
+                "description": "The set of substitutions to apply to a document before spell checking.",
+                "items": {
+                  "anyOf": [
+                    {
+                      "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                      "items": [
+                        {
+                          "title": "find",
+                          "type": "string"
+                        },
+                        {
+                          "title": "replacement",
+                          "type": "string"
+                        }
+                      ],
+                      "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                      "maxItems": 2,
+                      "minItems": 2,
+                      "since": "9.7.0",
+                      "type": "array"
+                    },
+                    {
+                      "description": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "markdownDescription": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "since": "9.7.0",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "markdownDescription": "The set of substitutions to apply to a document before spell checking.",
+                "since": "9.7.0",
+                "type": "array"
+              },
               "suggestWords": {
                 "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
                 "items": {
@@ -1522,6 +1696,93 @@
           },
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
           "scope": "resource",
+          "type": "array"
+        },
+        "cSpell.substitutionDefinitions": {
+          "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+          "items": {
+            "additionalProperties": false,
+            "description": "Allows for the definition of a substitution set. A substitution set is a collection of substitution entries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings, or other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`, the last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution for `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`, and the `&` substitution will be used for the string `&`.",
+            "markdownDescription": "Allows for the definition of a substitution set. A substitution set is a collection of substitution\nentries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings,\nor other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`,\nthe last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution\nfor `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`,\nand the `&` substitution will be used for the string `&`.",
+            "properties": {
+              "description": {
+                "description": "An optional description of the substitution definition. This is not used for anything, but can be useful for documentation purposes.",
+                "markdownDescription": "An optional description of the substitution definition. This is not used for anything, but can be useful for\ndocumentation purposes.",
+                "type": "string"
+              },
+              "entries": {
+                "description": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a document before spell checking.",
+                "items": {
+                  "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                  "items": [
+                    {
+                      "title": "find",
+                      "type": "string"
+                    },
+                    {
+                      "title": "replacement",
+                      "type": "string"
+                    }
+                  ],
+                  "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                  "maxItems": 2,
+                  "minItems": 2,
+                  "since": "9.7.0",
+                  "type": "array"
+                },
+                "markdownDescription": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a\ndocument before spell checking.",
+                "type": "array"
+              },
+              "name": {
+                "description": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                "markdownDescription": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                "since": "9.7.0",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "entries"
+            ],
+            "since": "9.7.0",
+            "type": "object"
+          },
+          "markdownDescription": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+          "since": "9.7.0",
+          "type": "array"
+        },
+        "cSpell.substitutions": {
+          "description": "The set of substitutions to apply to a document before spell checking.",
+          "items": {
+            "anyOf": [
+              {
+                "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                "items": [
+                  {
+                    "title": "find",
+                    "type": "string"
+                  },
+                  {
+                    "title": "replacement",
+                    "type": "string"
+                  }
+                ],
+                "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                "maxItems": 2,
+                "minItems": 2,
+                "since": "9.7.0",
+                "type": "array"
+              },
+              {
+                "description": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                "markdownDescription": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                "since": "9.7.0",
+                "type": "string"
+              }
+            ]
+          },
+          "markdownDescription": "The set of substitutions to apply to a document before spell checking.",
+          "since": "9.7.0",
           "type": "array"
         },
         "cSpell.unknownWords": {
@@ -2867,6 +3128,93 @@
                   "type": "object"
                 },
                 "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
+                "type": "array"
+              },
+              "substitutionDefinitions": {
+                "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Allows for the definition of a substitution set. A substitution set is a collection of substitution entries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings, or other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`, the last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution for `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`, and the `&` substitution will be used for the string `&`.",
+                  "markdownDescription": "Allows for the definition of a substitution set. A substitution set is a collection of substitution\nentries that can be applied to a document before spell checking. This is useful for converting html entities, url encodings,\nor other transformations that may be necessary to get the correct text for spell checking.\n\nSubstitutions are applied based upon the longest matching find string. If there are multiple matches of the same `find`,\nthe last one in the list is used. This allows for the overriding of substitutions. For example, if you have a substitution\nfor `&` to `and`, and then a substitution for `&amp;` to `&`, the `&amp;` substitution will be used for the string `&amp;`,\nand the `&` substitution will be used for the string `&`.",
+                  "properties": {
+                    "description": {
+                      "description": "An optional description of the substitution definition. This is not used for anything, but can be useful for documentation purposes.",
+                      "markdownDescription": "An optional description of the substitution definition. This is not used for anything, but can be useful for\ndocumentation purposes.",
+                      "type": "string"
+                    },
+                    "entries": {
+                      "description": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a document before spell checking.",
+                      "items": {
+                        "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                        "items": [
+                          {
+                            "title": "find",
+                            "type": "string"
+                          },
+                          {
+                            "title": "replacement",
+                            "type": "string"
+                          }
+                        ],
+                        "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                        "maxItems": 2,
+                        "minItems": 2,
+                        "since": "9.7.0",
+                        "type": "array"
+                      },
+                      "markdownDescription": "The entries for the substitution definition. This is a collection of substitution entries that can be applied to a\ndocument before spell checking.",
+                      "type": "array"
+                    },
+                    "name": {
+                      "description": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "markdownDescription": "The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "since": "9.7.0",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "entries"
+                  ],
+                  "since": "9.7.0",
+                  "type": "object"
+                },
+                "markdownDescription": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
+                "since": "9.7.0",
+                "type": "array"
+              },
+              "substitutions": {
+                "description": "The set of substitutions to apply to a document before spell checking.",
+                "items": {
+                  "anyOf": [
+                    {
+                      "description": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find, and the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.   The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`   string in the text.",
+                      "items": [
+                        {
+                          "title": "find",
+                          "type": "string"
+                        },
+                        {
+                          "title": "replacement",
+                          "type": "string"
+                        }
+                      ],
+                      "markdownDescription": "A substitution entry is a tuple of the form `[find, replacement]`. The find string is the string to find,\nand the replacement string is the string to replace it with.\n\n- `find` - The string to find. This is the string that will be replaced in the text. Only an exact match will be replaced.\n  The find string is not treated as a regular expression.\n- `replacement` - The string to replace the `find` string with. This is the string that will be used to replace the `find`\n  string in the text.",
+                      "maxItems": 2,
+                      "minItems": 2,
+                      "since": "9.7.0",
+                      "type": "array"
+                    },
+                    {
+                      "description": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "markdownDescription": "The ID for a substitution definition. This is used to reference the substitution definition in the substitutions array.",
+                      "since": "9.7.0",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "markdownDescription": "The set of substitutions to apply to a document before spell checking.",
+                "since": "9.7.0",
                 "type": "array"
               },
               "suggestWords": {
