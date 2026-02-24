@@ -20,7 +20,7 @@
     "test": "npm run check:types && npm run check"
   },
   "dependencies": {
-    "@tanstack/svelte-query": "^6.0.0",
+    "@tanstack/svelte-query": "^6.0.18",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
