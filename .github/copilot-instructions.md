@@ -108,20 +108,20 @@ Follow these steps from `CONTRIBUTE.md`:
 1. Add the field to `SpellCheckerSettings` in `packages/_server/src/config/cspellConfig/CSpellUserSettings.mts`, using JSDoc annotations for `@scope`, `@default`, etc.
 2. Add the field name to `ConfigFields` in `packages/client/src/settings/configFields.ts`.
 3. Regenerate the `package.json` schema:
-   ```bash
-   npm run build-package-schema
-   npm --workspace=code-spell-checker-server run build
-   ```
+    ```bash
+    npm run build-package-schema
+    npm --workspace=code-spell-checker-server run build
+    ```
 4. Use the setting in client code via `getSettingFromVSConfig(ConfigFields.myField, document)`.
 
 ## CI Workflows
 
-| Workflow | Trigger | What it does |
-|---|---|---|
-| `test.yml` | PR / push to `main` | `npm ci`, `npm run build`, `npm run test` |
-| `lint.yml` | PR / push to `main` | cspell, ESLint, Prettier |
-| `integration-test.yml` | PR / push to `main` | VS Code integration tests |
-| `codeql-analysis.yml` | Schedule / PR | CodeQL security scan |
+| Workflow               | Trigger             | What it does                              |
+| ---------------------- | ------------------- | ----------------------------------------- |
+| `test.yml`             | PR / push to `main` | `npm ci`, `npm run build`, `npm run test` |
+| `lint.yml`             | PR / push to `main` | cspell, ESLint, Prettier                  |
+| `integration-test.yml` | PR / push to `main` | VS Code integration tests                 |
+| `codeql-analysis.yml`  | Schedule / PR       | CodeQL security scan                      |
 
 Website changes (`website/**`) are excluded from most CI triggers.
 
