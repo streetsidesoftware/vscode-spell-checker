@@ -4643,7 +4643,7 @@
     "concurrently": "^9.2.1",
     "cspell": "^9.7.0",
     "esbuild": "^0.27.3",
-    "eslint": "~10.0.1",
+    "eslint": "~10.0.2",
     "eslint-plugin-n": "^17.24.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unicorn": "^63.0.0",
