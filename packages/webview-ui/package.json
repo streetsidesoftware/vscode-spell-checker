@@ -15,9 +15,9 @@
     "preview": "vite preview",
     "build-production": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist",
-    "compile": "tsc -p .",
+    "check:types": "tsc -p .",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "test": "npm run check"
+    "test": "npm run check:types && npm run check"
   },
   "dependencies": {
     "@tanstack/svelte-query": "^6.0.0",
