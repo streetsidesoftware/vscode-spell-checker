@@ -4675,5 +4675,7 @@
       "diff": "8.0.3"
     }
   },
-  "vsce": {}
+  "vsce": {
+    "preRelease": true
+  }
 }
