@@ -13,6 +13,7 @@ permissions:
   pull-requests: write
 jobs:
   set-prerelease-mode:
+    if: github.repository_owner == 'streetsidesoftware'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

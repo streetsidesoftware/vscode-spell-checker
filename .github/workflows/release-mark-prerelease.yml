@@ -33,6 +33,7 @@ permissions:
 jobs:
   UpdateRelease:
     name: Mark Release
+    if: github.repository_owner == 'streetsidesoftware'
     env:
       REF: ${{ inputs.ref || github.ref }}
     runs-on: ubuntu-latest
