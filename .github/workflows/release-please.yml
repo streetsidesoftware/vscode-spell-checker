@@ -18,6 +18,7 @@ permissions:
 
 jobs:
   release-please:
+    if: github.repository_owner == 'streetsidesoftware'
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}

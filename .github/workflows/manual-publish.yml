@@ -25,7 +25,10 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   check_version:
+    if: github.repository_owner == 'streetsidesoftware'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       version: ${{ steps.version.outputs.version }}
       alpha: ${{ steps.version.outputs.alpha }}

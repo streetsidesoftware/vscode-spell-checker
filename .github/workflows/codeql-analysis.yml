@@ -21,6 +21,7 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners
     # Consider using larger runners for possible analysis time improvements.
+    if: github.repository_owner == 'streetsidesoftware'
     runs-on: 'ubuntu-latest'
     timeout-minutes: 360
     permissions:
