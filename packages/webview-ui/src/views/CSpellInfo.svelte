@@ -75,24 +75,20 @@
   }
   let currentDoc = $derived(appState.currentDocument());
   let docUrl = $derived($currentDoc?.url ? new URL($currentDoc.url) : undefined);
-  let mutation = $derived(
-    createMutation(() => ({
-      mutationFn: mutateEnabledFileType,
-      onSettled: async () => {
-        await queryClient.resetQueries({ queryKey: ['docSettings'] });
-        delay = initialDelay;
-        // await queryResult.refetch();
-        setTimeout(() => queryResult.refetch().catch(() => undefined), 300);
-      },
-    })),
-  );
-  let queryResult = $derived(
-    createQuery(() => ({
-      queryKey: ['docSettings', docUrl?.toString()],
-      queryFn: (ctx) => getDocSettings(ctx.queryKey[1]),
-      refetchInterval: delay,
-    })),
-  );
+  let mutation = createMutation(() => ({
+    mutationFn: mutateEnabledFileType,
+    onSettled: async () => {
+      await queryClient.resetQueries({ queryKey: ['docSettings'] });
+      delay = initialDelay;
+      // await queryResult.refetch();
+      setTimeout(() => queryResult.refetch().catch(() => undefined), 300);
+    },
+  }));
+  let queryResult = createQuery(() => ({
+    queryKey: ['docSettings', docUrl?.toString()],
+    queryFn: (ctx) => getDocSettings(ctx.queryKey[1]),
+    refetchInterval: delay,
+  }));
   let settings = $derived(queryResult.data);
   let configFiles = $derived(settings?.configs.file?.configFiles);
   let excludedBy = $derived(settings?.configs.file?.excludedBy);
