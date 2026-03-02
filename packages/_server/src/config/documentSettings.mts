@@ -899,4 +899,5 @@ export const __testing__ = {
     applyEnabledFileTypes,
     fileConfigsToImport,
     fileVSCodeSettings,
+    findPackageJSON,
 };
