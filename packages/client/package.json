@@ -49,7 +49,7 @@
     "as-table": "^1.0.55",
     "camelize": "^1.0.1",
     "code-spell-checker-server": "file:../_server",
-    "comment-json": "^4.5.1",
+    "comment-json": "^4.6.0",
     "cross-env": "^10.1.0",
     "cspell-lib": "^9.7.0",
     "fast-deep-equal": "^3.1.3",
