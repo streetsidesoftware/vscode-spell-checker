@@ -36,7 +36,7 @@ vi.mock('node:module', () => ({
     },
 }));
 
-const mockFindPackageJSON = vi.mocked(nodeModule).findPackageJSON;
+const mockFindPackageJSON = vi.mocked(nodeModule.findPackageJSON);
 
 const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);
 const mockGetConfiguration = vi.mocked(getConfiguration);
