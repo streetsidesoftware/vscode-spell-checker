@@ -1,3 +1,6 @@
+import nodeModule from 'node:module';
+import { pathToFileURL } from 'node:url';
+
 import type { Pattern } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
@@ -27,6 +30,14 @@ const oc = (...params: Parameters<typeof expect.objectContaining>) => expect.obj
 
 vi.mock('vscode-languageserver/node');
 vi.mock('./vscode.config.mjs');
+vi.mock('node:module', () => ({
+    default: {
+        findPackageJSON: vi.fn(),
+    },
+}));
+
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
+const mockFindPackageJSON = vi.mocked(nodeModule.findPackageJSON);
 
 const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);
 const mockGetConfiguration = vi.mocked(getConfiguration);
@@ -84,6 +95,8 @@ describe('Validate DocumentSettings', () => {
     beforeEach(() => {
         // Clear all mock instances and calls to constructor and all methods:
         mockGetWorkspaceFolders.mockClear();
+        // Default to not finding any bundled dict packages (simulates "not installed")
+        mockFindPackageJSON.mockReset();
     });
 
     test('version', async () => {
@@ -505,6 +518,144 @@ describe('Validate RegExp corrections', () => {
         };
         expect(correctBadSettings(settings)).toEqual(expectedSettings);
         expect(correctBadSettings(settings)).not.toEqual(settings);
+    });
+});
+
+describe('findPackageJSON', () => {
+    const { findPackageJSON } = __testing__;
+
+    beforeEach(() => {
+        mockFindPackageJSON.mockReset();
+    });
+
+    test('returns a URL when the package is found', () => {
+        const pkgJsonPath = '/home/project/node_modules/some-pkg/package.json';
+        mockFindPackageJSON.mockReturnValue(pkgJsonPath);
+        const url = new URL('file:///home/project/src/test.ts');
+        const result = findPackageJSON('some-pkg', url);
+        expect(result).toBeInstanceOf(URL);
+        expect(result?.href).toBe(pathToFileURL(pkgJsonPath).href);
+    });
+
+    test('returns undefined when the package is not found (throws)', () => {
+        mockFindPackageJSON.mockImplementation(() => {
+            const err = Object.assign(new Error('Package not found'), { code: 'ERR_MODULE_NOT_FOUND' });
+            throw err;
+        });
+        const url = new URL('file:///home/project/src/test.ts');
+        const result = findPackageJSON('nonexistent-pkg', url);
+        expect(result).toBeUndefined();
+    });
+
+    test('returns undefined when nodeModule.findPackageJSON returns a falsy value', () => {
+        mockFindPackageJSON.mockReturnValue(undefined);
+        const url = new URL('file:///home/project/src/test.ts');
+        const result = findPackageJSON('some-pkg', url);
+        expect(result).toBeUndefined();
+    });
+});
+
+describe('useLocallyInstalledCSpellDictionaries resolution', () => {
+    // Pathname strings used to simulate the different installation scenarios
+    const bundledDictsPackageJsonPath = pathToFileURL(
+        Path.resolve(pathWorkspaceRoot, 'node_modules/@cspell/cspell-bundled-dicts/package.json'),
+    ).pathname;
+    const cspellPackageJsonPath = pathToFileURL(Path.resolve(pathWorkspaceRoot, 'node_modules/cspell/package.json')).pathname;
+
+    beforeEach(() => {
+        mockGetWorkspaceFolders.mockReset();
+        mockFindPackageJSON.mockReset();
+    });
+
+    function implLocalGetConfiguration(section?: string | ConfigurationItem | ConfigurationItem[]): Promise<any> {
+        let sec: string | undefined;
+        if (typeof section === 'string') {
+            sec = section;
+        } else if (Array.isArray(section)) {
+            sec = section[0]?.section;
+        } else {
+            sec = section?.section;
+        }
+        if (sec === 'cSpell.trustedWorkspace') {
+            return Promise.resolve(true);
+        }
+        return Promise.resolve(undefined);
+    }
+
+    function newDocumentSettingsLocal(defaultSettings: CSpellUserAndExtensionSettings = {}) {
+        const connection = createMockConnection();
+        const mockWorkspaceGetConfiguration = vi.mocked(connection.workspace.getConfiguration);
+        mockWorkspaceGetConfiguration.mockImplementation(implLocalGetConfiguration);
+        return new DocumentSettings(connection, createMockServerSideApi(), defaultSettings);
+    }
+
+    async function getSettingsWithLocalDicts(useLocallyInstalledCSpellDictionaries: boolean | undefined) {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{ mergeCSpellSettings: true, useLocallyInstalledCSpellDictionaries }, {}]));
+        const docSettings = newDocumentSettingsLocal();
+        return docSettings.getSettings({ uri: Uri.file(Path.join(pathWorkspaceServer, 'src/test.ts')).toString() });
+    }
+
+    test('(a) loads bundled dicts when @cspell/cspell-bundled-dicts is present in workspace', async () => {
+        // Simulate: @cspell/cspell-bundled-dicts found directly in node_modules
+        mockFindPackageJSON.mockReturnValue(bundledDictsPackageJsonPath);
+
+        const settings = await getSettingsWithLocalDicts(true);
+
+        // findPackageJSON should have been called for @cspell/cspell-bundled-dicts
+        expect(mockFindPackageJSON).toHaveBeenCalledWith('@cspell/cspell-bundled-dicts', expect.any(URL));
+        // Bundled dictionaries should be loaded (there are many of them, e.g. en_us, bash, etc.)
+        const dictNames = settings.dictionaryDefinitions?.map((d) => d.name) ?? [];
+        expect(dictNames).toContain('en_us');
+    });
+
+    test('(b) loads bundled dicts when only available via cspell dependencies', async () => {
+        // Simulate: @cspell/cspell-bundled-dicts not directly in workspace, but cspell is
+        mockFindPackageJSON
+            .mockImplementationOnce(() => {
+                throw Object.assign(new Error('not found'), { code: 'ERR_MODULE_NOT_FOUND' });
+            })
+            .mockReturnValue(cspellPackageJsonPath);
+
+        const settings = await getSettingsWithLocalDicts(true);
+
+        // Both packages should have been searched
+        expect(mockFindPackageJSON).toHaveBeenCalledWith('@cspell/cspell-bundled-dicts', expect.any(URL));
+        expect(mockFindPackageJSON).toHaveBeenCalledWith('cspell', expect.any(URL));
+        // Bundled dictionaries should still be loaded via cspell's location
+        const dictNames = settings.dictionaryDefinitions?.map((d) => d.name) ?? [];
+        expect(dictNames).toContain('en_us');
+    });
+
+    test('(c) does not add import when neither package is installed', async () => {
+        // Simulate: neither package is found
+        mockFindPackageJSON.mockImplementation(() => {
+            throw Object.assign(new Error('not found'), { code: 'ERR_MODULE_NOT_FOUND' });
+        });
+
+        const settings = await getSettingsWithLocalDicts(true);
+
+        expect(mockFindPackageJSON).toHaveBeenCalledWith('@cspell/cspell-bundled-dicts', expect.any(URL));
+        expect(mockFindPackageJSON).toHaveBeenCalledWith('cspell', expect.any(URL));
+        // Without bundled dicts, en_us should not be in dictionary definitions
+        const dictNames = settings.dictionaryDefinitions?.map((d) => d.name) ?? [];
+        expect(dictNames).not.toContain('en_us');
+    });
+
+    test('does not search for packages when useLocallyInstalledCSpellDictionaries is false', async () => {
+        const settings = await getSettingsWithLocalDicts(false);
+
+        expect(mockFindPackageJSON).not.toHaveBeenCalled();
+        // Settings should still be valid
+        expect(settings).toBeDefined();
+    });
+
+    test('does not search for packages when useLocallyInstalledCSpellDictionaries is undefined', async () => {
+        const settings = await getSettingsWithLocalDicts(undefined);
+
+        expect(mockFindPackageJSON).not.toHaveBeenCalled();
+        expect(settings).toBeDefined();
     });
 });
 

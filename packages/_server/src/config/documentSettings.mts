@@ -1,3 +1,6 @@
+import nodeModule from 'node:module';
+import { pathToFileURL } from 'node:url';
+
 import { opConcatMap, opFilter, pipe } from '@cspell/cspell-pipe/sync';
 import type {
     CSpellSettingsWithSourceTrace,
@@ -399,10 +402,25 @@ export class DocumentSettings {
         uri: URL,
         useLocallyInstalledCSpellDictionaries: boolean | undefined,
     ): Promise<CSpellUserAndExtensionSettings> {
+        const imports: string[] = [];
+
+        if (useLocallyInstalledCSpellDictionaries && uri.href.startsWith('file:')) {
+            const cspellBundledDictsUrl = findPackageJSON('@cspell/cspell-bundled-dicts', uri) ?? findPackageJSON('cspell', uri);
+            if (cspellBundledDictsUrl) {
+                imports.push('@cspell/cspell-bundled-dicts');
+                const url = new URL('./', cspellBundledDictsUrl);
+                if (url.pathname.endsWith('/cspell/')) {
+                    // Adjust the url of the config file to point to cspell instead of
+                    // using the current document so the dictionaries can be found.
+                    uri = new URL(uri.pathname.split('/').slice(-1).join('/'), url);
+                }
+            }
+        }
+
         const cSpellConfigSettings: CSpellUserAndExtensionSettings = {
             id: 'VSCode-Config-Imports',
             name: 'VS Code Settings Local Imports',
-            import: useLocallyInstalledCSpellDictionaries ? ['@cspell/cspell-bundled-dicts'] : [],
+            import: imports,
             readonly: true,
         };
 
@@ -858,6 +876,16 @@ const checkScheme: Record<string, boolean | undefined> = {
     vsls: true,
 };
 
+function findPackageJSON(packageName: string, url: URL): URL | undefined {
+    try {
+        // eslint-disable-next-line n/no-unsupported-features/node-builtins
+        const found = nodeModule.findPackageJSON(packageName, url);
+        return found ? pathToFileURL(found) : undefined;
+    } catch {
+        return undefined;
+    }
+}
+
 function canCheckAgainstGlob(uri: Uri): boolean {
     let r = checkScheme[uri.scheme] ?? false;
     // Note: the path must have a leading slash to be a valid path when doing relative path matching.
@@ -871,4 +899,5 @@ export const __testing__ = {
     applyEnabledFileTypes,
     fileConfigsToImport,
     fileVSCodeSettings,
+    findPackageJSON,
 };
