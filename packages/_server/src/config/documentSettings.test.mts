@@ -36,6 +36,7 @@ vi.mock('node:module', () => ({
     },
 }));
 
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 const mockFindPackageJSON = vi.mocked(nodeModule.findPackageJSON);
 
 const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);
@@ -559,9 +560,7 @@ describe('useLocallyInstalledCSpellDictionaries resolution', () => {
     const bundledDictsPackageJsonPath = pathToFileURL(
         Path.resolve(pathWorkspaceRoot, 'node_modules/@cspell/cspell-bundled-dicts/package.json'),
     ).pathname;
-    const cspellPackageJsonPath = pathToFileURL(
-        Path.resolve(pathWorkspaceRoot, 'node_modules/cspell/package.json'),
-    ).pathname;
+    const cspellPackageJsonPath = pathToFileURL(Path.resolve(pathWorkspaceRoot, 'node_modules/cspell/package.json')).pathname;
 
     beforeEach(() => {
         mockGetWorkspaceFolders.mockReset();
@@ -593,9 +592,7 @@ describe('useLocallyInstalledCSpellDictionaries resolution', () => {
     async function getSettingsWithLocalDicts(useLocallyInstalledCSpellDictionaries: boolean | undefined) {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
-        mockGetConfiguration.mockReturnValue(
-            Promise.resolve([{ mergeCSpellSettings: true, useLocallyInstalledCSpellDictionaries }, {}]),
-        );
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{ mergeCSpellSettings: true, useLocallyInstalledCSpellDictionaries }, {}]));
         const docSettings = newDocumentSettingsLocal();
         return docSettings.getSettings({ uri: Uri.file(Path.join(pathWorkspaceServer, 'src/test.ts')).toString() });
     }
