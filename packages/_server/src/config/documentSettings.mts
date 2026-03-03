@@ -402,27 +402,17 @@ export class DocumentSettings {
         uri: URL,
         useLocallyInstalledCSpellDictionaries: boolean | undefined,
     ): Promise<CSpellUserAndExtensionSettings> {
-        const imports: string[] = [];
-
-        if (useLocallyInstalledCSpellDictionaries && uri.href.startsWith('file:')) {
-            const cspellBundledDictsUrl = findPackageJSON('@cspell/cspell-bundled-dicts', uri) ?? findPackageJSON('cspell', uri);
-            if (cspellBundledDictsUrl) {
-                imports.push('@cspell/cspell-bundled-dicts');
-                const url = new URL('./', cspellBundledDictsUrl);
-                if (url.pathname.endsWith('/cspell/')) {
-                    // Adjust the url of the config file to point to cspell instead of
-                    // using the current document so the dictionaries can be found.
-                    uri = new URL(uri.pathname.split('/').slice(-1).join('/'), url);
-                }
-            }
-        }
-
         const cSpellConfigSettings: CSpellUserAndExtensionSettings = {
             id: 'VSCode-Config-Imports',
             name: 'VS Code Settings Local Imports',
-            import: imports,
             readonly: true,
         };
+
+        if (useLocallyInstalledCSpellDictionaries && uri.href.startsWith('file:')) {
+            const cspellImports = determineDictionaryImports(uri);
+            uri = cspellImports.uri;
+            cSpellConfigSettings.import = cspellImports.imports;
+        }
 
         const configFile = this.loader.createCSpellConfigFile(uri, cSpellConfigSettings);
         return this.loader.mergeConfigFileWithImports(configFile);
@@ -891,6 +881,29 @@ function canCheckAgainstGlob(uri: Uri): boolean {
     // Note: the path must have a leading slash to be a valid path when doing relative path matching.
     r = r && uri.path.startsWith('/');
     return r;
+}
+
+interface DictionaryImports {
+    uri: URL;
+    imports: string[];
+}
+
+const CSPELL_BUNDLED_DICTS_PKG = '@cspell/cspell-bundled-dicts';
+
+function determineDictionaryImports(uri: URL): DictionaryImports {
+    const imports: string[] = [];
+    if (findPackageJSON(CSPELL_BUNDLED_DICTS_PKG, uri)) {
+        imports.push(CSPELL_BUNDLED_DICTS_PKG);
+        return { uri, imports };
+    }
+    const cspellPkg = findPackageJSON('cspell', uri);
+    if (cspellPkg) {
+        // Look for `@cspell/cspell-bundled-dicts` from the `cspell` package location to pick up the nested `node_modules`.
+        uri = new URL(uri.pathname.split('/').slice(-1).join('/'), cspellPkg);
+        imports.push(CSPELL_BUNDLED_DICTS_PKG);
+        return { uri, imports };
+    }
+    return { uri, imports };
 }
 
 export const __testing__ = {
