@@ -8,11 +8,12 @@ export default defineConfig([
         dts: false,
         sourcemap: true,
         // splitting: false,
-        external: ['vscode'],
         target: 'node22',
         fixedExtension: true,
-        inlineOnly: false,
-
+        deps: {
+            onlyAllowBundle: false,
+            neverBundle: ['vscode'],
+        },
         clean: true,
     },
     {
@@ -25,11 +26,12 @@ export default defineConfig([
         },
         sourcemap: true,
         // splitting: false,
-        external: ['vscode'],
         target: 'node22',
         fixedExtension: true,
-        inlineOnly: false,
-
+        deps: {
+            onlyAllowBundle: false,
+            neverBundle: ['vscode'],
+        },
         clean: true,
     },
 ]);
