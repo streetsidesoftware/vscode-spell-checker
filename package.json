@@ -4649,7 +4649,7 @@
     "eslint-plugin-unicorn": "^63.0.0",
     "globals": "^17.4.0",
     "inject-markdown": "^4.0.0",
-    "jest-mock-vscode": "^4.11.0",
+    "jest-mock-vscode": "^4.12.0",
     "ovsx": "^0.10.9",
     "patch-package": "^8.0.1",
     "prettier": "^3.8.1",
