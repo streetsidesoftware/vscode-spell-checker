@@ -14,6 +14,10 @@ updates:
         dependency-type: 'production'
       development-dependencies:
         dependency-type: 'development'
+    ignore:
+      - dependency-name: '@types/node'
+        # Ignore patch updates for Node
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: 'github-actions'
     # Workflow files stored in the
