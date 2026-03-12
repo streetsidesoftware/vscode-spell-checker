@@ -11,7 +11,7 @@ export default defineConfig([
         target: 'node22',
         fixedExtension: true,
         deps: {
-            onlyAllowBundle: false,
+            onlyBundle: false,
             neverBundle: ['vscode'],
         },
         clean: true,
@@ -29,7 +29,7 @@ export default defineConfig([
         target: 'node22',
         fixedExtension: true,
         deps: {
-            onlyAllowBundle: false,
+            onlyBundle: false,
             neverBundle: ['vscode'],
         },
         clean: true,
