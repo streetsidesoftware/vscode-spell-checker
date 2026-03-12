@@ -13,7 +13,7 @@ export default defineConfig([
         target: 'node22',
         fixedExtension: false,
         deps: {
-            onlyAllowBundle: false,
+            onlyBundle: false,
         },
     },
     {
@@ -27,7 +27,7 @@ export default defineConfig([
         target: 'node22',
         fixedExtension: false,
         deps: {
-            onlyAllowBundle: false,
+            onlyBundle: false,
         },
     },
 ]);
