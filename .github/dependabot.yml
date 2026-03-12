@@ -16,8 +16,11 @@ updates:
         dependency-type: 'development'
     ignore:
       - dependency-name: '@types/node'
-        # Ignore patch updates for Node
+        # Node types are tied to the node version used by VSCode
         update-types: ['version-update:semver-major']
+      - dependency-name: '@types/node'
+        # Node types are tied to the node version used by VSCode
+        versions: ['^20.0.0']
 
   - package-ecosystem: 'github-actions'
     # Workflow files stored in the
