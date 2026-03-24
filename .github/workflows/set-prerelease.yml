@@ -21,7 +21,7 @@ jobs:
           ref: main
 
       - name: Install Node.js
-        uses: ./actions/setup-node
+        uses: ./.github/actions/setup-node
 
       - run: node ./scripts/set-prerelease-mode.js ${{ inputs.prerelease }}
 

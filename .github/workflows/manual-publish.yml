@@ -86,7 +86,7 @@ jobs:
           ref: ${{ inputs.ref }}
 
       - name: Install Node.js
-        uses: ./actions/setup-node
+        uses: ./.github/actions/setup-node
 
       - name: Install
         run: |
