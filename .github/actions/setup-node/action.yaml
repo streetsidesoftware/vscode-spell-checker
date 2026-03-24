@@ -1,0 +1,27 @@
+name: setup-node
+description: Set up Node.js environment for GitHub Actions. Makes sure the right version of npm is installed.
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+
+    - name: Check npm version
+      run: |
+        npm -v
+        node -v
+      shell: bash
+
+    - name: Setup npm version
+      run: npm install -g npm@11
+      shell: bash
+
+    - name: Check npm version
+      run: |
+        npm -v
+        node -v
+      shell: bash
