@@ -4636,7 +4636,7 @@
     "@types/node": "^22.19.15",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~4.1.0",
+    "@vitest/coverage-istanbul": "~4.1.1",
     "@vscode/vsce": "^3.7.1",
     "ansi-styles": "^6.2.3",
     "chokidar-cli": "^3.0.0",
@@ -4660,8 +4660,8 @@
     "tsdown": "^0.21.4",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.57.1",
-    "vite": "^8.0.1",
+    "typescript-eslint": "^8.57.2",
+    "vite": "^8.0.2",
     "vitest": "~4.1.0"
   },
   "dependencies": {
