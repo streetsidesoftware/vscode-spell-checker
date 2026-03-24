@@ -21,9 +21,7 @@ jobs:
           ref: main
 
       - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
+        uses: ./actions/setup-node
 
       - run: node ./scripts/set-prerelease-mode.js ${{ inputs.prerelease }}
 
