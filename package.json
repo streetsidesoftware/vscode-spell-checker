@@ -4662,7 +4662,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.2",
     "vite": "^8.0.3",
-    "vitest": "~4.1.1"
+    "vitest": "~4.1.2"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^9.7.0",
