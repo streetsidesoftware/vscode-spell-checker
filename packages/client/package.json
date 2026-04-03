@@ -58,7 +58,7 @@
     "optionator": "^0.9.4",
     "rfdc": "^1.4.1",
     "source-map-support": "^0.5.21",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vitest-when": "^0.10.0",
