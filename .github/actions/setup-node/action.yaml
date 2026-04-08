@@ -17,7 +17,11 @@ runs:
       shell: bash
 
     - name: Setup npm version
-      run: npm install -g npm@11
+      # Note: Due to a bug, it is necessary to do a double install.
+      # https://github.com/npm/cli/issues/9151
+      run: |
+        npm install -g npm@11.11.1
+        npm install -g npm@11
       shell: bash
 
     - name: Check npm version
