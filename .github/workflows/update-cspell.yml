@@ -63,7 +63,7 @@ jobs:
 
       - name: Update Type
         id: cspell-update-type
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           CURRENT: ${{ steps.cspell-current-version.outputs.value }}
           NEW: ${{ steps.cspell-new-version.outputs.value }}
@@ -83,7 +83,7 @@ jobs:
 
       - name: Build List of CSpell Releases
         id: cspell-releases
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           CURRENT: ${{ steps.cspell-current-version.outputs.value }}
           NEW: ${{ steps.cspell-new-version.outputs.value }}
