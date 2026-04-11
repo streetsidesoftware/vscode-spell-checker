@@ -104,7 +104,7 @@ jobs:
         uses: actions/checkout@v6
       - name: Find PR
         id: find-pr
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: prs } = await github.rest.pulls.list({

@@ -94,7 +94,7 @@ jobs:
 
       - name: Get Release
         id: release
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           TAG: ${{ env.REF }}
         with:
@@ -118,7 +118,7 @@ jobs:
 
       - name: Update Release Notes
         id: release-notes
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           RELEASE: ${{ steps.release.outputs.result }}
           VERSION_TABLE: ${{ steps.version-table.outputs.value }}
@@ -146,7 +146,7 @@ jobs:
 
       - name: Patch Release Notes
         id: patch-release-notes
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           RELEASE: ${{ steps.release.outputs.result }}
           BODY: ${{ steps.release-notes.outputs.result }}
