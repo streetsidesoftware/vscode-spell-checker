@@ -70,7 +70,7 @@
     "webpack": "^5.106.2",
     "webview-api": "file:../webview-api",
     "webview-ui": "file:../webview-ui",
-    "yaml": "^2.8.3",
+    "yaml": "^2.8.4",
     "yargs": "^18.0.0"
   },
   "dependencies": {
