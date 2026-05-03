@@ -42,6 +42,6 @@
     "node": ">=22.20.0"
   },
   "devDependencies": {
-    "@types/vscode": "^1.116.0"
+    "@types/vscode": "^1.118.0"
   }
 }
