@@ -4665,9 +4665,9 @@
     "vitest": "~4.1.7"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^9.8.0",
-    "@cspell/cspell-types": "^9.8.0",
-    "@cspell/dict-cspell-bundle": "^2.0.59",
+    "@cspell/cspell-bundled-dicts": "^10.0.1",
+    "@cspell/cspell-types": "^10.0.1",
+    "@cspell/dict-cspell-bundle": "^2.0.62",
     "regexp-worker": "^4.3.0"
   },
   "overrides": {
