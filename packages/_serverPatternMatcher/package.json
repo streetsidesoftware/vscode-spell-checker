@@ -26,7 +26,7 @@
     "@cspell/cspell-types": "^9.8.0",
     "@internal/common-utils": "file:../__utils",
     "regexp-worker": "^4.3.0",
-    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver": "^10.0.0",
     "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-uri": "^3.1.0"
   },
