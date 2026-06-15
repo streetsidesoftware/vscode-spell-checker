@@ -28,7 +28,7 @@
   "dependencies": {
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
-    "vscode-jsonrpc": "^8.2.1"
+    "vscode-jsonrpc": "^9.0.0"
   },
   "files": [
     "dist",
