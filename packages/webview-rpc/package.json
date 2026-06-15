@@ -34,7 +34,7 @@
   "dependencies": {
     "json-rpc-api": "file:../json-rpc-api",
     "utils-disposables": "file:../utils-disposables",
-    "vscode-jsonrpc": "^8.2.1"
+    "vscode-jsonrpc": "^9.0.0"
   },
   "files": [
     "dist",
