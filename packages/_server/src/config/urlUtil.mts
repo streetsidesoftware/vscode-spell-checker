@@ -69,6 +69,21 @@ export function toPathURL(url: UrlLike): Readonly<URL> {
     return new URL('.', url);
 }
 
+/**
+ * Like {@link toPathURL}, but returns `undefined` instead of throwing when the value cannot be
+ * parsed as a URL. Documents opened with non-standard URI schemes (e.g. read-only virtual
+ * documents created by other extensions) are not valid WHATWG URLs and make `new URL` throw.
+ * @param url - url or url like.
+ * @returns the path URL or `undefined` if it cannot be parsed.
+ */
+export function tryToPathURL(url: UrlLike): Readonly<URL> | undefined {
+    try {
+        return toPathURL(url);
+    } catch {
+        return undefined;
+    }
+}
+
 export function toDirURL(url: UrlLike): Readonly<URL> {
     url = fixUrlRoot(url);
     if (url.pathname.endsWith('/')) {
