@@ -48,7 +48,7 @@ import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
 import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
-import { filterUrl, toDirURL, toPathURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
+import { filterUrl, toDirURL, toPathURL, tryJoinURL, tryToPathURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
@@ -336,7 +336,10 @@ export class DocumentSettings {
      * @returns
      */
     private rootSchemaAndDomainForUri(docUri: string | Uri | undefined) {
-        let url = toPathURL(docUri || this.#rootHref || defaultRootUri);
+        // `docUri` can use a non-standard scheme (e.g. read-only virtual documents created by
+        // other extensions) that is not a valid WHATWG URL. Parsing those throws, which used to
+        // break settings resolution for the document. Fall back to the workspace/default root.
+        let url = tryToPathURL(docUri || this.#rootHref || defaultRootUri) ?? toPathURL(this.#rootHref || defaultRootUri);
         // Need to investigate if we should map untitled to the root.
         // if (url.protocol === 'untitled:') {
         //     url = toPathURL(this.#rootHref || defaultRootUri);
