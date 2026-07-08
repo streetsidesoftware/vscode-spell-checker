@@ -243,6 +243,16 @@ Some schemes have special meaning like:
 - `vscode-scm` - Needed to spell check Source Control commit messages.
 - `comment` - Used for new comment editors.
 
+A scheme of `*` is a wildcard that enables all schemes without an explicit entry.
+This is useful for virtual file systems provided by other extensions.
+
+**Example: enable all schemes**
+
+| Scheme | Enabled | Comment |
+| ------ | ------- | ------- |
+| `*`    | `true`  | Enable all schemes. |
+| `git`  | `false` | Do not check documents provided by the `git` file system. |
+
 </dd>
 
 <dt>

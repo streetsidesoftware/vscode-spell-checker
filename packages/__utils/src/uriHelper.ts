@@ -14,8 +14,11 @@ export const supportedSchemes = [
 ];
 export const setOfSupportedSchemes = new Set(supportedSchemes);
 
+/** Wildcard scheme - matches any scheme without an explicit entry. */
+export const schemeWildcard = '*';
+
 export function isSupportedUri(uri?: Uri): boolean {
-    return !!uri && setOfSupportedSchemes.has(uri.scheme);
+    return !!uri && (setOfSupportedSchemes.has(uri.scheme) || setOfSupportedSchemes.has(schemeWildcard));
 }
 
 interface TextDocumentLike {

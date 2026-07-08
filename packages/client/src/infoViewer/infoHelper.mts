@@ -1,6 +1,6 @@
 import { uriToName } from '@internal/common-utils/uriHelper';
 import type { EnabledFileTypes } from 'code-spell-checker-server/lib';
-import { extractEnabledFileTypes } from 'code-spell-checker-server/lib';
+import { extractEnabledFileTypes, schemeWildcard } from 'code-spell-checker-server/lib';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import type {
@@ -385,7 +385,9 @@ function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace)
     const workspace: Workspace = {
         name,
         workspaceFolders: workspaceFolders ? workspaceFolders.map(mapWorkspaceFolder) : undefined,
-        textDocuments: textDocuments.filter((td) => allowedSchemas.has(td.uri.scheme)).map(mapTextDocuments),
+        textDocuments: textDocuments
+            .filter((td) => allowedSchemas.has(td.uri.scheme) || allowedSchemas.has(schemeWildcard))
+            .map(mapTextDocuments),
     };
 
     return workspace;
