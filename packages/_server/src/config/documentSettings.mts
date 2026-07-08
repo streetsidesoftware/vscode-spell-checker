@@ -47,7 +47,13 @@ import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.m
 import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
-import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
+import {
+    applyEnabledFileTypes,
+    applyEnabledSchemes,
+    extractEnabledFileTypes,
+    extractEnabledSchemes,
+    isSchemeEnabled,
+} from './extractEnabledFileTypes.mjs';
 import { filterUrl, toDirURL, toPathURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
@@ -182,7 +188,7 @@ export class DocumentSettings {
         const enabled = settings.settings.enabled ?? enabledVSCode;
         const ie = calcIncludeExclude(settings, _uri);
         const ignoredEx = await this._isGitIgnoredEx(settings, _uri);
-        const schemaAllowed = settings.settings.enabledSchemes?.[uri.scheme];
+        const schemaAllowed = settings.settings.enabledSchemes && isSchemeEnabled(uri.scheme, settings.settings.enabledSchemes);
         return {
             ...ie,
             enabled,
@@ -592,11 +598,11 @@ export function isUriAllowedBySettings(uri: string, settings: CSpellUserAndExten
 
 export function isUriBlockedBySettings(uri: string, settings: CSpellUserAndExtensionSettings): boolean {
     const schemes = extractEnabledSchemes(settings);
-    return schemes[Uri.parse(uri).scheme] === false;
+    return isSchemeEnabled(Uri.parse(uri).scheme, schemes) === false;
 }
 
 export function doesUriMatchAnyScheme(uri: string, schemes: EnabledSchemes): boolean {
-    return schemes[Uri.parse(uri).scheme] === true;
+    return isSchemeEnabled(Uri.parse(uri).scheme, schemes) === true;
 }
 
 function _bestMatchingFolderForUri(folders: WorkspaceFolder[], docUri: string | undefined, defaultFolder: WorkspaceFolder): WorkspaceFolder;

@@ -9,7 +9,7 @@ import type {
     SpellingSuggestionsResult,
     WorkspaceConfigForDocument,
 } from 'code-spell-checker-server/api';
-import { extractEnabledSchemeList, extractKnownFileTypeIds } from 'code-spell-checker-server/lib';
+import { extractEnabledSchemeList, extractKnownFileTypeIds, schemeWildcard } from 'code-spell-checker-server/lib';
 import { createDisposableList, type DisposableHybrid, makeDisposable } from 'utils-disposables';
 import type { CodeAction, Diagnostic, DiagnosticCollection, Disposable, ExtensionContext, Range, TextDocument } from 'vscode';
 import { EventEmitter, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
@@ -105,7 +105,10 @@ export class CSpellClient implements Disposable {
         };
 
         const uniqueLangIds = [...this.languageIds];
-        const documentSelector = [...this.allowedSchemas].flatMap((scheme) => uniqueLangIds.map((language) => ({ language, scheme })));
+        // A wildcard scheme means all schemes are allowed, the server will filter out any blocked schemes.
+        const documentSelector = this.allowedSchemas.has(schemeWildcard)
+            ? uniqueLangIds.map((language) => ({ language }))
+            : [...this.allowedSchemas].flatMap((scheme) => uniqueLangIds.map((language) => ({ language, scheme })));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
