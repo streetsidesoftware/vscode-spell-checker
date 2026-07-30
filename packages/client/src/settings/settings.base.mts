@@ -28,8 +28,7 @@ export function readConfigTargetValues<K extends keyof CSpellUserSettings>(
 }
 
 export type ApplyValueOrFn<K extends keyof CSpellUserSettings> =
-    | CSpellUserSettings[K]
-    | ((v: CSpellUserSettings[K]) => CSpellUserSettings[K]);
+    CSpellUserSettings[K] | ((v: CSpellUserSettings[K]) => CSpellUserSettings[K]);
 
 export function applyToConfig<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],

@@ -80,9 +80,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
 type ExplicitAny = any;
 
 type CommandHandler =
-    | ((...params: ExplicitAny[]) => void)
-    | ((...params: ExplicitAny[]) => undefined)
-    | ((...params: ExplicitAny[]) => Promise<unknown>);
+    ((...params: ExplicitAny[]) => void) | ((...params: ExplicitAny[]) => undefined) | ((...params: ExplicitAny[]) => Promise<unknown>);
 type CommandHandlers = Readonly<Record<string, CommandHandler>>;
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
