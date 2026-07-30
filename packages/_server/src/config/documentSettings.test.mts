@@ -6,7 +6,7 @@ import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import { createMockServerSideApi } from '../test/test.api.js';

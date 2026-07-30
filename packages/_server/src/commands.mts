@@ -1,4 +1,4 @@
-import { Command } from 'vscode-languageserver/node.js';
+import { Command } from 'vscode-languageserver/node';
 
 import type { CommandsToClient } from './api.js';
 

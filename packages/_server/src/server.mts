@@ -17,7 +17,7 @@ import type {
     InitializeResult,
     PublishDiagnosticsParams,
     ServerCapabilities,
-} from 'vscode-languageserver/node.js';
+} from 'vscode-languageserver/node';
 import {
     CodeActionKind,
     createConnection,
@@ -25,7 +25,7 @@ import {
     ProposedFeatures,
     TextDocuments,
     TextDocumentSyncKind,
-} from 'vscode-languageserver/node.js';
+} from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';

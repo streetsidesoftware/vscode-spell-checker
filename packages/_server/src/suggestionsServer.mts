@@ -1,5 +1,5 @@
 import { constructSettingsForText, getDictionary } from 'cspell-lib';
-import type { TextDocuments } from 'vscode-languageserver/node.js';
+import type { TextDocuments } from 'vscode-languageserver/node';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { SpellingSuggestionsResult, TextDocumentInfo } from './api.js';
