@@ -1,8 +1,10 @@
 ---
 title: Spell Checker
-nav_order: 1
+nav\_order: 1
 description: 'Spelling Checker for Visual Studio Code'
 permalink: /
+---
+
 ---
 
 <!--- @@inject: ../../../README.md --->
@@ -163,7 +165,7 @@ The concept is simple, split camelCase words before checking them against a list
 
 - camelCase -> camel case
 - HTMLInput -> html input -- Notice that the `I` is associated with `Input` and not `HTML`
-- snake_case_words -> snake case words
+- snake\_case\_words -> snake case words
 - camel2snake -> camel snake -- (the 2 is ignored)
 
 ### Special case with ALL CAPS words
