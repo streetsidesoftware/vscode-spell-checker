@@ -2,8 +2,8 @@ import { homedir } from 'node:os';
 import { relative as pathRelative } from 'node:path/posix';
 
 import type { CancellationToken, FileStat, FileType } from 'vscode';
-import { Uri } from 'vscode';
 import * as vscode from 'vscode';
+import { Uri } from 'vscode';
 
 import { toError } from '../util/errors.js';
 import { asyncQueue } from './asyncQueue.mjs';

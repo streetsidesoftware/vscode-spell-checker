@@ -3,8 +3,8 @@ import { createRequire } from 'node:module';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Extension, TextDocument, TextEditor, Uri } from 'vscode';
 import type * as ModuleVSCode from 'vscode';
+import type { Extension, TextDocument, TextEditor, Uri } from 'vscode';
 
 import type { ExtensionApi } from './ExtensionApi.mjs';
 import { chalk, log } from './logger.mjs';
