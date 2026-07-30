@@ -30,8 +30,8 @@
     "react-dom": "^19.2.6"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.10.1",
-    "@docusaurus/tsconfig": "^3.10.1",
+    "@docusaurus/module-type-aliases": "^3.10.2",
+    "@docusaurus/tsconfig": "^3.10.2",
     "@docusaurus/types": "^3.10.1",
     "@types/json-schema": "^7.0.15",
     "typescript": "~5.9.3"
