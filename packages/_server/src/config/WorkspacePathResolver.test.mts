@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { logError } from '@internal/common-utils/log';
 import * as Path from 'path';
 import { describe, expect, type Mock, test, vi } from 'vitest';
-import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import type { CSpellUserAndExtensionSettings, CustomDictionaries } from './cspellConfig/index.mjs';

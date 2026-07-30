@@ -12,7 +12,7 @@ import {
 import { getVsCodeApi, type VSCodeAPI, type VSCodeMessageAPI } from './vscode.js';
 
 export type { MessageConnection } from 'json-rpc-api';
-export { NotificationType } from 'vscode-jsonrpc/lib/common/api.js';
+export { NotificationType } from 'vscode-jsonrpc';
 
 export interface Logger {
     debug: typeof console.debug;

@@ -33,7 +33,7 @@ import {
     searchForConfig,
 } from 'cspell-lib';
 import type { DisposableClassic } from 'utils-disposables';
-import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigForDocument } from '../api.js';

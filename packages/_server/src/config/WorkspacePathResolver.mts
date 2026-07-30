@@ -2,7 +2,7 @@ import { logError } from '@internal/common-utils/log';
 import { uriToFilePathOrHref } from '@internal/common-utils/uriHelper';
 import type { BaseSetting, Glob, GlobDef } from 'cspell-lib';
 import * as os from 'os';
-import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';

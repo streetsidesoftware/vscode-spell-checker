@@ -1,6 +1,6 @@
 import type { Req, Res, ServerMethods, ServerRequestApi } from '@internal/server-pattern-matcher/api';
-import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node.js';
-import { CodeActionRequest, RequestType } from 'vscode-languageclient/node.js';
+import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
+import { CodeActionRequest, RequestType } from 'vscode-languageclient/node';
 
 export type {
     MatchPatternsToDocumentResult,
@@ -23,7 +23,8 @@ export async function requestCodeAction(client: LanguageClient, params: CodeActi
 export function createServerApi(client: LanguageClient): PatternMatcherServerApi {
     async function sendRequest<M extends keyof ServerMethods>(method: M, param: Req<ServerMethods[M]>): Promise<Res<ServerMethods[M]>> {
         const r: RequestType<Req<ServerMethods[M]>, Res<ServerMethods[M]>, void> = new RequestType(method);
-        const result = await client.sendRequest(r, param);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const result = (await client.sendRequest(r, param as any)) as Res<ServerMethods[M]>;
         return result;
     }
 

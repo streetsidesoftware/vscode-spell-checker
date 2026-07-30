@@ -4,7 +4,7 @@ import { FSCapabilityFlags, urlOrReferenceToUrl, VFileType } from 'cspell-io';
 import type { VFileSystemProvider } from 'cspell-lib';
 import { getVirtualFS } from 'cspell-lib';
 import { DisposableList } from 'utils-disposables';
-import type { Connection, Disposable, TextDocuments, WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { Connection, Disposable, TextDocuments, WorkspaceFolder } from 'vscode-languageserver/node';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { ServerSideApi } from '../api.js';

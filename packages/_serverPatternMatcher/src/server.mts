@@ -1,8 +1,8 @@
 import { format } from 'node:util';
 
 import { consoleLog, logger, setWorkspaceBase } from '@internal/common-utils/log';
-import type { Disposable, InitializeParams, InitializeResult, ServerCapabilities } from 'vscode-languageserver/node.js';
-import { createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node.js';
+import type { Disposable, InitializeParams, InitializeResult, ServerCapabilities } from 'vscode-languageserver/node';
+import { createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
