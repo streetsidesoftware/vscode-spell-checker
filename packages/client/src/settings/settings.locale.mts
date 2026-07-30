@@ -119,7 +119,7 @@ function calcInheritedDefault<K extends keyof CSpellUserSettings>(
         value ??= v[key];
         if (t === target) break;
     }
-    return value as undefined /* TypeScript bug workaround */;
+    return value as undefined; /* TypeScript bug workaround */
 }
 
 export const __testing__: {
