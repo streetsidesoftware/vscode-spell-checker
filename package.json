@@ -4650,7 +4650,7 @@
     "globals": "^17.9.0",
     "inject-markdown": "^4.0.0",
     "jest-mock-vscode": "^4.12.0",
-    "ovsx": "^1.1.0",
+    "ovsx": "^1.1.1",
     "patch-package": "^8.0.1",
     "prettier": "^3.9.6",
     "prettier-plugin-svelte": "^4.1.1",
