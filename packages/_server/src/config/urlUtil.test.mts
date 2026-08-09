@@ -58,10 +58,10 @@ describe('urlUtil', () => {
     });
 
     test.each`
-        uri                                                   | expected
-        ${'http://example.com/files'}                         | ${'http://example.com/'}
-        ${'output:my_output'}                                 | ${'output:/'}
-        ${'_custom_readonly:/temp/readonly/Some File (abc)'}  | ${undefined}
+        uri                                                  | expected
+        ${'http://example.com/files'}                        | ${'http://example.com/'}
+        ${'output:my_output'}                                | ${'output:/'}
+        ${'_custom_readonly:/temp/readonly/Some File (abc)'} | ${undefined}
     `('tryToPathURL $uri', ({ uri, expected }) => {
         const r = tryToPathURL(uri);
         expect(r?.href).toBe(expected);
