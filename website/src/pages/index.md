@@ -17,6 +17,8 @@ permalink: /
 
 ---
 
+---
+
 <!--- @@inject: ../../../README.md --->
 
 # Spelling Checker for Visual Studio Code
