@@ -122,4 +122,5 @@ webm
 webpack'ed
 webview
 webviews
+WHATWG
 yandex
