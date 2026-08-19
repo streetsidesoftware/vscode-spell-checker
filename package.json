@@ -4636,7 +4636,7 @@
     "@types/node": "^22.20.1",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~4.1.10",
+    "@vitest/coverage-istanbul": "~4.1.11",
     "@vscode/vsce": "^3.9.2",
     "ansi-styles": "^7.0.0",
     "chokidar-cli": "^3.0.0",
@@ -4662,12 +4662,12 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.67.0",
     "vite": "^8.2.1",
-    "vitest": "~4.1.10"
+    "vitest": "~4.1.11"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.0.1",
     "@cspell/cspell-types": "^10.0.1",
-    "@cspell/dict-cspell-bundle": "^2.0.66",
+    "@cspell/dict-cspell-bundle": "^2.0.68",
     "regexp-worker": "^4.3.0"
   },
   "overrides": {
