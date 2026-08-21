@@ -4654,14 +4654,14 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.9.6",
     "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.62.4",
+    "rollup": "^4.62.5",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
     "tsdown": "^0.22.14",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.67.0",
-    "vite": "^8.2.1",
+    "vite": "^8.2.2",
     "vitest": "~4.1.11"
   },
   "dependencies": {
