@@ -23,6 +23,8 @@ id: extensions
 
 ---
 
+---
+
 <!--- cspell:disable --->
 
 <!--- @@inject: https://github.com/streetsidesoftware/vscode-cspell-dict-extensions/blob/main/static/generated/marketplace_language_extensions.md --->

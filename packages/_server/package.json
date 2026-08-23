@@ -31,15 +31,15 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-pipe": "^10.0.1",
-    "@cspell/cspell-types": "^10.0.1",
-    "@cspell/url": "^10.0.1",
+    "@cspell/cspell-pipe": "^10.1.0",
+    "@cspell/cspell-types": "^10.1.0",
+    "@cspell/url": "^10.1.0",
     "@internal/common-utils": "file:../__utils",
-    "cspell-config-lib": "^10.0.1",
-    "cspell-gitignore": "^10.0.1",
-    "cspell-glob": "^10.0.1",
-    "cspell-io": "^10.0.1",
-    "cspell-lib": "^10.0.1",
+    "cspell-config-lib": "^10.1.0",
+    "cspell-gitignore": "^10.1.0",
+    "cspell-glob": "^10.1.0",
+    "cspell-io": "^10.1.0",
+    "cspell-lib": "^10.1.0",
     "gensequence": "^8.0.8",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
@@ -53,7 +53,7 @@
     "vscode-uri": "^3.1.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.0.1"
+    "@cspell/cspell-bundled-dicts": "^10.1.0"
   },
   "scripts": {
     "build": "tsdown && npm run build:tsc && npm run build-schema",
