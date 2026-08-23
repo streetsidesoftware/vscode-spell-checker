@@ -4641,7 +4641,7 @@
     "ansi-styles": "^7.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
-    "cspell": "^10.0.1",
+    "cspell": "^10.1.0",
     "esbuild": "^0.28.2",
     "eslint": "~10.8.1",
     "eslint-plugin-n": "^18.3.0",
@@ -4649,7 +4649,7 @@
     "eslint-plugin-unicorn": "^73.0.0",
     "globals": "^17.11.0",
     "inject-markdown": "^4.0.0",
-    "jest-mock-vscode": "^4.12.0",
+    "jest-mock-vscode": "^4.13.0",
     "ovsx": "^1.1.1",
     "patch-package": "^8.0.1",
     "prettier": "^3.9.6",
@@ -4665,8 +4665,8 @@
     "vitest": "~4.1.11"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.0.1",
-    "@cspell/cspell-types": "^10.0.1",
+    "@cspell/cspell-bundled-dicts": "^10.1.0",
+    "@cspell/cspell-types": "^10.1.0",
     "@cspell/dict-cspell-bundle": "^2.0.68",
     "regexp-worker": "^4.3.0"
   },
