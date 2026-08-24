@@ -1,6 +1,6 @@
 import type { Disposable, ExtensionContext, TextDocument } from 'vscode';
-import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node.js';
-import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
+import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
+import { LanguageClient, TransportKind } from 'vscode-languageclient/node';
 
 import { logErrors } from '../util/errors.js';
 import type { MatchPatternsToDocumentResult, NamedPattern, PatternMatcherServerApi, PatternSettings } from './server/index.mjs';

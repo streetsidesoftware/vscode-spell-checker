@@ -6,7 +6,7 @@ import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import { createMockServerSideApi } from '../test/test.api.js';
@@ -180,6 +180,23 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.parse(import.meta.url).toString() });
         expect(settings.enabled).toBeUndefined();
         expect(settings.language).toBe('en-gb');
+    });
+
+    test('getSettings does not crash on a non-standard URI scheme', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([cspellConfigInVsCode, {}]));
+        const docSettings = newDocumentSettings();
+        const configFile = Path.join(pathSampleSourceFiles, 'cspell-ext.json');
+        await docSettings.registerConfigurationFile(configFile);
+
+        // `_custom_readonly:` starts with `_`, which is not a valid WHATWG URL scheme. Before the
+        // fix `new URL()` threw `ERR_INVALID_URL`, settings resolution fell into the error path,
+        // and the document got the empty fallback settings (where `language` is undefined).
+        const badUri = '_custom_readonly:/temp/readonly/Some File (abc123)';
+        const settings = await docSettings.getSettings({ uri: badUri });
+        // Settings are fully resolved rather than the empty error fallback.
+        expect(settings.language).toBeDefined();
     });
 
     test('test getSettings workspaceRootPath', async () => {

@@ -1,5 +1,5 @@
 import { log } from '@internal/common-utils/log';
-import type { ConfigurationItem, Connection } from 'vscode-languageserver/node.js';
+import type { ConfigurationItem, Connection } from 'vscode-languageserver/node';
 
 import { isDefined } from '../utils/index.mjs';
 

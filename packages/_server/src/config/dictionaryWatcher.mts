@@ -1,5 +1,5 @@
 import type { CSpellUserSettings } from '@cspell/cspell-types';
-import type { Disposable } from 'vscode-languageserver/node.js';
+import type { Disposable } from 'vscode-languageserver/node';
 
 import { FileWatcher } from '../utils/fileWatcher.mjs';
 

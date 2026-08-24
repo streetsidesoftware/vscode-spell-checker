@@ -35,7 +35,7 @@ jobs:
       validVersion: ${{ steps.version.outputs.validVersion }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref }}
 
@@ -81,7 +81,7 @@ jobs:
     if: ${{ needs.check_version.outputs.validVersion == 'true' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref }}
 

@@ -1,4 +1,4 @@
-import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { WorkspaceFolder } from 'vscode-languageserver/node';
 
 const endUrlOfPath: Record<string, boolean | undefined> = {
     '/': true,

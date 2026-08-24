@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
