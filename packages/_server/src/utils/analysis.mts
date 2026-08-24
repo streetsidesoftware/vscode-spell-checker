@@ -120,7 +120,7 @@ const vsCodeSystemFilesRegExp = /^vscode-userdata:\/.*\/(?:settings|keybindings)
 const BlockedFileReasonSystemFile: BlockedFileReason = {
     code: 'VSCode_System_File',
     message: 'VS Code System File',
-    notificationMessage: '',
+    notificationMessage: '', // kept empty because we do not want to show a notification for this reason.
     settingsUri: 'vscode://settings/cSpell.checkVSCodeSystemFiles',
     settingsID: 'cSpell.checkVSCodeSystemFiles',
     documentationRefUri: 'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/performance/#cspellcheckvscodesystemfiles',
@@ -132,3 +132,13 @@ export function shouldBlockDocumentCheck(document: ShouldValidateDocument, optio
     if (options.checkVSCodeSystemFiles) return false;
     return vsCodeSystemFilesRegExp.test(uri) ? BlockedFileReasonSystemFile : false;
 }
+
+export const ReasonSchemeNotEnabled: BlockedFileReason = {
+    code: 'Scheme Not Enabled',
+    message: 'The document scheme is not enabled for spell checking.',
+    notificationMessage: '', // kept empty because we do not want to show a notification for this reason.
+    settingsUri: 'vscode://settings/cSpell.enabledSchemes',
+    settingsID: 'cSpell.enabledSchemes',
+    documentationRefUri:
+        'https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/files-folders-and-workspaces#cspellenabledschemes',
+};

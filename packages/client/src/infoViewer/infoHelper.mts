@@ -72,11 +72,7 @@ export async function calcSettings(
         activeFolderUri: activeFolderUri?.toString(),
     };
 
-    // console.log('settings: %o', {
-    //     ...pickFields(settings, ['activeFileUri', 'activeFolderUri']),
-    //     ...pickFields(settings.configs.file, ['fileName', 'name', 'isUntitled', 'languageIdEnabled']),
-    //     ...pickFields(docConfig.docSettings, ['enabledFileTypes']),
-    // });
+    // console.log('settings: %o', { language: docConfig.settings?.language, enabledFileTypes: docConfig.settings?.enabledFileTypes });
     return settings;
 }
 
@@ -186,6 +182,7 @@ function extractFileConfig(
         excludedBy,
         uriUsed,
         workspaceFolderUri,
+        schemeIsAllowed = false,
     } = docConfig;
     const enabledDicts: Set<string> = new Set((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
@@ -231,6 +228,7 @@ function extractFileConfig(
         gitignoreInfo: extractGitignoreInfo(),
         blockedReason: docConfig.blockedReason,
         workspaceFolder: folderInfo(folder),
+        schemeIsAllowed,
     };
     return cfg;
 }

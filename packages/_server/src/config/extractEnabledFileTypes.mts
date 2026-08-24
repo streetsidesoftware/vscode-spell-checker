@@ -13,12 +13,16 @@ const schemeBlockList: EnabledSchemes = {
 export const schemeWildcard = '*';
 
 const defaultAllowedSchemes: EnabledSchemes = {
+    chatSessionInput: true,
+    comment: true,
     gist: true,
     repo: true,
     file: true,
     sftp: true,
     untitled: true,
     'vscode-notebook-cell': true,
+    'vscode-scm': true,
+    'vscode-userdata': true,
     'vscode-vfs': true, // Visual Studio Remote File System
     vsls: true, // Visual Studio Live Share
     ...schemeBlockList,
@@ -36,6 +40,12 @@ function reduceExtractEnabledSchemes(schemes: EnabledSchemes, settings: CSpellUs
     }
 
     return schemes;
+}
+
+export function getDefaultEnabledSchemesSettings(): CSpellUserAndExtensionSettings {
+    return {
+        enabledSchemes: defaultAllowedSchemes,
+    };
 }
 
 export function extractEnabledSchemes(...settings: CSpellUserAndExtensionSettings[]): EnabledSchemes {
@@ -68,7 +78,7 @@ export function applyEnabledSchemes(
     settings: CSpellUserAndExtensionSettings,
     enabledSchemes: EnabledSchemes = {},
 ): CSpellUserAndExtensionSettings {
-    enabledSchemes = extractEnabledSchemes(settings, enabledSchemes);
+    enabledSchemes = extractEnabledSchemes(settings, { enabledSchemes });
     const { allowedSchemas: _, ...rest } = settings;
     return { ...rest, enabledSchemes };
 }

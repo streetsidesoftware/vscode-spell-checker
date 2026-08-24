@@ -1,35 +1,6 @@
 import { toFileURL } from '@cspell/url';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-export const supportedSchemes = [
-    'file',
-    'gist',
-    'repo',
-    'sftp',
-    'untitled',
-    'vscode-notebook-cell',
-    'vscode-scm',
-    'vscode-userdata',
-    'comment',
-];
-export const setOfSupportedSchemes = new Set(supportedSchemes);
-
-/** Wildcard scheme - matches any scheme without an explicit entry. */
-export const schemeWildcard = '*';
-
-export function isSupportedUri(uri?: Uri): boolean {
-    return !!uri && (setOfSupportedSchemes.has(uri.scheme) || setOfSupportedSchemes.has(schemeWildcard));
-}
-
-interface TextDocumentLike {
-    isClosed: boolean;
-    uri: Uri;
-}
-
-export function isSupportedDoc(doc?: TextDocumentLike): boolean {
-    return !!doc && !doc.isClosed && isSupportedUri(doc.uri);
-}
-
 const regExpIsUri = /^[\w._-]{2,}:/;
 
 export function toUri(uri: string | Uri | URL): Uri;

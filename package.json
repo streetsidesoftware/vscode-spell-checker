@@ -2411,6 +2411,7 @@
               "type": "boolean"
             },
             "default": {
+              "chatSessionInput": true,
               "comment": true,
               "file": true,
               "gist": true,
@@ -3676,6 +3677,8 @@
               "type": "boolean"
             },
             "default": {
+              "chatSessionInput": true,
+              "comment": true,
               "vscode-scm": true
             },
             "markdownDescription": "Use the VS Code Diagnostic Collection to render spelling issues.\n\nWith some edit boxes, like the source control message box, the custom decorations do not show up.\nThis setting allows the use of the VS Code Diagnostic Collection to render spelling issues.",

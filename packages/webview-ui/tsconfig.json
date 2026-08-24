@@ -4,8 +4,8 @@
         "noEmit": true,
         "sourceMap": true,
         "strict": true,
-        "target": "ES2021",
-        "lib": ["ES2021", "DOM"],
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM"],
         "rootDir": "src",
         "outDir": "out"
     },

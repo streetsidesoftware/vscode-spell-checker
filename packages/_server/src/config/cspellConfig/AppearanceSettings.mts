@@ -217,7 +217,7 @@ export interface AppearanceSettings extends Appearance {
      * @title Use VS Code to Render Spelling Issues
      * @scope application
      * @sinceVersion 4.0.0
-     * @default { "vscode-scm": true }
+     * @default { "vscode-scm": true, "chatSessionInput": true, "comment": true }
      */
     doNotUseCustomDecorationForScheme?: Record<string, boolean>;
 }

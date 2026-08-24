@@ -3,29 +3,11 @@ import { pathToFileURL } from 'url';
 import { describe, expect, test } from 'vitest';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper.js';
+import { cleanUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper.js';
 
 const uri = Uri.parse(import.meta.url);
 
 describe('Validate uriHelper', () => {
-    test.each`
-        doc                         | expected
-        ${undefined}                | ${false}
-        ${{ isClosed: false, uri }} | ${true}
-        ${{ isClosed: true, uri }}  | ${false}
-    `('isSupportedDoc $doc', ({ doc, expected }) => {
-        expect(isSupportedDoc(doc)).toBe(expected);
-    });
-
-    test.each`
-        uri                                              | expected
-        ${undefined}                                     | ${false}
-        ${uri}                                           | ${true}
-        ${Uri.parse('http://www.streetsidesoftware.nl')} | ${false}
-    `('isSupportedUri $uri', ({ uri, expected }) => {
-        expect(isSupportedUri(uri)).toBe(expected);
-    });
-
     test.each`
         uri                                              | expected
         ${uri}                                           | ${uri}

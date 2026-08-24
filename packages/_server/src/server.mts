@@ -55,7 +55,12 @@ import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
 import { handleTraceRequest } from './trace.js';
 import type { ShouldValidateDocument } from './utils/analysis.mjs';
-import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified, shouldBlockDocumentCheck } from './utils/analysis.mjs';
+import {
+    defaultIsTextLikelyMinifiedOptions,
+    isTextLikelyMinified,
+    ReasonSchemeNotEnabled,
+    shouldBlockDocumentCheck,
+} from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
@@ -596,7 +601,7 @@ export function run(): void {
             schemeIsAllowed = undefined,
             schemeIsKnown = undefined,
         } = uri ? await calcFileIncludeExclude(uri) : {};
-        const blockedReason = uri ? blockedFiles.get(uri) : undefined;
+        const blockedReason = (uri ? blockedFiles.get(uri) : undefined) ?? ((!schemeIsAllowed && ReasonSchemeNotEnabled) || undefined);
         const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored && !blockedReason;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
         const workspaceFolder = (uriUsed && (await documentSettings.matchingFoldersForUri(uriUsed))[0]) || undefined;
@@ -614,7 +619,7 @@ export function run(): void {
             languageId,
             gitignored,
             gitignoreInfo,
-            blockedReason: uri ? blockedFiles.get(uri) : undefined,
+            blockedReason,
             schemeIsAllowed,
             schemeIsKnown,
         };
