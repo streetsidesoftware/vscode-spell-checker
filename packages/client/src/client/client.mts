@@ -1,5 +1,4 @@
 import { logger } from '@internal/common-utils/log';
-import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper';
 import type {
     ConfigFieldSelector,
     ConfigurationFields,
@@ -88,14 +87,11 @@ export class CSpellClient implements Disposable {
             enabledLanguageIds: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledLanguageIds, Settings.Scopes.Workspace),
             enableFiletypes: Settings.getScopedSettingFromVSConfig(ConfigFields.enableFiletypes, Settings.Scopes.Workspace),
             enabledFileTypes: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledFileTypes, Settings.Scopes.Workspace),
-            allowedSchemas:
-                Settings.getScopedSettingFromVSConfig(ConfigFields.allowedSchemas, Settings.Scopes.Workspace) || supportedSchemes,
+            allowedSchemas: Settings.getScopedSettingFromVSConfig(ConfigFields.allowedSchemas, Settings.Scopes.Workspace),
             enabledSchemes: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledSchemes, Settings.Scopes.Workspace),
         };
 
         this.allowedSchemas = new Set(extractEnabledSchemeList(settings));
-        setOfSupportedSchemes.clear();
-        this.allowedSchemas.forEach((schema) => setOfSupportedSchemes.add(schema));
 
         this.languageIds = new Set([...languageIds, ...LanguageIds.languageIds, ...extractKnownFileTypeIds(settings)]);
 

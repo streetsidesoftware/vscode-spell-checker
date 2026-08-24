@@ -13,6 +13,7 @@ const schemeBlockList: EnabledSchemes = {
 export const schemeWildcard = '*';
 
 const defaultAllowedSchemes: EnabledSchemes = {
+    comment: true,
     gist: true,
     repo: true,
     file: true,
@@ -20,6 +21,8 @@ const defaultAllowedSchemes: EnabledSchemes = {
     untitled: true,
     'vscode-notebook-cell': true,
     'vscode-vfs': true, // Visual Studio Remote File System
+    'vscode-scm': true,
+    'vscode-userdata': true,
     vsls: true, // Visual Studio Live Share
     ...schemeBlockList,
 } as const;
