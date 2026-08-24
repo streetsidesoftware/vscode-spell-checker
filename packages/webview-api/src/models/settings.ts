@@ -92,6 +92,8 @@ export interface IsSpellCheckEnabledResult {
     excludedBy?: ExcludeRef[] | undefined;
     gitignoreInfo: GitignoreInfo | undefined;
     blockedReason: BlockedFileReason | undefined;
+    /** Indicate that the scheme is known and checked. */
+    schemeIsAllowed: boolean;
 }
 
 export interface ConfigFile {

@@ -48,6 +48,7 @@
     const fileIsIncluded = fileConfig?.fileIsIncluded;
     const fileIsExcluded = fileConfig?.fileIsExcluded;
     const gitIgnore = fileConfig?.gitignoreInfo;
+    const schemeIsAllowed = fileConfig?.schemeIsAllowed ?? true;
 
     info.push(
       { key: 'Name', value: name },

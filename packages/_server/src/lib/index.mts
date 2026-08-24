@@ -5,6 +5,7 @@ export {
     extractEnabledSchemeList,
     extractEnabledSchemes,
     extractKnownFileTypeIds,
+    getDefaultEnabledSchemesSettings,
     isSchemeEnabled,
     schemeWildcard,
 } from '../config/extractEnabledFileTypes.mjs';

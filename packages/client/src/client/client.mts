@@ -8,7 +8,12 @@ import type {
     SpellingSuggestionsResult,
     WorkspaceConfigForDocument,
 } from 'code-spell-checker-server/api';
-import { extractEnabledSchemeList, extractKnownFileTypeIds, schemeWildcard } from 'code-spell-checker-server/lib';
+import {
+    extractEnabledSchemeList,
+    extractKnownFileTypeIds,
+    getDefaultEnabledSchemesSettings,
+    schemeWildcard,
+} from 'code-spell-checker-server/lib';
 import { createDisposableList, type DisposableHybrid, makeDisposable } from 'utils-disposables';
 import type { CodeAction, Diagnostic, DiagnosticCollection, Disposable, ExtensionContext, Range, TextDocument } from 'vscode';
 import { EventEmitter, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
@@ -91,7 +96,7 @@ export class CSpellClient implements Disposable {
             enabledSchemes: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledSchemes, Settings.Scopes.Workspace),
         };
 
-        this.allowedSchemas = new Set(extractEnabledSchemeList(settings));
+        this.allowedSchemas = new Set(extractEnabledSchemeList(getDefaultEnabledSchemesSettings(), settings));
 
         this.languageIds = new Set([...languageIds, ...LanguageIds.languageIds, ...extractKnownFileTypeIds(settings)]);
 

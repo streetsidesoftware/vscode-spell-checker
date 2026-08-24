@@ -44,10 +44,21 @@ export interface FileTypesAndSchemeSettings {
      *
      * @title Specify Allowed Schemes
      * @scope window
-     * @default { "file": true, "gist": true, "repo": true, "sftp": true, "untitled": true,
-     *      "vscode-notebook-cell": true, "vscode-scm": true, "comment": true,
-     *      "vscode-userdata": true, "vscode-vfs": true, "vsls": true
+     * @default {
+     *      "chatSessionInput": true,
+     *      "comment": true,
+     *      "file": true,
+     *      "gist": true,
+     *      "repo": true,
+     *      "sftp": true,
+     *      "untitled": true,
+     *      "vscode-notebook-cell": true,
+     *      "vscode-scm": true,
+     *      "vscode-userdata": true,
+     *      "vscode-vfs": true,
+     *      "vsls": true
      *  }
+     *
      */
     enabledSchemes?: EnabledSchemes;
 
