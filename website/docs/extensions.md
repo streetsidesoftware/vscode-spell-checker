@@ -3,31 +3,7 @@ title: Dictionary Extensions
 id: extensions
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
+# Extensions
 
 <!--- cspell:disable --->
 
