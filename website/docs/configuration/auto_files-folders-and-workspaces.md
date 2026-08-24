@@ -280,9 +280,9 @@ Default
 
 ```json5
 {
-"comment": true, "file": true, "gist": true, "repo": true, "sftp": true,
-"untitled": true, "vscode-notebook-cell": true, "vscode-scm": true,
-"vscode-userdata": true, "vscode-vfs": true, "vsls": true
+"chatSessionInput": true, "comment": true, "file": true, "gist": true, "repo":
+true, "sftp": true, "untitled": true, "vscode-notebook-cell": true,
+"vscode-scm": true, "vscode-userdata": true, "vscode-vfs": true, "vsls": true
 }
 ```
 

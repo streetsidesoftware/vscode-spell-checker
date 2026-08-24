@@ -145,7 +145,7 @@ Default
 </dt>
 <dd>
 
-_`{"vscode-scm":true}`_
+_`{"chatSessionInput":true,"comment":true,"vscode-scm":true}`_
 
 </dd>
 
