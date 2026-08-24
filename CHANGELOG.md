@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.6.0...code-spell-checker-v4.7.0) (2026-08-24)
+
+
+### Features
+
+* Support `*` wildcard in `cSpell.enabledSchemes` ([#5325](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5325)) ([d7ac11d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d7ac11d2547102f5db1ec3b99ce1e8bcfc37d47b))
+* update CSpell and [@cspell](https://github.com/cspell) dependencies to 10.0.1 ([#5357](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5357)) ([1f6ea10](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1f6ea10dce0252739061f92aebbbb52082a74c12))
+* Update CSpell from `10.0.1` to `10.1.0` and other dependencies ([4ff64bf](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4ff64bff82a06f01afdfdeb2792b87e13210e261))
+* Update CSpell from `9.7.0` to `9.8.0` and other dependencies ([7aa3239](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7aa3239045e76a4eaf2895182994fbe1e427a764))
+
+
+### Updates and Bug Fixes
+
+* Improve reporting when a scheme has prevented a file being checked. ([#5402](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5402)) ([e4ce9fe](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e4ce9fecd37a5c2247ee7926f4e123831c70f945))
+* **server:** handle non-standard URI schemes without crashing ([#5316](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5316)) ([77c7d55](https://github.com/streetsidesoftware/vscode-spell-checker/commit/77c7d5507e6fa77f4a5a32a4019176e2f9c6c9c0))
+* Update CSpell from `10.0.1` to `10.0.1` and other dependencies ([cbb1435](https://github.com/streetsidesoftware/vscode-spell-checker/commit/cbb1435539675eec4fe52f1795c5038f235df6b3))
+* Update CSpell from `10.0.1` to `10.0.1` and other dependencies ([12cc1b5](https://github.com/streetsidesoftware/vscode-spell-checker/commit/12cc1b5b1e47c93f1639ebf807fd22d31681d797))
+* Update CSpell from `10.1.0` to `10.1.0` and other dependencies ([fcd47c7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fcd47c7b921b16cf74f7bc2aea7e87c6beadfc24))
+* Update CSpell from `9.7.0` to `9.7.0` and other dependencies ([e5b320e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e5b320ef8efffa4dcb4b15dce5e4693edc83cebf))
+* Update CSpell from `9.7.0` to `9.7.0` and other dependencies ([f8612d0](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f8612d024f69b023f4d7748f5b28f9c2368a097d))
+* Update CSpell from `9.7.0` to `9.7.0` and other dependencies ([be9e957](https://github.com/streetsidesoftware/vscode-spell-checker/commit/be9e957b0b845d0e3809b1de74c89b0ba9a55942))
+* Update CSpell from `9.7.0` to `9.7.0` and other dependencies ([09aa324](https://github.com/streetsidesoftware/vscode-spell-checker/commit/09aa324ce5de8b5713a32b7ac6579a28d67b437c))
+* Update CSpell from `9.8.0` to `9.8.0` and other dependencies ([1242d70](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1242d708265875052d753efe5cb477dbc9253e8e))
+* Use the locally installed bundled dictionaries ([#5138](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5138)) ([f22744d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f22744d27b76a698adefa5b3ee050392a126cde3))
+
+
+### Code Refactoring
+
+* clean up dictionary search ([#5148](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5148)) ([89618d8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/89618d8cb59aee513c3cce34448b38ae9b4a4ec7))
+
 ## [4.6.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.5.6...code-spell-checker-v4.6.0) (2026-02-24)
 
 
