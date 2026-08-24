@@ -1,26 +1,31 @@
 # To get started with Dependabot version updates, you'll need to specify which
 # package ecosystems to update and where the package manifests are located.
 # Please see the documentation for all configuration options:
-# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates
+# https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
 
 version: 2
 updates:
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/' # Location of package manifests
+    versioning-strategy: increase
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     groups:
       production-dependencies:
         dependency-type: 'production'
+        update-types:
+          - minor
+          - patch
       development-dependencies:
         dependency-type: 'development'
-    ignore:
+        update-types:
+          - minor
+          - patch
+    allow:
       - dependency-name: '@types/node'
-        # Node types are tied to the node version used by VSCode
-        update-types: ['version-update:semver-major']
-      - dependency-name: '@types/node'
-        # Node types are tied to the node version used by VSCode
-        versions: ['^20.0.0']
+        update-types:
+          - version-update:semver-patch
+          - version-update:semver-minor
 
   - package-ecosystem: 'github-actions'
     # Workflow files stored in the
@@ -30,3 +35,12 @@ updates:
       - '/.github/actions/*'
     schedule:
       interval: 'daily'
+    commit-message:
+      prefix: chore
+    groups:
+      action-dependencies-version:
+        patterns: ['*']
+        applies-to: 'version-updates'
+      action-dependencies-security:
+        patterns: ['*']
+        applies-to: 'security-updates'
