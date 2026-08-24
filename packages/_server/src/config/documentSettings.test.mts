@@ -119,6 +119,35 @@ describe('Validate DocumentSettings', () => {
         expect(isUriBlockedBySettings(uriGit.toString(), {})).toBe(true);
     });
 
+    test.each`
+        scheme          | settings                                           | expected
+        ${'file'}       | ${{}}                                              | ${true}
+        ${'memfs'}      | ${{}}                                              | ${false}
+        ${'memfs'}      | ${{ enabledSchemes: { memfs: true } }}             | ${true}
+        ${'memfs'}      | ${{ enabledSchemes: { '*': true } }}               | ${true}
+        ${'memfs'}      | ${{ enabledSchemes: { '*': true, memfs: false } }} | ${false}
+        ${'output'}     | ${{ enabledSchemes: { '*': true } }}               | ${false}
+        ${'debug'}      | ${{ enabledSchemes: { '*': true } }}               | ${false}
+        ${'git'}        | ${{ enabledSchemes: { '*': true } }}               | ${false}
+        ${'file'}       | ${{ enabledSchemes: { '*': false } }}              | ${true}
+        ${'vscode-vfs'} | ${{}}                                              | ${true}
+    `('isUriAllowedBySettings scheme: $scheme settings: $settings', ({ scheme, settings, expected }) => {
+        const uri = Uri.parse(import.meta.url).with({ scheme });
+        expect(isUriAllowedBySettings(uri.toString(), settings)).toBe(expected);
+    });
+
+    test.each`
+        scheme     | settings                              | expected
+        ${'file'}  | ${{}}                                 | ${false}
+        ${'memfs'} | ${{}}                                 | ${false}
+        ${'memfs'} | ${{ enabledSchemes: { '*': false } }} | ${true}
+        ${'memfs'} | ${{ enabledSchemes: { '*': true } }}  | ${false}
+        ${'git'}   | ${{ enabledSchemes: { '*': true } }}  | ${true}
+    `('isUriBlockedBySettings scheme: $scheme settings: $settings', ({ scheme, settings, expected }) => {
+        const uri = Uri.parse(import.meta.url).with({ scheme });
+        expect(isUriBlockedBySettings(uri.toString(), settings)).toBe(expected);
+    });
+
     test('folders', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));

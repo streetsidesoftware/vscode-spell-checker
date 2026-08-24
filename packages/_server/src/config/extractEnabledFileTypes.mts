@@ -7,6 +7,11 @@ const schemeBlockList: EnabledSchemes = {
     debug: false, // blocked by default - debug console
 } as const;
 
+/**
+ * Wildcard scheme used to match any scheme that does not have an explicit entry.
+ */
+export const schemeWildcard = '*';
+
 const defaultAllowedSchemes: EnabledSchemes = {
     gist: true,
     repo: true,
@@ -46,6 +51,17 @@ export function extractEnabledSchemeList(...settings: CSpellUserAndExtensionSett
     return Object.entries(schemes)
         .filter(([, enabled]) => enabled)
         .map(([schema]) => schema);
+}
+
+/**
+ * Determine if a scheme is enabled. If the scheme does not have an explicit entry,
+ * the wildcard entry `*` is used if present.
+ * @param scheme - the uri scheme to look up.
+ * @param schemes - map of schemes to enabled/disabled.
+ * @returns true/false if known or matched by the wildcard, otherwise undefined.
+ */
+export function isSchemeEnabled(scheme: string, schemes: EnabledSchemes): boolean | undefined {
+    return schemes[scheme] ?? schemes[schemeWildcard];
 }
 
 export function applyEnabledSchemes(
