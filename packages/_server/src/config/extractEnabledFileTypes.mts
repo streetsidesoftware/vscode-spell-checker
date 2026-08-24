@@ -71,7 +71,7 @@ export function applyEnabledSchemes(
     settings: CSpellUserAndExtensionSettings,
     enabledSchemes: EnabledSchemes = {},
 ): CSpellUserAndExtensionSettings {
-    enabledSchemes = extractEnabledSchemes(settings, enabledSchemes);
+    enabledSchemes = extractEnabledSchemes(settings, { enabledSchemes });
     const { allowedSchemas: _, ...rest } = settings;
     return { ...rest, enabledSchemes };
 }
