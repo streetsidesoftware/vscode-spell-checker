@@ -55,7 +55,8 @@
       "supported": "limited",
       "description": "JavaScript configuration files will NOT be loaded.",
       "restrictedConfigurations": [
-        "cSpell.trustedWorkspace"
+        "cSpell.trustedWorkspace",
+        "cSpell.usePnP"
       ]
     }
   },
