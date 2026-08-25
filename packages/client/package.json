@@ -64,7 +64,7 @@
     "vitest-when": "^0.10.0",
     "vscode-jsonrpc": "^9.0.1",
     "vscode-languageclient": "^10.1.0",
-    "vscode-uri": "^3.1.0",
+    "vscode-uri": "^3.2.0",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webpack-cli": "^7.2.2",
     "webpack": "^5.109.2",

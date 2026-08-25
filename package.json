@@ -4663,7 +4663,7 @@
     "tsdown": "^0.22.14",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.67.0",
+    "typescript-eslint": "^8.68.0",
     "vite": "^8.2.2",
     "vitest": "~4.1.11"
   },
