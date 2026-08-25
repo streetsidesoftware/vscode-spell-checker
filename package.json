@@ -4658,7 +4658,7 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.9.6",
     "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.62.5",
+    "rollup": "^4.63.0",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
     "tsdown": "^0.22.14",
