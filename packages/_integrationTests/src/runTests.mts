@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { downloadAndUnzipVSCode, runTests } from '@vscode/test-electron';
-import decompress from 'decompress';
+import decompress from '@xhmikosr/decompress';
 
 const __dirname = fileURLToPath(new URL('./', import.meta.url));
 const root = path.resolve(__dirname, '../../../');
