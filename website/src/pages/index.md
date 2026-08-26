@@ -379,7 +379,6 @@ Order of precedence:
 
 1. Workspace Folder `cspell.json`
 1. Workspace Folder `.vscode/cspell.json`
-1. Config Folder `.config/cspell.json`
 1. VS Code Preferences `cSpell` section.
 
 ### Adding words to the Workspace Dictionary
