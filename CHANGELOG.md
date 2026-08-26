@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.7.0...code-spell-checker-v4.7.1) (2026-08-26)
+
+
+### Updates and Bug Fixes
+
+* Add usePnP to restrictedConfigurations ([#5410](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5410)) ([b7dba7a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b7dba7a5a33487a9e980b5ff38f422f843269310))
+* Update CSpell from `10.1.0` to `10.1.1` and other dependencies ([6df4f1f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6df4f1f8edf628c17554ce922880cbecca1b45ac))
+
 ## [4.7.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.6.0...code-spell-checker-v4.7.0) (2026-08-24)
 
 
