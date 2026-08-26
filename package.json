@@ -4676,11 +4676,22 @@
     "regexp-worker": "^4.3.0"
   },
   "overrides": {
+    "mocha@11.8.0": {
+      "diff": "8.0.3"
+    },
     "mocha@11.7.5": {
       "diff": "8.0.3"
     }
   },
   "vsce": {
     "preRelease": true
+  },
+  "allowScripts": {
+    "@vscode/vsce-sign": false,
+    "core-js": false,
+    "esbuild": true,
+    "fsevents": false,
+    "keytar": false,
+    "svelte-preprocess": false
   }
 }

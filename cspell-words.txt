@@ -49,6 +49,7 @@ iife
 Interop
 issuehunt
 Jupyter
+keytar
 KotlinScript
 languageclient
 lcov
