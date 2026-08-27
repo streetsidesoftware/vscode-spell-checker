@@ -94,6 +94,14 @@ jobs:
       OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
       VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
 
+  release-notes:
+    needs:
+      - release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    uses: ./.github/workflows/release-notes.yml
+    with:
+      ref: ${{ needs.release-please.outputs.tag_name }}
+
   label:
     runs-on: ubuntu-latest
     needs:
