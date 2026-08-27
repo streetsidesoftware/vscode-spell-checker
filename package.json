@@ -4683,7 +4683,9 @@
       "diff": "8.0.3"
     }
   },
-  "vsce": {},
+  "vsce": {
+    "preRelease": true
+  },
   "allowScripts": {
     "@vscode/vsce-sign": false,
     "core-js": false,
