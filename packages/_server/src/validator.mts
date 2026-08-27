@@ -25,7 +25,7 @@ const diagSeverityMap: Map<string, DiagnosticSeverity | undefined> = new Map([
 ]);
 
 export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserAndExtensionSettings): Promise<Diagnostic[]> {
-    const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
+    const { severity, severityFlaggedWords, severityHint } = calcSeverity(textDocument.uri, options);
     const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
     const reportUnknownWords = calcReportingLevel(options.reportUnknownWords, options);
@@ -47,6 +47,8 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
             const isKnown = suggestionsEx?.some((sug) => sug.isPreferred) || false;
             const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : isKnown ? 'Misspelled' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
+            const isStrict = calcIssueReportingLevel(issue, reportUnknownWords);
+            const useSeverity = isStrict ? severity : severityHint;
 
             const data: SpellCheckerDiagnosticData = {
                 text,
@@ -54,10 +56,10 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
                 isFlagged,
                 isKnown,
                 isSuggestion: undefined, // This is a future enhancement to CSpell.
-                strict: calcIssueReportingLevel(issue, reportUnknownWords),
+                strict: isStrict,
                 suggestions: haveSuggestionsMatchCase(text, sugs),
             };
-            const diag: SpellingDiagnostic = { severity, range, message: diagMessage, source: diagSource, data };
+            const diag: SpellingDiagnostic = { severity: useSeverity, range, message: diagMessage, source: diagSource, data };
             return diag;
         })
         .filter((diag) => !!diag.severity);
@@ -109,11 +111,15 @@ type SeverityOptions = Pick<CSpellUserAndExtensionSettings, 'diagnosticLevel' | 
 interface Severity {
     severity: DiagnosticSeverity | undefined;
     severityFlaggedWords: DiagnosticSeverity | undefined;
+    severityHint: DiagnosticSeverity | undefined;
 }
 
 function calcSeverity(_docUri: string, options: SeverityOptions): Severity {
     const { diagnosticLevel = 'Information', diagnosticLevelFlaggedWords } = options;
     const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase());
     const severityFlaggedWords = diagSeverityMap.get((diagnosticLevelFlaggedWords || diagnosticLevel).toLowerCase());
-    return { severity, severityFlaggedWords };
+    // Only show hints if normal errors are being reported.
+    const severityHint = !severity ? undefined : severity === DiagnosticSeverity.Hint ? undefined : DiagnosticSeverity.Hint;
+
+    return { severity, severityFlaggedWords, severityHint };
 }
