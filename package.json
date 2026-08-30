@@ -4673,7 +4673,7 @@
     "@cspell/cspell-bundled-dicts": "^10.1.1",
     "@cspell/cspell-types": "^10.1.1",
     "@cspell/dict-cspell-bundle": "^2.0.70",
-    "regexp-worker": "^4.3.0"
+    "regexp-worker": "^5.0.1"
   },
   "overrides": {
     "mocha@11.8.0": {
