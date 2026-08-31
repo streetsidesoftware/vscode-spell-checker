@@ -4659,7 +4659,7 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.9.6",
     "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.63.0",
+    "rollup": "^4.63.1",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
     "tsdown": "^0.22.14",
@@ -4672,7 +4672,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.1.1",
     "@cspell/cspell-types": "^10.1.1",
-    "@cspell/dict-cspell-bundle": "^2.0.70",
+    "@cspell/dict-cspell-bundle": "^2.0.71",
     "regexp-worker": "^5.0.1"
   },
   "overrides": {
