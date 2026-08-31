@@ -1916,6 +1916,10 @@
                         "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
                         "type": "string"
                       },
+                      "useIntlWordSegmentation": {
+                        "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+                        "type": "boolean"
+                      },
                       "words": {
                         "items": {
                           "type": "string"
@@ -2139,6 +2143,10 @@
                   "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
                   "type": "string"
                 },
+                "useIntlWordSegmentation": {
+                  "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+                  "type": "boolean"
+                },
                 "usePnP": {
                   "default": false,
                   "markdownDescription": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading\npackages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence\nof a PnP file and load it.",
@@ -2279,6 +2287,10 @@
             ],
             "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
             "type": "string"
+          },
+          "cSpell.useIntlWordSegmentation": {
+            "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+            "type": "boolean"
           },
           "cSpell.vfs": {
             "additionalProperties": {
@@ -3544,6 +3556,10 @@
                   "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
                   "type": "string"
                 },
+                "useIntlWordSegmentation": {
+                  "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+                  "type": "boolean"
+                },
                 "words": {
                   "items": {
                     "type": "string"
@@ -4646,7 +4662,7 @@
     "ansi-styles": "^7.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
-    "cspell": "^10.1.1",
+    "cspell": "^10.2.0",
     "esbuild": "^0.28.2",
     "eslint": "~10.8.1",
     "eslint-plugin-n": "^18.3.0",
@@ -4670,8 +4686,8 @@
     "vitest": "~4.1.11"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.1.1",
-    "@cspell/cspell-types": "^10.1.1",
+    "@cspell/cspell-bundled-dicts": "^10.2.0",
+    "@cspell/cspell-types": "^10.2.0",
     "@cspell/dict-cspell-bundle": "^2.0.71",
     "regexp-worker": "^5.0.1"
   },
