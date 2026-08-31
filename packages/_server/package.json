@@ -49,7 +49,7 @@
     "utils-logger": "file:../utils-logger",
     "vscode-languageserver-textdocument": "^1.0.14",
     "vscode-languageserver-types": "^3.18.3",
-    "vscode-languageserver": "^10.1.0",
+    "vscode-languageserver": "^10.1.1",
     "vscode-uri": "^3.2.0"
   },
   "dependencies": {
