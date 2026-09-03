@@ -1195,7 +1195,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
+                  "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```\n\nCase Sensitivity:\n\nA word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry.\nIn practice this means:\n- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the\n  document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.\n- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —\n  `avocado` and `AVOCADO` are not flagged.",
                   "type": "array"
                 },
                 "id": {
@@ -1598,7 +1598,7 @@
                         "items": {
                           "type": "string"
                         },
-                        "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
+                        "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```\n\nCase Sensitivity:\n\nA word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry.\nIn practice this means:\n- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the\n  document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.\n- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —\n  `avocado` and `AVOCADO` are not flagged.",
                         "type": "array"
                       },
                       "id": {
@@ -2980,7 +2980,7 @@
             "items": {
               "type": "string"
             },
-            "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
+            "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```\n\nCase Sensitivity:\n\nA word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry.\nIn practice this means:\n- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the\n  document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.\n- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —\n  `avocado` and `AVOCADO` are not flagged.",
             "scope": "resource",
             "type": "array"
           },
@@ -3238,7 +3238,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
+                  "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```\n\nCase Sensitivity:\n\nA word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry.\nIn practice this means:\n- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the\n  document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.\n- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —\n  `avocado` and `AVOCADO` are not flagged.",
                   "type": "array"
                 },
                 "id": {
@@ -4662,7 +4662,7 @@
     "ansi-styles": "^7.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
-    "cspell": "^10.2.0",
+    "cspell": "^10.2.1",
     "esbuild": "^0.28.2",
     "eslint": "~10.8.1",
     "eslint-plugin-n": "^18.3.0",
@@ -4686,9 +4686,9 @@
     "vitest": "~4.1.11"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.2.0",
-    "@cspell/cspell-types": "^10.2.0",
-    "@cspell/dict-cspell-bundle": "^2.0.71",
+    "@cspell/cspell-bundled-dicts": "^10.2.1",
+    "@cspell/cspell-types": "^10.2.1",
+    "@cspell/dict-cspell-bundle": "^2.0.72",
     "regexp-worker": "^5.0.1"
   },
   "overrides": {
