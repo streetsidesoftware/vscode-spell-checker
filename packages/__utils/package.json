@@ -46,7 +46,7 @@
     "watch": "tsc -p . --watch"
   },
   "dependencies": {
-    "@cspell/url": "^10.2.0",
+    "@cspell/url": "^10.2.1",
     "vscode-uri": "^3.2.0"
   },
   "engines": {
