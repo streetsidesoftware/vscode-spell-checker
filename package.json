@@ -4664,7 +4664,7 @@
     "concurrently": "^10.0.5",
     "cspell": "^10.2.1",
     "esbuild": "^0.28.2",
-    "eslint": "~10.8.1",
+    "eslint": "~10.9.1",
     "eslint-plugin-n": "^18.3.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^73.0.0",
