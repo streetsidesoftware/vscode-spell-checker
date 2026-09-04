@@ -67,7 +67,7 @@
     "vscode-uri": "^3.2.0",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webpack-cli": "^7.2.3",
-    "webpack": "^5.110.1",
+    "webpack": "^5.110.2",
     "webview-api": "file:../webview-api",
     "webview-ui": "file:../webview-ui",
     "yaml": "^2.9.0",
