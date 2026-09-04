@@ -23,6 +23,7 @@ Settings related to CSpell Command Line Tool.
 | [`cSpell.substitutionDefinitions`](#cspellsubstitutiondefinitions) |  | The set of available substitutions. This is a collection of substitution definitions that can… |
 | [`cSpell.substitutions`](#cspellsubstitutions) |  | The set of substitutions to apply to a document before spell checking. |
 | [`cSpell.unknownWords`](#cspellunknownwords) |  | Controls how unknown words are handled. |
+| [`cSpell.useIntlWordSegmentation`](#cspelluseintlwordsegmentation) |  | Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese,… |
 | [`cSpell.vfs`](#cspellvfs) |  | Files to add to the CSpell Virtual File System. |
 
 
@@ -735,6 +736,70 @@ CSpell Version
 <dd>
 
 9.1.0
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.useIntlWordSegmentation`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.useIntlWordSegmentation`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
+The locale used for the segmentation is based on the  {@link  language  }  setting.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.2.0
 
 </dd>
 
