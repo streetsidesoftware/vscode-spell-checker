@@ -4662,7 +4662,7 @@
     "ansi-styles": "^7.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
-    "cspell": "^10.2.1",
+    "cspell": "^10.2.2",
     "esbuild": "^0.28.2",
     "eslint": "~10.9.1",
     "eslint-plugin-n": "^18.3.0",
@@ -4686,8 +4686,8 @@
     "vitest": "~4.1.11"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.2.1",
-    "@cspell/cspell-types": "^10.2.1",
+    "@cspell/cspell-bundled-dicts": "^10.2.2",
+    "@cspell/cspell-types": "^10.2.2",
     "@cspell/dict-cspell-bundle": "^2.0.72",
     "regexp-worker": "^5.0.1"
   },
