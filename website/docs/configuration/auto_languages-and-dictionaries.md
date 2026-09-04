@@ -332,6 +332,15 @@ Example:
 ]
 ```
 
+Case Sensitivity:
+
+A word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry.
+In practice this means:
+- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the
+  document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.
+- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —
+  `avocado` and `AVOCADO` are not flagged.
+
 </dd>
 
 <dt>
