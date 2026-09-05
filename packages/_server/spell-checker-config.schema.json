@@ -4239,6 +4239,16 @@
           "scope": "application",
           "type": "number"
         },
+        "cSpell.spellCheckTriggerCharacters": {
+          "default": [],
+          "description": "Characters that trigger spell checking after a document change. When set, changes that do not contain one of these characters are not checked.\n\n **Example:** check after spaces or new lines  ```json  \"cSpell.spellCheckTriggerCharacters\": [\" \", \"\\n\"]  ```\n\n Letter-only edits use the configured spell-check delay; matching characters trigger an immediate check.",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Characters that trigger spell checking after a document change.\nWhen set, changes that do not contain one of these characters are not checked.\n\n **Example:** check after spaces or new lines\n ```json\n \"cSpell.spellCheckTriggerCharacters\": [\" \", \"\\n\"]\n ```\n\n Letter-only edits use the configured spell-check delay; matching characters trigger an immediate check.",
+          "scope": "application",
+          "type": "array"
+        },
         "cSpell.suggestionsTimeout": {
           "default": 400,
           "description": "The maximum amount of time in milliseconds to generate suggestions for a word.",
