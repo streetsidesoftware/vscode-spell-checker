@@ -6,7 +6,7 @@ import * as CSpell from 'cspell-lib';
 import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import type { Subscription } from 'rxjs';
 import { interval, ReplaySubject } from 'rxjs';
-import { debounceTime, filter, mergeMap, take, tap, throttle } from 'rxjs/operators';
+import { debounceTime, filter, mergeMap, take, tap, throttle, throttleTime } from 'rxjs/operators';
 import type { DisposableLike } from 'utils-disposables';
 import { createDisposableList } from 'utils-disposables';
 import { LogLevelMasks } from 'utils-logger';
@@ -81,8 +81,27 @@ const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.
 const dictionaryRefreshRateMs = 10000;
 
-function containsSpellCheckTrigger(text: string, triggerCharacters: string[] | undefined): boolean {
+export function containsSpellCheckTrigger(text: string, triggerCharacters: string[] | undefined): boolean {
     return !!triggerCharacters?.length && triggerCharacters.some((character) => text.includes(character));
+}
+
+export function shouldTriggerSpellCheck(
+    contentChanges: readonly { text: string }[] | undefined,
+    triggerCharacters: string[] | undefined,
+): boolean {
+    return (
+        !contentChanges ||
+        !triggerCharacters?.length ||
+        contentChanges.some(({ text }) => containsSpellCheckTrigger(text, triggerCharacters))
+    );
+}
+
+export function getSpellCheckDelayMs(
+    contentChanges: readonly { text: string }[] | undefined,
+    triggerCharacters: string[] | undefined,
+    spellCheckDelayMs: number | undefined,
+): number {
+    return contentChanges && triggerCharacters?.length ? 0 : spellCheckDelayMs || defaultDebounceMs;
 }
 
 async function calcDefaultSettings(): Promise<CSpellUserAndExtensionSettings> {
@@ -133,7 +152,13 @@ export function run(): void {
     const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
 
     // Create a simple text document manager.
-    const documents = new TextDocuments(TextDocument);
+    const documents = new TextDocuments({
+        create: (uri, languageId, version, text) => TextDocument.create(uri, languageId, version, text),
+        update: (document, changes, version) => {
+            contentChangesByDoc.set(document.uri, changes);
+            return TextDocument.update(document, changes, version);
+        },
+    });
 
     const handlers: PartialServerSideHandlers = {
         serverNotifications: {
@@ -266,18 +291,16 @@ export function run(): void {
                             })),
                             tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
                             filter(({ contentChanges, settings }) =>
-                                !contentChanges ||
-                                !settings.spellCheckTriggerCharacters?.length ||
-                                contentChanges.some(({ text }) =>
-                                    containsSpellCheckTrigger(text, settings.spellCheckTriggerCharacters),
-                                ),
+                                shouldTriggerSpellCheck(contentChanges, settings.spellCheckTriggerCharacters),
                             ),
                             throttle(
                                 (dsp) =>
                                     interval(
-                                        dsp.contentChanges && dsp.settings.spellCheckTriggerCharacters?.length
-                                            ? 0
-                                            : dsp.settings.spellCheckDelayMs || defaultDebounceMs,
+                                        getSpellCheckDelayMs(
+                                            dsp.contentChanges,
+                                            dsp.settings.spellCheckTriggerCharacters,
+                                            dsp.settings.spellCheckDelayMs,
+                                        ),
                                     ).pipe(filter(() => !isValidationBusy)),
                                 { leading: true, trailing: true },
                             ),
@@ -315,9 +338,6 @@ export function run(): void {
 
     // Make the text document manager listen on the connection
     // for open, change and close text document events
-    connection.onDidChangeTextDocument((event) => {
-        contentChangesByDoc.set(event.textDocument.uri, event.contentChanges);
-    });
     dd(documents.listen(connection));
 
     disposables.push(
