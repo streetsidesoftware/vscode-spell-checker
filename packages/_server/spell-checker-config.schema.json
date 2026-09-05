@@ -1710,6 +1710,15 @@
           "scope": "resource",
           "type": "array"
         },
+        "cSpell.spellCheckTriggerCharacters": {
+          "description": "Characters that trigger spell checking after a document change. When set, changes that do not contain one of these characters are not checked.",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Characters that trigger spell checking after a document change.\nWhen set, changes that do not contain one of these characters are not checked.",
+          "scope": "application",
+          "type": "array"
+        },
         "cSpell.substitutionDefinitions": {
           "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
           "items": {
@@ -4238,6 +4247,16 @@
           "markdownDescription": "Delay in ms after a document has changed before checking it for spelling errors.",
           "scope": "application",
           "type": "number"
+        },
+        "cSpell.spellCheckTriggerCharacters": {
+          "default": [],
+          "description": "Characters that trigger spell checking after a document change. When set, changes that do not contain one of these characters are not checked.",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Characters that trigger spell checking after a document change. When set, changes that do not contain one of these characters are not checked.",
+          "scope": "application",
+          "type": "array"
         },
         "cSpell.suggestionsTimeout": {
           "default": 400,

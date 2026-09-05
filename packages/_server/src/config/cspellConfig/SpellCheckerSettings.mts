@@ -153,6 +153,13 @@ export interface SpellCheckerSettings
     spellCheckDelayMs?: number;
 
     /**
+     * Characters that trigger spell checking after a document change.
+     * When set, changes that do not contain one of these characters are not checked.
+     * @scope application
+     */
+    spellCheckTriggerCharacters?: string[];
+
+    /**
      * Use Rename Provider when fixing spelling issues.
      * @scope language-overridable
      * @default true

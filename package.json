@@ -4395,6 +4395,16 @@
             "scope": "application",
             "type": "number"
           },
+          "cSpell.spellCheckTriggerCharacters": {
+            "default": [],
+            "description": "Characters that trigger spell checking after a document change. When set, changes that do not contain one of these characters are not checked.",
+            "items": {
+              "type": "string"
+            },
+            "markdownDescription": "Characters that trigger spell checking after a document change. When set, changes that do not contain one of these characters are not checked.",
+            "scope": "application",
+            "type": "array"
+          },
           "cSpell.suggestionsTimeout": {
             "default": 400,
             "markdownDescription": "The maximum amount of time in milliseconds to generate suggestions for a word.",
