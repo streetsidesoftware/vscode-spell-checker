@@ -17,6 +17,7 @@ Settings that control the performance of the spell checker.
 | [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](#cspellblockcheckingwhentextchunksizegreaterthan) | language-overridable | The maximum length of a chunk of text without word breaks. |
 | [`cSpell.checkLimit`](#cspellchecklimit) | resource | Set the maximum number of blocks of text to check. Each block is 1024 characters. |
 | [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms) | application | Delay in ms after a document has changed before checking it for spelling errors. |
+| [`cSpell.spellCheckTriggerCharacters`](#cspellspellchecktriggercharacters) | application | Characters that trigger spell checking after a document change. When set, changes that do not… |
 | [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout) | resource | The maximum amount of time in milliseconds to generate suggestions for a word. |
 
 
@@ -315,6 +316,68 @@ Default
 <dd>
 
 _`50`_
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.spellCheckTriggerCharacters`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.spellCheckTriggerCharacters`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Characters that trigger spell checking after a document change.
+When set, changes that do not contain one of these characters are not checked.
+
+ **Example:** check after spaces or new lines
+ ```json
+ "cSpell.spellCheckTriggerCharacters": [" ", "\n"]
+ ```
+
+ Letter-only edits use the configured spell-check delay; matching characters trigger an immediate check.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`[  ]`_
 
 </dd>
 
