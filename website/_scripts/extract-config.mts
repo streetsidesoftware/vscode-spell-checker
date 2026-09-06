@@ -1,7 +1,6 @@
 import { promises as fs } from 'node:fs';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { unindent } from './lib/utils.mts';
-import { resolve } from 'node:path';
 
 type TypeSlugRefs = { [key: string]: string };
 
