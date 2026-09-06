@@ -12,6 +12,7 @@ ignorePaths:
   - '*.log'
   - '*.vsix'
   - '*.tsv'
+  - '*.schema.json'
   - '*.svg'
   - '**/__snapshots__/**'
   - '**/server.js'
@@ -32,7 +33,6 @@ ignorePaths:
   - packages/client/samples/**
   - packages/client/server/**
   - packages/webview-ui/public/assets/**
-  - spell-checker-config.schema.json
   - testFixtures
 ignoreWords: []
 dictionaryDefinitions:

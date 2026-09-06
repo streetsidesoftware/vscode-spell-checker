@@ -7,133 +7,289 @@ type TypeSlugRefs = { [key: string]: string };
 /**
  * The Schema File URL
  */
-const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.json', import.meta.url);
+const schemaFile = new URL('../../packages/_server/spell-checker-config-web.schema.json', import.meta.url);
 const descriptionWidth = 90;
 const compare = new Intl.Collator().compare;
-
-async function run(): Promise<void> {
-    const configSections = await loadSchema();
-
-    if (!Array.isArray(configSections)) {
-        return;
-    }
-
-    configSections.sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || compare(a.title || '', b.title || ''));
-
-    const refs = extractTypeRefs(configSections);
-
-    await fs.mkdir(targetDir, { recursive: true });
-    await fs.writeFile(new URL('index.md', targetDir), genIndex(configSections));
-    for (const section of formatSections(configSections, refs)) {
-        await fs.writeFile(new URL(`auto_${section.slug}.md`, targetDir), section.content);
-    }
-}
-
 const targetDir = new URL('../docs/configuration/', import.meta.url);
 
-function genIndex(configSections: JSONSchema4[]): string {
-    return unindent`\
-        ---
-        # AUTO-GENERATED ALL CHANGES WILL BE LOST
-        # See \`_scripts/extract-config.mts\`
-        title: Configuration
-        id: configuration
-        ---
+class ConfigExtractor {
+    private root: JSONSchema4;
+    private configSections: JSONSchema4[];
+    private refs: TypeSlugRefs;
+    constructor(root: JSONSchema4) {
+        this.root = root;
+        this.configSections = this.#extractConfigSections();
+        this.refs = this.#extractTypeRefs(this.configSections);
+    }
 
-        # Configuration Settings
+    #extractConfigSections(): JSONSchema4[] {
+        const root = this.root;
+        const configSections = this.#resolve(this.root).items;
+        if (!Array.isArray(configSections)) return [];
+        const resolved = configSections.map((s) => this.#resolve(s, hasTitle));
+        resolved.sort((a, b) => (a.order || 0) - (b.order || 0) || compare(a.title || '', b.title || ''));
+        return resolved;
+    }
 
-        ${sectionTOC(configSections)}
-    `;
-}
+    #extractTypeRefs(configSections: JSONSchema4[]): TypeSlugRefs {
+        const refs: TypeSlugRefs = {};
+        for (const section of configSections) {
+            const title = section.title || '';
+            const props = this.#resolve(section, hasProperties).properties || {};
+            for (const key of Object.keys(props)) {
+                refs[key] ??= slugifyTitle(title) + hashRef(key);
+            }
+        }
+        return refs;
+    }
 
-function sectionTOC(sections: JSONSchema4[]): string {
-    function tocEntry(value: JSONSchema4): string {
+    #resolve($ref: JSONSchema4 | string, stopPredicate?: (schema: JSONSchema4) => boolean): JSONSchema4 {
+        let ref = typeof $ref === 'string' ? { $ref } : $ref;
+        while (ref.$ref && !stopPredicate?.(ref)) {
+            ref = resolveRef(this.root, ref);
+        }
+        return ref;
+    }
+
+    genIndex(): string {
+        return this.#genIndex(this.configSections);
+    }
+
+    #genIndex(configSections: JSONSchema4[]): string {
+        return unindent`\
+            ---
+            # AUTO-GENERATED ALL CHANGES WILL BE LOST
+            # See \`_scripts/extract-config.mts\`
+            title: Configuration
+            id: configuration
+            ---
+
+            # Configuration Settings
+
+            ${this.#sectionTOC(configSections)}
+        `;
+    }
+
+    #tocEntry(value: JSONSchema4): string {
         if (!value.title) return '';
         const title = value.title;
         const description = value.description ? ` - ${value.description}` : '';
         return `- [${title}](configuration/${slugifyTitle(title)}) ${description}`.trim();
     }
 
-    return `\n${sections
-        .map(tocEntry)
-        .filter((a) => !!a)
-        .join('\n')}\n`;
+    #sectionTOC(sections: JSONSchema4[]): string {
+        return `\n${sections
+            .map((v) => this.#tocEntry(v))
+            .filter((a) => !!a)
+            .join('\n')}\n`;
+    }
+
+    #formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
+        return sections.map((s) => this.#formatSectionContent(s, refs));
+    }
+
+    #formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): FormattedSection {
+        const resolvedSection = this.#resolve(section, hasProperties);
+        const entries = Object.entries(resolvedSection.properties || {});
+        entries.sort((a, b) => this.#compareProperties(a, b));
+        const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
+
+        const title = section.title || '';
+        const slug = slugifyTitle(title);
+        const content = unindent`\
+            ---
+            # AUTO-GENERATED ALL CHANGES WILL BE LOST
+            # See \`_scripts/extract-config.mts\`
+            title: ${title}
+            id: ${slugify(title)}
+            ---
+
+            # ${title}
+
+            ${section.description || ''}
+
+            ${this.#configTable(activeEntries, refs)}
+
+            ## Settings
+
+            ${this.#configDefinitions(entries, refs)}
+
+        `;
+
+        return { title, content, slug };
+    }
+
+    #configDefinitions(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
+        return entries.map((def) => this.#definition(def, refs)).join('\n');
+    }
+
+    #definition(entry: [string, JSONSchema4], refs: TypeSlugRefs): string {
+        const [key, value] = entry;
+        const description = value.markdownDescription || value.description || value.title || '';
+        const since = value.sinceVersion || '';
+        const sinceCSpellVersion = value.since || '';
+        const defaultValue = this.#formatDefaultValue(value.default);
+
+        const title = value.title ? `-- ${value.title}` : '';
+        let name = '`' + key + '`';
+        if (value.deprecationMessage) {
+            name = '~~' + name + '~~';
+        }
+
+        const deprecationMessage = value.deprecationMessage ? singleDef('Deprecation Message', value.deprecationMessage) : '';
+
+        return unindent`
+            ### ${name}
+
+            <dl>
+
+            ${singleDef('Name', `${name} ${title}`)}
+
+            ${singleDef('Description', fixVSCodeRefs(description, refs))}
+
+            ${singleDef('Type', this.#formatType(value), true)}
+
+            ${singleDef('Scope', scopeDef(value.scope) || '_- none -_')}
+
+            ${deprecationMessage}
+
+            ${singleDef('Default', defaultValue, true)}
+
+            ${since ? singleDef('Since Extension Version', since) : ''}
+
+            ${sinceCSpellVersion ? singleDef('CSpell Version', sinceCSpellVersion) : ''}
+
+            </dl>
+
+            ---
+        `.replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
+    }
+
+    formatSections(): FormattedSection[] {
+        return this.#formatSections(this.configSections, this.refs);
+    }
+
+    #innerFormatDefaultValue(value: JSONSchema4Type | undefined): string {
+        if (value === undefined) return '';
+
+        if (Array.isArray(value)) {
+            return '[ ' + value.map((v) => this.#innerFormatDefaultValue(v)).join(', ') + ' ]';
+        }
+
+        return JSON.stringify(value);
+    }
+
+    #formatDefaultValue(value: JSONSchema4Type | undefined): string {
+        if (value === undefined) return '_- none -_';
+
+        const text = beautifyJSON(this.#innerFormatDefaultValue(value), 80);
+        const lines = text.split('\n');
+        if (lines.length > 1) {
+            // console.error('%o', lines);
+            return '\n```json5\n' + text + '\n```\n';
+        }
+
+        return '_`' + text + '`_';
+    }
+
+    #formatType(def: JSONSchema4): string {
+        const typeLines = beautifyType(this.#extractTypeAndFormat(def), 80);
+        const types = typeLines.length > 1 ? 'definition\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+        const enumDefs = this.#extractEnumDescriptions(def);
+        return types + enumDefs;
+    }
+
+    #extractEnumDescriptions(def: JSONSchema4): string {
+        const enumDef = this.#resolve(def);
+        if (!def.enumDescriptions || !enumDef.enum) return '';
+
+        const defs = enumDef.enum
+            .map((e, i) => [e, def.enumDescriptions?.[i] || '_No description_'])
+            .map(([e, d]) => `| \`${e}\` | ${(d as string).replace(/\n/g, '<br>')} |`)
+            .join('\n');
+
+        return unindent`
+            | Value | Description |
+            | ----- | ----------- |
+            ${defs}
+        `;
+    }
+
+    #extractTypeAndFormat(def: JSONSchema4 | undefined): string {
+        return formatExtractedType(this.#extractType(def));
+    }
+
+    #extractType(def: JSONSchema4 | undefined): string | string[] {
+        def = def && this.#resolve(def);
+        if (!def) return '';
+        if (def.type === 'array') return this.#extractTypeAndFormat(def.items) + '[]';
+
+        if (def.enum) {
+            return def.enum.map((v) => JSON.stringify(v));
+        }
+
+        if (def.type) return def.type;
+
+        if (Array.isArray(def.anyOf)) {
+            const types = [...new Set(def.anyOf.map((t) => this.#extractType(t)).flat())];
+            if (types.length === 1) return types[0];
+            return types;
+        }
+
+        return '';
+    }
+
+    /**
+     * Sort properties by name, with deprecated properties last.
+     */
+    #compareProperties(a: [string, JSONSchema4], b: [string, JSONSchema4]): number {
+        const dA = a[1].deprecationMessage || a[1].deprecated ? 1 : 0;
+        const dB = b[1].deprecationMessage || b[1].deprecated ? 1 : 0;
+        return dA - dB || compare(a[0], b[0]);
+    }
+
+    #configTable(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
+        function tableEntryConfig([key, value]: [string, JSONSchema4]): string {
+            const description = fixVSCodeRefs(
+                value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
+                refs,
+            );
+            const scope = value.scope || '';
+            return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
+        }
+
+        return unindent`
+            | Setting | Scope | Description |
+            | ------- | ----- | ----------- |
+            ${entries.map(tableEntryConfig).join('\n')}
+        `;
+    }
+}
+
+async function run(): Promise<void> {
+    const root = await loadSchema();
+
+    const extractor = new ConfigExtractor(root);
+
+    const configSections = await fs.mkdir(targetDir, { recursive: true });
+    await fs.writeFile(new URL('index.md', targetDir), extractor.genIndex());
+    for (const section of extractor.formatSections()) {
+        await fs.writeFile(new URL(`auto_${section.slug}.md`, targetDir), section.content);
+    }
+}
+
+function hasTitle(schema: JSONSchema4): boolean {
+    return schema.title !== undefined;
+}
+
+function hasProperties(schema: JSONSchema4): boolean {
+    return !!schema.properties;
 }
 
 interface FormattedSection {
     title: string;
     content: string;
     slug: string;
-}
-
-function formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
-    return sections.map((s) => formatSectionContent(s, refs));
-}
-
-function formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): FormattedSection {
-    const entries = Object.entries(section.properties || {});
-    entries.sort(compareProperties);
-    const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
-
-    const title = section.title || '';
-    const slug = slugifyTitle(title);
-    const content = unindent`\
-        ---
-        # AUTO-GENERATED ALL CHANGES WILL BE LOST
-        # See \`_scripts/extract-config.mts\`
-        title: ${title}
-        id: ${slugify(title)}
-        ---
-
-        # ${title}
-
-        ${section.description || ''}
-
-        ${configTable(activeEntries, refs)}
-
-        ## Settings
-
-        ${configDefinitions(entries, refs)}
-
-    `;
-
-    return { title, content, slug };
-}
-
-function extractTypeRefs(configSections: JSONSchema4[]): TypeSlugRefs {
-    const refs: TypeSlugRefs = {};
-    for (const section of configSections) {
-        for (const key of Object.keys(section.properties || {})) {
-            refs[key] ??= slugifyTitle(section.title || '') + hashRef(key);
-        }
-    }
-    return refs;
-}
-
-/**
- * Sort properties by name, with deprecated properties last.
- */
-function compareProperties(a: [string, JSONSchema4], b: [string, JSONSchema4]): number {
-    const dA = a[1].deprecationMessage || a[1].deprecated ? 1 : 0;
-    const dB = b[1].deprecationMessage || b[1].deprecated ? 1 : 0;
-    return dA - dB || compare(a[0], b[0]);
-}
-
-function configTable(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-    function tableEntryConfig([key, value]: [string, JSONSchema4]): string {
-        const description = fixVSCodeRefs(
-            value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
-            refs,
-        );
-        const scope = value.scope || '';
-        return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
-    }
-
-    return unindent`
-        | Setting | Scope | Description |
-        | ------- | ----- | ----------- |
-        ${entries.map(tableEntryConfig).join('\n')}
-    `;
 }
 
 function shortenLine(line: string, len: number): string {
@@ -148,52 +304,6 @@ function shortenLine(line: string, len: number): string {
         ++i;
     }
     return i < line.length ? line.slice(0, i) + '…' : line;
-}
-
-function configDefinitions(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-    return entries.map((def) => definition(def, refs)).join('\n');
-}
-
-function definition(entry: [string, JSONSchema4], refs: TypeSlugRefs): string {
-    const [key, value] = entry;
-    const description = value.markdownDescription || value.description || value.title || '';
-    const since = value.sinceVersion || '';
-    const sinceCSpellVersion = value.since || '';
-    const defaultValue = formatDefaultValue(value.default);
-
-    const title = value.title ? `-- ${value.title}` : '';
-    let name = '`' + key + '`';
-    if (value.deprecationMessage) {
-        name = '~~' + name + '~~';
-    }
-
-    const deprecationMessage = value.deprecationMessage ? singleDef('Deprecation Message', value.deprecationMessage) : '';
-
-    return unindent`
-        ### ${name}
-
-        <dl>
-
-        ${singleDef('Name', `${name} ${title}`)}
-
-        ${singleDef('Description', fixVSCodeRefs(description, refs))}
-
-        ${singleDef('Type', formatType(value), true)}
-
-        ${singleDef('Scope', scopeDef(value.scope) || '_- none -_')}
-
-        ${deprecationMessage}
-
-        ${singleDef('Default', defaultValue, true)}
-
-        ${since ? singleDef('Since Extension Version', since) : ''}
-
-        ${sinceCSpellVersion ? singleDef('CSpell Version', sinceCSpellVersion) : ''}
-
-        </dl>
-
-        ---
-    `.replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
 }
 
 function scopeDef(scope: string | undefined): string | undefined {
@@ -241,29 +351,6 @@ function singleDef(term: string, def: string, _addIgnore = false): string {
     return lines.join('\n');
 }
 
-function _formatDefaultValue(value: JSONSchema4Type | undefined): string {
-    if (value === undefined) return '';
-
-    if (Array.isArray(value)) {
-        return '[ ' + value.map(_formatDefaultValue).join(', ') + ' ]';
-    }
-
-    return JSON.stringify(value);
-}
-
-function formatDefaultValue(value: JSONSchema4Type | undefined): string {
-    if (value === undefined) return '_- none -_';
-
-    const text = beautifyJSON(_formatDefaultValue(value), 80);
-    const lines = text.split('\n');
-    if (lines.length > 1) {
-        // console.error('%o', lines);
-        return '\n```json5\n' + text + '\n```\n';
-    }
-
-    return '_`' + text + '`_';
-}
-
 function slugifyTitle(sectionTitle: string): string {
     return slugify(sectionTitle);
 }
@@ -276,68 +363,35 @@ function hashRef(heading: string): string {
     return '#' + slugify(heading);
 }
 
-function extractTypeAndFormat(def: JSONSchema4 | undefined): string {
-    return formatExtractedType(extractType(def));
-}
-
 function formatExtractedType(types: string | string[]): string {
     if (!Array.isArray(types)) return types;
     if (types.length === 1) return types[0];
     return '( ' + types.join(' | ') + ' )';
 }
 
-function extractType(def: JSONSchema4 | undefined): string | string[] {
-    if (!def) return '';
-    if (def.type === 'array') return extractTypeAndFormat(def.items) + '[]';
-
-    if (def.enum) {
-        return def.enum.map((v) => JSON.stringify(v));
-    }
-
-    if (def.type) return def.type;
-
-    if (Array.isArray(def.anyOf)) {
-        const types = [...new Set(def.anyOf.map(extractType).flat())];
-        if (types.length === 1) return types[0];
-        return types;
-    }
-
-    return '';
-}
-
-function extractEnumDescriptions(def: JSONSchema4): string {
-    if (!def.enumDescriptions || !def.enum) return '';
-
-    const defs = def.enum
-        .map((e, i) => [e, def.enumDescriptions?.[i] || '_No description_'])
-        .map(([e, d]) => `| \`${e}\` | ${(d as string).replace(/\n/g, '<br>')} |`)
-        .join('\n');
-
-    return unindent`
-        | Value | Description |
-        | ----- | ----------- |
-        ${defs}
-    `;
-}
-
-function formatType(def: JSONSchema4): string {
-    const typeLines = beautifyType(extractTypeAndFormat(def), 80);
-    const types = typeLines.length > 1 ? 'definition\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
-    const enumDefs = extractEnumDescriptions(def);
-    return types + enumDefs;
-}
-
 function shorten(text: string, len: number): string {
     return text.length <= len ? text : text.slice(0, len - 1) + '…';
 }
 
-async function loadSchema(): Promise<JSONSchema4['items'] | Pick<JSONSchema4, 'properties'>> {
+async function loadSchema(): Promise<JSONSchema4> {
     const schema: JSONSchema4 = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
+    return schema;
+}
 
-    if (schema.items) return schema.items;
-    return {
-        properties: schema.properties,
-    };
+/**
+ * Resolve a top-level `$ref` (e.g. `#/definitions/Foo`) against the root schema document.
+ */
+function resolveRef(root: JSONSchema4, ref: JSONSchema4): JSONSchema4 {
+    if (!ref.$ref) return ref;
+
+    const path = ref.$ref.replace(/^#\//, '').split('/').map(decodeURIComponent);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const resolved = path.reduce<any>((node, key) => node?.[key], root);
+    if (!resolved) {
+        throw new Error(`Unable to resolve $ref: ${ref.$ref}`);
+    }
+
+    return resolved;
 }
 
 function beautifyJSON(json: string, width: number): string {
