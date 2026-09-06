@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "target": "esnext",
+        "strict": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "types": ["node"]
+    }
+}

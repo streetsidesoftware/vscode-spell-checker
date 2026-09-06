@@ -1,12 +1,25 @@
 import fs from 'fs/promises';
 import { createRequire } from 'module';
-import { unindent } from './lib/utils.mjs';
+import { unindent } from './lib/utils.mts';
+
+interface Command {
+    command: string;
+    title: string;
+    category?: string;
+    enablement?: string;
+}
+
+interface PackageJson {
+    contributes: {
+        commands: Command[];
+    };
+}
 
 const targetDir = new URL('../docs/', import.meta.url);
 
 const require = createRequire(import.meta.url);
 
-const pkgJson = require('../../package.json');
+const pkgJson: PackageJson = require('../../package.json');
 
 const commands = pkgJson.contributes.commands;
 
@@ -20,7 +33,7 @@ const entries = Object.values(commands)
 const doc = unindent`\
         ---
         # AUTO-GENERATED ALL CHANGES WILL BE LOST
-        # See \`_scripts/extract-commands.js\`
+        # See \`_scripts/extract-commands.mts\`
         title: Commands
         id: commands
         ---
@@ -34,7 +47,7 @@ const doc = unindent`\
 await fs.mkdir(targetDir, { recursive: true });
 await fs.writeFile(new URL('auto_commands.md', targetDir), doc);
 
-function genCommands(entries) {
+function genCommands(entries: Command[]): string {
     return unindent`
         | Command | Title |
         | ------- | ----- |
@@ -42,12 +55,7 @@ function genCommands(entries) {
     `;
 }
 
-/**
- *
- * @param {[string, any]} param0
- * @returns
- */
-function commandEntry(command) {
+function commandEntry(command: Command): string {
     const description = [command.title, command.enablement ? `**When:**<br />  \`${command.enablement}\`` : '']
         .filter((a) => a)
         .join('<br />');

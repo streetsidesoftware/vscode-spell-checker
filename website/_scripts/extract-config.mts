@@ -1,26 +1,8 @@
-// @ts-check
 import { promises as fs } from 'node:fs';
-import { unindent } from './lib/utils.mjs';
+import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
+import { unindent } from './lib/utils.mts';
 
-const targetDir = new URL('../docs/configuration/', import.meta.url);
-
-/**
- * JSONSchema4.
- * @typedef {import('json-schema').JSONSchema4} JSONSchema4
- */
-
-/**
- * JSON Schema primitive types
- * @typedef {import('json-schema').JSONSchema4Type} JSONSchema4Type
- */
-
-/**
- * @typedef {import('json-schema').JSONSchema4TypeName} JSONSchema4TypeName
- */
-
-/**
- * @typedef {{[key: string]: string}} TypeSlugRefs
- */
+type TypeSlugRefs = { [key: string]: string };
 
 /**
  * The Schema File URL
@@ -29,14 +11,14 @@ const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.j
 const descriptionWidth = 90;
 const compare = new Intl.Collator().compare;
 
-async function run() {
+async function run(): Promise<void> {
     const configSections = await loadSchema();
 
     if (!Array.isArray(configSections)) {
         return;
     }
 
-    configSections.sort((a, b) => a.order - b.order || compare(a.title || '', b.title || ''));
+    configSections.sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || compare(a.title || '', b.title || ''));
 
     const refs = extractTypeRefs(configSections);
 
@@ -47,16 +29,13 @@ async function run() {
     }
 }
 
-/**
- *
- * @param {JSONSchema4[]} configSections
- * @returns {string}
- */
-function genIndex(configSections) {
+const targetDir = new URL('../docs/configuration/', import.meta.url);
+
+function genIndex(configSections: JSONSchema4[]): string {
     return unindent`\
         ---
         # AUTO-GENERATED ALL CHANGES WILL BE LOST
-        # See \`_scripts/extract-config.mjs\`
+        # See \`_scripts/extract-config.mts\`
         title: Configuration
         id: configuration
         ---
@@ -67,17 +46,8 @@ function genIndex(configSections) {
     `;
 }
 
-/**
- * @param {JSONSchema4[]} sections
- * @returns
- */
-function sectionTOC(sections) {
-    /**
-     *
-     * @param {JSONSchema4} value
-     * @returns
-     */
-    function tocEntry(value) {
+function sectionTOC(sections: JSONSchema4[]): string {
+    function tocEntry(value: JSONSchema4): string {
         if (!value.title) return '';
         const title = value.title;
         const description = value.description ? ` - ${value.description}` : '';
@@ -90,36 +60,32 @@ function sectionTOC(sections) {
         .join('\n')}\n`;
 }
 
-/**
- *
- * @param {JSONSchema4[]} sections
- * @param {TypeSlugRefs} refs
- * @returns {{ title: string; content: string, slug: string }[]}
- */
-function formatSections(sections, refs) {
+interface FormattedSection {
+    title: string;
+    content: string;
+    slug: string;
+}
+
+function formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
     return sections.map((s) => formatSectionContent(s, refs));
 }
 
-/**
- * @param {JSONSchema4} section
- * @param {TypeSlugRefs} refs
- * @returns {{ title: string; content: string, slug: string }}
- */
-function formatSectionContent(section, refs) {
+function formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): FormattedSection {
     const entries = Object.entries(section.properties || {});
     entries.sort(compareProperties);
     const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
-    const slug = slugifyTitle(section.title);
+    const title = section.title || '';
+    const slug = slugifyTitle(title);
     const content = unindent`\
         ---
         # AUTO-GENERATED ALL CHANGES WILL BE LOST
-        # See \`_scripts/extract-config.mjs\`
-        title: ${section.title}
-        id: ${slugify(section.title)}
+        # See \`_scripts/extract-config.mts\`
+        title: ${title}
+        id: ${slugify(title)}
         ---
 
-        # ${section.title}
+        # ${title}
 
         ${section.description || ''}
 
@@ -131,19 +97,14 @@ function formatSectionContent(section, refs) {
 
     `;
 
-    return { title: section.title, content, slug };
+    return { title, content, slug };
 }
 
-/**
- * @param {JSONSchema4[]} configSections
- * @returns {TypeSlugRefs}
- */
-function extractTypeRefs(configSections) {
-    /** @type {TypeSlugRefs} */
-    const refs = {};
+function extractTypeRefs(configSections: JSONSchema4[]): TypeSlugRefs {
+    const refs: TypeSlugRefs = {};
     for (const section of configSections) {
         for (const key of Object.keys(section.properties || {})) {
-            refs[key] ??= slugifyTitle(section.title) + hashRef(key);
+            refs[key] ??= slugifyTitle(section.title || '') + hashRef(key);
         }
     }
     return refs;
@@ -151,29 +112,15 @@ function extractTypeRefs(configSections) {
 
 /**
  * Sort properties by name, with deprecated properties last.
- * @param {[string, JSONSchema4]} a
- * @param {[string, JSONSchema4]} b
- * @returns {number}
  */
-function compareProperties(a, b) {
+function compareProperties(a: [string, JSONSchema4], b: [string, JSONSchema4]): number {
     const dA = a[1].deprecationMessage || a[1].deprecated ? 1 : 0;
     const dB = b[1].deprecationMessage || b[1].deprecated ? 1 : 0;
     return dA - dB || compare(a[0], b[0]);
 }
 
-/**
- *
- * @param {[string, JSONSchema4][]} entries
- * @param {TypeSlugRefs} refs
- * @returns
- */
-function configTable(entries, refs) {
-    /**
-     *
-     * @param {[string, any]} param0
-     * @returns
-     */
-    function tableEntryConfig([key, value]) {
+function configTable(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
+    function tableEntryConfig([key, value]: [string, JSONSchema4]): string {
         const description = fixVSCodeRefs(
             value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
             refs,
@@ -189,13 +136,7 @@ function configTable(entries, refs) {
     `;
 }
 
-/**
- *
- * @param {string} line
- * @param {number} len
- * @returns
- */
-function shortenLine(line, len) {
+function shortenLine(line: string, len: number): string {
     const lines = line.split('<br>');
     if (lines.length > 1) return shortenLine(lines[0], len);
     if (line.length <= len) return line;
@@ -209,23 +150,11 @@ function shortenLine(line, len) {
     return i < line.length ? line.slice(0, i) + '…' : line;
 }
 
-/**
- *
- * @param {[string, JSONSchema4][]} entries
- * @param {TypeSlugRefs} refs
- * @returns
- */
-function configDefinitions(entries, refs) {
+function configDefinitions(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
     return entries.map((def) => definition(def, refs)).join('\n');
 }
 
-/**
- *
- * @param {[string, JSONSchema4]} entry
- * @param {TypeSlugRefs} refs
- * @returns
- */
-function definition(entry, refs) {
+function definition(entry: [string, JSONSchema4], refs: TypeSlugRefs): string {
     const [key, value] = entry;
     const description = value.markdownDescription || value.description || value.title || '';
     const since = value.sinceVersion || '';
@@ -267,12 +196,7 @@ function definition(entry, refs) {
     `.replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
 }
 
-/**
- *
- * @param {string} scope
- * @returns {string}
- */
-function scopeDef(scope) {
+function scopeDef(scope: string | undefined): string | undefined {
     /*
     A configuration setting can have one of the following possible scopes:
     application - Settings that apply to all instances of VS Code and can only be configured in user settings.
@@ -282,7 +206,7 @@ function scopeDef(scope) {
     resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
     language-overridable - Resource settings that can be overridable at a language level.
     */
-    const scopes = {
+    const scopes: Record<string, string> = {
         application: 'Settings that apply to all instances of VS Code and can only be configured in user settings.',
         machine:
             'Machine specific settings that can be set only in user settings or only in remote settings.\n' +
@@ -294,29 +218,19 @@ function scopeDef(scope) {
         'language-overridable': 'Resource settings that can be overridable at a language level.',
     };
 
+    if (!scope) return scope;
+
     const desc = scopes[scope];
 
     return desc ? `${scope} - ${desc}` : scope;
 }
 
-/**
- *
- * @param {string} markdown
- * @param {TypeSlugRefs} refs
- * @returns {string}
- */
-function fixVSCodeRefs(markdown, refs) {
+function fixVSCodeRefs(markdown: string, refs: TypeSlugRefs): string {
     return markdown.replaceAll(/`#(.*?)#`/g, (_, p1) => `[\`${p1}\`](${refs[p1] || hashRef(p1)})`);
 }
 
-/**
- *
- * @param {string} term
- * @param {string} def
- * @returns
- */
-function singleDef(term, def, addIgnore = false) {
-    const lines = [];
+function singleDef(term: string, def: string, _addIgnore = false): string {
+    const lines: string[] = [];
 
     const defLines = def.replaceAll('`jsonc', '`json5');
     const termDef = `<dt>\n${term}\n</dt>\n<dd>\n\n${defLines}\n\n</dd>\n`;
@@ -327,12 +241,7 @@ function singleDef(term, def, addIgnore = false) {
     return lines.join('\n');
 }
 
-/**
- *
- * @param {JSONSchema4Type | undefined} value
- * @returns {string}
- */
-function _formatDefaultValue(value) {
+function _formatDefaultValue(value: JSONSchema4Type | undefined): string {
     if (value === undefined) return '';
 
     if (Array.isArray(value)) {
@@ -342,12 +251,7 @@ function _formatDefaultValue(value) {
     return JSON.stringify(value);
 }
 
-/**
- *
- * @param {JSONSchema4Type | undefined} value
- * @returns
- */
-function formatDefaultValue(value) {
+function formatDefaultValue(value: JSONSchema4Type | undefined): string {
     if (value === undefined) return '_- none -_';
 
     const text = beautifyJSON(_formatDefaultValue(value), 80);
@@ -360,57 +264,29 @@ function formatDefaultValue(value) {
     return '_`' + text + '`_';
 }
 
-/**
- *
- * @param {string} sectionTitle
- * @returns {string}
- */
-function slugifyTitle(sectionTitle) {
+function slugifyTitle(sectionTitle: string): string {
     return slugify(sectionTitle);
 }
 
-/**
- *
- * @param {string} text
- * @returns {string}
- */
-function slugify(text) {
+function slugify(text: string): string {
     return text.toLowerCase().replaceAll('.', '').replaceAll(/\W+/g, '-');
 }
 
-/**
- *
- * @param {string} heading
- * @returns {string}
- */
-function hashRef(heading) {
+function hashRef(heading: string): string {
     return '#' + slugify(heading);
 }
 
-/**
- *
- * @param {JSONSchema4 | undefined} def
- * @returns {string}
- */
-function extractTypeAndFormat(def) {
+function extractTypeAndFormat(def: JSONSchema4 | undefined): string {
     return formatExtractedType(extractType(def));
 }
 
-/**
- *
- * @param {string | string[]} types
- */
-function formatExtractedType(types) {
+function formatExtractedType(types: string | string[]): string {
     if (!Array.isArray(types)) return types;
     if (types.length === 1) return types[0];
     return '( ' + types.join(' | ') + ' )';
 }
 
-/**
- * @param {JSONSchema4 | undefined} def
- * @returns {string | string[]}
- */
-function extractType(def) {
+function extractType(def: JSONSchema4 | undefined): string | string[] {
     if (!def) return '';
     if (def.type === 'array') return extractTypeAndFormat(def.items) + '[]';
 
@@ -429,17 +305,12 @@ function extractType(def) {
     return '';
 }
 
-/**
- *
- * @param {JSONSchema4} def
- * @returns {string}
- */
-function extractEnumDescriptions(def) {
+function extractEnumDescriptions(def: JSONSchema4): string {
     if (!def.enumDescriptions || !def.enum) return '';
 
     const defs = def.enum
-        .map((e, i) => [e, def.enumDescriptions[i] || '_No description_'])
-        .map(([e, d]) => `| \`${e}\` | ${d.replace(/\n/g, '<br>')} |`)
+        .map((e, i) => [e, def.enumDescriptions?.[i] || '_No description_'])
+        .map(([e, d]) => `| \`${e}\` | ${(d as string).replace(/\n/g, '<br>')} |`)
         .join('\n');
 
     return unindent`
@@ -449,32 +320,19 @@ function extractEnumDescriptions(def) {
     `;
 }
 
-/**
- *
- * @param {JSONSchema4} def
- * @returns
- */
-function formatType(def) {
+function formatType(def: JSONSchema4): string {
     const typeLines = beautifyType(extractTypeAndFormat(def), 80);
     const types = typeLines.length > 1 ? 'definition\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
     const enumDefs = extractEnumDescriptions(def);
     return types + enumDefs;
 }
 
-/**
- *
- * @param {string} text
- * @param {number} len
- */
-function shorten(text, len) {
+function shorten(text: string, len: number): string {
     return text.length <= len ? text : text.slice(0, len - 1) + '…';
 }
 
-/**
- * @returns {Promise<JSONSchema4['items'] | Pick<JSONSchema4, 'properties'>>}
- */
-async function loadSchema() {
-    const schema = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
+async function loadSchema(): Promise<JSONSchema4['items'] | Pick<JSONSchema4, 'properties'>> {
+    const schema: JSONSchema4 = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
 
     if (schema.items) return schema.items;
     return {
@@ -482,23 +340,13 @@ async function loadSchema() {
     };
 }
 
-/**
- * @param {string} json
- * @param {number} width
- * @returns {string}
- */
-function beautifyJSON(json, width) {
+function beautifyJSON(json: string, width: number): string {
     if (json.length < width) return json;
 
-    const lines = [];
+    const lines: string[] = [];
     let line = '';
 
-    /**
-     *
-     * @param  {...string} items
-     * @returns {void}
-     */
-    function addToLine(...items) {
+    function addToLine(...items: string[]): void {
         for (const text of items) {
             if (text === '\n') {
                 lines.push(line);
@@ -537,23 +385,13 @@ function beautifyJSON(json, width) {
     return lines.join('\n');
 }
 
-/**
- * @param {string} dataType
- * @param {number} width
- * @returns {string[]}
- */
-function beautifyType(dataType, width) {
+function beautifyType(dataType: string, width: number): string[] {
     if (dataType.length < width) return [dataType];
 
-    const lines = [];
+    const lines: string[] = [];
     let line = '';
 
-    /**
-     *
-     * @param  {...string} items
-     * @returns {void}
-     */
-    function addToLine(...items) {
+    function addToLine(...items: string[]): void {
         for (const text of items) {
             if (text === '\n') {
                 lines.push(line);
@@ -579,4 +417,4 @@ function beautifyType(dataType, width) {
     return lines;
 }
 
-run();
+await run();
