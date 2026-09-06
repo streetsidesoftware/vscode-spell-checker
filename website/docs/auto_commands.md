@@ -1,6 +1,6 @@
 ---
 # AUTO-GENERATED ALL CHANGES WILL BE LOST
-# See `_scripts/extract-commands.js`
+# See `_scripts/extract-commands.mts`
 title: Commands
 id: commands
 ---

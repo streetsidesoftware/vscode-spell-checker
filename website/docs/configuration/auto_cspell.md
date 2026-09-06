@@ -1,6 +1,6 @@
 ---
 # AUTO-GENERATED ALL CHANGES WILL BE LOST
-# See `_scripts/extract-config.mjs`
+# See `_scripts/extract-config.mts`
 title: CSpell
 id: cspell
 ---
