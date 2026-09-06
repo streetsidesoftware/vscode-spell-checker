@@ -31,6 +31,7 @@ const config: tsj.Config = {
     type: 'SpellCheckerSettingsVSCode',
     topRef: false,
     expose: 'none',
+    skipTypeCheck: true,
     markdownDescription: true,
     sortProps: true,
     extraTags: [
@@ -46,11 +47,10 @@ const config: tsj.Config = {
     ],
 };
 
-const outputPath = p('spell-checker-config.schema.json');
-
-const schema = tsj.createGenerator(config).createSchema(config.type);
-const schemaString = stringify(schema, null, 2) + '\n';
-await fs.writeFile(outputPath, cleanJson(schemaString));
+const configWeb: tsj.Config = {
+    ...config,
+    topRef: true,
+};
 
 function p(filePath: string): string {
     return path.resolve(rootDir, filePath);
@@ -60,3 +60,16 @@ function cleanJson(json: string): string {
     /** Remove zero width space */
     return json.replaceAll(/\u200B/g, '');
 }
+
+async function genSchema(config: tsj.Config, outputPath: string) {
+    const schema = tsj.createGenerator(config).createSchema(config.type);
+    const schemaString = stringify(schema, null, 2) + '\n';
+    await fs.writeFile(outputPath, cleanJson(schemaString));
+}
+
+async function run() {
+    await genSchema(config, p('spell-checker-config.schema.json'));
+    await genSchema(configWeb, p('spell-checker-config-web.schema.json'));
+}
+
+run();
