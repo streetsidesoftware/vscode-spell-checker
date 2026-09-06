@@ -7,7 +7,7 @@ type TypeSlugRefs = { [key: string]: string };
 /**
  * The Schema File URL
  */
-const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.json', import.meta.url);
+const schemaFile = new URL('../../packages/_server/spell-checker-config-web.schema.json', import.meta.url);
 const descriptionWidth = 90;
 const compare = new Intl.Collator().compare;
 
@@ -334,10 +334,28 @@ function shorten(text: string, len: number): string {
 async function loadSchema(): Promise<JSONSchema4['items'] | Pick<JSONSchema4, 'properties'>> {
     const schema: JSONSchema4 = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
 
-    if (schema.items) return schema.items;
+    const resolved = resolveRef(schema, schema);
+
+    if (resolved.items) return resolved.items;
     return {
-        properties: schema.properties,
+        properties: resolved.properties,
     };
+}
+
+/**
+ * Resolve a top-level `$ref` (e.g. `#/definitions/Foo`) against the root schema document.
+ */
+function resolveRef(root: JSONSchema4, ref: JSONSchema4): JSONSchema4 {
+    if (!ref.$ref) return ref;
+
+    const path = ref.$ref.replace(/^#\//, '').split('/');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const resolved = path.reduce<any>((node, key) => node?.[key], root);
+    if (!resolved) {
+        throw new Error(`Unable to resolve $ref: ${ref.$ref}`);
+    }
+
+    return resolveRef(root, resolved);
 }
 
 function beautifyJSON(json: string, width: number): string {
