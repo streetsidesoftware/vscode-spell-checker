@@ -50,6 +50,7 @@ const config: tsj.Config = {
 const configWeb: tsj.Config = {
     ...config,
     topRef: true,
+    // expose: 'export',
 };
 
 function p(filePath: string): string {

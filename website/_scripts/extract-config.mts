@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { unindent } from './lib/utils.mts';
+import { resolve } from 'node:path';
 
 type TypeSlugRefs = { [key: string]: string };
 
@@ -10,29 +11,43 @@ type TypeSlugRefs = { [key: string]: string };
 const schemaFile = new URL('../../packages/_server/spell-checker-config-web.schema.json', import.meta.url);
 const descriptionWidth = 90;
 const compare = new Intl.Collator().compare;
-
-async function run(): Promise<void> {
-    const configSections = await loadSchema();
-
-    if (!Array.isArray(configSections)) {
-        return;
-    }
-
-    configSections.sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || compare(a.title || '', b.title || ''));
-
-    const refs = extractTypeRefs(configSections);
-
-    await fs.mkdir(targetDir, { recursive: true });
-    await fs.writeFile(new URL('index.md', targetDir), genIndex(configSections));
-    for (const section of formatSections(configSections, refs)) {
-        await fs.writeFile(new URL(`auto_${section.slug}.md`, targetDir), section.content);
-    }
-}
-
 const targetDir = new URL('../docs/configuration/', import.meta.url);
 
-function genIndex(configSections: JSONSchema4[]): string {
-    return unindent`\
+class ConfigExtractor {
+    private root: JSONSchema4;
+    private configSections: JSONSchema4[];
+    private refs: TypeSlugRefs;
+    constructor(root: JSONSchema4) {
+        this.root = root;
+        const configSections = this.#resolve(this.root).items;
+        this.configSections = Array.isArray(configSections) ? configSections : [];
+        this.configSections.sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || compare(a.title || '', b.title || ''));
+        this.refs = this.#extractTypeRefs(this.configSections);
+    }
+
+    #extractTypeRefs(configSections: JSONSchema4[]): TypeSlugRefs {
+        const refs: TypeSlugRefs = {};
+        for (const section of configSections) {
+            for (const key of Object.keys(section.properties || {})) {
+                refs[key] ??= slugifyTitle(section.title || '') + hashRef(key);
+            }
+        }
+        return refs;
+    }
+
+    #resolve($ref: JSONSchema4 | string): JSONSchema4 {
+        if (typeof $ref === 'string') {
+            return resolveRef(this.root, { $ref });
+        }
+        return resolveRef(this.root, $ref);
+    }
+
+    genIndex(): string {
+        return this.#genIndex(this.configSections);
+    }
+
+    #genIndex(configSections: JSONSchema4[]): string {
+        return unindent`\
         ---
         # AUTO-GENERATED ALL CHANGES WILL BE LOST
         # See \`_scripts/extract-config.mts\`
@@ -42,32 +57,50 @@ function genIndex(configSections: JSONSchema4[]): string {
 
         # Configuration Settings
 
-        ${sectionTOC(configSections)}
+        ${this.#sectionTOC(configSections)}
     `;
-}
+    }
 
-function sectionTOC(sections: JSONSchema4[]): string {
-    function tocEntry(value: JSONSchema4): string {
+    #tocEntry(value: JSONSchema4): string {
+        value = this.#resolve(value);
         if (!value.title) return '';
         const title = value.title;
         const description = value.description ? ` - ${value.description}` : '';
         return `- [${title}](configuration/${slugifyTitle(title)}) ${description}`.trim();
     }
 
-    return `\n${sections
-        .map(tocEntry)
-        .filter((a) => !!a)
-        .join('\n')}\n`;
+    #sectionTOC(sections: JSONSchema4[]): string {
+        return `\n${sections
+            .map((v) => this.#tocEntry(v))
+            .filter((a) => !!a)
+            .join('\n')}\n`;
+    }
+
+    #formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
+        return sections.map((s) => formatSectionContent(s, refs));
+    }
+
+    formatSections(): FormattedSection[] {
+        return this.#formatSections(this.configSections, this.refs);
+    }
+}
+
+async function run(): Promise<void> {
+    const root = await loadSchema();
+
+    const extractor = new ConfigExtractor(root);
+
+    const configSections = await fs.mkdir(targetDir, { recursive: true });
+    await fs.writeFile(new URL('index.md', targetDir), extractor.genIndex());
+    for (const section of extractor.formatSections()) {
+        await fs.writeFile(new URL(`auto_${section.slug}.md`, targetDir), section.content);
+    }
 }
 
 interface FormattedSection {
     title: string;
     content: string;
     slug: string;
-}
-
-function formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
-    return sections.map((s) => formatSectionContent(s, refs));
 }
 
 function formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): FormattedSection {
@@ -98,16 +131,6 @@ function formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): Formatt
     `;
 
     return { title, content, slug };
-}
-
-function extractTypeRefs(configSections: JSONSchema4[]): TypeSlugRefs {
-    const refs: TypeSlugRefs = {};
-    for (const section of configSections) {
-        for (const key of Object.keys(section.properties || {})) {
-            refs[key] ??= slugifyTitle(section.title || '') + hashRef(key);
-        }
-    }
-    return refs;
 }
 
 /**
@@ -331,15 +354,9 @@ function shorten(text: string, len: number): string {
     return text.length <= len ? text : text.slice(0, len - 1) + '…';
 }
 
-async function loadSchema(): Promise<JSONSchema4['items'] | Pick<JSONSchema4, 'properties'>> {
+async function loadSchema(): Promise<JSONSchema4> {
     const schema: JSONSchema4 = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
-
-    const resolved = resolveRef(schema, schema);
-
-    if (resolved.items) return resolved.items;
-    return {
-        properties: resolved.properties,
-    };
+    return schema;
 }
 
 /**
