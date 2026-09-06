@@ -332,10 +332,11 @@ Default
 </dt>
 <dd>
 
-```json5
+```json5 title="default"
 {
-"Average Word Length too Long": true, "Lines too Long": true,
-"Maximum Word Length Exceeded": true
+  "Average Word Length too Long": true,
+  "Lines too Long": true,
+  "Maximum Word Length Exceeded": true
 }
 ```
 

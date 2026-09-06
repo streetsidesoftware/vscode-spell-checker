@@ -207,7 +207,12 @@ Default
 </dt>
 <dd>
 
-_`{"*":true,"markdown":true}`_
+```json5 title="default"
+{
+  "*": true,
+  "markdown": true
+}
+```
 
 </dd>
 
@@ -278,11 +283,11 @@ Default
 </dt>
 <dd>
 
-```json5
+```json5 title="default"
 {
-"chatSessionInput": true, "comment": true, "file": true, "gist": true, "repo":
-true, "sftp": true, "untitled": true, "vscode-notebook-cell": true,
-"vscode-scm": true, "vscode-userdata": true, "vscode-vfs": true, "vsls": true
+  "chatSessionInput": true, "comment": true, "file": true, "gist": true,
+  "repo": true, "sftp": true, "untitled": true, "vscode-notebook-cell": true,
+  "vscode-scm": true, "vscode-userdata": true, "vscode-vfs": true, "vsls": true
 }
 ```
 
@@ -455,11 +460,15 @@ Default
 </dt>
 <dd>
 
-```json5
+```json5 title="default"
 [
-"package-lock.json", "node_modules", "vscode-extension",
-".git/{info,lfs,logs,refs,objects}/**", ".git/{index,*refs,*HEAD}", ".vscode",
-".vscode-insiders"
+  "package-lock.json",
+  "node_modules",
+  "vscode-extension",
+  ".git/{info,lfs,logs,refs,objects}/**",
+  ".git/{index,*refs,*HEAD}",
+  ".vscode",
+  ".vscode-insiders"
 ]
 ```
 
@@ -654,18 +663,20 @@ Default
 </dt>
 <dd>
 
-```json5
+```json5 title="default"
 {
-"allowCompoundWords": true, "caseSensitive": true, "dictionaries": true,
-"dictionaryDefinitions": true, "enableGlobDot": true, "features": true,
-"files": true, "flagWords": true, "gitignoreRoot": true, "globRoot": true,
-"ignorePaths": true, "ignoreRegExpList": true, "ignoreWords": true, "import":
-true, "includeRegExpList": true, "language": true, "languageId": true,
-"languageSettings": true, "loadDefaultConfiguration": true, "minWordLength":
-true, "noConfigSearch": true, "noSuggestDictionaries": true, "numSuggestions":
-true, "overrides": true, "patterns": true, "pnpFiles": true, "reporters": true,
-"suggestWords": true, "useGitignore": true, "usePnP": true, "userWords": true,
-"validateDirectives": true, "words": true
+  "allowCompoundWords": true, "caseSensitive": true, "dictionaries": true,
+  "dictionaryDefinitions": true, "enableGlobDot": true, "features": true,
+  "files": true, "flagWords": true, "gitignoreRoot": true, "globRoot": true,
+  "ignorePaths": true, "ignoreRegExpList": true, "ignoreWords": true,
+  "import": true, "includeRegExpList": true, "language": true,
+  "languageId": true, "languageSettings": true,
+  "loadDefaultConfiguration": true, "minWordLength": true,
+  "noConfigSearch": true, "noSuggestDictionaries": true,
+  "numSuggestions": true, "overrides": true, "patterns": true,
+  "pnpFiles": true, "reporters": true, "suggestWords": true,
+  "useGitignore": true, "usePnP": true, "userWords": true,
+  "validateDirectives": true, "words": true
 }
 ```
 

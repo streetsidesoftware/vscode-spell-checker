@@ -160,7 +160,13 @@ Default
 </dt>
 <dd>
 
-_`{"chatSessionInput":true,"comment":true,"vscode-scm":true}`_
+```json5 title="default"
+{
+  "chatSessionInput": true,
+  "comment": true,
+  "vscode-scm": true
+}
+```
 
 </dd>
 

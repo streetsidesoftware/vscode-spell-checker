@@ -219,7 +219,7 @@ class ConfigExtractor {
         const lines = text.split('\n');
         if (lines.length > 1) {
             // console.error('%o', lines);
-            return '\n```json5\n' + text + '\n```\n';
+            return '\n```json5 title="default"\n' + text + '\n```\n';
         }
 
         return '_`' + text + '`_';
@@ -697,40 +697,47 @@ function resolveRef(root: JSONSchema4, ref: JSONSchema4): JSONSchema4 {
 }
 
 function beautifyJSON(json: string, width: number): string {
-    if (json.length < width) return json;
+    const obj = JSON.parse(json);
+    if (typeof obj !== 'object') return json;
 
     const lines: string[] = [];
     let line = '';
+    let indent = '  ';
 
     function addToLine(...items: string[]): void {
         for (const text of items) {
             if (text === '\n') {
-                lines.push(line);
-                line = '';
+                lines.push(line.trimEnd());
+                line = indent;
                 continue;
             }
             if (line.length + text.length > width) {
-                line && lines.push(line);
-                line = '';
+                line && lines.push(line.trimEnd());
+                line = indent;
             }
             line += text;
         }
     }
 
-    const obj = JSON.parse(json);
-    if (typeof obj !== 'object') return json;
+    const firstTry = JSON.stringify(obj, null, 2);
+    if (firstTry.split('\n').length < 10) return firstTry;
+
     if (Array.isArray(obj)) {
+        indent = '  ';
         addToLine('[', '\n');
         obj.forEach((item, index) => {
             addToLine(JSON.stringify(item) + (index === obj.length - 1 ? '' : ', '));
         });
+        indent = '';
         addToLine('\n', ']');
     } else if (typeof obj === 'object') {
+        indent = '  ';
         addToLine('{', '\n');
         const entries = Object.entries(obj);
         entries.forEach(([key, item], index) => {
-            addToLine(JSON.stringify(key) + ': ', JSON.stringify(item) + (index === entries.length - 1 ? '' : ', '));
+            addToLine(JSON.stringify(key) + ': ' + (JSON.stringify(item) + (index === entries.length - 1 ? '' : ', ')));
         });
+        indent = '';
         addToLine('\n', '}');
     }
 
