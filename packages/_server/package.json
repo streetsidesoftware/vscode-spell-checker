@@ -58,9 +58,9 @@
   "scripts": {
     "build": "tsdown && npm run build:tsc && npm run build-schema",
     "build-production": "npm run clean-build-production",
-    "build-schema": "node ./scripts/build-schema.mjs",
+    "build-schema": "node ./scripts/build-schema.mts",
     "build:production": "tsdown --production --minify && npm run build-schema",
-    "build:tsc": "tsc -p tsconfig.test.json",
+    "build:tsc": "tsc -p tsconfig.test.json && tsc -p scripts",
     "clean-build-production": "npm run clean && npm run build:production",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf dist temp out coverage lib",
