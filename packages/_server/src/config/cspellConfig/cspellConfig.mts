@@ -191,6 +191,7 @@ type _VSConfigPerf = Pick<
     | 'blockCheckingWhenTextChunkSizeGreaterThan'
     | 'checkLimit'
     | 'spellCheckDelayMs'
+    | 'spellCheckTriggerCharacters'
     | 'suggestionsTimeout'
 >;
 

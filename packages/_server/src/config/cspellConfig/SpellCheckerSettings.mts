@@ -153,6 +153,21 @@ export interface SpellCheckerSettings
     spellCheckDelayMs?: number;
 
     /**
+     * Characters that trigger spell checking after a document change.
+     * When set, changes that do not contain one of these characters are not checked.
+     *
+     * **Example:** check after spaces or new lines
+     * ```json
+     * "cSpell.spellCheckTriggerCharacters": [" ", "\n"]
+     * ```
+     *
+     * Letter-only edits use the configured spell-check delay; matching characters trigger an immediate check.
+     * @scope application
+     * @default []
+     */
+    spellCheckTriggerCharacters?: string[];
+
+    /**
      * Use Rename Provider when fixing spelling issues.
      * @scope language-overridable
      * @default true
