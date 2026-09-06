@@ -61,7 +61,13 @@ Type
 </dt>
 <dd>
 
-`object`
+```ts
+{
+  "code-spell-checker"?: string;
+  cspell?: string;
+  [key: string]: string;
+}
+```
 
 </dd>
 
@@ -453,7 +459,92 @@ Type
 </dt>
 <dd>
 
-`object[]`
+```ts
+{
+  allowCompoundWords?: boolean;
+  caseSensitive?: boolean;
+  description?: string;
+  diagnosticLevel?: ("Error" | "Warning" | "Information" | "Hint");
+  diagnosticLevelFlaggedWords?: ("Error" | "Warning" | "Information" | "Hint");
+  dictionaries?: string[];
+  dictionaryDefinitions?: DictionaryDef[];
+  enableFiletypes?: string[];
+  enabled?: boolean;
+  enabledFileTypes?: {
+    [key: string]: boolean;
+  };
+  enabledLanguageIds?: string[];
+  filename: (string | string[]);
+  flagWords?: string[];
+  id?: string;
+  ignoreRandomStrings?: boolean;
+  ignoreRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+  ignoreWords?: string[];
+  includeRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+  language?: string;
+  languageId?: (string | string[]);
+  languageSettings?: {
+    allowCompoundWords?: boolean;
+    caseSensitive?: boolean;
+    description?: string;
+    dictionaries?: string[];
+    dictionaryDefinitions?: DictionaryDef[];
+    enabled?: boolean;
+    flagWords?: string[];
+    id?: string;
+    ignoreRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+    ignoreWords?: string[];
+    includeRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+    languageId: (string | string[]);
+    locale?: (string | string[]);
+    name?: string;
+    noSuggestDictionaries?: string[];
+    patterns?: {
+      description?: string;
+      name: string;
+      pattern: (string | string[]);
+    }[];
+    substitutionDefinitions?: {
+      description?: string;
+      entries: [string, string][];
+      name: string;
+    }[];
+    substitutions?: ([string, string] | string)[];
+    suggestWords?: string[];
+    unknownWords?: ("report-all" | "report-simple" | "report-common-typos" | "report-flagged");
+    useIntlWordSegmentation?: boolean;
+    words?: string[];
+  }[];
+  loadDefaultConfiguration?: boolean;
+  maxDuplicateProblems?: number;
+  maxFileSize?: (number | string);
+  maxNumberOfProblems?: number;
+  minRandomLength?: number;
+  minWordLength?: number;
+  name?: string;
+  noSuggestDictionaries?: string[];
+  numSuggestions?: number;
+  patterns?: {
+    description?: string;
+    name: string;
+    pattern: (string | string[]);
+  }[];
+  pnpFiles?: string[];
+  substitutionDefinitions?: {
+    description?: string;
+    entries: [string, string][];
+    name: string;
+  }[];
+  substitutions?: ([string, string] | string)[];
+  suggestWords?: string[];
+  suggestionNumChanges?: number;
+  suggestionsTimeout?: number;
+  unknownWords?: ("report-all" | "report-simple" | "report-common-typos" | "report-flagged");
+  useIntlWordSegmentation?: boolean;
+  usePnP?: boolean;
+  words?: string[];
+}[]
+```
 
 </dd>
 
@@ -523,7 +614,13 @@ Type
 </dt>
 <dd>
 
-`object[]`
+```ts
+{
+  description?: string;
+  name: string;
+  pattern: (string | string[]);
+}[]
+```
 
 </dd>
 
@@ -577,7 +674,13 @@ Type
 </dt>
 <dd>
 
-`object[]`
+```ts
+{
+  description?: string;
+  entries: [string, string][];
+  name: string;
+}[]
+```
 
 </dd>
 
@@ -640,7 +743,7 @@ Type
 </dt>
 <dd>
 
-`( [] | string )[]`
+`( [ string, string ] | string )[]`
 
 </dd>
 
@@ -763,7 +866,7 @@ Description
 <dd>
 
 Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
-The locale used for the segmentation is based on the  {@link  language  }  setting.
+The locale used for the segmentation is based on the  `language`  setting.
 
 </dd>
 
@@ -839,7 +942,15 @@ Type
 </dt>
 <dd>
 
-`object`
+```ts
+{
+  [key: string]: {
+    data: string;
+    encoding?: ("base64" | "plaintext" | "utf8");
+    url?: string;
+  };
+}
+```
 
 </dd>
 
@@ -873,5 +984,56 @@ CSpell Version
 </dl>
 
 ---
+
+
+## Type Definitions
+
+
+### CustomDictionary
+
+```ts
+{
+  addWords?: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+}
+```
+
+---
+
+
+### DictionaryDef
+
+```ts
+(CustomDictionary | {
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  supportNonStrictSearches?: boolean;
+} | {
+  addWords: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+})
+```
+
+---
+
+
 
 

@@ -314,7 +314,7 @@ Type
 </dt>
 <dd>
 
-`object`
+[`EnabledNotifications`](#enablednotifications)
 
 </dd>
 
@@ -1090,5 +1090,25 @@ _- none -_
 </dl>
 
 ---
+
+
+## Type Definitions
+
+
+### EnabledNotifications
+
+Control which notifications are displayed.
+
+```ts
+{
+  "Average Word Length too Long"?: boolean;
+  "Lines too Long"?: boolean;
+  "Maximum Word Length Exceeded"?: boolean;
+}
+```
+
+---
+
+
 
 

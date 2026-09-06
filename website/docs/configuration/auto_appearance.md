@@ -61,7 +61,18 @@ Type
 </dt>
 <dd>
 
-`object`
+```ts
+{
+  overviewRulerColor?: string;
+  textDecoration?: string;
+  textDecorationColor?: string;
+  textDecorationColorFlagged?: string;
+  textDecorationColorSuggestion?: string;
+  textDecorationLine?: ("underline" | "overline" | "line-through");
+  textDecorationStyle?: ("solid" | "wavy" | "dotted" | "dashed" | "double");
+  textDecorationThickness?: string;
+}
+```
 
 </dd>
 
@@ -127,7 +138,11 @@ Type
 </dt>
 <dd>
 
-`object`
+```ts
+{
+  [key: string]: boolean;
+}
+```
 
 </dd>
 
@@ -194,7 +209,18 @@ Type
 </dt>
 <dd>
 
-`object`
+```ts
+{
+  overviewRulerColor?: string;
+  textDecoration?: string;
+  textDecorationColor?: string;
+  textDecorationColorFlagged?: string;
+  textDecorationColorSuggestion?: string;
+  textDecorationLine?: ("underline" | "overline" | "line-through");
+  textDecorationStyle?: ("solid" | "wavy" | "dotted" | "dashed" | "double");
+  textDecorationThickness?: string;
+}
+```
 
 </dd>
 

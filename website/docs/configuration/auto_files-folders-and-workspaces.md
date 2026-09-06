@@ -189,7 +189,7 @@ Type
 </dt>
 <dd>
 
-`object`
+[`EnabledFileTypes`](#enabledfiletypes)
 
 </dd>
 
@@ -260,7 +260,7 @@ Type
 </dt>
 <dd>
 
-`object`
+[`EnabledSchemes`](#enabledschemes)
 
 </dd>
 
@@ -636,7 +636,7 @@ Type
 </dt>
 <dd>
 
-`object`
+[`CSpellMergeFields`](#cspellmergefields)
 
 </dd>
 
@@ -1121,5 +1121,75 @@ _- none -_
 </dl>
 
 ---
+
+
+## Type Definitions
+
+
+### EnabledFileTypes
+
+```ts
+{
+  [key: string]: boolean;
+}
+```
+
+---
+
+
+### EnabledSchemes
+
+```ts
+{
+  [key: string]: boolean;
+}
+```
+
+---
+
+
+### CSpellMergeFields
+
+```ts
+{
+  allowCompoundWords?: boolean;
+  caseSensitive?: boolean;
+  dictionaries?: boolean;
+  dictionaryDefinitions?: boolean;
+  enableGlobDot?: boolean;
+  features?: boolean;
+  files?: boolean;
+  flagWords?: boolean;
+  gitignoreRoot?: boolean;
+  globRoot?: boolean;
+  ignorePaths?: boolean;
+  ignoreRegExpList?: boolean;
+  ignoreWords?: boolean;
+  import?: boolean;
+  includeRegExpList?: boolean;
+  language?: boolean;
+  languageId?: boolean;
+  languageSettings?: boolean;
+  loadDefaultConfiguration?: boolean;
+  minWordLength?: boolean;
+  noConfigSearch?: boolean;
+  noSuggestDictionaries?: boolean;
+  numSuggestions?: boolean;
+  overrides?: boolean;
+  patterns?: boolean;
+  pnpFiles?: boolean;
+  reporters?: boolean;
+  suggestWords?: boolean;
+  useGitignore?: boolean;
+  usePnP?: boolean;
+  userWords?: boolean;
+  validateDirectives?: boolean;
+  words?: boolean;
+}
+```
+
+---
+
+
 
 

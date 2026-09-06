@@ -133,7 +133,7 @@ Type
 </dt>
 <dd>
 
-`object`
+[`CustomDictionaries`](#customdictionaries)
 
 </dd>
 
@@ -271,7 +271,7 @@ Type
 </dt>
 <dd>
 
-`object[]`
+[`DictionaryDef`](#dictionarydef)[]
 
 </dd>
 
@@ -514,7 +514,40 @@ Type
 </dt>
 <dd>
 
-`object[]`
+```ts
+{
+  allowCompoundWords?: boolean;
+  caseSensitive?: boolean;
+  description?: string;
+  dictionaries?: string[];
+  dictionaryDefinitions?: DictionaryDef[];
+  enabled?: boolean;
+  flagWords?: string[];
+  id?: string;
+  ignoreRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+  ignoreWords?: string[];
+  includeRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+  languageId: (string | string[]);
+  locale?: (string | string[]);
+  name?: string;
+  noSuggestDictionaries?: string[];
+  patterns?: {
+    description?: string;
+    name: string;
+    pattern: (string | string[]);
+  }[];
+  substitutionDefinitions?: {
+    description?: string;
+    entries: [string, string][];
+    name: string;
+  }[];
+  substitutions?: ([string, string] | string)[];
+  suggestWords?: string[];
+  unknownWords?: ("report-all" | "report-simple" | "report-common-typos" | "report-flagged");
+  useIntlWordSegmentation?: boolean;
+  words?: string[];
+}[]
+```
 
 </dd>
 
@@ -834,5 +867,88 @@ _- none -_
 </dl>
 
 ---
+
+
+## Type Definitions
+
+
+### CustomDictionariesDictionary
+
+Define a custom dictionary to be included.
+
+```ts
+{
+  addWords?: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name?: string;
+  noSuggest?: boolean;
+  path?: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+}
+```
+
+---
+
+
+### CustomDictionaries
+
+```ts
+{
+  [key: string]: (boolean | CustomDictionariesDictionary);
+}
+```
+
+---
+
+
+### CustomDictionary
+
+```ts
+{
+  addWords?: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+}
+```
+
+---
+
+
+### DictionaryDef
+
+```ts
+(CustomDictionary | {
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  supportNonStrictSearches?: boolean;
+} | {
+  addWords: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+})
+```
+
+---
+
+
 
 

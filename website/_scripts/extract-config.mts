@@ -5,6 +5,31 @@ import { unindent } from './lib/utils.mts';
 type TypeSlugRefs = { [key: string]: string };
 
 /**
+ * A simplified structural representation of a JSON Schema type, built by
+ * resolving `$ref`s so that named object types can be detected and hoisted
+ * out into a separate "Type Definitions" section, while inline (unnamed)
+ * object types are expanded in place.
+ */
+type TypeNode =
+    | { kind: 'plain'; text: string }
+    | { kind: 'array'; item: TypeNode }
+    | { kind: 'tuple'; items: TypeNode[] }
+    | { kind: 'union'; options: TypeNode[] }
+    | { kind: 'ref'; name: string }
+    | { kind: 'object'; props: ObjectProp[]; indexSignature?: { keyType: string; value: TypeNode } };
+
+interface ObjectProp {
+    key: string;
+    type: TypeNode;
+    optional: boolean;
+}
+
+interface NamedType {
+    node: TypeNode;
+    description?: string;
+}
+
+/**
  * The Schema File URL
  */
 const schemaFile = new URL('../../packages/_server/spell-checker-config-web.schema.json', import.meta.url);
@@ -16,6 +41,10 @@ class ConfigExtractor {
     private root: JSONSchema4;
     private configSections: JSONSchema4[];
     private refs: TypeSlugRefs;
+    /** Named object types encountered while formatting the current section, keyed by definition name. */
+    private namedTypes: Map<string, NamedType> = new Map();
+    /** Guards against infinite recursion when resolving a named type that (indirectly) references itself. */
+    private namedTypesInProgress: Set<string> = new Set();
     constructor(root: JSONSchema4) {
         this.root = root;
         this.configSections = this.#extractConfigSections();
@@ -94,27 +123,31 @@ class ConfigExtractor {
         entries.sort((a, b) => this.#compareProperties(a, b));
         const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
+        this.namedTypes = new Map();
+
         const title = section.title || '';
         const slug = slugifyTitle(title);
-        const content = unindent`\
-            ---
-            # AUTO-GENERATED ALL CHANGES WILL BE LOST
-            # See \`_scripts/extract-config.mts\`
-            title: ${title}
-            id: ${slugify(title)}
-            ---
+        const definitions = this.#configDefinitions(entries, refs);
+        const namedTypeDefinitions = this.#formatNamedTypeDefinitions();
+        const content =
+            unindent`\
+                ---
+                # AUTO-GENERATED ALL CHANGES WILL BE LOST
+                # See \`_scripts/extract-config.mts\`
+                title: ${title}
+                id: ${slugify(title)}
+                ---
 
-            # ${title}
+                # ${title}
 
-            ${section.description || ''}
+                ${section.description || ''}
 
-            ${this.#configTable(activeEntries, refs)}
+                ${this.#configTable(activeEntries, refs)}
 
-            ## Settings
+                ## Settings
 
-            ${this.#configDefinitions(entries, refs)}
-
-        `;
+                ${definitions}
+            `.trimEnd() + (namedTypeDefinitions ? `\n\n${namedTypeDefinitions}\n\n\n` : '\n\n\n');
 
         return { title, content, slug };
     }
@@ -193,10 +226,28 @@ class ConfigExtractor {
     }
 
     #formatType(def: JSONSchema4): string {
-        const typeLines = beautifyType(this.#extractTypeAndFormat(def), 80);
-        const types = typeLines.length > 1 ? 'definition\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
-        const enumDefs = this.#extractEnumDescriptions(def);
-        return types + enumDefs;
+        const node = this.#buildTypeNode(def);
+        return this.#renderTypeField(node) + this.#extractEnumDescriptions(def);
+    }
+
+    /**
+     * Render the value used for a "Type" field: an inline, backtick-quoted type for a plain
+     * type or a type that only involves links to named types (matching how the rest of this
+     * file formats inline code, e.g. {@link fixVSCodeRefs}), or - when an inline object literal
+     * is involved - a fenced code block, the same way {@link #formatDefaultValue} pretty-prints
+     * multi-line default values.
+     */
+    #renderTypeField(node: TypeNode): string {
+        if (containsObjectLiteral(node)) {
+            return '\n```ts\n' + this.#renderTsType(node, 0) + '\n```\n';
+        }
+
+        if (containsRef(node)) {
+            return this.#renderLinkedType(node);
+        }
+
+        const typeLines = beautifyType(this.#renderPlainType(node), 80);
+        return typeLines.length > 1 ? '\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
     }
 
     #extractEnumDescriptions(def: JSONSchema4): string {
@@ -215,28 +266,200 @@ class ConfigExtractor {
         `;
     }
 
-    #extractTypeAndFormat(def: JSONSchema4 | undefined): string {
-        return formatExtractedType(this.#extractType(def));
+    /**
+     * Build a structural {@link TypeNode} for a schema, resolving `$ref`s.
+     *
+     * A `$ref` to a named definition that turns out to be an object type (or a union that
+     * involves one) is hoisted: it is registered in {@link namedTypes} and a `ref` node is
+     * returned instead of inlining it, so that it can be rendered later in a "Type Definitions"
+     * section. Inline (unnamed) object types are expanded in place as an `object` node.
+     */
+    #buildTypeNode(def: JSONSchema4 | undefined): TypeNode {
+        if (!def) return { kind: 'plain', text: '' };
+
+        if (def.$ref) {
+            const name = refName(def.$ref);
+            const known = this.namedTypes.get(name);
+            if (known) return { kind: 'ref', name };
+            if (!isHoistableName(name) || this.namedTypesInProgress.has(name)) {
+                return this.#buildTypeNodeRaw(resolveRef(this.root, def));
+            }
+
+            const resolved = resolveRef(this.root, def);
+            this.namedTypesInProgress.add(name);
+            const inner = this.#buildTypeNodeRaw(resolved);
+            this.namedTypesInProgress.delete(name);
+
+            if (!containsComplexType(inner)) return inner;
+
+            this.namedTypes.set(name, { node: inner, description: resolved.description });
+            return { kind: 'ref', name };
+        }
+
+        return this.#buildTypeNodeRaw(def);
     }
 
-    #extractType(def: JSONSchema4 | undefined): string | string[] {
-        def = def && this.#resolve(def);
-        if (!def) return '';
-        if (def.type === 'array') return this.#extractTypeAndFormat(def.items) + '[]';
+    #buildTypeNodeRaw(def: JSONSchema4): TypeNode {
+        if (def.type === 'array') {
+            if (Array.isArray(def.items)) {
+                return { kind: 'tuple', items: def.items.map((t) => this.#buildTypeNode(t)) };
+            }
+            return { kind: 'array', item: this.#buildTypeNode(def.items) };
+        }
 
         if (def.enum) {
-            return def.enum.map((v) => JSON.stringify(v));
+            return { kind: 'union', options: def.enum.map((v): TypeNode => ({ kind: 'plain', text: JSON.stringify(v) })) };
         }
 
-        if (def.type) return def.type;
+        if (def.type === 'object') {
+            return this.#buildObjectNode(def);
+        }
+
+        if (Array.isArray(def.type)) {
+            const options = def.type.map((t): TypeNode => ({ kind: 'plain', text: t }));
+            return options.length === 1 ? options[0] : { kind: 'union', options };
+        }
+
+        if (def.type) return { kind: 'plain', text: def.type };
+
+        // `{ "not": {} }` is the JSON Schema idiom for "matches nothing" (TypeScript's `never`),
+        // commonly paired with other options in an `anyOf` to widen a string-literal union
+        // without losing autocomplete (TypeScript's `SomeLiteral | (string & {})` trick).
+        if (def.not) return { kind: 'plain', text: 'never' };
 
         if (Array.isArray(def.anyOf)) {
-            const types = [...new Set(def.anyOf.map((t) => this.#extractType(t)).flat())];
-            if (types.length === 1) return types[0];
-            return types;
+            const options = dedupeTypeNodes(def.anyOf.map((t) => this.#buildTypeNode(t)));
+            // `T | never` is just `T`; drop `never` whenever another option is present.
+            const meaningful = options.filter((o) => !(o.kind === 'plain' && o.text === 'never'));
+            const result = meaningful.length ? meaningful : options;
+            return result.length === 1 ? result[0] : { kind: 'union', options: result };
         }
 
-        return '';
+        return { kind: 'plain', text: '' };
+    }
+
+    #buildObjectNode(def: JSONSchema4): TypeNode {
+        const required = new Set(Array.isArray(def.required) ? def.required : []);
+        const props: ObjectProp[] = Object.entries(def.properties || {}).map(([key, value]) => ({
+            key,
+            type: this.#buildTypeNode(value),
+            optional: !required.has(key),
+        }));
+
+        let indexSignature: { keyType: string; value: TypeNode } | undefined;
+        if (def.additionalProperties && typeof def.additionalProperties === 'object') {
+            indexSignature = { keyType: 'string', value: this.#buildTypeNode(def.additionalProperties) };
+        } else if (def.additionalProperties === true && !props.length) {
+            indexSignature = { keyType: 'string', value: { kind: 'plain', text: 'any' } };
+        }
+
+        return { kind: 'object', props, indexSignature };
+    }
+
+    /** Render a type known to contain no object/ref nodes, matching the legacy compact format. */
+    #renderPlainType(node: TypeNode): string {
+        switch (node.kind) {
+            case 'plain':
+                return node.text;
+            case 'array':
+                return this.#renderPlainType(node.item) + '[]';
+            case 'tuple':
+                return '[ ' + node.items.map((i) => this.#renderPlainType(i)).join(', ') + ' ]';
+            case 'union': {
+                const parts = node.options.map((o) => this.#renderPlainType(o));
+                return parts.length > 1 ? '( ' + parts.join(' | ') + ' )' : (parts[0] ?? '');
+            }
+            case 'ref':
+            case 'object':
+                // Unreachable: callers only use this renderer when `containsComplexType` is false.
+                return '';
+        }
+    }
+
+    /**
+     * Render a type that references a named type but involves no inline object literal, as a
+     * single line of inline code with a real markdown link for each reference - the same style
+     * {@link fixVSCodeRefs} uses for `#setting#`-style cross references in descriptions.
+     */
+    #renderLinkedType(node: TypeNode): string {
+        switch (node.kind) {
+            case 'plain':
+                return node.text ? '`' + node.text + '`' : '';
+            case 'ref':
+                return '[`' + node.name + '`](' + hashRef(node.name) + ')';
+            case 'array':
+                return this.#renderLinkedType(node.item) + '[]';
+            case 'tuple':
+                return '[ ' + node.items.map((i) => this.#renderLinkedType(i)).join(', ') + ' ]';
+            case 'union': {
+                const parts = node.options.map((o) => this.#renderLinkedType(o));
+                return parts.length > 1 ? '( ' + parts.join(' | ') + ' )' : (parts[0] ?? '');
+            }
+            case 'object':
+                // Unreachable: callers only use this renderer when `containsObjectLiteral` is false.
+                return '';
+        }
+    }
+
+    /**
+     * Pretty-print a type as a TypeScript type literal, the same way {@link #formatDefaultValue}
+     * pretty-prints a multi-line default value into a fenced ` ```json5 ` block: plain text with
+     * real indentation, meant to be placed inside a fenced ` ```ts ` block. A named-type
+     * reference is rendered as its bare name (a link would not work inside a fenced code block);
+     * see the "Type Definitions" section for its shape.
+     */
+    #renderTsType(node: TypeNode, depth: number): string {
+        switch (node.kind) {
+            case 'plain':
+                return node.text || 'any';
+            case 'ref':
+                return node.name;
+            case 'array':
+                return this.#renderTsType(node.item, depth) + '[]';
+            case 'tuple':
+                return '[' + node.items.map((i) => this.#renderTsType(i, depth)).join(', ') + ']';
+            case 'union': {
+                const parts = node.options.map((o) => this.#renderTsType(o, depth));
+                return parts.length > 1 ? '(' + parts.join(' | ') + ')' : (parts[0] ?? '');
+            }
+            case 'object':
+                return this.#renderTsObject(node, depth);
+        }
+    }
+
+    #renderTsObject(node: Extract<TypeNode, { kind: 'object' }>, depth: number): string {
+        const pad = '  '.repeat(depth + 1);
+        const propLines = node.props.map(
+            (p) => `${pad}${propKeyText(p.key)}${p.optional ? '?' : ''}: ${this.#renderTsType(p.type, depth + 1)};`,
+        );
+        if (node.indexSignature) {
+            propLines.push(`${pad}[key: string]: ${this.#renderTsType(node.indexSignature.value, depth + 1)};`);
+        }
+        if (!propLines.length) return '{}';
+
+        return '{\n' + propLines.join('\n') + '\n' + '  '.repeat(depth) + '}';
+    }
+
+    /** Render the "Type Definitions" section listing the named object types hoisted while formatting this section. */
+    #formatNamedTypeDefinitions(): string {
+        if (!this.namedTypes.size) return '';
+
+        const sections = [...this.namedTypes.entries()].map(([name, { node, description }]) =>
+            unindent`
+                ### ${name}
+
+                ${description ? description + '\n' : ''}
+                ${this.#renderTypeField(node)}
+
+                ---
+            `.replace(/\n{3,}/g, '\n\n'),
+        );
+
+        return unindent`
+            ## Type Definitions
+
+            ${sections.join('\n')}
+        `;
     }
 
     /**
@@ -336,7 +559,9 @@ function scopeDef(scope: string | undefined): string | undefined {
 }
 
 function fixVSCodeRefs(markdown: string, refs: TypeSlugRefs): string {
-    return markdown.replaceAll(/`#(.*?)#`/g, (_, p1) => `[\`${p1}\`](${refs[p1] || hashRef(p1)})`);
+    return markdown
+        .replaceAll(/`#(.*?)#`/g, (_, p1) => `[\`${p1}\`](${refs[p1] || hashRef(p1)})`)
+        .replaceAll(/\{@link (.*?)\}/g, (_, p1) => `\`${p1.trim()}\``);
 }
 
 function singleDef(term: string, def: string, _addIgnore = false): string {
@@ -363,10 +588,87 @@ function hashRef(heading: string): string {
     return '#' + slugify(heading);
 }
 
-function formatExtractedType(types: string | string[]): string {
-    if (!Array.isArray(types)) return types;
-    if (types.length === 1) return types[0];
-    return '( ' + types.join(' | ') + ' )';
+/** Extracts the definition name from a `$ref` such as `#/definitions/CustomDictionaries`. */
+function refName(ref: string): string {
+    const path = ref.replace(/^#\//, '').split('/').map(decodeURIComponent);
+    return path[path.length - 1];
+}
+
+/**
+ * `ts-json-schema-generator` emits internal helper definitions (e.g. `Prefix<alias-...>`) used to
+ * build up the config sections themselves; these are never meaningful as a named type for a
+ * property's value and should always be inlined instead of hoisted.
+ */
+function isHoistableName(name: string): boolean {
+    return !/^Prefix\b|alias-/.test(name);
+}
+
+/** True if this type is an object literal, or references/contains a named type - too complex to inline as a plain type. */
+function containsComplexType(node: TypeNode): boolean {
+    switch (node.kind) {
+        case 'object':
+        case 'ref':
+            return true;
+        case 'array':
+            return containsComplexType(node.item);
+        case 'tuple':
+            return node.items.some(containsComplexType);
+        case 'union':
+            return node.options.some(containsComplexType);
+        case 'plain':
+            return false;
+    }
+}
+
+/** True if this type contains an inline object literal anywhere, which must be rendered as a fenced code block. */
+function containsObjectLiteral(node: TypeNode): boolean {
+    switch (node.kind) {
+        case 'object':
+            return true;
+        case 'ref':
+        case 'plain':
+            return false;
+        case 'array':
+            return containsObjectLiteral(node.item);
+        case 'tuple':
+            return node.items.some(containsObjectLiteral);
+        case 'union':
+            return node.options.some(containsObjectLiteral);
+    }
+}
+
+/** True if this type references a named type anywhere, which should be rendered as a markdown link. */
+function containsRef(node: TypeNode): boolean {
+    switch (node.kind) {
+        case 'ref':
+            return true;
+        case 'plain':
+        case 'object':
+            return false;
+        case 'array':
+            return containsRef(node.item);
+        case 'tuple':
+            return node.items.some(containsRef);
+        case 'union':
+            return node.options.some(containsRef);
+    }
+}
+
+function dedupeTypeNodes(nodes: TypeNode[]): TypeNode[] {
+    const seen = new Set<string>();
+    const result: TypeNode[] = [];
+    for (const node of nodes) {
+        const key = JSON.stringify(node);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        result.push(node);
+    }
+    return result;
+}
+
+/** Quote an object-literal property key if it isn't a valid bare identifier. */
+function propKeyText(key: string): string {
+    return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ? key : JSON.stringify(key);
 }
 
 function shorten(text: string, len: number): string {

@@ -104,7 +104,7 @@ Type
 </dt>
 <dd>
 
-`( object | string )[]`
+[`CustomDictionaryEntry`](#customdictionaryentry)[]
 
 </dd>
 
@@ -168,7 +168,7 @@ Type
 </dt>
 <dd>
 
-`( object | string )[]`
+[`CustomDictionaryEntry`](#customdictionaryentry)[]
 
 </dd>
 
@@ -232,7 +232,7 @@ Type
 </dt>
 <dd>
 
-`( object | string )[]`
+[`CustomDictionaryEntry`](#customdictionaryentry)[]
 
 </dd>
 
@@ -459,5 +459,52 @@ _`"Right"`_
 </dl>
 
 ---
+
+
+## Type Definitions
+
+
+### CustomDictionaryAugmentExistingDictionary
+
+```ts
+{
+  addWords?: boolean;
+  description?: string;
+  name: string;
+  noSuggest?: boolean;
+  path?: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+}
+```
+
+---
+
+
+### CustomDictionary
+
+```ts
+{
+  addWords?: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+}
+```
+
+---
+
+
+### CustomDictionaryEntry
+
+( [`CustomDictionaryAugmentExistingDictionary`](#customdictionaryaugmentexistingdictionary) | [`CustomDictionary`](#customdictionary) | `string` )
+
+---
+
+
 
 
