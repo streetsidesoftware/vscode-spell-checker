@@ -1398,7 +1398,7 @@ _- none -_
 ## Type Definitions
 
 
-### EnabledFileTypes
+### `EnabledFileTypes`
 
 <dl>
 
@@ -1453,7 +1453,7 @@ Type
 ---
 
 
-### EnabledSchemes
+### `EnabledSchemes`
 
 <dl>
 
@@ -1510,7 +1510,7 @@ Type
 ---
 
 
-### CSpellMergeFields
+### `CSpellMergeFields`
 
 <dl>
 

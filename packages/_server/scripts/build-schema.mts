@@ -41,6 +41,7 @@ const config: tsj.Config = {
         'deprecationMessage',
         'enumDescriptions',
         'deprecated',
+        'note',
         'order',
         'since',
         'sinceVersion',

@@ -516,7 +516,7 @@ _`"Right"`_
 ## Type Definitions
 
 
-### CustomDictionaryAugmentExistingDictionary
+### `CustomDictionaryAugmentExistingDictionary`
 
 <dl>
 
@@ -562,7 +562,57 @@ Name
 </dt>
 <dd>
 
-addWords
+`name` _(required)_
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The reference name of the dictionary.
+
+Example: `My Words` or `custom`
+
+If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Required
+</dt>
+<dd>
+
+Yes
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`addWords`
 
 </dd>
 
@@ -607,7 +657,7 @@ Name
 </dt>
 <dd>
 
-description
+`description`
 
 </dd>
 
@@ -643,48 +693,7 @@ Name
 </dt>
 <dd>
 
-name
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-The reference name of the dictionary.
-
-Example: `My Words` or `custom`
-
-If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
-If you use: `typescript` it will replace the built-in TypeScript dictionary.
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-noSuggest
+`noSuggest`
 
 </dd>
 
@@ -726,7 +735,7 @@ Name
 </dt>
 <dd>
 
-path
+`path`
 
 </dd>
 
@@ -799,7 +808,7 @@ Name
 </dt>
 <dd>
 
-scope
+`scope`
 
 </dd>
 
@@ -858,7 +867,7 @@ TypeScript:
 ---
 
 
-### CustomDictionary
+### `CustomDictionary`
 
 <dl>
 
@@ -904,175 +913,7 @@ Name
 </dt>
 <dd>
 
-addWords
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-Indicate if this custom dictionary should be used to store added words.
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
-Default
-</dt>
-<dd>
-
-_`true`_
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-btrie
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-An alternative path to a bTrie dictionary file.
-It will be used in place of `path` if the version of CSpell being used
-supports btrie files.
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
-CSpell Version
-</dt>
-<dd>
-
-9.6.0
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-description
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-Optional: A human readable description.
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-ignoreForbiddenWords
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-Some dictionaries may contain forbidden words to prevent compounding from generating
-words that are not valid in the language. These are often
-words that are used in other languages or might be generated through compounding.
-This setting allows flagged words to be ignored when checking the dictionary.
-The effect is similar to the word not being in the dictionary.
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-name
+`name` _(required)_
 
 </dd>
 
@@ -1099,45 +940,12 @@ Type
 
 </dd>
 
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
 <dt>
-Name
+Required
 </dt>
 <dd>
 
-noSuggest
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-Indicate that suggestions should not come from this dictionary.
-Words in this dictionary are considered correct, but will not be
-used when making spell correction suggestions.
-
-Note: if a word is suggested by another dictionary, but found in
-this dictionary, it will be removed from the set of
-possible suggestions.
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
+Yes
 
 </dd>
 
@@ -1155,7 +963,7 @@ Name
 </dt>
 <dd>
 
-path
+`path` _(required)_
 
 </dd>
 
@@ -1214,6 +1022,15 @@ Type
 
 </dd>
 
+<dt>
+Required
+</dt>
+<dd>
+
+Yes
+
+</dd>
+
 </dl>
 
 </td>
@@ -1228,7 +1045,217 @@ Name
 </dt>
 <dd>
 
-scope
+`addWords`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`btrie`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.6.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`description`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`ignoreForbiddenWords`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Some dictionaries may contain forbidden words to prevent compounding from generating
+words that are not valid in the language. These are often
+words that are used in other languages or might be generated through compounding.
+This setting allows flagged words to be ignored when checking the dictionary.
+The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`noSuggest`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate that suggestions should not come from this dictionary.
+Words in this dictionary are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+this dictionary, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`scope`
 
 </dd>
 
@@ -1267,7 +1294,7 @@ Name
 </dt>
 <dd>
 
-supportNonStrictSearches
+`supportNonStrictSearches`
 
 </dd>
 
@@ -1339,7 +1366,7 @@ TypeScript:
 ---
 
 
-### CustomDictionaryEntry
+### `CustomDictionaryEntry`
 
 <dl>
 

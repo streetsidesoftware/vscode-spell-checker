@@ -207,7 +207,7 @@ reporting unknown words as suggestions. Common spelling errors are still flagged
 - `typos` - report on known typo words and the rest as suggestions
 - `flagged` - report only flagged words as misspelled
 
-**Note:** This setting is deprecated. Use [`cSpell.unknownWords`](cspell#cspellunknownwords) instead.
+**Note:** This setting is deprecated. Use [`cSpell.unknownWords`](reporting-and-display#cspellunknownwords) instead.
 
 </dd>
 

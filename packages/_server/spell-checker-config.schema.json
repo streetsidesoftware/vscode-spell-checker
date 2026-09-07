@@ -522,21 +522,19 @@
               "filename": {
                 "anyOf": [
                   {
-                    "description": "These are glob expressions.",
-                    "markdownDescription": "These are glob expressions.",
                     "type": "string"
                   },
                   {
                     "items": {
-                      "description": "These are glob expressions.",
-                      "markdownDescription": "These are glob expressions.",
                       "type": "string"
                     },
                     "type": "array"
                   }
                 ],
-                "description": "Glob pattern or patterns to match against.",
-                "markdownDescription": "Glob pattern or patterns to match against."
+                "description": "The filename glob pattern to which this override applies. This is how the override determines which files it affects.\n\nExample to set the language for all TypeScript files: ```jsonc {   \"filename\": \"**/french/**\", // match all files in the french directory   \"language\": \"fr\" // Apply French language settings to all files in the french directory } ``` Example to set the file type for a specific set of files: ```jsonc {   \"filename\": \"**/*.ts\",   \"languageId\": \"typescript\" } ```",
+                "markdownDescription": "The filename glob pattern to which this override applies. This is how the override determines which files it affects.\n\nExample to set the language for all TypeScript files:\n```jsonc\n{\n  \"filename\": \"**/french/**\", // match all files in the french directory\n  \"language\": \"fr\" // Apply French language settings to all files in the french directory\n}\n```\nExample to set the file type for a specific set of files:\n```jsonc\n{\n  \"filename\": \"**/*.ts\",\n  \"languageId\": \"typescript\"\n}\n```",
+                "note": "Selects Files",
+                "order": 1
               },
               "flagWords": {
                 "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```\n\nCase Sensitivity:\n\nA word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry. In practice this means:\n- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the   document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.\n- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —   `avocado` and `AVOCADO` are not flagged.",
@@ -1173,7 +1171,9 @@
                         }
                       ],
                       "description": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.",
-                      "markdownDescription": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages."
+                      "markdownDescription": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.",
+                      "note": "Matches against `languageId` (File Type)",
+                      "order": 1
                     },
                     "locale": {
                       "anyOf": [
@@ -1192,7 +1192,9 @@
                         }
                       ],
                       "description": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.",
-                      "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales."
+                      "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.",
+                      "note": "Matches against `language`",
+                      "order": 2
                     },
                     "name": {
                       "description": "Optional name of configuration.",
@@ -1796,19 +1798,6 @@
           "markdownDescription": "The set of substitutions to apply to a document before spell checking.",
           "since": "9.7.0",
           "type": "array"
-        },
-        "cSpell.unknownWords": {
-          "default": "report-all",
-          "description": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
-          "enum": [
-            "report-all",
-            "report-simple",
-            "report-common-typos",
-            "report-flagged"
-          ],
-          "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
-          "since": "9.1.0",
-          "type": "string"
         },
         "cSpell.useIntlWordSegmentation": {
           "description": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
@@ -3060,7 +3049,9 @@
                   }
                 ],
                 "description": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.",
-                "markdownDescription": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages."
+                "markdownDescription": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.",
+                "note": "Matches against `languageId` (File Type)",
+                "order": 1
               },
               "locale": {
                 "anyOf": [
@@ -3079,7 +3070,9 @@
                   }
                 ],
                 "description": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.",
-                "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales."
+                "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.",
+                "note": "Matches against `language`",
+                "order": 2
               },
               "name": {
                 "description": "Optional name of configuration.",
@@ -4449,6 +4442,18 @@
           "markdownDescription": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
           "scope": "resource",
           "type": "number"
+        },
+        "cSpell.unknownWords": {
+          "description": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
+          "enum": [
+            "report-all",
+            "report-simple",
+            "report-common-typos",
+            "report-flagged"
+          ],
+          "markdownDescription": "Controls how unknown words are handled.\n\n- `report-all` - Report all unknown words (default behavior)\n- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.\n- `report-common-typos` - Report unknown words that are common typos and flagged words.\n- `report-flagged` - Report unknown words that are flagged.",
+          "scope": "resource",
+          "type": "string"
         },
         "cSpell.validateDirectives": {
           "description": "Verify that the in-document directives are correct.",

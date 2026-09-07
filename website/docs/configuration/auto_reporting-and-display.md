@@ -323,6 +323,23 @@ The maximum number of changes allowed on a word to be considered a suggestions.
 <tr>
 <td>
 
+[`cSpell.unknownWords`](#cspellunknownwords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Controls how unknown words are handled.
+
+</td>
+</tr>
+<tr>
+<td>
+
 [`cSpell.validateDirectives`](#cspellvalidatedirectives)
 
 </td>
@@ -1432,6 +1449,88 @@ _`3`_
 ---
 
 
+### `cSpell.unknownWords`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.unknownWords`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Controls how unknown words are handled.
+
+- `report-all` - Report all unknown words (default behavior)
+- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.
+- `report-common-typos` - Report unknown words that are common typos and flagged words.
+- `report-flagged` - Report unknown words that are flagged.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+`"report-all"`
+</li>
+<li>
+
+`"report-simple"`
+</li>
+<li>
+
+`"report-common-typos"`
+</li>
+<li>
+
+`"report-flagged"`
+</li>
+
+</ul>
+
+`( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+</dl>
+
+---
+
+
 ### `cSpell.validateDirectives`
 
 <dl>
@@ -1489,7 +1588,7 @@ _- none -_
 ## Type Definitions
 
 
-### EnabledNotifications
+### `EnabledNotifications`
 
 <dl>
 
@@ -1542,7 +1641,7 @@ Name
 </dt>
 <dd>
 
-Average Word Length too Long
+`Average Word Length too Long`
 
 </dd>
 
@@ -1578,7 +1677,7 @@ Name
 </dt>
 <dd>
 
-Lines too Long
+`Lines too Long`
 
 </dd>
 
@@ -1614,7 +1713,7 @@ Name
 </dt>
 <dd>
 
-Maximum Word Length Exceeded
+`Maximum Word Length Exceeded`
 
 </dd>
 
