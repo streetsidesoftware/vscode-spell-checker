@@ -8,9 +8,11 @@ import type {
 
 import type { EnableCustomDictionary } from './annotatedTypes.mjs';
 
-type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>;
+export type { CustomDictionaryScope } from '@cspell/cspell-types';
 
-type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+export type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>;
+
+export type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
 
 export type DictionaryDef = CustomDictionary | DictionaryDefPreferred | DictionaryDefCustom;
 

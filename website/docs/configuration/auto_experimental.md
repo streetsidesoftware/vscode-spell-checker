@@ -216,6 +216,29 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"all"`
+</li>
+<li>
+
+`"simple"`
+</li>
+<li>
+
+`"typos"`
+</li>
+<li>
+
+`"flagged"`
+</li>
+
+</ul>
+
 `( "all" | "simple" | "typos" | "flagged" )`
 
 </dd>

@@ -393,6 +393,33 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"None"`
+</li>
+<li>
+
+`"Error"`
+</li>
+<li>
+
+`"Warning"`
+</li>
+<li>
+
+`"Information"`
+</li>
+<li>
+
+`"Debug"`
+</li>
+
+</ul>
+
 `( "None" | "Error" | "Warning" | "Information" | "Debug" )`
 | Value | Description |
 | ----- | ----------- |

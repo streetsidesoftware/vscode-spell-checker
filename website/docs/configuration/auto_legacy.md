@@ -458,6 +458,21 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"Left"`
+</li>
+<li>
+
+`"Right"`
+</li>
+
+</ul>
+
 `( "Left" | "Right" )`
 | Value | Description |
 | ----- | ----------- |
@@ -1348,6 +1363,25 @@ Description
 Type
 </dt>
 <dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+[`CustomDictionaryAugmentExistingDictionary`](#customdictionaryaugmentexistingdictionary)
+</li>
+<li>
+
+[`CustomDictionary`](#customdictionary)
+</li>
+<li>
+
+`string`
+</li>
+
+</ul>
 
 ( [`CustomDictionaryAugmentExistingDictionary`](#customdictionaryaugmentexistingdictionary) | [`CustomDictionary`](#customdictionary) | `string` )
 

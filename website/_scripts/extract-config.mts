@@ -5,6 +5,7 @@ import type { TableHeader, TableRow } from './lib/mdTable.mts';
 import { renderMarkdownTable, renderMarkdownTableHtml } from './lib/mdTable.mts';
 import { mdDetails } from './lib/mdDetails.mts';
 import { renderMarkdownDL, singleDef } from './lib/mdDL.mts';
+import { mdList } from './lib/mdList.mts';
 
 type TypeSlugRefs = { [key: string]: string };
 
@@ -277,6 +278,12 @@ class ConfigExtractor {
             lines.push('**Array of:**', '');
             lines.push(this.#renderType(node.item));
             return lines.join('\n');
+        }
+
+        if (node.kind === 'union') {
+            lines.push('**Any of:**', '');
+            const options = node.options.map((option) => this.#renderType(option));
+            lines.push(mdList(options));
         }
 
         if (node.kind === 'object') {

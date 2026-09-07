@@ -486,6 +486,29 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"Error"`
+</li>
+<li>
+
+`"Warning"`
+</li>
+<li>
+
+`"Information"`
+</li>
+<li>
+
+`"Hint"`
+</li>
+
+</ul>
+
 `( "Error" | "Warning" | "Information" | "Hint" )`
 | Value | Description |
 | ----- | ----------- |
@@ -548,6 +571,29 @@ See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/refer
 Type
 </dt>
 <dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+`"Error"`
+</li>
+<li>
+
+`"Warning"`
+</li>
+<li>
+
+`"Information"`
+</li>
+<li>
+
+`"Hint"`
+</li>
+
+</ul>
 
 `( "Error" | "Warning" | "Information" | "Hint" )`
 | Value | Description |
@@ -746,6 +792,29 @@ See: [`cSpell.revealIssuesAfterDelayMS`](reporting-and-display#cspellrevealissue
 Type
 </dt>
 <dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+`"Off"`
+</li>
+<li>
+
+`"Word"`
+</li>
+<li>
+
+`"Line"`
+</li>
+<li>
+
+`"Document"`
+</li>
+
+</ul>
 
 `( "Off" | "Word" | "Line" | "Document" )`
 | Value | Description |
@@ -1258,6 +1327,21 @@ The type of menu used to display spelling suggestions.
 Type
 </dt>
 <dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+`"quickPick"`
+</li>
+<li>
+
+`"quickFix"`
+</li>
+
+</ul>
 
 `( "quickPick" | "quickFix" )`
 | Value | Description |

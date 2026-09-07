@@ -658,6 +658,21 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`number`
+</li>
+<li>
+
+`string`
+</li>
+
+</ul>
+
 `( number | string )`
 
 </dd>
@@ -3353,6 +3368,29 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"report-all"`
+</li>
+<li>
+
+`"report-simple"`
+</li>
+<li>
+
+`"report-common-typos"`
+</li>
+<li>
+
+`"report-flagged"`
+</li>
+
+</ul>
+
 `( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
 
 </dd>
@@ -4021,6 +4059,802 @@ TypeScript:
 ---
 
 
+### DictionaryDefPreferred
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+DictionaryDefPreferred
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+btrie
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.6.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional description of the contents / purpose of the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreForbiddenWords
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Some dictionaries may contain forbidden words to prevent compounding from generating
+words that are not valid in the language. These are often
+words that are used in other languages or might be generated through compounding.
+This setting allows flagged words to be ignored when checking the dictionary.
+The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+This is the name of a dictionary.
+
+Name Format:
+- Must contain at least 1 number or letter.
+- Spaces are allowed.
+- Leading and trailing space will be removed.
+- Names ARE case-sensitive.
+- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+noSuggest
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate that suggestions should not come from this dictionary.
+Words in this dictionary are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+this dictionary, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+path
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Path or url to the dictionary file.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+supportNonStrictSearches
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Strip case and accents to allow for case insensitive searches and
+words without accents.
+
+Note: this setting only applies to word lists. It has no-impact on trie
+dictionaries.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
+```ts
+{
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  supportNonStrictSearches?: boolean;
+}
+```
+
+</details>
+
+</dd>
+
+</dl>
+
+---
+
+
+### DictionaryDefCustom
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+DictionaryDefCustom
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+addWords
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+When `true`, let's the spell checker know that words can be added to this dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+btrie
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.6.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional description of the contents / purpose of the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreForbiddenWords
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Some dictionaries may contain forbidden words to prevent compounding from generating
+words that are not valid in the language. These are often
+words that are used in other languages or might be generated through compounding.
+This setting allows flagged words to be ignored when checking the dictionary.
+The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+This is the name of a dictionary.
+
+Name Format:
+- Must contain at least 1 number or letter.
+- Spaces are allowed.
+- Leading and trailing space will be removed.
+- Names ARE case-sensitive.
+- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+noSuggest
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate that suggestions should not come from this dictionary.
+Words in this dictionary are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+this dictionary, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+path
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+A file path or url to a custom dictionary file.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+scope
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Defines the scope for when words will be added to the dictionary.
+
+Scope values: `user`, `workspace`, `folder`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+supportNonStrictSearches
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Strip case and accents to allow for case insensitive searches and
+words without accents.
+
+Note: this setting only applies to word lists. It has no-impact on trie
+dictionaries.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
+```ts
+{
+  addWords: boolean;
+  btrie?: string;
+  description?: string;
+  ignoreForbiddenWords?: boolean;
+  name: string;
+  noSuggest?: boolean;
+  path: string;
+  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
+  supportNonStrictSearches?: boolean;
+}
+```
+
+</details>
+
+</dd>
+
+</dl>
+
+---
+
+
 ### DictionaryDef
 
 <dl>
@@ -4046,36 +4880,26 @@ Type
 </dt>
 <dd>
 
-<details>
-<summary>
+**Any of:**
 
-TypeScript:
+<ul>
 
-</summary>
+<li>
 
-```ts
-(CustomDictionary | {
-  btrie?: string;
-  description?: string;
-  ignoreForbiddenWords?: boolean;
-  name: string;
-  noSuggest?: boolean;
-  path: string;
-  supportNonStrictSearches?: boolean;
-} | {
-  addWords: boolean;
-  btrie?: string;
-  description?: string;
-  ignoreForbiddenWords?: boolean;
-  name: string;
-  noSuggest?: boolean;
-  path: string;
-  scope?: (("user" | "workspace" | "folder") | ("user" | "workspace" | "folder")[]);
-  supportNonStrictSearches?: boolean;
-})
-```
+[`CustomDictionary`](#customdictionary)
+</li>
+<li>
 
-</details>
+[`DictionaryDefPreferred`](#dictionarydefpreferred)
+</li>
+<li>
+
+[`DictionaryDefCustom`](#dictionarydefcustom)
+</li>
+
+</ul>
+
+( [`CustomDictionary`](#customdictionary) | [`DictionaryDefPreferred`](#dictionarydefpreferred) | [`DictionaryDefCustom`](#dictionarydefcustom) )
 
 </dd>
 

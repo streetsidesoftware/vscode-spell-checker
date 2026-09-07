@@ -411,135 +411,141 @@
           "$ref": "#/definitions/CustomDictionary"
         },
         {
-          "additionalProperties": false,
-          "properties": {
-            "btrie": {
-              "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
-              "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
-              "since": "9.6.0",
-              "type": "string"
-            },
-            "description": {
-              "description": "Optional description of the contents / purpose of the dictionary.",
-              "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
-              "type": "string"
-            },
-            "ignoreForbiddenWords": {
-              "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
-              "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
-              "type": "boolean"
-            },
-            "name": {
-              "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-              "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-              "type": "string"
-            },
-            "noSuggest": {
-              "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-              "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
-              "type": "boolean"
-            },
-            "path": {
-              "description": "Path or url to the dictionary file.",
-              "markdownDescription": "Path or url to the dictionary file.",
-              "type": "string"
-            },
-            "supportNonStrictSearches": {
-              "default": true,
-              "description": "Strip case and accents to allow for case insensitive searches and words without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie dictionaries.",
-              "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "path",
-            "name"
-          ],
-          "type": "object"
+          "$ref": "#/definitions/DictionaryDefPreferred"
         },
         {
-          "additionalProperties": false,
-          "properties": {
-            "addWords": {
-              "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
-              "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
-              "type": "boolean"
-            },
-            "btrie": {
-              "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
-              "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
-              "since": "9.6.0",
-              "type": "string"
-            },
-            "description": {
-              "description": "Optional description of the contents / purpose of the dictionary.",
-              "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
-              "type": "string"
-            },
-            "ignoreForbiddenWords": {
-              "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
-              "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
-              "type": "boolean"
-            },
-            "name": {
-              "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-              "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-              "type": "string"
-            },
-            "noSuggest": {
-              "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-              "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
-              "type": "boolean"
-            },
-            "path": {
-              "description": "A file path or url to a custom dictionary file.",
-              "markdownDescription": "A file path or url to a custom dictionary file.",
-              "type": "string"
-            },
-            "scope": {
-              "anyOf": [
-                {
-                  "description": "Specifies the scope of a dictionary.",
-                  "enum": [
-                    "user",
-                    "workspace",
-                    "folder"
-                  ],
-                  "markdownDescription": "Specifies the scope of a dictionary.",
-                  "type": "string"
-                },
-                {
-                  "items": {
-                    "description": "Specifies the scope of a dictionary.",
-                    "enum": [
-                      "user",
-                      "workspace",
-                      "folder"
-                    ],
-                    "markdownDescription": "Specifies the scope of a dictionary.",
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`.",
-              "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
-            },
-            "supportNonStrictSearches": {
-              "default": true,
-              "description": "Strip case and accents to allow for case insensitive searches and words without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie dictionaries.",
-              "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "path",
-            "addWords",
-            "name"
-          ],
-          "type": "object"
+          "$ref": "#/definitions/DictionaryDefCustom"
         }
       ]
+    },
+    "DictionaryDefCustom": {
+      "additionalProperties": false,
+      "properties": {
+        "addWords": {
+          "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+          "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+          "type": "boolean"
+        },
+        "btrie": {
+          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+          "since": "9.6.0",
+          "type": "string"
+        },
+        "description": {
+          "description": "Optional description of the contents / purpose of the dictionary.",
+          "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
+          "type": "string"
+        },
+        "ignoreForbiddenWords": {
+          "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
+          "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+          "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+          "type": "string"
+        },
+        "noSuggest": {
+          "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+          "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
+          "type": "boolean"
+        },
+        "path": {
+          "description": "A file path or url to a custom dictionary file.",
+          "markdownDescription": "A file path or url to a custom dictionary file.",
+          "type": "string"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "description": "Specifies the scope of a dictionary.",
+              "enum": [
+                "user",
+                "workspace",
+                "folder"
+              ],
+              "markdownDescription": "Specifies the scope of a dictionary.",
+              "type": "string"
+            },
+            {
+              "items": {
+                "description": "Specifies the scope of a dictionary.",
+                "enum": [
+                  "user",
+                  "workspace",
+                  "folder"
+                ],
+                "markdownDescription": "Specifies the scope of a dictionary.",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`.",
+          "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
+        },
+        "supportNonStrictSearches": {
+          "default": true,
+          "description": "Strip case and accents to allow for case insensitive searches and words without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie dictionaries.",
+          "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "addWords",
+        "name"
+      ],
+      "type": "object"
+    },
+    "DictionaryDefPreferred": {
+      "additionalProperties": false,
+      "properties": {
+        "btrie": {
+          "description": "An alternative path to a bTrie dictionary file. It will be used in place of `path` if the version of CSpell being used supports btrie files.",
+          "markdownDescription": "An alternative path to a bTrie dictionary file.\nIt will be used in place of `path` if the version of CSpell being used\nsupports btrie files.",
+          "since": "9.6.0",
+          "type": "string"
+        },
+        "description": {
+          "description": "Optional description of the contents / purpose of the dictionary.",
+          "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
+          "type": "string"
+        },
+        "ignoreForbiddenWords": {
+          "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
+          "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+          "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+          "type": "string"
+        },
+        "noSuggest": {
+          "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+          "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
+          "type": "boolean"
+        },
+        "path": {
+          "description": "Path or url to the dictionary file.",
+          "markdownDescription": "Path or url to the dictionary file.",
+          "type": "string"
+        },
+        "supportNonStrictSearches": {
+          "default": true,
+          "description": "Strip case and accents to allow for case insensitive searches and words without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie dictionaries.",
+          "markdownDescription": "Strip case and accents to allow for case insensitive searches and\nwords without accents.\n\nNote: this setting only applies to word lists. It has no-impact on trie\ndictionaries.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "name"
+      ],
+      "type": "object"
     },
     "EnableCustomDictionary": {
       "title": "Named dictionary to be enabled / disabled\n- `true` - turn on the named dictionary\n- `false` - turn off the named dictionary",

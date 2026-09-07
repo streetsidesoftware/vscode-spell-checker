@@ -2019,6 +2019,25 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"underline"`
+</li>
+<li>
+
+`"overline"`
+</li>
+<li>
+
+`"line-through"`
+</li>
+
+</ul>
+
 `( "underline" | "overline" | "line-through" )`
 
 </dd>
@@ -2084,6 +2103,33 @@ See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozi
 Type
 </dt>
 <dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+`"solid"`
+</li>
+<li>
+
+`"wavy"`
+</li>
+<li>
+
+`"dotted"`
+</li>
+<li>
+
+`"dashed"`
+</li>
+<li>
+
+`"double"`
+</li>
+
+</ul>
 
 `( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
 
