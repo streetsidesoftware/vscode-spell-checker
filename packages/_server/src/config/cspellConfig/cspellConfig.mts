@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 // Export the cspell settings to the client.
 
-import type { LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
+import type { LanguageSetting as CSpellLanguageSetting, OverrideSettings as CSpellOverrideSettings } from '@cspell/cspell-types';
 
 import type { AppearanceSettings } from './AppearanceSettings.mjs';
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties.mjs';
@@ -22,7 +22,7 @@ export interface CSpellUserAndExtensionSettings extends SpellCheckerSettings, CS
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserAndExtensionSettings}`;
 
-interface DictionaryDefinitions {
+export interface DictionaryDefinitions {
     /**
      * Define custom dictionaries.
      * If `addWords` is `true` words will be added to this dictionary.
@@ -49,22 +49,60 @@ interface DictionaryDefinitions {
     dictionaryDefinitions?: DictionaryDef[];
 }
 
-type LanguageSettingsReduced = Omit<LanguageSetting, 'local' | 'dictionaryDefinitions'> & DictionaryDefinitions;
+type InternalLanguageSetting = Omit<CSpellLanguageSetting, 'local' | 'dictionaryDefinitions'> & DictionaryDefinitions;
 
-interface LanguageSettings {
+export interface LanguageSetting extends InternalLanguageSetting {
+    /**
+     * @note Matches against `languageId` (File Type)
+     * @order 1
+     */
+    languageId: InternalLanguageSetting['languageId'];
+
+    /**
+     * @note Matches against `language`
+     * @order 2
+     */
+    locale?: InternalLanguageSetting['locale'];
+}
+
+export interface LanguageSettings {
     /**
      * Additional settings for individual programming languages and locales.
      * @scope resource
      */
-    languageSettings?: LanguageSettingsReduced[];
+    languageSettings?: LanguageSetting[];
 }
 
-type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> &
+interface InternalOverrideSettings extends Omit<CSpellOverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> {
+    /**
+     * The filename glob pattern to which this override applies. This is how the override determines which files it affects.
+     *
+     * Example to set the language for all TypeScript files:
+     * ```jsonc
+     * {
+     *   "filename": "**​/french/**", // match all files in the french directory
+     *   "language": "fr" // Apply French language settings to all files in the french directory
+     * }
+     * ```
+     * Example to set the file type for a specific set of files:
+     * ```jsonc
+     * {
+     *   "filename": "**​/*.ts",
+     *   "languageId": "typescript"
+     * }
+     * ```
+     * @note Selects Files
+     * @order 1
+     */
+    filename: string | string[];
+}
+
+export type OverrideSettings = InternalOverrideSettings &
     DictionaryDefinitions &
     LanguageSettings &
     Pick<SpellCheckerSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'>;
 
-interface Overrides {
+export interface Overrides {
     /**
      * Overrides are used to apply settings for specific files in your project.
      *
@@ -86,7 +124,7 @@ interface Overrides {
      * ```
      * @scope resource
      */
-    overrides?: OverridesReduced[];
+    overrides?: OverrideSettings[];
 }
 
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
@@ -174,6 +212,7 @@ type _VSConfigReporting = Pick<
     | 'showSuggestionsLinkInEditorContextMenu'
     | 'suggestionMenuType'
     | 'suggestionNumChanges'
+    | 'unknownWords'
     | 'validateDirectives'
     | keyof SpellCheckerBehaviorSettings
 >;

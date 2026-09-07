@@ -7,7 +7,7 @@ import type { HiddenFsPath } from './annotatedTypes.mjs';
 type InternalRegExp = RegExp;
 type Pattern = string | InternalRegExp;
 
-type RegExpList = Pattern[]; // CSpellSettings['includeRegExpList'] | CSpellSettings['ignoreRegExpList'];
+export type RegExpList = Pattern[]; // CSpellSettings['includeRegExpList'] | CSpellSettings['ignoreRegExpList'];
 
 /**
  * CSpellSettingsPackageProperties are used to annotate CSpellSettings found in
@@ -295,6 +295,11 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope window
      */
     validateDirectives?: CSpellSettings['validateDirectives'];
+
+    /**
+     * @scope resource
+     */
+    unknownWords?: CSpellSettings['unknownWords'];
 }
 
 export type CSpellFields = keyof CSpellSettingsPackageProperties;

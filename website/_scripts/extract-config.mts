@@ -31,6 +31,8 @@ interface CommonAttributes {
     since: string | undefined;
     sinceCSpellVersion: string | undefined;
     deprecationMessage: string | undefined;
+    note: string | undefined;
+    order: number;
 }
 
 interface ObjectProp extends CommonAttributes {
@@ -70,7 +72,7 @@ class ConfigExtractor {
         const configSections = this.#resolve(this.root).items;
         if (!Array.isArray(configSections)) return [];
         const resolved = configSections.map((s) => this.#resolve(s, hasTitle));
-        resolved.sort((a, b) => (a.order || 0) - (b.order || 0) || compare(a.title || '', b.title || ''));
+        resolved.sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || compare(a.title || '', b.title || ''));
         return resolved;
     }
 
@@ -319,7 +321,7 @@ class ConfigExtractor {
 
         if (def.$ref) {
             const name = refName(def.$ref);
-            const { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue } = this.#extractCommonAttributes(def);
+            const { title, ...attribs } = this.#extractCommonAttributes(def);
             const known = this.namedTypes.get(name);
             if (known) return { kind: 'ref', name };
             if (!isHoistableName(name) || this.namedTypesInProgress.has(name)) {
@@ -333,7 +335,7 @@ class ConfigExtractor {
 
             if (!containsComplexType(inner)) return inner;
 
-            this.namedTypes.set(name, { node: inner, description, title, since, sinceCSpellVersion, deprecationMessage, defaultValue });
+            this.namedTypes.set(name, { node: inner, title, ...attribs });
             return { kind: 'ref', name };
         }
 
@@ -485,8 +487,22 @@ class ConfigExtractor {
     #renderTypeNodeObjectAsTable(node: TypeNodeObject): string {
         if (!node.props.some((p) => p.description)) return '';
 
+        function compareProps(a: ObjectProp, b: ObjectProp): number {
+            const aOrder = a.order ?? 999;
+            const bOrder = b.order ?? 999;
+            return aOrder - bOrder || (a.optional ? 1 : 0) - (b.optional ? 1 : 0) || a.key.localeCompare(b.key);
+        }
+
         const propDescription = (p: ObjectProp): string => {
-            const terms = [{ term: 'Name', def: p.key }];
+            const name = p.key;
+            const isRequired = !p.optional;
+            const note = p.note;
+            const terms = [
+                {
+                    term: 'Name',
+                    def: '`' + name + '`' + `${isRequired ? ' _(required)_' : ''}${note ? '<br/> _Note: ' + note + '_' : ''}`,
+                },
+            ];
             if (p.description) {
                 terms.push({ term: 'Description', def: p.description });
             }
@@ -501,19 +517,23 @@ class ConfigExtractor {
             if (p.sinceCSpellVersion) {
                 terms.push({ term: 'CSpell Version', def: p.sinceCSpellVersion });
             }
+            if (!p.optional) {
+                terms.push({ term: 'Required', def: 'Yes' });
+            }
 
             return renderMarkdownDL(terms);
         };
 
         const header: TableHeader = ['Fields'];
-        const rows: TableRow[] = node.props.map((p) => [propDescription(p)]);
+        const props = [...node.props].sort(compareProps);
+        const rows: TableRow[] = props.map((p) => [propDescription(p)]);
         return renderMarkdownTableHtml({ header, rows });
     }
 
     #formatNamedTypeDefinition(name: string, namedType: NamedType): string {
         const { node, description, title, since, sinceCSpellVersion, deprecationMessage } = namedType;
         const fmt = unindent`
-            ### ${name}
+            ### \`${name}\`
 
             <dl>
 
@@ -553,6 +573,8 @@ class ConfigExtractor {
      * Sort properties by name, with deprecated properties last.
      */
     #compareProperties(a: [string, JSONSchema4], b: [string, JSONSchema4]): number {
+        const aOrder = this.#getAttribute(a[1], 'order', 999);
+        const bOrder = this.#getAttribute(a[1], 'order', 999);
         const dA = a[1].deprecationMessage || a[1].deprecated ? 1 : 0;
         const dB = b[1].deprecationMessage || b[1].deprecated ? 1 : 0;
         return dA - dB || compare(a[0], b[0]);
@@ -591,8 +613,10 @@ class ConfigExtractor {
         const description = descriptions.markdownDescription || descriptions.description || title;
         const dv = this.#getAttribute(def, 'default');
         const defaultValue = dv ? this.#formatDefaultValue(dv) : undefined;
+        const order: number = this.#getAttribute(def, 'order', 999);
+        const note: string = this.#getAttribute(def, 'note');
 
-        return { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue };
+        return { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue, order, note };
     }
 }
 
