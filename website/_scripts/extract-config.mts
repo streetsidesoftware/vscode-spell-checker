@@ -1,10 +1,19 @@
 import { promises as fs } from 'node:fs';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { unindent } from './lib/utils.mts';
-import type { TableRow } from './lib/mdTable.mts';
+import type { TableHeader, TableRow } from './lib/mdTable.mts';
 import { renderMarkdownTable, renderMarkdownTableHtml } from './lib/mdTable.mts';
+import { mdDetails } from './lib/mdDetails.mts';
+import { renderMarkdownDL, singleDef } from './lib/mdDL.mts';
 
 type TypeSlugRefs = { [key: string]: string };
+
+type TypeNodePlain = { kind: 'plain'; text: string };
+type TypeNodeArray = { kind: 'array'; item: TypeNode };
+type TypeNodeTuple = { kind: 'tuple'; items: TypeNode[] };
+type TypeNodeUnion = { kind: 'union'; options: TypeNode[] };
+type TypeNodeRef = { kind: 'ref'; name: string };
+type TypeNodeObject = { kind: 'object'; props: ObjectProp[]; indexSignature?: { keyType: string; value: TypeNode } };
 
 /**
  * A simplified structural representation of a JSON Schema type, built by
@@ -12,13 +21,7 @@ type TypeSlugRefs = { [key: string]: string };
  * out into a separate "Type Definitions" section, while inline (unnamed)
  * object types are expanded in place.
  */
-type TypeNode =
-    | { kind: 'plain'; text: string }
-    | { kind: 'array'; item: TypeNode }
-    | { kind: 'tuple'; items: TypeNode[] }
-    | { kind: 'union'; options: TypeNode[] }
-    | { kind: 'ref'; name: string }
-    | { kind: 'object'; props: ObjectProp[]; indexSignature?: { keyType: string; value: TypeNode } };
+type TypeNode = TypeNodePlain | TypeNodeArray | TypeNodeTuple | TypeNodeUnion | TypeNodeRef | TypeNodeObject;
 
 interface CommonAttributes {
     title: string | undefined;
@@ -184,22 +187,22 @@ class ConfigExtractor {
 
         const deprecationMessage = value.deprecationMessage ? singleDef('Deprecation Message', value.deprecationMessage) : '';
 
-        return unindent`
+        const def = unindent`
             ### ${name}
 
             <dl>
 
             ${singleDef('Name', `${name} ${title}`)}
 
-            ${singleDef('Description', this.#fixVSCodeRefs(description))}
+            ${singleDef('Description', description)}
 
-            ${singleDef('Type', this.#formatType(value), true)}
+            ${singleDef('Type', this.#formatType(value))}
 
             ${singleDef('Scope', scopeDef(value.scope) || '_- none -_')}
 
             ${deprecationMessage}
 
-            ${singleDef('Default', defaultValue, true)}
+            ${singleDef('Default', defaultValue)}
 
             ${since ? singleDef('Since Extension Version', since) : ''}
 
@@ -208,7 +211,8 @@ class ConfigExtractor {
             </dl>
 
             ---
-        `.replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
+        `;
+        return this.#fixVSCodeRefs(def).replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
     }
 
     formatSections(): FormattedSection[] {
@@ -240,7 +244,7 @@ class ConfigExtractor {
 
     #formatType(def: JSONSchema4): string {
         const node = this.#buildTypeNode(def);
-        return this.#renderTypeField(node) + this.#extractEnumDescriptions(def);
+        return this.#renderType(node) + this.#extractEnumDescriptions(def);
     }
 
     /**
@@ -250,7 +254,7 @@ class ConfigExtractor {
      * is involved - a fenced code block, the same way {@link #formatDefaultValue} pretty-prints
      * multi-line default values.
      */
-    #renderTypeField(node: TypeNode): string {
+    #renderTypeFieldAsCode(node: TypeNode): string {
         if (containsObjectLiteral(node)) {
             return '\n```ts\n' + this.#renderTsType(node, 0) + '\n```\n';
         }
@@ -259,8 +263,28 @@ class ConfigExtractor {
             return this.#renderLinkedType(node);
         }
 
-        const typeLines = beautifyType(this.#renderPlainType(node), 80);
-        return typeLines.length > 1 ? '\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+        const typeLines = beautifyType(this.#renderPlainTypeAsCode(node), 80);
+        return typeLines.length > 1 ? '\n```ts\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+    }
+
+    #renderType(node: TypeNode): string {
+        const lines: string[] = [];
+        const code = this.#renderTypeFieldAsCode(node);
+        const numCodeLines = numLines(code);
+
+        if (node.kind === 'array' && numCodeLines > 1) {
+            lines.push('**Array of:**', '');
+            lines.push(this.#renderType(node.item));
+            return lines.join('\n');
+        }
+
+        if (node.kind === 'object') {
+            lines.push(this.#renderTypeNodeObjectAsTable(node));
+        }
+
+        lines.push(numCodeLines > 10 ? mdDetails('TypeScript:', code) : code);
+
+        return lines.join('\n');
     }
 
     #extractEnumDescriptions(def: JSONSchema4): string {
@@ -350,7 +374,7 @@ class ConfigExtractor {
     #buildObjectNode(def: JSONSchema4): TypeNode {
         const required = new Set(Array.isArray(def.required) ? def.required : []);
         const props: ObjectProp[] = Object.entries(def.properties || {}).map(([key, value]) => ({
-            ...this.#extractCommonAttributes(def),
+            ...this.#extractCommonAttributes(value),
             key,
             type: this.#buildTypeNode(value),
             optional: !required.has(key),
@@ -367,16 +391,16 @@ class ConfigExtractor {
     }
 
     /** Render a type known to contain no object/ref nodes, matching the legacy compact format. */
-    #renderPlainType(node: TypeNode): string {
+    #renderPlainTypeAsCode(node: TypeNode): string {
         switch (node.kind) {
             case 'plain':
                 return node.text;
             case 'array':
-                return this.#renderPlainType(node.item) + '[]';
+                return this.#renderPlainTypeAsCode(node.item) + '[]';
             case 'tuple':
-                return '[ ' + node.items.map((i) => this.#renderPlainType(i)).join(', ') + ' ]';
+                return '[ ' + node.items.map((i) => this.#renderPlainTypeAsCode(i)).join(', ') + ' ]';
             case 'union': {
-                const parts = node.options.map((o) => this.#renderPlainType(o));
+                const parts = node.options.map((o) => this.#renderPlainTypeAsCode(o));
                 return parts.length > 1 ? '( ' + parts.join(' | ') + ' )' : (parts[0] ?? '');
             }
             case 'ref':
@@ -450,18 +474,34 @@ class ConfigExtractor {
         return '{\n' + propLines.join('\n') + '\n' + '  '.repeat(depth) + '}';
     }
 
+    #renderTypeNodeObjectAsTable(node: TypeNodeObject): string {
+        if (!node.props.length) return '';
+
+        const propDescription = (p: ObjectProp): string => {
+            return renderMarkdownDL([
+                { term: 'Name', def: p.key },
+                { term: 'Type', def: this.#renderTypeFieldAsCode(p.type) },
+                { term: 'Description', def: p.description || '' },
+            ]);
+        };
+
+        const header: TableHeader = ['Fields'];
+        const rows: TableRow[] = node.props.map((p) => [propDescription(p)]);
+        return renderMarkdownTableHtml({ header, rows });
+    }
+
     #formatNamedTypeDefinition(name: string, namedType: NamedType): string {
         const { node, description, title, since, sinceCSpellVersion, deprecationMessage } = namedType;
-        return unindent`
+        const fmt = unindent`
             ### ${name}
 
             <dl>
 
             ${singleDef('Name', `${name}`)}
 
-            ${singleDef('Description', this.#fixVSCodeRefs(description ? description + '\n' : ''))}
+            ${singleDef('Description', description ? description + '\n' : '')}
 
-            ${singleDef('Type', this.#renderTypeField(node), true)}
+            ${singleDef('Type', this.#renderType(node))}
 
             ${deprecationMessage}
 
@@ -472,7 +512,8 @@ class ConfigExtractor {
             </dl>
 
             ---
-        `.replace(/\n{3,}/g, '\n\n');
+        `;
+        return this.#fixVSCodeRefs(fmt).replace(/\n{3,}/g, '\n\n');
     }
 
     /** Render the "Type Definitions" section listing the named object types hoisted while formatting this section. */
@@ -610,18 +651,6 @@ function fixVSCodeRefs(markdown: string, refs: TypeSlugRefs): string {
     return markdown
         .replaceAll(/`#(.*?)#`/g, (_, p1) => `[\`${p1}\`](${refs[p1] || hashRef(p1)})`)
         .replaceAll(/\{@link (.*?)\}/g, (_, p1) => `\`${p1.trim()}\``);
-}
-
-function singleDef(term: string, def: string, _addIgnore = false): string {
-    const lines: string[] = [];
-
-    const defLines = def.replaceAll('```jsonc', '```json5');
-    const termDef = `<dt>\n${term}\n</dt>\n<dd>\n\n${defLines}\n\n</dd>\n`;
-    const termLines = termDef.split('\n').map((line) => line.trimEnd());
-
-    lines.push(...termLines);
-
-    return lines.join('\n');
 }
 
 function slugifyTitle(sectionTitle: string): string {
@@ -794,6 +823,10 @@ function beautifyJSON(json: string, width: number): string {
     // console.error('%o', lines);
 
     return lines.join('\n');
+}
+
+function numLines(str: string): number {
+    return str.split('\n').length;
 }
 
 function beautifyType(dataType: string, width: number): string[] {

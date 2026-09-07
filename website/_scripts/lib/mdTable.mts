@@ -1,17 +1,23 @@
+export interface TableHeaderCell {
+    key: string;
+    label: string;
+}
+
 export type TableRow = string[] | Record<string, string>;
+export type TableHeader = string[] | TableHeaderCell[];
 
 export interface Table {
-    header: TableRow;
+    header: TableHeader;
     rows: TableRow[];
 }
 
 export function renderMarkdownTable(table: Table): string {
     const { header, rows } = table;
 
-    const headerKeys = Array.isArray(header) ? header : Object.keys(header);
-    const headerValues = Array.isArray(header) ? header : Object.values(header);
-    const headerRow = `| ${headerValues.join(' | ')} |`;
-    const separatorRow = `| ${headerValues.map((h) => '-'.repeat(Math.max(3, h.length))).join(' | ')} |`;
+    const headerKeys = header.map((v) => (typeof v === 'string' ? v : v.key));
+    const headerLabels = header.map((v) => (typeof v === 'string' ? v : v.key));
+    const headerRow = `| ${headerLabels.join(' | ')} |`;
+    const separatorRow = `| ${headerLabels.map((h) => '-'.repeat(Math.max(3, h.length))).join(' | ')} |`;
     const dataRows = rows.map((row) => {
         if (Array.isArray(row)) {
             return `| ${headerKeys.map((_, i) => row[i] || '').join(' | ')} |`;
@@ -29,8 +35,8 @@ function cell(tag: 'th' | 'td', content: string): string[] {
 export function renderMarkdownTableHtml(table: Table): string {
     const { header, rows } = table;
 
-    const headerKeys = Array.isArray(header) ? header : Object.keys(header);
-    const headerValues = Array.isArray(header) ? header : Object.values(header);
+    const headerKeys = header.map((v) => (typeof v === 'string' ? v : v.key));
+    const headerLabels = header.map((v) => (typeof v === 'string' ? v : v.key));
     const rowValues = rows.map((row) =>
         Array.isArray(row) ? headerKeys.map((_, i) => row[i] || '') : headerKeys.map((key) => row[key] ?? ''),
     );
@@ -39,7 +45,7 @@ export function renderMarkdownTableHtml(table: Table): string {
         '<table>',
         '<thead>',
         '<tr>',
-        ...headerValues.flatMap((h) => cell('th', h)),
+        ...headerLabels.flatMap((h) => cell('th', h)),
         '</tr>',
         '</thead>',
         '<tbody>',

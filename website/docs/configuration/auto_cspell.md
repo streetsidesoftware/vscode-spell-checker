@@ -290,6 +290,92 @@ Type
 </dt>
 <dd>
 
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+code-spell-checker
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The VSCode Spell Checker version predicate.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+cspell
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+CSpell version predicate.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
 ```ts
 {
   "code-spell-checker"?: string;
@@ -688,6 +774,1768 @@ Type
 </dt>
 <dd>
 
+**Array of:**
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+allowCompoundWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+True to enable compound word checking.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+caseSensitive
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Determines if words must match case and accent rules.
+
+See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.
+
+- `false` - Case is ignored and accents can be missing on the entire word.
+  Incorrect accents or partially missing accents will be marked as incorrect.
+- `true` - Case and accents are enforced.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional description of configuration.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+diagnosticLevel
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "Error" | "Warning" | "Information" | "Hint" )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
+Set the level to `Hint` to hide the issues from the Problems Pane.
+
+Note: [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations) must be `false` to use VS Code Diagnostic Severity Levels.
+
+See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+diagnosticLevelFlaggedWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "Error" | "Warning" | "Information" | "Hint" )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+
+See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+dictionaries
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional list of dictionaries to use. Each entry should match the name of the dictionary.
+
+To remove a dictionary from the list, add `!` before the name.
+
+For example, `!typescript` will turn off the dictionary with the name `typescript`.
+
+See the [Dictionaries](https://cspell.org/docs/dictionaries/)
+and [Custom Dictionaries](https://cspell.org/docs/dictionaries/custom-dictionaries/) for more details.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+dictionaryDefinitions
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+[`DictionaryDef`](#dictionarydef)[]
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Define custom dictionaries.
+If `addWords` is `true` words will be added to this dictionary.
+
+This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).
+
+It is better to use [`cSpell.customDictionaries`](languages-and-dictionaries#cspellcustomdictionaries)
+
+**Example:**
+
+```js
+"cSpell.dictionaryDefinitions": [
+  {
+    "name": "project-words",
+    "path": "${workspaceRoot}/project-words.txt",
+    "description": "Words used in this project",
+    "addWords": true
+  }
+]
+```
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+enableFiletypes
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable checking file types (languageIds).
+
+These are in additional to the file types specified by  `Settings.enabledLanguageIds` .
+To disable a language, prefix with `!` as in `!json`,
+
+**Example: individual file types**
+
+```
+jsonc       // enable checking for jsonc
+!json       // disable checking for json
+kotlin      // enable checking for kotlin
+```
+
+**Example: enable all file types**
+
+```
+*           // enable checking for all file types
+!json       // except for json
+```
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+enabled
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Is the spell checker enabled.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+enabledFileTypes
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: boolean;
+}
+```
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable checking file types (languageIds).
+
+This setting replaces:  `Settings.enabledLanguageIds`  and  `Settings.enableFiletypes` .
+
+A Value of:
+- `true` - enable checking for the file type
+- `false` - disable checking for the file type
+
+A file type of `*` is a wildcard that enables all file types.
+
+**Example: enable all file types**
+
+| File Type | Enabled | Comment |
+| --------- | ------- | ------- |
+| `*`       | `true`  | Enable all file types. |
+| `json`    | `false` | Disable checking for json files. |
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+enabledLanguageIds
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Specify a list of file types to spell check. It is better to use  `Settings.enabledFileTypes`  to Enable / Disable checking files types.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+filename
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( string | string[] )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Glob pattern or patterns to match against.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+flagWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+List of words to always be considered incorrect. Words found in `flagWords` override `words`.
+
+Format of `flagWords`
+- single word entry - `word`
+- with suggestions - `word:suggestion` or `word->suggestion, suggestions`
+
+Example:
+```ts
+"flagWords": [
+  "color: colour",
+  "incase: in case, encase",
+  "canot->cannot",
+  "cancelled->canceled"
+]
+```
+
+Case Sensitivity:
+
+A word is flagged if it exactly matches an entry, or if its lowercased form exactly matches an entry.
+In practice this means:
+- An entry written in **all lowercase** (e.g. `avocado`) flags that word in any casing found in the
+  document — `avocado`, `Avocado`, and `AVOCADO` are all flagged.
+- An entry containing **any uppercase letter** (e.g. `Avocado`) only flags that exact casing —
+  `avocado` and `AVOCADO` are not flagged.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+id
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional identifier.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreRandomStrings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Ignore sequences of characters that look like random strings.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreRegExpList
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+( string  | ( "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
+ "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
+ "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
+ "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
+ "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
+ "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
+ "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
+ "UUID"  | "Everything" ) )[]
+```
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+List of regular expression patterns or pattern names to exclude from spell checking.
+
+Example: `["href"]` - to exclude html href pattern.
+
+Regular expressions use JavaScript regular expression syntax.
+
+Example: to ignore ALL-CAPS words
+
+JSON
+```json
+"ignoreRegExpList": ["/\\b[A-Z]+\\b/g"]
+```
+
+YAML
+```yaml
+ignoreRegExpList:
+  - >-
+   /\b[A-Z]+\b/g
+```
+
+By default, several patterns are excluded. See
+[Configuration](https://cspell.org/configuration/patterns) for more details.
+
+While you can create your own patterns, you can also leverage several patterns that are
+[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+List of words to be ignored. An ignored word will not show up as an error, even if it is
+also in the `flagWords`.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+includeRegExpList
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+( string  | ( "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
+ "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
+ "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
+ "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
+ "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
+ "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
+ "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
+ "UUID"  | "Everything" ) )[]
+```
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+List of regular expression patterns or defined pattern names to match for spell checking.
+
+If this property is defined, only text matching the included patterns will be checked.
+
+While you can create your own patterns, you can also leverage several patterns that are
+[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+language
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Sets the locale.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+languageId
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( string | string[] )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Sets the programming language id to match file type.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+languageSettings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  allowCompoundWords?: boolean;
+  caseSensitive?: boolean;
+  description?: string;
+  dictionaries?: string[];
+  dictionaryDefinitions?: DictionaryDef[];
+  enabled?: boolean;
+  flagWords?: string[];
+  id?: string;
+  ignoreRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+  ignoreWords?: string[];
+  includeRegExpList?: (string | ("Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything"))[];
+  languageId: (string | string[]);
+  locale?: (string | string[]);
+  name?: string;
+  noSuggestDictionaries?: string[];
+  patterns?: {
+    description?: string;
+    name: string;
+    pattern: (string | string[]);
+  }[];
+  substitutionDefinitions?: {
+    description?: string;
+    entries: [string, string][];
+    name: string;
+  }[];
+  substitutions?: ([string, string] | string)[];
+  suggestWords?: string[];
+  unknownWords?: ("report-all" | "report-simple" | "report-common-typos" | "report-flagged");
+  useIntlWordSegmentation?: boolean;
+  words?: string[];
+}[]
+```
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Additional settings for individual programming languages and locales.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+loadDefaultConfiguration
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false`
+will prevent ALL default configuration from being loaded.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+maxDuplicateProblems
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The maximum number of times the same word can be flagged as an error in a file.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+maxFileSize
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( number | string )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The Maximum size of a file to spell check. This is used to prevent spell checking very large files.
+
+The value can be number or a string formatted `<number>[units]`, number with optional units.
+
+Supported units:
+
+- K, KB - value * 1024
+- M, MB - value * 2^20
+- G, GB - value * 2^30
+
+Special values:
+- `0` - has the effect of removing the limit.
+
+Examples:
+- `1000000` - 1 million bytes
+- `1000K` or `1000KB` - 1 thousand kilobytes
+- `0.5M` or `0.5MB` - 0.5 megabytes
+
+default: no limit
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+maxNumberOfProblems
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The maximum number of problems to report in a file.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+minRandomLength
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The minimum length of a random string to be ignored.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+minWordLength
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The minimum length of a word before checking it against a dictionary.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional name of configuration.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+noSuggestDictionaries
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional list of dictionaries that will not be used for suggestions.
+Words in these dictionaries are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+one of these dictionaries, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+numSuggestions
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Number of suggestions to make.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+patterns
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  description?: string;
+  name: string;
+  pattern: (string | string[]);
+}[]
+```
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Defines a list of patterns that can be used with the  `ignoreRegExpList`  and
+ `includeRegExpList`  options.
+
+For example:
+
+```javascript
+"ignoreRegExpList": ["comments"],
+"patterns": [
+  {
+    "name": "comment-single-line",
+    "pattern": "/#.*/g"
+  },
+  {
+    "name": "comment-multi-line",
+    "pattern": "/(?:\\/\\*[\\s\\S]*?\\*\\/)/g"
+  },
+  // You can also combine multiple named patterns into one single named pattern
+  {
+    "name": "comments",
+    "pattern": ["comment-single-line", "comment-multi-line"]
+  }
+]
+```
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+pnpFiles
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The PnP files to search for. Note: `.mjs` files are not currently supported.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+substitutionDefinitions
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  description?: string;
+  entries: [string, string][];
+  name: string;
+}[]
+```
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+substitutions
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( [ string, string ] | string )[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The set of substitutions to apply to a document before spell checking.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+suggestWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+A list of suggested replacements for words.
+Suggested words provide a way to make preferred suggestions on word replacements.
+To hint at a preferred change, but not to require it.
+
+Format of `suggestWords`
+- Single suggestion (possible auto fix)
+    - `word: suggestion`
+    - `word->suggestion`
+- Multiple suggestions (not auto fixable)
+   - `word: first, second, third`
+   - `word->first, second, third`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+suggestionNumChanges
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The maximum number of changes allowed on a word to be considered a suggestions.
+
+For example, appending an `s` onto `example` -> `examples` is considered 1 change.
+
+Range: between 1 and 5.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+suggestionsTimeout
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`number`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The maximum amount of time in milliseconds to generate suggestions for a word.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+unknownWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Controls how unknown words are handled.
+
+- `report-all` - Report all unknown words (default behavior)
+- `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.
+- `report-common-typos` - Report unknown words that are common typos and flagged words.
+- `report-flagged` - Report unknown words that are flagged.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+useIntlWordSegmentation
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
+The locale used for the segmentation is based on the  `language`  setting.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+usePnP
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading
+packages stored in the repository.
+
+When true, the spell checker will search up the directory structure for the existence
+of a PnP file and load it.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+words
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+List of words to be considered correct.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 {
   allowCompoundWords?: boolean;
@@ -772,8 +2620,10 @@ Type
   useIntlWordSegmentation?: boolean;
   usePnP?: boolean;
   words?: string[];
-}[]
+}
 ```
+
+</details>
 
 </dd>
 
@@ -843,12 +2693,137 @@ Type
 </dt>
 <dd>
 
+**Array of:**
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Description of the pattern.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.
+It is possible to redefine one of the predefined patterns to override its value.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+pattern
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( string | string[] )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+RegExp pattern or array of RegExp patterns.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
 ```ts
 {
   description?: string;
   name: string;
   pattern: (string | string[]);
-}[]
+}
 ```
 
 </dd>
@@ -903,12 +2878,138 @@ Type
 </dt>
 <dd>
 
+**Array of:**
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+An optional description of the substitution definition. This is not used for anything, but can be useful for
+documentation purposes.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+entries
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`[ string, string ][]`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The entries for the substitution definition. This is a collection of substitution entries that can be applied to a
+document before spell checking.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The name of the substitution definition. This is used to reference the substitution definition in the substitutions array.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
 ```ts
 {
   description?: string;
   entries: [string, string][];
   name: string;
-}[]
+}
 ```
 
 </dd>
@@ -1171,6 +3272,13 @@ Type
 </dt>
 <dd>
 
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 {
   [key: string]: {
@@ -1180,6 +3288,8 @@ Type
   };
 }
 ```
+
+</details>
 
 </dd>
 
@@ -1243,6 +3353,412 @@ Type
 </dt>
 <dd>
 
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+addWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+btrie
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional: A human readable description.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreForbiddenWords
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Some dictionaries may contain forbidden words to prevent compounding from generating
+words that are not valid in the language. These are often
+words that are used in other languages or might be generated through compounding.
+This setting allows flagged words to be ignored when checking the dictionary.
+The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The reference name of the dictionary.
+
+Example: `My Words` or `custom`
+
+If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+noSuggest
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate that suggestions should not come from this dictionary.
+Words in this dictionary are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+this dictionary, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+path
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Define the path to the dictionary text file.
+
+**Note:** if path is `undefined` the `name`d dictionary is expected to be found
+in the `dictionaryDefinitions`.
+
+File Format: Each line in the file is considered a dictionary entry.
+
+Case is preserved while leading and trailing space is removed.
+
+The path should be absolute, or relative to the workspace.
+
+**Example:** relative to User's folder
+
+```json
+"path": "~/dictionaries/custom_dictionary.txt"
+```
+
+**Example:** relative to the `client` folder in a multi-root workspace
+
+```json
+"path": "${workspaceFolder:client}/build/custom_dictionary.txt"
+```
+
+**Example:** relative to the current workspace folder in a single-root workspace
+
+**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative
+workspace for the currently open file.
+
+```json
+"path": "${workspaceFolder}/build/custom_dictionary.txt"
+```
+
+**Example:** relative to the workspace folder in a single-root workspace or the first folder in
+a multi-root workspace
+
+```json
+"path": "./build/custom_dictionary.txt"
+```
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+scope
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Options are
+- `user` - words that apply to all projects and workspaces
+- `workspace` - words that apply to the entire workspace
+- `folder` - words that apply to only a workspace folder
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+supportNonStrictSearches
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Strip case and accents to allow for case insensitive searches and
+words without accents.
+
+Note: this setting only applies to word lists. It has no-impact on trie
+dictionaries.
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 {
   addWords?: boolean;
@@ -1256,6 +3772,8 @@ Type
   supportNonStrictSearches?: boolean;
 }
 ```
+
+</details>
 
 </dd>
 
@@ -1289,6 +3807,13 @@ Type
 </dt>
 <dd>
 
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 (CustomDictionary | {
   btrie?: string;
@@ -1310,6 +3835,8 @@ Type
   supportNonStrictSearches?: boolean;
 })
 ```
+
+</details>
 
 </dd>
 
