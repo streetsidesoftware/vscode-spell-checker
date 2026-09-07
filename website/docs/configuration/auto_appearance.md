@@ -316,15 +316,6 @@ overviewRulerColor
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -347,6 +338,33 @@ Examples:
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb80"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
 </dl>
 
 </td>
@@ -362,15 +380,6 @@ Name
 <dd>
 
 textDecoration
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -405,6 +414,24 @@ To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspellov
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
 </dl>
 
 </td>
@@ -420,15 +447,6 @@ Name
 <dd>
 
 textDecorationColor
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -451,6 +469,33 @@ Examples:
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
 </dl>
 
 </td>
@@ -470,15 +515,6 @@ textDecorationColorFlagged
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -492,6 +528,33 @@ Examples:
 - `green`
 - `yellow`
 - `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#f44"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -514,15 +577,6 @@ textDecorationColorSuggestion
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -538,6 +592,33 @@ Examples:
 - `green`
 - `yellow`
 - `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#cf88"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.2
 
 </dd>
 
@@ -560,6 +641,18 @@ textDecorationLine
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+The CSS line type used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -569,14 +662,20 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-The CSS line type used to decorate issues.
+_`"underline"`_
 
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -599,6 +698,18 @@ textDecorationStyle
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+The CSS line style used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -608,14 +719,20 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-The CSS line style used to decorate issues.
+_`"dashed"`_
 
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -638,15 +755,6 @@ textDecorationThickness
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -662,6 +770,33 @@ Examples:
 - `0.2rem`
 - `1.5px`
 - `10%`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"auto"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -861,15 +996,6 @@ overviewRulerColor
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -892,6 +1018,33 @@ Examples:
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb80"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
 </dl>
 
 </td>
@@ -907,15 +1060,6 @@ Name
 <dd>
 
 textDecoration
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -950,6 +1094,24 @@ To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspellov
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
 </dl>
 
 </td>
@@ -965,15 +1127,6 @@ Name
 <dd>
 
 textDecorationColor
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -996,6 +1149,33 @@ Examples:
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
 </dl>
 
 </td>
@@ -1015,15 +1195,6 @@ textDecorationColorFlagged
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1037,6 +1208,33 @@ Examples:
 - `green`
 - `yellow`
 - `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#f44"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -1059,15 +1257,6 @@ textDecorationColorSuggestion
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1083,6 +1272,33 @@ Examples:
 - `green`
 - `yellow`
 - `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#cf88"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.2
 
 </dd>
 
@@ -1105,6 +1321,18 @@ textDecorationLine
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+The CSS line type used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1114,14 +1342,20 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-The CSS line type used to decorate issues.
+_`"underline"`_
 
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -1144,6 +1378,18 @@ textDecorationStyle
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+The CSS line style used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1153,14 +1399,20 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-The CSS line style used to decorate issues.
+_`"dashed"`_
 
-See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 
@@ -1183,15 +1435,6 @@ textDecorationThickness
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1207,6 +1450,33 @@ Examples:
 - `0.2rem`
 - `1.5px`
 - `10%`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"auto"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
 
 </dd>
 

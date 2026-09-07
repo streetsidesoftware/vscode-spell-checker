@@ -1463,20 +1463,20 @@ Average Word Length too Long
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Enable notifications if the average word size is too high.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -1499,20 +1499,20 @@ Lines too Long
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Enable notifications if the line is too long.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -1535,20 +1535,20 @@ Maximum Word Length Exceeded
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Enable notifications if the maximum word length is exceeded.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 

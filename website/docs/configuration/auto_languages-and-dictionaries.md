@@ -771,20 +771,20 @@ allowCompoundWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 True to enable compound word checking.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -807,15 +807,6 @@ caseSensitive
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -827,6 +818,15 @@ See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details
 - `false` - Case is ignored and accents can be missing on the entire word.
   Incorrect accents or partially missing accents will be marked as incorrect.
 - `true` - Case and accents are enforced.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -849,20 +849,20 @@ description
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional description of configuration.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -885,15 +885,6 @@ dictionaries
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -906,6 +897,15 @@ For example, `!typescript` will turn off the dictionary with the name `typescrip
 
 See the [Dictionaries](https://cspell.org/docs/dictionaries/)
 and [Custom Dictionaries](https://cspell.org/docs/dictionaries/custom-dictionaries/) for more details.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
 
 </dd>
 
@@ -924,15 +924,6 @@ Name
 <dd>
 
 dictionaryDefinitions
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-[`DictionaryDef`](#dictionarydef)[]
 
 </dd>
 
@@ -963,6 +954,15 @@ It is better to use [`cSpell.customDictionaries`](languages-and-dictionaries#csp
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+[`DictionaryDef`](#dictionarydef)[]
+
+</dd>
+
 </dl>
 
 </td>
@@ -982,6 +982,15 @@ enabled
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+Is the spell checker enabled.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -991,11 +1000,11 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-Is the spell checker enabled.
+_`true`_
 
 </dd>
 
@@ -1014,15 +1023,6 @@ Name
 <dd>
 
 flagWords
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string[]`
 
 </dd>
 
@@ -1058,6 +1058,15 @@ In practice this means:
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
 </dl>
 
 </td>
@@ -1077,20 +1086,20 @@ id
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional identifier.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -1109,24 +1118,6 @@ Name
 <dd>
 
 ignoreRegExpList
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-```ts
-( string  | ( "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
- "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
- "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
- "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
- "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
- "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
- "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
- "UUID"  | "Everything" ) )[]
-```
 
 </dd>
 
@@ -1163,6 +1154,24 @@ While you can create your own patterns, you can also leverage several patterns t
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+( string  | ( "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
+ "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
+ "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
+ "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
+ "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
+ "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
+ "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
+ "UUID"  | "Everything" ) )[]
+```
+
+</dd>
+
 </dl>
 
 </td>
@@ -1182,21 +1191,21 @@ ignoreWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 List of words to be ignored. An ignored word will not show up as an error, even if it is
 also in the `flagWords`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
 
 </dd>
 
@@ -1219,6 +1228,20 @@ includeRegExpList
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+List of regular expression patterns or defined pattern names to match for spell checking.
+
+If this property is defined, only text matching the included patterns will be checked.
+
+While you can create your own patterns, you can also leverage several patterns that are
+[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1233,20 +1256,6 @@ Type
  "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
  "UUID"  | "Everything" ) )[]
 ```
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-List of regular expression patterns or defined pattern names to match for spell checking.
-
-If this property is defined, only text matching the included patterns will be checked.
-
-While you can create your own patterns, you can also leverage several patterns that are
-[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).
 
 </dd>
 
@@ -1269,20 +1278,20 @@ languageId
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( string | string[] )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( string | string[] )`
 
 </dd>
 
@@ -1305,20 +1314,20 @@ locale
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( string | string[] )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( string | string[] )`
 
 </dd>
 
@@ -1341,20 +1350,20 @@ name
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional name of configuration.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -1377,15 +1386,6 @@ noSuggestDictionaries
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1397,6 +1397,15 @@ used when making spell correction suggestions.
 Note: if a word is suggested by another dictionary, but found in
 one of these dictionaries, it will be removed from the set of
 possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
 
 </dd>
 
@@ -1415,21 +1424,6 @@ Name
 <dd>
 
 patterns
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-```ts
-{
-  description?: string;
-  name: string;
-  pattern: (string | string[]);
-}[]
-```
 
 </dd>
 
@@ -1464,6 +1458,21 @@ For example:
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  description?: string;
+  name: string;
+  pattern: (string | string[]);
+}[]
+```
+
+</dd>
+
 </dl>
 
 </td>
@@ -1483,6 +1492,15 @@ substitutionDefinitions
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1498,11 +1516,11 @@ Type
 </dd>
 
 <dt>
-Description
+CSpell Version
 </dt>
 <dd>
 
-The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.
+9.7.0
 
 </dd>
 
@@ -1525,6 +1543,15 @@ substitutions
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+The set of substitutions to apply to a document before spell checking.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1534,11 +1561,11 @@ Type
 </dd>
 
 <dt>
-Description
+CSpell Version
 </dt>
 <dd>
 
-The set of substitutions to apply to a document before spell checking.
+9.7.0
 
 </dd>
 
@@ -1561,15 +1588,6 @@ suggestWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1585,6 +1603,15 @@ Format of `suggestWords`
 - Multiple suggestions (not auto fixable)
    - `word: first, second, third`
    - `word->first, second, third`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
 
 </dd>
 
@@ -1607,15 +1634,6 @@ unknownWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1626,6 +1644,33 @@ Controls how unknown words are handled.
 - `report-simple` - Report unknown words that have simple spelling errors, typos, and flagged words.
 - `report-common-typos` - Report unknown words that are common typos and flagged words.
 - `report-flagged` - Report unknown words that are flagged.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "report-all" | "report-simple" | "report-common-typos" | "report-flagged" )`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"report-all"`_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.1.0
 
 </dd>
 
@@ -1648,6 +1693,16 @@ useIntlWordSegmentation
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
+The locale used for the segmentation is based on the  `language`  setting.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -1657,12 +1712,11 @@ Type
 </dd>
 
 <dt>
-Description
+CSpell Version
 </dt>
 <dd>
 
-Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
-The locale used for the segmentation is based on the  `language`  setting.
+10.2.0
 
 </dd>
 
@@ -1685,20 +1739,20 @@ words
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string[]`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 List of words to be considered correct.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
 
 </dd>
 
@@ -2129,6 +2183,15 @@ addWords
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -2138,11 +2201,11 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-Indicate if this custom dictionary should be used to store added words.
+_`true`_
 
 </dd>
 
@@ -2165,6 +2228,17 @@ btrie
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -2174,13 +2248,11 @@ Type
 </dd>
 
 <dt>
-Description
+CSpell Version
 </dt>
 <dd>
 
-An alternative path to a bTrie dictionary file.
-It will be used in place of `path` if the version of CSpell being used
-supports btrie files.
+9.6.0
 
 </dd>
 
@@ -2203,20 +2275,20 @@ description
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -2239,15 +2311,6 @@ ignoreForbiddenWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2257,6 +2320,15 @@ words that are not valid in the language. These are often
 words that are used in other languages or might be generated through compounding.
 This setting allows flagged words to be ignored when checking the dictionary.
 The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -2279,15 +2351,6 @@ name
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2298,6 +2361,15 @@ Example: `My Words` or `custom`
 
 If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
 If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -2320,15 +2392,6 @@ noSuggest
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2340,6 +2403,15 @@ used when making spell correction suggestions.
 Note: if a word is suggested by another dictionary, but found in
 this dictionary, it will be removed from the set of
 possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -2358,15 +2430,6 @@ Name
 <dd>
 
 path
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -2416,6 +2479,15 @@ a multi-root workspace
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
 </dl>
 
 </td>
@@ -2435,15 +2507,6 @@ scope
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2452,6 +2515,15 @@ Options are
 - `user` - words that apply to all projects and workspaces
 - `workspace` - words that apply to the entire workspace
 - `folder` - words that apply to only a workspace folder
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
 
 </dd>
 
@@ -2474,15 +2546,6 @@ supportNonStrictSearches
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2492,6 +2555,24 @@ words without accents.
 
 Note: this setting only applies to word lists. It has no-impact on trie
 dictionaries.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
 
 </dd>
 
@@ -2639,6 +2720,15 @@ addWords
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -2648,11 +2738,11 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-Indicate if this custom dictionary should be used to store added words.
+_`true`_
 
 </dd>
 
@@ -2675,6 +2765,17 @@ btrie
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -2684,13 +2785,11 @@ Type
 </dd>
 
 <dt>
-Description
+CSpell Version
 </dt>
 <dd>
 
-An alternative path to a bTrie dictionary file.
-It will be used in place of `path` if the version of CSpell being used
-supports btrie files.
+9.6.0
 
 </dd>
 
@@ -2713,20 +2812,20 @@ description
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -2749,15 +2848,6 @@ ignoreForbiddenWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2767,6 +2857,15 @@ words that are not valid in the language. These are often
 words that are used in other languages or might be generated through compounding.
 This setting allows flagged words to be ignored when checking the dictionary.
 The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -2789,15 +2888,6 @@ name
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2808,6 +2898,15 @@ Example: `My Words` or `custom`
 
 If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
 If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -2830,15 +2929,6 @@ noSuggest
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2850,6 +2940,15 @@ used when making spell correction suggestions.
 Note: if a word is suggested by another dictionary, but found in
 this dictionary, it will be removed from the set of
 possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -2868,15 +2967,6 @@ Name
 <dd>
 
 path
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -2926,6 +3016,15 @@ a multi-root workspace
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
 </dl>
 
 </td>
@@ -2945,15 +3044,6 @@ scope
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -2962,6 +3052,15 @@ Options are
 - `user` - words that apply to all projects and workspaces
 - `workspace` - words that apply to the entire workspace
 - `folder` - words that apply to only a workspace folder
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
 
 </dd>
 
@@ -2984,15 +3083,6 @@ supportNonStrictSearches
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -3002,6 +3092,24 @@ words without accents.
 
 Note: this setting only applies to word lists. It has no-impact on trie
 dictionaries.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
 
 </dd>
 

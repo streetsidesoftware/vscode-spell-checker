@@ -26,6 +26,7 @@ type TypeNode = TypeNodePlain | TypeNodeArray | TypeNodeTuple | TypeNodeUnion | 
 interface CommonAttributes {
     title: string | undefined;
     description: string | undefined;
+    defaultValue: string | undefined;
     since: string | undefined;
     sinceCSpellVersion: string | undefined;
     deprecationMessage: string | undefined;
@@ -311,7 +312,7 @@ class ConfigExtractor {
 
         if (def.$ref) {
             const name = refName(def.$ref);
-            const { title, description, since, sinceCSpellVersion, deprecationMessage } = this.#extractCommonAttributes(def);
+            const { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue } = this.#extractCommonAttributes(def);
             const known = this.namedTypes.get(name);
             if (known) return { kind: 'ref', name };
             if (!isHoistableName(name) || this.namedTypesInProgress.has(name)) {
@@ -325,7 +326,7 @@ class ConfigExtractor {
 
             if (!containsComplexType(inner)) return inner;
 
-            this.namedTypes.set(name, { node: inner, description, title, since, sinceCSpellVersion, deprecationMessage });
+            this.namedTypes.set(name, { node: inner, description, title, since, sinceCSpellVersion, deprecationMessage, defaultValue });
             return { kind: 'ref', name };
         }
 
@@ -475,14 +476,26 @@ class ConfigExtractor {
     }
 
     #renderTypeNodeObjectAsTable(node: TypeNodeObject): string {
-        if (!node.props.length) return '';
+        if (!node.props.some((p) => p.description)) return '';
 
         const propDescription = (p: ObjectProp): string => {
-            return renderMarkdownDL([
-                { term: 'Name', def: p.key },
-                { term: 'Type', def: this.#renderTypeFieldAsCode(p.type) },
-                { term: 'Description', def: p.description || '' },
-            ]);
+            const terms = [{ term: 'Name', def: p.key }];
+            if (p.description) {
+                terms.push({ term: 'Description', def: p.description });
+            }
+            terms.push({ term: 'Type', def: this.#renderTypeFieldAsCode(p.type) });
+            if (p.defaultValue) {
+                terms.push({ term: 'Default', def: p.defaultValue });
+            }
+            if (p.since) {
+                terms.push({ term: 'Since Extension Version', def: p.since });
+            }
+
+            if (p.sinceCSpellVersion) {
+                terms.push({ term: 'CSpell Version', def: p.sinceCSpellVersion });
+            }
+
+            return renderMarkdownDL(terms);
         };
 
         const header: TableHeader = ['Fields'];
@@ -569,8 +582,10 @@ class ConfigExtractor {
         const deprecationMessage: string = this.#getAttribute(def, 'deprecationMessage', '');
         const descriptions = this.#extractDescriptions(def);
         const description = descriptions.markdownDescription || descriptions.description || title;
+        const dv = this.#getAttribute(def, 'default');
+        const defaultValue = dv ? this.#formatDefaultValue(dv) : undefined;
 
-        return { title, description, since, sinceCSpellVersion, deprecationMessage };
+        return { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue };
     }
 }
 

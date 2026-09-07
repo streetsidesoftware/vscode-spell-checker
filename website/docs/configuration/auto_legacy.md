@@ -552,6 +552,15 @@ addWords
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -561,11 +570,11 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-Indicate if this custom dictionary should be used to store added words.
+_`true`_
 
 </dd>
 
@@ -588,20 +597,20 @@ description
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -624,15 +633,6 @@ name
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -643,6 +643,15 @@ Example: `My Words` or `custom`
 
 If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
 If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -665,15 +674,6 @@ noSuggest
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -685,6 +685,15 @@ used when making spell correction suggestions.
 Note: if a word is suggested by another dictionary, but found in
 this dictionary, it will be removed from the set of
 possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -703,15 +712,6 @@ Name
 <dd>
 
 path
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -761,6 +761,15 @@ a multi-root workspace
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
 </dl>
 
 </td>
@@ -780,15 +789,6 @@ scope
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -797,6 +797,15 @@ Options are
 - `user` - words that apply to all projects and workspaces
 - `workspace` - words that apply to the entire workspace
 - `folder` - words that apply to only a workspace folder
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
 
 </dd>
 
@@ -885,6 +894,15 @@ addWords
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -894,11 +912,11 @@ Type
 </dd>
 
 <dt>
-Description
+Default
 </dt>
 <dd>
 
-Indicate if this custom dictionary should be used to store added words.
+_`true`_
 
 </dd>
 
@@ -921,6 +939,17 @@ btrie
 </dd>
 
 <dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
 Type
 </dt>
 <dd>
@@ -930,13 +959,11 @@ Type
 </dd>
 
 <dt>
-Description
+CSpell Version
 </dt>
 <dd>
 
-An alternative path to a bTrie dictionary file.
-It will be used in place of `path` if the version of CSpell being used
-supports btrie files.
+9.6.0
 
 </dd>
 
@@ -959,20 +986,20 @@ description
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
 
 Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -995,15 +1022,6 @@ ignoreForbiddenWords
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1013,6 +1031,15 @@ words that are not valid in the language. These are often
 words that are used in other languages or might be generated through compounding.
 This setting allows flagged words to be ignored when checking the dictionary.
 The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -1035,15 +1062,6 @@ name
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`string`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1054,6 +1072,15 @@ Example: `My Words` or `custom`
 
 If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
 If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
 
 </dd>
 
@@ -1076,15 +1103,6 @@ noSuggest
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1096,6 +1114,15 @@ used when making spell correction suggestions.
 Note: if a word is suggested by another dictionary, but found in
 this dictionary, it will be removed from the set of
 possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
 
 </dd>
 
@@ -1114,15 +1141,6 @@ Name
 <dd>
 
 path
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`string`
 
 </dd>
 
@@ -1172,6 +1190,15 @@ a multi-root workspace
 
 </dd>
 
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
 </dl>
 
 </td>
@@ -1191,15 +1218,6 @@ scope
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1208,6 +1226,15 @@ Options are
 - `user` - words that apply to all projects and workspaces
 - `workspace` - words that apply to the entire workspace
 - `folder` - words that apply to only a workspace folder
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
 
 </dd>
 
@@ -1230,15 +1257,6 @@ supportNonStrictSearches
 </dd>
 
 <dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-<dt>
 Description
 </dt>
 <dd>
@@ -1248,6 +1266,24 @@ words without accents.
 
 Note: this setting only applies to word lists. It has no-impact on trie
 dictionaries.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
 
 </dd>
 
