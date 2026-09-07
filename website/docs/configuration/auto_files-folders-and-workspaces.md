@@ -1407,7 +1407,7 @@ Name
 </dt>
 <dd>
 
-EnabledFileTypes Enabled File Types to Check
+EnabledFileTypes
 
 </dd>
 
@@ -1462,7 +1462,7 @@ Name
 </dt>
 <dd>
 
-EnabledSchemes Specify Allowed Schemes
+EnabledSchemes
 
 </dd>
 

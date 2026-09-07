@@ -1158,7 +1158,7 @@ Name
 </dt>
 <dd>
 
-CustomDictionaries Custom Dictionaries
+CustomDictionaries
 
 </dd>
 

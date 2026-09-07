@@ -20,19 +20,22 @@ type TypeNode =
     | { kind: 'ref'; name: string }
     | { kind: 'object'; props: ObjectProp[]; indexSignature?: { keyType: string; value: TypeNode } };
 
-interface ObjectProp {
-    key: string;
-    type: TypeNode;
-    optional: boolean;
-}
-
-interface NamedType {
-    node: TypeNode;
+interface CommonAttributes {
     title: string | undefined;
     description: string | undefined;
     since: string | undefined;
     sinceCSpellVersion: string | undefined;
     deprecationMessage: string | undefined;
+}
+
+interface ObjectProp extends CommonAttributes {
+    key: string;
+    type: TypeNode;
+    optional: boolean;
+}
+
+interface NamedType extends CommonAttributes {
+    node: TypeNode;
 }
 
 /**
@@ -84,6 +87,10 @@ class ConfigExtractor {
             ref = resolveRef(this.root, ref);
         }
         return ref;
+    }
+
+    #getAttribute(schema: JSONSchema4, attribute: string, defaultValue?: any): any {
+        return this.#resolve(schema, hasAttribute(attribute))[attribute] ?? defaultValue;
     }
 
     genIndex(): string {
@@ -267,14 +274,6 @@ class ConfigExtractor {
         return renderMarkdownTable({ header: ['Value', 'Description'], rows });
     }
 
-    #extractDescriptions(ref: JSONSchema4): { description: string | undefined; markdownDescription: string | undefined } {
-        const resolved = this.#resolve(ref, (n) => Object.hasOwn(n, 'description') || Object.hasOwn(n, 'markdownDescription'));
-        return {
-            description: resolved.description,
-            markdownDescription: resolved.markdownDescription,
-        };
-    }
-
     /**
      * Build a structural {@link TypeNode} for a schema, resolving `$ref`s.
      *
@@ -288,9 +287,7 @@ class ConfigExtractor {
 
         if (def.$ref) {
             const name = refName(def.$ref);
-            const title = def.title || '';
-            const since: string = (def.sinceVersion || '').toString();
-            const sinceCSpellVersion: string = (def.since || '').toString();
+            const { title, description, since, sinceCSpellVersion, deprecationMessage } = this.#extractCommonAttributes(def);
             const known = this.namedTypes.get(name);
             if (known) return { kind: 'ref', name };
             if (!isHoistableName(name) || this.namedTypesInProgress.has(name)) {
@@ -301,9 +298,6 @@ class ConfigExtractor {
             this.namedTypesInProgress.add(name);
             const inner = this.#buildTypeNodeRaw(resolved);
             this.namedTypesInProgress.delete(name);
-            const descriptions = this.#extractDescriptions(def);
-            const description = descriptions.markdownDescription || descriptions.description || def.title || '';
-            const deprecationMessage = this.#resolve(def, hasAttribute('deprecationMessage')).deprecationMessage || '';
 
             if (!containsComplexType(inner)) return inner;
 
@@ -356,6 +350,7 @@ class ConfigExtractor {
     #buildObjectNode(def: JSONSchema4): TypeNode {
         const required = new Set(Array.isArray(def.required) ? def.required : []);
         const props: ObjectProp[] = Object.entries(def.properties || {}).map(([key, value]) => ({
+            ...this.#extractCommonAttributes(def),
             key,
             type: this.#buildTypeNode(value),
             optional: !required.has(key),
@@ -462,7 +457,7 @@ class ConfigExtractor {
 
             <dl>
 
-            ${singleDef('Name', `${name} ${title}`)}
+            ${singleDef('Name', `${name}`)}
 
             ${singleDef('Description', this.#fixVSCodeRefs(description ? description + '\n' : ''))}
 
@@ -516,6 +511,25 @@ class ConfigExtractor {
 
     #fixVSCodeRefs(text: string): string {
         return fixVSCodeRefs(text, this.refs);
+    }
+
+    #extractDescriptions(ref: JSONSchema4): { description: string | undefined; markdownDescription: string | undefined } {
+        const resolved = this.#resolve(ref, (n) => Object.hasOwn(n, 'description') || Object.hasOwn(n, 'markdownDescription'));
+        return {
+            description: resolved.description,
+            markdownDescription: resolved.markdownDescription,
+        };
+    }
+
+    #extractCommonAttributes(def: JSONSchema4): CommonAttributes {
+        const title: string = this.#getAttribute(def, 'title', '');
+        const since: string = this.#getAttribute(def, 'sinceVersion', '');
+        const sinceCSpellVersion: string = this.#getAttribute(def, 'since', '');
+        const deprecationMessage: string = this.#getAttribute(def, 'deprecationMessage', '');
+        const descriptions = this.#extractDescriptions(def);
+        const description = descriptions.markdownDescription || descriptions.description || title;
+
+        return { title, description, since, sinceCSpellVersion, deprecationMessage };
     }
 }
 

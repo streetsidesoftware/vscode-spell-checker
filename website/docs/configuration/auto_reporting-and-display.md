@@ -1414,7 +1414,7 @@ Name
 </dt>
 <dd>
 
-EnabledNotifications Enabled Notifications
+EnabledNotifications
 
 </dd>
 
