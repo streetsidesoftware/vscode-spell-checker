@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { unindent } from './lib/utils.mts';
+import { renderMarkdownTable, type TableRow } from './lib/mdTable.mts';
 
 type TypeSlugRefs = { [key: string]: string };
 
@@ -254,16 +255,11 @@ class ConfigExtractor {
         const enumDef = this.#resolve(def);
         if (!def.enumDescriptions || !enumDef.enum) return '';
 
-        const defs = enumDef.enum
+        const rows: TableRow[] = enumDef.enum
             .map((e, i) => [e, def.enumDescriptions?.[i] || '_No description_'])
-            .map(([e, d]) => `| \`${e}\` | ${(d as string).replace(/\n/g, '<br>')} |`)
-            .join('\n');
+            .map(([e, d]) => [`\`${e}\``, `${(d as string).replace(/\n/g, '<br>')}`]);
 
-        return unindent`
-            | Value | Description |
-            | ----- | ----------- |
-            ${defs}
-        `;
+        return renderMarkdownTable({ header: ['Value', 'Description'], rows });
     }
 
     /**
@@ -472,20 +468,16 @@ class ConfigExtractor {
     }
 
     #configTable(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-        function tableEntryConfig([key, value]: [string, JSONSchema4]): string {
+        function tableEntryConfig([key, value]: [string, JSONSchema4]): TableRow {
             const description = fixVSCodeRefs(
                 value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
                 refs,
             );
             const scope = value.scope || '';
-            return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
+            return [`[\`${shorten(key, 60)}\`](${hashRef(key)})`, `${scope}`, `${shortenLine(description, descriptionWidth)}`];
         }
 
-        return unindent`
-            | Setting | Scope | Description |
-            | ------- | ----- | ----------- |
-            ${entries.map(tableEntryConfig).join('\n')}
-        `;
+        return renderMarkdownTable({ header: ['Setting', 'Scope', 'Description'], rows: entries.map(tableEntryConfig) });
     }
 }
 
