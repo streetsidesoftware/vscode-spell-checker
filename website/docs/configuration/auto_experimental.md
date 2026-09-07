@@ -10,10 +10,63 @@ id: experimental
 Experimental settings that may change or be removed in the future.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
-| [`cSpell.experimental.symbols`](#cspellexperimentalsymbols) | application | Experiment with `executeDocumentSymbolProvider` |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Show Regular Expression Explorer
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.experimental.symbols`](#cspellexperimentalsymbols)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Experiment with `executeDocumentSymbolProvider`
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

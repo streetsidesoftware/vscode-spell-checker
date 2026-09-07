@@ -1,7 +1,8 @@
 import { promises as fs } from 'node:fs';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { unindent } from './lib/utils.mts';
-import { renderMarkdownTable, type TableRow } from './lib/mdTable.mts';
+import type { TableRow } from './lib/mdTable.mts';
+import { renderMarkdownTable, renderMarkdownTableHtml } from './lib/mdTable.mts';
 
 type TypeSlugRefs = { [key: string]: string };
 
@@ -477,7 +478,7 @@ class ConfigExtractor {
             return [`[\`${shorten(key, 60)}\`](${hashRef(key)})`, `${scope}`, `${shortenLine(description, descriptionWidth)}`];
         }
 
-        return renderMarkdownTable({ header: ['Setting', 'Scope', 'Description'], rows: entries.map(tableEntryConfig) });
+        return renderMarkdownTableHtml({ header: ['Setting', 'Scope', 'Description'], rows: entries.map(tableEntryConfig) });
     }
 }
 

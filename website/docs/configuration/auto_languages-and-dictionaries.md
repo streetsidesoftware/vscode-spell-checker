@@ -10,21 +10,250 @@ id: languages-and-dictionaries
 Settings that control dictionaries and language preferences.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.caseSensitive`](#cspellcasesensitive) | resource | Determines if words must match case and accent rules. |
-| [`cSpell.customDictionaries`](#cspellcustomdictionaries) | resource | Custom Dictionaries |
-| [`cSpell.dictionaries`](#cspelldictionaries) | resource | Optional list of dictionaries to use. |
-| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Dictionary Definitions |
-| [`cSpell.flagWords`](#cspellflagwords) | resource | List of words to always be considered incorrect. Words found in `flagWords` override `words`. |
-| [`cSpell.ignoreWords`](#cspellignorewords) | resource | A list of words to be ignored by the spell checker. |
-| [`cSpell.language`](#cspelllanguage) | resource | Current active spelling language. |
-| [`cSpell.languageSettings`](#cspelllanguagesettings) | resource | Additional settings for individual programming languages and locales. |
-| [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries) | resource | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries… |
-| [`cSpell.suggestWords`](#cspellsuggestwords) |  | A list of suggested replacements for words. Suggested words provide a way to make preferred… |
-| [`cSpell.useLocallyInstalledCSpellDictionaries`](#cspelluselocallyinstalledcspelldictionaries) | resource | Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found. |
-| [`cSpell.userWords`](#cspelluserwords) | resource | Words to add to global dictionary -- should only be in the user config file. |
-| [`cSpell.words`](#cspellwords) | resource | List of words to be considered correct. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.caseSensitive`](#cspellcasesensitive)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Determines if words must match case and accent rules.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.customDictionaries`](#cspellcustomdictionaries)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Custom Dictionaries
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.dictionaries`](#cspelldictionaries)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Optional list of dictionaries to use.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Dictionary Definitions
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.flagWords`](#cspellflagwords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+List of words to always be considered incorrect. Words found in `flagWords` override `words`.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.ignoreWords`](#cspellignorewords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+A list of words to be ignored by the spell checker.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.language`](#cspelllanguage)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Current active spelling language.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.languageSettings`](#cspelllanguagesettings)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Additional settings for individual programming languages and locales.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.suggestWords`](#cspellsuggestwords)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+A list of suggested replacements for words. Suggested words provide a way to make preferred…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.useLocallyInstalledCSpellDictionaries`](#cspelluselocallyinstalledcspelldictionaries)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.userWords`](#cspelluserwords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Words to add to global dictionary -- should only be in the user config file.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.words`](#cspellwords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+List of words to be considered correct.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

@@ -10,21 +10,250 @@ id: cspell
 Settings related to CSpell Command Line Tool.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.engines`](#cspellengines) |  | Specify compatible engine versions. |
-| [`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings) |  | Ignore sequences of characters that look like random strings. |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist) | resource | List of regular expressions or Pattern names (defined in [`cSpell.patterns`](cspell#cspellpatterns))… |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking. |
-| [`cSpell.maxFileSize`](#cspellmaxfilesize) |  | The Maximum size of a file to spell check. This is used to prevent spell checking very large… |
-| [`cSpell.minRandomLength`](#cspellminrandomlength) |  | The minimum length of a random string to be ignored. |
-| [`cSpell.overrides`](#cspelloverrides) | resource | Overrides are used to apply settings for specific files in your project. |
-| [`cSpell.patterns`](#cspellpatterns) | resource | Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)… |
-| [`cSpell.substitutionDefinitions`](#cspellsubstitutiondefinitions) |  | The set of available substitutions. This is a collection of substitution definitions that can… |
-| [`cSpell.substitutions`](#cspellsubstitutions) |  | The set of substitutions to apply to a document before spell checking. |
-| [`cSpell.unknownWords`](#cspellunknownwords) |  | Controls how unknown words are handled. |
-| [`cSpell.useIntlWordSegmentation`](#cspelluseintlwordsegmentation) |  | Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese,… |
-| [`cSpell.vfs`](#cspellvfs) |  | Files to add to the CSpell Virtual File System. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.engines`](#cspellengines)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Specify compatible engine versions.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Ignore sequences of characters that look like random strings.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.ignoreRegExpList`](#cspellignoreregexplist)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+List of regular expressions or Pattern names (defined in [`cSpell.patterns`](cspell#cspellpatterns))…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.includeRegExpList`](#cspellincluderegexplist)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+List of regular expression patterns or defined pattern names to match for spell checking.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.maxFileSize`](#cspellmaxfilesize)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+The Maximum size of a file to spell check. This is used to prevent spell checking very large…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.minRandomLength`](#cspellminrandomlength)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+The minimum length of a random string to be ignored.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.overrides`](#cspelloverrides)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Overrides are used to apply settings for specific files in your project.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.patterns`](#cspellpatterns)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`](cspell#cspellignoreregexplist)…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.substitutionDefinitions`](#cspellsubstitutiondefinitions)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+The set of available substitutions. This is a collection of substitution definitions that can…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.substitutions`](#cspellsubstitutions)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+The set of substitutions to apply to a document before spell checking.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.unknownWords`](#cspellunknownwords)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Controls how unknown words are handled.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.useIntlWordSegmentation`](#cspelluseintlwordsegmentation)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese,…
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.vfs`](#cspellvfs)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Files to add to the CSpell Virtual File System.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

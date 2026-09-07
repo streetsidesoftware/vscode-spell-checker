@@ -53,6 +53,7 @@ packages/*/temp/
 tools/*/dist/
 tools/*/temp/
 website/build
+/graphify-out
 
 !**/server/.vscode
 !**/client/.vscode

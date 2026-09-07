@@ -10,14 +10,131 @@ id: advanced
 Advanced settings that are not commonly used.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.advanced.feature.useReferenceProviderRemove`](#cspelladvancedfeatureusereferenceproviderremove) | language-overridable | Remove Matching Characters Before Rename |
-| [`cSpell.advanced.feature.useReferenceProviderWithRename`](#cspelladvancedfeatureusereferenceproviderwithrename) | language-overridable | Use Reference Provider During Rename |
-| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider) | language-overridable | Use Rename Provider when fixing spelling issues. |
-| [`cSpell.logFile`](#cspelllogfile) | window | Write Logs to a File |
-| [`cSpell.logLevel`](#cspellloglevel) | window | Set Logging Level |
-| [`cSpell.trustedWorkspace`](#cspelltrustedworkspace) | window | Enable loading JavaScript CSpell configuration files. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.advanced.feature.useReferenceProviderRemove`](#cspelladvancedfeatureusereferenceproviderremove)
+
+</td>
+<td>
+
+language-overridable
+
+</td>
+<td>
+
+Remove Matching Characters Before Rename
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.advanced.feature.useReferenceProviderWithRename`](#cspelladvancedfeatureusereferenceproviderwithrename)
+
+</td>
+<td>
+
+language-overridable
+
+</td>
+<td>
+
+Use Reference Provider During Rename
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)
+
+</td>
+<td>
+
+language-overridable
+
+</td>
+<td>
+
+Use Rename Provider when fixing spelling issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.logFile`](#cspelllogfile)
+
+</td>
+<td>
+
+window
+
+</td>
+<td>
+
+Write Logs to a File
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.logLevel`](#cspellloglevel)
+
+</td>
+<td>
+
+window
+
+</td>
+<td>
+
+Set Logging Level
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.trustedWorkspace`](#cspelltrustedworkspace)
+
+</td>
+<td>
+
+window
+
+</td>
+<td>
+
+Enable loading JavaScript CSpell configuration files.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

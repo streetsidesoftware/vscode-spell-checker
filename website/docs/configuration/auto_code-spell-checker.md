@@ -10,9 +10,46 @@ id: code-spell-checker
 Settings that control the behavior of the spell checker.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.enabled`](#cspellenabled) | resource | Enable / Disable the spell checker. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.enabled`](#cspellenabled)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Enable / Disable the spell checker.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

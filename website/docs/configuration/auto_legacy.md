@@ -10,9 +10,46 @@ id: legacy
 Legacy settings that have been deprecated or are not commonly used.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.allowCompoundWords`](#cspellallowcompoundwords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Enable / Disable allowing word compounds.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

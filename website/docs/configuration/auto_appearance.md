@@ -10,21 +10,250 @@ id: appearance
 Settings that control the appearance of the spell checker.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.dark`](#cspelldark) | application | Decoration for dark themes. |
-| [`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme) | application | Use VS Code to Render Spelling Issues |
-| [`cSpell.light`](#cspelllight) | application | Decoration for light themes. |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler. |
-| [`cSpell.showInRuler`](#cspellshowinruler) | application | Show spelling issues in the editor ruler. |
-| [`cSpell.textDecoration`](#cspelltextdecoration) | application | The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations). |
-| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) | application | The decoration color for normal spelling issues. |
-| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues. |
-| [`cSpell.textDecorationColorSuggestion`](#cspelltextdecorationcolorsuggestion) | application | The decoration color for spelling suggestions. |
-| [`cSpell.textDecorationLine`](#cspelltextdecorationline) | application | The CSS line type used to decorate issues. |
-| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle) | application | The CSS line style used to decorate issues. |
-| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness) | application | The CSS line thickness used to decorate issues. |
-| [`cSpell.useCustomDecorations`](#cspellusecustomdecorations) | application | Draw custom decorations on Spelling Issues. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.dark`](#cspelldark)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Decoration for dark themes.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Use VS Code to Render Spelling Issues
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.light`](#cspelllight)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Decoration for light themes.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS color used to show issues in the ruler.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.showInRuler`](#cspellshowinruler)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Show spelling issues in the editor ruler.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecoration`](#cspelltextdecoration)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationColor`](#cspelltextdecorationcolor)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The decoration color for normal spelling issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The decoration color for flagged issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationColorSuggestion`](#cspelltextdecorationcolorsuggestion)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The decoration color for spelling suggestions.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationLine`](#cspelltextdecorationline)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS line type used to decorate issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS line style used to decorate issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS line thickness used to decorate issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.useCustomDecorations`](#cspellusecustomdecorations)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Draw custom decorations on Spelling Issues.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings
