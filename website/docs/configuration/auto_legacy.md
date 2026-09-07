@@ -503,6 +503,29 @@ _`"Right"`_
 
 ### CustomDictionaryAugmentExistingDictionary
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionaryAugmentExistingDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
 ```ts
 {
   addWords?: boolean;
@@ -514,10 +537,37 @@ _`"Right"`_
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### CustomDictionary
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 {
@@ -533,12 +583,43 @@ _`"Right"`_
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### CustomDictionaryEntry
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionaryEntry
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
 ( [`CustomDictionaryAugmentExistingDictionary`](#customdictionaryaugmentexistingdictionary) | [`CustomDictionary`](#customdictionary) | `string` )
+
+</dd>
+
+</dl>
 
 ---
 

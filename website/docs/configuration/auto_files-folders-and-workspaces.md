@@ -1400,27 +1400,152 @@ _- none -_
 
 ### EnabledFileTypes
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+EnabledFileTypes Enabled File Types to Check
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable checking file types (languageIds).
+
+This setting replaces: [`cSpell.enabledLanguageIds`](legacy#cspellenabledlanguageids) and [`cSpell.enableFiletypes`](files-folders-and-workspaces#cspellenablefiletypes).
+
+A Value of:
+- `true` - enable checking for the file type
+- `false` - disable checking for the file type
+
+A file type of `*` is a wildcard that enables all file types.
+
+**Example: enable all file types**
+
+| File Type | Enabled | Comment |
+| --------- | ------- | ------- |
+| `*`       | `true`  | Enable all file types. |
+| `json`    | `false` | Disable checking for json files. |
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
 ```ts
 {
   [key: string]: boolean;
 }
 ```
+
+</dd>
+
+</dl>
 
 ---
 
 
 ### EnabledSchemes
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+EnabledSchemes Specify Allowed Schemes
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
+
+Some schemes have special meaning like:
+- `untitled` - Used for new documents that have not yet been saved
+- `vscode-notebook-cell` - Used for validating segments of a Notebook.
+- `vscode-userdata` - Needed to spell check `.code-snippets`
+- `vscode-scm` - Needed to spell check Source Control commit messages.
+- `comment` - Used for new comment editors.
+
+A scheme of `*` is a wildcard that enables all schemes without an explicit entry.
+This is useful for virtual file systems provided by other extensions.
+
+**Example: enable all schemes**
+
+| Scheme | Enabled | Comment |
+| ------ | ------- | ------- |
+| `*`    | `true`  | Enable all schemes. |
+| `git`  | `false` | Do not check documents provided by the `git` file system. |
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
 ```ts
 {
   [key: string]: boolean;
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### CSpellMergeFields
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CSpellMergeFields
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+This only applies when there is a CSpell configuration file in the workspace and
+[`cSpell.mergeCSpellSettings`](files-folders-and-workspaces#cspellmergecspellsettings) is `true`.
+
+Values:
+- `{ flagWords: true, userWords: false }` - Always allow `flagWords`, but never allow `userWords`.
+
+Example:
+```json5
+"cSpell.mergeCSpellSettingsFields": { "userWords": false }
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 {
@@ -1459,6 +1584,19 @@ _- none -_
   words?: boolean;
 }
 ```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
 
 ---
 

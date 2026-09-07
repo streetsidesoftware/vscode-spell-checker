@@ -1220,6 +1220,29 @@ CSpell Version
 
 ### CustomDictionary
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
 ```ts
 {
   addWords?: boolean;
@@ -1234,10 +1257,37 @@ CSpell Version
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### DictionaryDef
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+DictionaryDef
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 (CustomDictionary | {
@@ -1260,6 +1310,10 @@ CSpell Version
   supportNonStrictSearches?: boolean;
 })
 ```
+
+</dd>
+
+</dl>
 
 ---
 

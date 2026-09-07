@@ -1103,7 +1103,30 @@ _- none -_
 
 ### CustomDictionariesDictionary
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionariesDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
 Define a custom dictionary to be included.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 {
@@ -1119,10 +1142,55 @@ Define a custom dictionary to be included.
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### CustomDictionaries
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionaries Custom Dictionaries
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Define custom dictionaries to be included by default.
+If `addWords` is `true` words will be added to this dictionary.
+
+**Example:**
+
+```js
+"cSpell.customDictionaries": {
+  "project-words": {
+    "name": "project-words",
+    "path": "${workspaceRoot}/project-words.txt",
+    "description": "Words used in this project",
+    "addWords": true
+  },
+  "custom": true, // Enable the `custom` dictionary
+  "internal-terms": false // Disable the `internal-terms` dictionary
+}
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 {
@@ -1130,10 +1198,37 @@ Define a custom dictionary to be included.
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### CustomDictionary
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 {
@@ -1149,10 +1244,37 @@ Define a custom dictionary to be included.
 }
 ```
 
+</dd>
+
+</dl>
+
 ---
 
 
 ### DictionaryDef
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+DictionaryDef
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 (CustomDictionary | {
@@ -1175,6 +1297,10 @@ Define a custom dictionary to be included.
   supportNonStrictSearches?: boolean;
 })
 ```
+
+</dd>
+
+</dl>
 
 ---
 

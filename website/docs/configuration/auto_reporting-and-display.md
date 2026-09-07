@@ -1407,7 +1407,35 @@ _- none -_
 
 ### EnabledNotifications
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+EnabledNotifications Enabled Notifications
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
 Control which notifications are displayed.
+
+See:
+- [`cSpell.blockCheckingWhenLineLengthGreaterThan`](performance#cspellblockcheckingwhenlinelengthgreaterthan)
+- [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](performance#cspellblockcheckingwhentextchunksizegreaterthan)
+- [`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](performance#cspellblockcheckingwhenaveragechunksizegreaterthan)
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
 
 ```ts
 {
@@ -1416,6 +1444,19 @@ Control which notifications are displayed.
   "Maximum Word Length Exceeded"?: boolean;
 }
 ```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.41
+
+</dd>
+
+</dl>
 
 ---
 

@@ -28,7 +28,11 @@ interface ObjectProp {
 
 interface NamedType {
     node: TypeNode;
-    description?: string;
+    title: string | undefined;
+    description: string | undefined;
+    since: string | undefined;
+    sinceCSpellVersion: string | undefined;
+    deprecationMessage: string | undefined;
 }
 
 /**
@@ -115,11 +119,11 @@ class ConfigExtractor {
             .join('\n')}\n`;
     }
 
-    #formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
-        return sections.map((s) => this.#formatSectionContent(s, refs));
+    #formatSections(sections: JSONSchema4[]): FormattedSection[] {
+        return sections.map((s) => this.#formatSectionContent(s));
     }
 
-    #formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): FormattedSection {
+    #formatSectionContent(section: JSONSchema4): FormattedSection {
         const resolvedSection = this.#resolve(section, hasProperties);
         const entries = Object.entries(resolvedSection.properties || {});
         entries.sort((a, b) => this.#compareProperties(a, b));
@@ -129,7 +133,7 @@ class ConfigExtractor {
 
         const title = section.title || '';
         const slug = slugifyTitle(title);
-        const definitions = this.#configDefinitions(entries, refs);
+        const definitions = this.#configDefinitions(entries);
         const namedTypeDefinitions = this.#formatNamedTypeDefinitions();
         const content =
             unindent`\
@@ -142,9 +146,9 @@ class ConfigExtractor {
 
                 # ${title}
 
-                ${section.description || ''}
+                ${section.markdownDescription || section.description || ''}
 
-                ${this.#configTable(activeEntries, refs)}
+                ${this.#configTable(activeEntries)}
 
                 ## Settings
 
@@ -154,11 +158,11 @@ class ConfigExtractor {
         return { title, content, slug };
     }
 
-    #configDefinitions(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-        return entries.map((def) => this.#definition(def, refs)).join('\n');
+    #configDefinitions(entries: [string, JSONSchema4][]): string {
+        return entries.map((def) => this.#definition(def)).join('\n');
     }
 
-    #definition(entry: [string, JSONSchema4], refs: TypeSlugRefs): string {
+    #definition(entry: [string, JSONSchema4]): string {
         const [key, value] = entry;
         const description = value.markdownDescription || value.description || value.title || '';
         const since = value.sinceVersion || '';
@@ -180,7 +184,7 @@ class ConfigExtractor {
 
             ${singleDef('Name', `${name} ${title}`)}
 
-            ${singleDef('Description', fixVSCodeRefs(description, refs))}
+            ${singleDef('Description', this.#fixVSCodeRefs(description))}
 
             ${singleDef('Type', this.#formatType(value), true)}
 
@@ -201,7 +205,7 @@ class ConfigExtractor {
     }
 
     formatSections(): FormattedSection[] {
-        return this.#formatSections(this.configSections, this.refs);
+        return this.#formatSections(this.configSections);
     }
 
     #innerFormatDefaultValue(value: JSONSchema4Type | undefined): string {
@@ -263,6 +267,14 @@ class ConfigExtractor {
         return renderMarkdownTable({ header: ['Value', 'Description'], rows });
     }
 
+    #extractDescriptions(ref: JSONSchema4): { description: string | undefined; markdownDescription: string | undefined } {
+        const resolved = this.#resolve(ref, (n) => Object.hasOwn(n, 'description') || Object.hasOwn(n, 'markdownDescription'));
+        return {
+            description: resolved.description,
+            markdownDescription: resolved.markdownDescription,
+        };
+    }
+
     /**
      * Build a structural {@link TypeNode} for a schema, resolving `$ref`s.
      *
@@ -276,20 +288,26 @@ class ConfigExtractor {
 
         if (def.$ref) {
             const name = refName(def.$ref);
+            const title = def.title || '';
+            const since: string = (def.sinceVersion || '').toString();
+            const sinceCSpellVersion: string = (def.since || '').toString();
             const known = this.namedTypes.get(name);
             if (known) return { kind: 'ref', name };
             if (!isHoistableName(name) || this.namedTypesInProgress.has(name)) {
                 return this.#buildTypeNodeRaw(resolveRef(this.root, def));
             }
 
-            const resolved = resolveRef(this.root, def);
+            const resolved = this.#resolve(def);
             this.namedTypesInProgress.add(name);
             const inner = this.#buildTypeNodeRaw(resolved);
             this.namedTypesInProgress.delete(name);
+            const descriptions = this.#extractDescriptions(def);
+            const description = descriptions.markdownDescription || descriptions.description || def.title || '';
+            const deprecationMessage = this.#resolve(def, hasAttribute('deprecationMessage')).deprecationMessage || '';
 
             if (!containsComplexType(inner)) return inner;
 
-            this.namedTypes.set(name, { node: inner, description: resolved.description });
+            this.namedTypes.set(name, { node: inner, description, title, since, sinceCSpellVersion, deprecationMessage });
             return { kind: 'ref', name };
         }
 
@@ -437,20 +455,36 @@ class ConfigExtractor {
         return '{\n' + propLines.join('\n') + '\n' + '  '.repeat(depth) + '}';
     }
 
+    #formatNamedTypeDefinition(name: string, namedType: NamedType): string {
+        const { node, description, title, since, sinceCSpellVersion, deprecationMessage } = namedType;
+        return unindent`
+            ### ${name}
+
+            <dl>
+
+            ${singleDef('Name', `${name} ${title}`)}
+
+            ${singleDef('Description', this.#fixVSCodeRefs(description ? description + '\n' : ''))}
+
+            ${singleDef('Type', this.#renderTypeField(node), true)}
+
+            ${deprecationMessage}
+
+            ${since ? singleDef('Since Extension Version', since) : ''}
+
+            ${sinceCSpellVersion ? singleDef('CSpell Version', sinceCSpellVersion) : ''}
+
+            </dl>
+
+            ---
+        `.replace(/\n{3,}/g, '\n\n');
+    }
+
     /** Render the "Type Definitions" section listing the named object types hoisted while formatting this section. */
     #formatNamedTypeDefinitions(): string {
         if (!this.namedTypes.size) return '';
 
-        const sections = [...this.namedTypes.entries()].map(([name, { node, description }]) =>
-            unindent`
-                ### ${name}
-
-                ${description ? description + '\n' : ''}
-                ${this.#renderTypeField(node)}
-
-                ---
-            `.replace(/\n{3,}/g, '\n\n'),
-        );
+        const sections = [...this.namedTypes.entries()].map(([name, node]) => this.#formatNamedTypeDefinition(name, node));
 
         return unindent`
             ## Type Definitions
@@ -468,17 +502,20 @@ class ConfigExtractor {
         return dA - dB || compare(a[0], b[0]);
     }
 
-    #configTable(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-        function tableEntryConfig([key, value]: [string, JSONSchema4]): TableRow {
-            const description = fixVSCodeRefs(
+    #configTable(entries: [string, JSONSchema4][]): string {
+        const tableEntryConfig = ([key, value]: [string, JSONSchema4]): TableRow => {
+            const description = this.#fixVSCodeRefs(
                 value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
-                refs,
             );
             const scope = value.scope || '';
             return [`[\`${shorten(key, 60)}\`](${hashRef(key)})`, `${scope}`, `${shortenLine(description, descriptionWidth)}`];
-        }
+        };
 
         return renderMarkdownTableHtml({ header: ['Setting', 'Scope', 'Description'], rows: entries.map(tableEntryConfig) });
+    }
+
+    #fixVSCodeRefs(text: string): string {
+        return fixVSCodeRefs(text, this.refs);
     }
 }
 
@@ -500,6 +537,10 @@ function hasTitle(schema: JSONSchema4): boolean {
 
 function hasProperties(schema: JSONSchema4): boolean {
     return !!schema.properties;
+}
+
+function hasAttribute(attribute: string): (schema: JSONSchema4) => boolean {
+    return (schema: JSONSchema4): boolean => Object.hasOwn(schema, attribute);
 }
 
 interface FormattedSection {
@@ -560,7 +601,7 @@ function fixVSCodeRefs(markdown: string, refs: TypeSlugRefs): string {
 function singleDef(term: string, def: string, _addIgnore = false): string {
     const lines: string[] = [];
 
-    const defLines = def.replaceAll('`jsonc', '`json5');
+    const defLines = def.replaceAll('```jsonc', '```json5');
     const termDef = `<dt>\n${term}\n</dt>\n<dd>\n\n${defLines}\n\n</dd>\n`;
     const termLines = termDef.split('\n').map((line) => line.trimEnd());
 
@@ -584,7 +625,7 @@ function hashRef(heading: string): string {
 /** Extracts the definition name from a `$ref` such as `#/definitions/CustomDictionaries`. */
 function refName(ref: string): string {
     const path = ref.replace(/^#\//, '').split('/').map(decodeURIComponent);
-    return path[path.length - 1];
+    return path.slice(-1).join('');
 }
 
 /**
