@@ -10,9 +10,46 @@ id: legacy
 Legacy settings that have been deprecated or are not commonly used.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.allowCompoundWords`](#cspellallowcompoundwords)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Enable / Disable allowing word compounds.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings
@@ -122,7 +159,7 @@ Deprecation Message
 </dt>
 <dd>
 
-- Use `#cSpell.customDictionaries#` instead.
+- Use [`cSpell.customDictionaries`](languages-and-dictionaries#cspellcustomdictionaries) instead.
 
 </dd>
 
@@ -186,7 +223,7 @@ Deprecation Message
 </dt>
 <dd>
 
-- Use `#cSpell.customDictionaries#` instead.
+- Use [`cSpell.customDictionaries`](languages-and-dictionaries#cspellcustomdictionaries) instead.
 
 </dd>
 
@@ -250,7 +287,7 @@ Deprecation Message
 </dt>
 <dd>
 
-- Use `#cSpell.customDictionaries#` instead.
+- Use [`cSpell.customDictionaries`](languages-and-dictionaries#cspellcustomdictionaries) instead.
 
 </dd>
 
@@ -313,7 +350,7 @@ Deprecation Message
 </dt>
 <dd>
 
-- Use `#cSpell.enabledFileTypes#` instead.
+- Use [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes) instead.
 
 </dd>
 
@@ -421,6 +458,21 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"Left"`
+</li>
+<li>
+
+`"Right"`
+</li>
+
+</ul>
+
 `( "Left" | "Right" )`
 | Value | Description |
 | ----- | ----------- |
@@ -466,6 +518,326 @@ _`"Right"`_
 
 ### CustomDictionaryAugmentExistingDictionary
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionaryAugmentExistingDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+addWords
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The reference name of the dictionary.
+
+Example: `My Words` or `custom`
+
+If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+noSuggest
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate that suggestions should not come from this dictionary.
+Words in this dictionary are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+this dictionary, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+path
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Define the path to the dictionary text file.
+
+**Note:** if path is `undefined` the `name`d dictionary is expected to be found
+in the `dictionaryDefinitions`.
+
+File Format: Each line in the file is considered a dictionary entry.
+
+Case is preserved while leading and trailing space is removed.
+
+The path should be absolute, or relative to the workspace.
+
+**Example:** relative to User's folder
+
+```json
+"path": "~/dictionaries/custom_dictionary.txt"
+```
+
+**Example:** relative to the `client` folder in a multi-root workspace
+
+```json
+"path": "${workspaceFolder:client}/build/custom_dictionary.txt"
+```
+
+**Example:** relative to the current workspace folder in a single-root workspace
+
+**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative
+workspace for the currently open file.
+
+```json
+"path": "${workspaceFolder}/build/custom_dictionary.txt"
+```
+
+**Example:** relative to the workspace folder in a single-root workspace or the first folder in
+a multi-root workspace
+
+```json
+"path": "./build/custom_dictionary.txt"
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+scope
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Options are
+- `user` - words that apply to all projects and workspaces
+- `workspace` - words that apply to the entire workspace
+- `folder` - words that apply to only a workspace folder
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 {
   addWords?: boolean;
@@ -477,10 +849,472 @@ _`"Right"`_
 }
 ```
 
+</details>
+
+</dd>
+
+</dl>
+
 ---
 
 
 ### CustomDictionary
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionary
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+addWords
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate if this custom dictionary should be used to store added words.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+btrie
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+An alternative path to a bTrie dictionary file.
+It will be used in place of `path` if the version of CSpell being used
+supports btrie files.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+9.6.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+description
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Optional: A human readable description.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ignoreForbiddenWords
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Some dictionaries may contain forbidden words to prevent compounding from generating
+words that are not valid in the language. These are often
+words that are used in other languages or might be generated through compounding.
+This setting allows flagged words to be ignored when checking the dictionary.
+The effect is similar to the word not being in the dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+name
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The reference name of the dictionary.
+
+Example: `My Words` or `custom`
+
+If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+If you use: `typescript` it will replace the built-in TypeScript dictionary.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+noSuggest
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Indicate that suggestions should not come from this dictionary.
+Words in this dictionary are considered correct, but will not be
+used when making spell correction suggestions.
+
+Note: if a word is suggested by another dictionary, but found in
+this dictionary, it will be removed from the set of
+possible suggestions.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+path
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Define the path to the dictionary text file.
+
+**Note:** if path is `undefined` the `name`d dictionary is expected to be found
+in the `dictionaryDefinitions`.
+
+File Format: Each line in the file is considered a dictionary entry.
+
+Case is preserved while leading and trailing space is removed.
+
+The path should be absolute, or relative to the workspace.
+
+**Example:** relative to User's folder
+
+```json
+"path": "~/dictionaries/custom_dictionary.txt"
+```
+
+**Example:** relative to the `client` folder in a multi-root workspace
+
+```json
+"path": "${workspaceFolder:client}/build/custom_dictionary.txt"
+```
+
+**Example:** relative to the current workspace folder in a single-root workspace
+
+**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative
+workspace for the currently open file.
+
+```json
+"path": "${workspaceFolder}/build/custom_dictionary.txt"
+```
+
+**Example:** relative to the workspace folder in a single-root workspace or the first folder in
+a multi-root workspace
+
+```json
+"path": "./build/custom_dictionary.txt"
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+scope
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Options are
+- `user` - words that apply to all projects and workspaces
+- `workspace` - words that apply to the entire workspace
+- `folder` - words that apply to only a workspace folder
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( ( "user" | "workspace" | "folder" ) | ( "user" | "workspace" | "folder" )[] )`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+supportNonStrictSearches
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Strip case and accents to allow for case insensitive searches and
+words without accents.
+
+Note: this setting only applies to word lists. It has no-impact on trie
+dictionaries.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
 
 ```ts
 {
@@ -496,12 +1330,64 @@ _`"Right"`_
 }
 ```
 
+</details>
+
+</dd>
+
+</dl>
+
 ---
 
 
 ### CustomDictionaryEntry
 
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+CustomDictionaryEntry
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+[`CustomDictionaryAugmentExistingDictionary`](#customdictionaryaugmentexistingdictionary)
+</li>
+<li>
+
+[`CustomDictionary`](#customdictionary)
+</li>
+<li>
+
+`string`
+</li>
+
+</ul>
+
 ( [`CustomDictionaryAugmentExistingDictionary`](#customdictionaryaugmentexistingdictionary) | [`CustomDictionary`](#customdictionary) | `string` )
+
+</dd>
+
+</dl>
 
 ---
 

@@ -10,14 +10,131 @@ id: performance
 Settings that control the performance of the spell checker.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks. |
-| [`cSpell.blockCheckingWhenLineLengthGreaterThan`](#cspellblockcheckingwhenlinelengthgreaterthan) | language-overridable | The maximum line length. |
-| [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](#cspellblockcheckingwhentextchunksizegreaterthan) | language-overridable | The maximum length of a chunk of text without word breaks. |
-| [`cSpell.checkLimit`](#cspellchecklimit) | resource | Set the maximum number of blocks of text to check. Each block is 1024 characters. |
-| [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms) | application | Delay in ms after a document has changed before checking it for spelling errors. |
-| [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout) | resource | The maximum amount of time in milliseconds to generate suggestions for a word. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](#cspellblockcheckingwhenaveragechunksizegreaterthan)
+
+</td>
+<td>
+
+language-overridable
+
+</td>
+<td>
+
+The maximum average length of chunks of text without word breaks.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.blockCheckingWhenLineLengthGreaterThan`](#cspellblockcheckingwhenlinelengthgreaterthan)
+
+</td>
+<td>
+
+language-overridable
+
+</td>
+<td>
+
+The maximum line length.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](#cspellblockcheckingwhentextchunksizegreaterthan)
+
+</td>
+<td>
+
+language-overridable
+
+</td>
+<td>
+
+The maximum length of a chunk of text without word breaks.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.checkLimit`](#cspellchecklimit)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Set the maximum number of blocks of text to check. Each block is 1024 characters.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Delay in ms after a document has changed before checking it for spelling errors.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+The maximum amount of time in milliseconds to generate suggestions for a word.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings

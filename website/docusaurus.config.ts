@@ -2,6 +2,8 @@ import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
+const isStrict = false; // process.env.DOCUSAURUS_STRICT === 'true';
+
 const config: Config = {
     title: 'VS Code Spell Checker',
     tagline: 'A spell checker for VS Code!',
@@ -21,7 +23,6 @@ const config: Config = {
     trailingSlash: false,
 
     onBrokenLinks: 'throw',
-    onBrokenMarkdownLinks: 'warn',
 
     // Even if you don't use internationalization, you can use this field to set
     // useful metadata like html lang. For example, if your site is Chinese, you
@@ -32,7 +33,9 @@ const config: Config = {
     },
 
     markdown: {
-        // format: 'detect',
+        hooks: {
+            onBrokenMarkdownLinks: 'warn',
+        },
     },
 
     presets: [

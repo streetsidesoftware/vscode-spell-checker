@@ -1,8 +1,20 @@
 import { promises as fs } from 'node:fs';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { unindent } from './lib/utils.mts';
+import type { TableHeader, TableRow } from './lib/mdTable.mts';
+import { renderMarkdownTable, renderMarkdownTableHtml } from './lib/mdTable.mts';
+import { mdDetails } from './lib/mdDetails.mts';
+import { renderMarkdownDL, singleDef } from './lib/mdDL.mts';
+import { mdList } from './lib/mdList.mts';
 
 type TypeSlugRefs = { [key: string]: string };
+
+type TypeNodePlain = { kind: 'plain'; text: string };
+type TypeNodeArray = { kind: 'array'; item: TypeNode };
+type TypeNodeTuple = { kind: 'tuple'; items: TypeNode[] };
+type TypeNodeUnion = { kind: 'union'; options: TypeNode[] };
+type TypeNodeRef = { kind: 'ref'; name: string };
+type TypeNodeObject = { kind: 'object'; props: ObjectProp[]; indexSignature?: { keyType: string; value: TypeNode } };
 
 /**
  * A simplified structural representation of a JSON Schema type, built by
@@ -10,23 +22,25 @@ type TypeSlugRefs = { [key: string]: string };
  * out into a separate "Type Definitions" section, while inline (unnamed)
  * object types are expanded in place.
  */
-type TypeNode =
-    | { kind: 'plain'; text: string }
-    | { kind: 'array'; item: TypeNode }
-    | { kind: 'tuple'; items: TypeNode[] }
-    | { kind: 'union'; options: TypeNode[] }
-    | { kind: 'ref'; name: string }
-    | { kind: 'object'; props: ObjectProp[]; indexSignature?: { keyType: string; value: TypeNode } };
+type TypeNode = TypeNodePlain | TypeNodeArray | TypeNodeTuple | TypeNodeUnion | TypeNodeRef | TypeNodeObject;
 
-interface ObjectProp {
+interface CommonAttributes {
+    title: string | undefined;
+    description: string | undefined;
+    defaultValue: string | undefined;
+    since: string | undefined;
+    sinceCSpellVersion: string | undefined;
+    deprecationMessage: string | undefined;
+}
+
+interface ObjectProp extends CommonAttributes {
     key: string;
     type: TypeNode;
     optional: boolean;
 }
 
-interface NamedType {
+interface NamedType extends CommonAttributes {
     node: TypeNode;
-    description?: string;
 }
 
 /**
@@ -80,6 +94,10 @@ class ConfigExtractor {
         return ref;
     }
 
+    #getAttribute(schema: JSONSchema4, attribute: string, defaultValue?: any): any {
+        return this.#resolve(schema, hasAttribute(attribute))[attribute] ?? defaultValue;
+    }
+
     genIndex(): string {
         return this.#genIndex(this.configSections);
     }
@@ -113,11 +131,11 @@ class ConfigExtractor {
             .join('\n')}\n`;
     }
 
-    #formatSections(sections: JSONSchema4[], refs: TypeSlugRefs): FormattedSection[] {
-        return sections.map((s) => this.#formatSectionContent(s, refs));
+    #formatSections(sections: JSONSchema4[]): FormattedSection[] {
+        return sections.map((s) => this.#formatSectionContent(s));
     }
 
-    #formatSectionContent(section: JSONSchema4, refs: TypeSlugRefs): FormattedSection {
+    #formatSectionContent(section: JSONSchema4): FormattedSection {
         const resolvedSection = this.#resolve(section, hasProperties);
         const entries = Object.entries(resolvedSection.properties || {});
         entries.sort((a, b) => this.#compareProperties(a, b));
@@ -127,7 +145,7 @@ class ConfigExtractor {
 
         const title = section.title || '';
         const slug = slugifyTitle(title);
-        const definitions = this.#configDefinitions(entries, refs);
+        const definitions = this.#configDefinitions(entries);
         const namedTypeDefinitions = this.#formatNamedTypeDefinitions();
         const content =
             unindent`\
@@ -140,9 +158,9 @@ class ConfigExtractor {
 
                 # ${title}
 
-                ${section.description || ''}
+                ${section.markdownDescription || section.description || ''}
 
-                ${this.#configTable(activeEntries, refs)}
+                ${this.#configTable(activeEntries)}
 
                 ## Settings
 
@@ -152,11 +170,11 @@ class ConfigExtractor {
         return { title, content, slug };
     }
 
-    #configDefinitions(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-        return entries.map((def) => this.#definition(def, refs)).join('\n');
+    #configDefinitions(entries: [string, JSONSchema4][]): string {
+        return entries.map((def) => this.#definition(def)).join('\n');
     }
 
-    #definition(entry: [string, JSONSchema4], refs: TypeSlugRefs): string {
+    #definition(entry: [string, JSONSchema4]): string {
         const [key, value] = entry;
         const description = value.markdownDescription || value.description || value.title || '';
         const since = value.sinceVersion || '';
@@ -171,22 +189,22 @@ class ConfigExtractor {
 
         const deprecationMessage = value.deprecationMessage ? singleDef('Deprecation Message', value.deprecationMessage) : '';
 
-        return unindent`
+        const def = unindent`
             ### ${name}
 
             <dl>
 
             ${singleDef('Name', `${name} ${title}`)}
 
-            ${singleDef('Description', fixVSCodeRefs(description, refs))}
+            ${singleDef('Description', description)}
 
-            ${singleDef('Type', this.#formatType(value), true)}
+            ${singleDef('Type', this.#formatType(value))}
 
             ${singleDef('Scope', scopeDef(value.scope) || '_- none -_')}
 
             ${deprecationMessage}
 
-            ${singleDef('Default', defaultValue, true)}
+            ${singleDef('Default', defaultValue)}
 
             ${since ? singleDef('Since Extension Version', since) : ''}
 
@@ -195,11 +213,12 @@ class ConfigExtractor {
             </dl>
 
             ---
-        `.replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
+        `;
+        return this.#fixVSCodeRefs(def).replace(/\n{3,}/g, '\n\n'); // Remove extra blank lines
     }
 
     formatSections(): FormattedSection[] {
-        return this.#formatSections(this.configSections, this.refs);
+        return this.#formatSections(this.configSections);
     }
 
     #innerFormatDefaultValue(value: JSONSchema4Type | undefined): string {
@@ -227,7 +246,7 @@ class ConfigExtractor {
 
     #formatType(def: JSONSchema4): string {
         const node = this.#buildTypeNode(def);
-        return this.#renderTypeField(node) + this.#extractEnumDescriptions(def);
+        return this.#renderType(node) + this.#extractEnumDescriptions(def);
     }
 
     /**
@@ -237,7 +256,7 @@ class ConfigExtractor {
      * is involved - a fenced code block, the same way {@link #formatDefaultValue} pretty-prints
      * multi-line default values.
      */
-    #renderTypeField(node: TypeNode): string {
+    #renderTypeFieldAsCode(node: TypeNode): string {
         if (containsObjectLiteral(node)) {
             return '\n```ts\n' + this.#renderTsType(node, 0) + '\n```\n';
         }
@@ -246,24 +265,45 @@ class ConfigExtractor {
             return this.#renderLinkedType(node);
         }
 
-        const typeLines = beautifyType(this.#renderPlainType(node), 80);
-        return typeLines.length > 1 ? '\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+        const typeLines = beautifyType(this.#renderPlainTypeAsCode(node), 80);
+        return typeLines.length > 1 ? '\n```ts\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+    }
+
+    #renderType(node: TypeNode): string {
+        const lines: string[] = [];
+        const code = this.#renderTypeFieldAsCode(node);
+        const numCodeLines = numLines(code);
+
+        if (node.kind === 'array' && numCodeLines > 1) {
+            lines.push('**Array of:**', '');
+            lines.push(this.#renderType(node.item));
+            return lines.join('\n');
+        }
+
+        if (node.kind === 'union') {
+            lines.push('**Any of:**', '');
+            const options = node.options.map((option) => this.#renderType(option));
+            lines.push(mdList(options));
+        }
+
+        if (node.kind === 'object') {
+            lines.push(this.#renderTypeNodeObjectAsTable(node));
+        }
+
+        lines.push(numCodeLines > 10 ? mdDetails('TypeScript:', code) : code);
+
+        return lines.join('\n');
     }
 
     #extractEnumDescriptions(def: JSONSchema4): string {
         const enumDef = this.#resolve(def);
         if (!def.enumDescriptions || !enumDef.enum) return '';
 
-        const defs = enumDef.enum
+        const rows: TableRow[] = enumDef.enum
             .map((e, i) => [e, def.enumDescriptions?.[i] || '_No description_'])
-            .map(([e, d]) => `| \`${e}\` | ${(d as string).replace(/\n/g, '<br>')} |`)
-            .join('\n');
+            .map(([e, d]) => [`\`${e}\``, `${(d as string).replace(/\n/g, '<br>')}`]);
 
-        return unindent`
-            | Value | Description |
-            | ----- | ----------- |
-            ${defs}
-        `;
+        return renderMarkdownTable({ header: ['Value', 'Description'], rows });
     }
 
     /**
@@ -279,20 +319,21 @@ class ConfigExtractor {
 
         if (def.$ref) {
             const name = refName(def.$ref);
+            const { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue } = this.#extractCommonAttributes(def);
             const known = this.namedTypes.get(name);
             if (known) return { kind: 'ref', name };
             if (!isHoistableName(name) || this.namedTypesInProgress.has(name)) {
                 return this.#buildTypeNodeRaw(resolveRef(this.root, def));
             }
 
-            const resolved = resolveRef(this.root, def);
+            const resolved = this.#resolve(def);
             this.namedTypesInProgress.add(name);
             const inner = this.#buildTypeNodeRaw(resolved);
             this.namedTypesInProgress.delete(name);
 
             if (!containsComplexType(inner)) return inner;
 
-            this.namedTypes.set(name, { node: inner, description: resolved.description });
+            this.namedTypes.set(name, { node: inner, description, title, since, sinceCSpellVersion, deprecationMessage, defaultValue });
             return { kind: 'ref', name };
         }
 
@@ -341,6 +382,7 @@ class ConfigExtractor {
     #buildObjectNode(def: JSONSchema4): TypeNode {
         const required = new Set(Array.isArray(def.required) ? def.required : []);
         const props: ObjectProp[] = Object.entries(def.properties || {}).map(([key, value]) => ({
+            ...this.#extractCommonAttributes(value),
             key,
             type: this.#buildTypeNode(value),
             optional: !required.has(key),
@@ -357,16 +399,16 @@ class ConfigExtractor {
     }
 
     /** Render a type known to contain no object/ref nodes, matching the legacy compact format. */
-    #renderPlainType(node: TypeNode): string {
+    #renderPlainTypeAsCode(node: TypeNode): string {
         switch (node.kind) {
             case 'plain':
                 return node.text;
             case 'array':
-                return this.#renderPlainType(node.item) + '[]';
+                return this.#renderPlainTypeAsCode(node.item) + '[]';
             case 'tuple':
-                return '[ ' + node.items.map((i) => this.#renderPlainType(i)).join(', ') + ' ]';
+                return '[ ' + node.items.map((i) => this.#renderPlainTypeAsCode(i)).join(', ') + ' ]';
             case 'union': {
-                const parts = node.options.map((o) => this.#renderPlainType(o));
+                const parts = node.options.map((o) => this.#renderPlainTypeAsCode(o));
                 return parts.length > 1 ? '( ' + parts.join(' | ') + ' )' : (parts[0] ?? '');
             }
             case 'ref':
@@ -440,20 +482,65 @@ class ConfigExtractor {
         return '{\n' + propLines.join('\n') + '\n' + '  '.repeat(depth) + '}';
     }
 
+    #renderTypeNodeObjectAsTable(node: TypeNodeObject): string {
+        if (!node.props.some((p) => p.description)) return '';
+
+        const propDescription = (p: ObjectProp): string => {
+            const terms = [{ term: 'Name', def: p.key }];
+            if (p.description) {
+                terms.push({ term: 'Description', def: p.description });
+            }
+            terms.push({ term: 'Type', def: this.#renderTypeFieldAsCode(p.type) });
+            if (p.defaultValue) {
+                terms.push({ term: 'Default', def: p.defaultValue });
+            }
+            if (p.since) {
+                terms.push({ term: 'Since Extension Version', def: p.since });
+            }
+
+            if (p.sinceCSpellVersion) {
+                terms.push({ term: 'CSpell Version', def: p.sinceCSpellVersion });
+            }
+
+            return renderMarkdownDL(terms);
+        };
+
+        const header: TableHeader = ['Fields'];
+        const rows: TableRow[] = node.props.map((p) => [propDescription(p)]);
+        return renderMarkdownTableHtml({ header, rows });
+    }
+
+    #formatNamedTypeDefinition(name: string, namedType: NamedType): string {
+        const { node, description, title, since, sinceCSpellVersion, deprecationMessage } = namedType;
+        const fmt = unindent`
+            ### ${name}
+
+            <dl>
+
+            ${singleDef('Name', `${name}`)}
+
+            ${singleDef('Description', description ? description + '\n' : '')}
+
+            ${singleDef('Type', this.#renderType(node))}
+
+            ${deprecationMessage}
+
+            ${since ? singleDef('Since Extension Version', since) : ''}
+
+            ${sinceCSpellVersion ? singleDef('CSpell Version', sinceCSpellVersion) : ''}
+
+            </dl>
+
+            ---
+        `;
+        return this.#fixVSCodeRefs(fmt).replace(/\n{3,}/g, '\n\n');
+    }
+
     /** Render the "Type Definitions" section listing the named object types hoisted while formatting this section. */
     #formatNamedTypeDefinitions(): string {
         if (!this.namedTypes.size) return '';
 
-        const sections = [...this.namedTypes.entries()].map(([name, { node, description }]) =>
-            unindent`
-                ### ${name}
-
-                ${description ? description + '\n' : ''}
-                ${this.#renderTypeField(node)}
-
-                ---
-            `.replace(/\n{3,}/g, '\n\n'),
-        );
+        const sections = [...this.namedTypes.entries()].map(([name, node]) => this.#formatNamedTypeDefinition(name, node));
 
         return unindent`
             ## Type Definitions
@@ -471,21 +558,41 @@ class ConfigExtractor {
         return dA - dB || compare(a[0], b[0]);
     }
 
-    #configTable(entries: [string, JSONSchema4][], refs: TypeSlugRefs): string {
-        function tableEntryConfig([key, value]: [string, JSONSchema4]): string {
-            const description = fixVSCodeRefs(
+    #configTable(entries: [string, JSONSchema4][]): string {
+        const tableEntryConfig = ([key, value]: [string, JSONSchema4]): TableRow => {
+            const description = this.#fixVSCodeRefs(
                 value.title || value.description?.replace(/\n/g, '<br>') || value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') || '',
-                refs,
             );
             const scope = value.scope || '';
-            return `| [\`${shorten(key, 60)}\`](${hashRef(key)}) | ${scope} | ${shortenLine(description, descriptionWidth)} |`;
-        }
+            return [`[\`${shorten(key, 60)}\`](${hashRef(key)})`, `${scope}`, `${shortenLine(description, descriptionWidth)}`];
+        };
 
-        return unindent`
-            | Setting | Scope | Description |
-            | ------- | ----- | ----------- |
-            ${entries.map(tableEntryConfig).join('\n')}
-        `;
+        return renderMarkdownTableHtml({ header: ['Setting', 'Scope', 'Description'], rows: entries.map(tableEntryConfig) });
+    }
+
+    #fixVSCodeRefs(text: string): string {
+        return fixVSCodeRefs(text, this.refs);
+    }
+
+    #extractDescriptions(ref: JSONSchema4): { description: string | undefined; markdownDescription: string | undefined } {
+        const resolved = this.#resolve(ref, (n) => Object.hasOwn(n, 'description') || Object.hasOwn(n, 'markdownDescription'));
+        return {
+            description: resolved.description,
+            markdownDescription: resolved.markdownDescription,
+        };
+    }
+
+    #extractCommonAttributes(def: JSONSchema4): CommonAttributes {
+        const title: string = this.#getAttribute(def, 'title', '');
+        const since: string = this.#getAttribute(def, 'sinceVersion', '');
+        const sinceCSpellVersion: string = this.#getAttribute(def, 'since', '');
+        const deprecationMessage: string = this.#getAttribute(def, 'deprecationMessage', '');
+        const descriptions = this.#extractDescriptions(def);
+        const description = descriptions.markdownDescription || descriptions.description || title;
+        const dv = this.#getAttribute(def, 'default');
+        const defaultValue = dv ? this.#formatDefaultValue(dv) : undefined;
+
+        return { title, description, since, sinceCSpellVersion, deprecationMessage, defaultValue };
     }
 }
 
@@ -507,6 +614,10 @@ function hasTitle(schema: JSONSchema4): boolean {
 
 function hasProperties(schema: JSONSchema4): boolean {
     return !!schema.properties;
+}
+
+function hasAttribute(attribute: string): (schema: JSONSchema4) => boolean {
+    return (schema: JSONSchema4): boolean => Object.hasOwn(schema, attribute);
 }
 
 interface FormattedSection {
@@ -564,18 +675,6 @@ function fixVSCodeRefs(markdown: string, refs: TypeSlugRefs): string {
         .replaceAll(/\{@link (.*?)\}/g, (_, p1) => `\`${p1.trim()}\``);
 }
 
-function singleDef(term: string, def: string, _addIgnore = false): string {
-    const lines: string[] = [];
-
-    const defLines = def.replaceAll('`jsonc', '`json5');
-    const termDef = `<dt>\n${term}\n</dt>\n<dd>\n\n${defLines}\n\n</dd>\n`;
-    const termLines = termDef.split('\n').map((line) => line.trimEnd());
-
-    lines.push(...termLines);
-
-    return lines.join('\n');
-}
-
 function slugifyTitle(sectionTitle: string): string {
     return slugify(sectionTitle);
 }
@@ -591,7 +690,7 @@ function hashRef(heading: string): string {
 /** Extracts the definition name from a `$ref` such as `#/definitions/CustomDictionaries`. */
 function refName(ref: string): string {
     const path = ref.replace(/^#\//, '').split('/').map(decodeURIComponent);
-    return path[path.length - 1];
+    return path.slice(-1).join('');
 }
 
 /**
@@ -746,6 +845,10 @@ function beautifyJSON(json: string, width: number): string {
     // console.error('%o', lines);
 
     return lines.join('\n');
+}
+
+function numLines(str: string): number {
+    return str.split('\n').length;
 }
 
 function beautifyType(dataType: string, width: number): string[] {

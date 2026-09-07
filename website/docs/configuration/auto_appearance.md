@@ -10,21 +10,250 @@ id: appearance
 Settings that control the appearance of the spell checker.
 
 
-| Setting | Scope | Description |
-| ------- | ----- | ----------- |
-| [`cSpell.dark`](#cspelldark) | application | Decoration for dark themes. |
-| [`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme) | application | Use VS Code to Render Spelling Issues |
-| [`cSpell.light`](#cspelllight) | application | Decoration for light themes. |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler. |
-| [`cSpell.showInRuler`](#cspellshowinruler) | application | Show spelling issues in the editor ruler. |
-| [`cSpell.textDecoration`](#cspelltextdecoration) | application | The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations). |
-| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor) | application | The decoration color for normal spelling issues. |
-| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues. |
-| [`cSpell.textDecorationColorSuggestion`](#cspelltextdecorationcolorsuggestion) | application | The decoration color for spelling suggestions. |
-| [`cSpell.textDecorationLine`](#cspelltextdecorationline) | application | The CSS line type used to decorate issues. |
-| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle) | application | The CSS line style used to decorate issues. |
-| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness) | application | The CSS line thickness used to decorate issues. |
-| [`cSpell.useCustomDecorations`](#cspellusecustomdecorations) | application | Draw custom decorations on Spelling Issues. |
+<table>
+<thead>
+<tr>
+<th>
+
+Setting
+
+</th>
+<th>
+
+Scope
+
+</th>
+<th>
+
+Description
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+[`cSpell.dark`](#cspelldark)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Decoration for dark themes.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Use VS Code to Render Spelling Issues
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.light`](#cspelllight)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Decoration for light themes.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS color used to show issues in the ruler.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.showInRuler`](#cspellshowinruler)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Show spelling issues in the editor ruler.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecoration`](#cspelltextdecoration)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationColor`](#cspelltextdecorationcolor)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The decoration color for normal spelling issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The decoration color for flagged issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationColorSuggestion`](#cspelltextdecorationcolorsuggestion)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The decoration color for spelling suggestions.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationLine`](#cspelltextdecorationline)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS line type used to decorate issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS line style used to decorate issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+The CSS line thickness used to decorate issues.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.useCustomDecorations`](#cspellusecustomdecorations)
+
+</td>
+<td>
+
+application
+
+</td>
+<td>
+
+Draw custom decorations on Spelling Issues.
+
+</td>
+</tr>
+</tbody>
+</table>
 
 
 ## Settings
@@ -61,6 +290,530 @@ Type
 </dt>
 <dd>
 
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+overviewRulerColor
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS color used to show issues in the ruler.
+
+Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+Disable the ruler by setting [`cSpell.showInRuler`](appearance#cspellshowinruler) to `false`.
+
+See:
+- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
+- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
+- Hex colors
+
+Examples:
+- `green`
+- `DarkYellow`
+- `#ffff0080` - semi-transparent yellow.
+- `rgb(255 153 0 / 80%)`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb80"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecoration
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+
+This setting is used to manually configure the text decoration. If it is not set, the following settings are used:
+- [`cSpell.textDecorationLine`](appearance#cspelltextdecorationline) to pick the line type
+- [`cSpell.textDecorationStyle`](appearance#cspelltextdecorationstyle) to pick the style
+- [`cSpell.textDecorationColor`](appearance#cspelltextdecorationcolor) to set the color
+- [`cSpell.textDecorationThickness`](appearance#cspelltextdecorationthickness) to set the thickness.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+
+Format:  `<line> [style] <color> [thickness]`
+
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
+
+Examples:
+- `underline green`
+- `underline dotted yellow 0.2rem`
+- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
+
+To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationColor
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The decoration color for normal spelling issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationColorFlagged
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The decoration color for flagged issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#f44"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationColorSuggestion
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The decoration color for spelling suggestions.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+Common Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#cf88"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.2
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationLine
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS line type used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "underline" | "overline" | "line-through" )`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"underline"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationStyle
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS line style used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"dashed"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationThickness
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS line thickness used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
+
+Examples:
+- `auto`
+- `from-font`
+- `0.2rem`
+- `1.5px`
+- `10%`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"auto"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 {
   overviewRulerColor?: string;
@@ -73,6 +826,8 @@ Type
   textDecorationThickness?: string;
 }
 ```
+
+</details>
 
 </dd>
 
@@ -215,6 +970,530 @@ Type
 </dt>
 <dd>
 
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+overviewRulerColor
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS color used to show issues in the ruler.
+
+Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+Disable the ruler by setting [`cSpell.showInRuler`](appearance#cspellshowinruler) to `false`.
+
+See:
+- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
+- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
+- Hex colors
+
+Examples:
+- `green`
+- `DarkYellow`
+- `#ffff0080` - semi-transparent yellow.
+- `rgb(255 153 0 / 80%)`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb80"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecoration
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS Style used to decorate spelling issues. Depends upon [`cSpell.useCustomDecorations`](appearance#cspellusecustomdecorations).
+
+This setting is used to manually configure the text decoration. If it is not set, the following settings are used:
+- [`cSpell.textDecorationLine`](appearance#cspelltextdecorationline) to pick the line type
+- [`cSpell.textDecorationStyle`](appearance#cspelltextdecorationstyle) to pick the style
+- [`cSpell.textDecorationColor`](appearance#cspelltextdecorationcolor) to set the color
+- [`cSpell.textDecorationThickness`](appearance#cspelltextdecorationthickness) to set the thickness.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+
+Format:  `<line> [style] <color> [thickness]`
+
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
+
+Examples:
+- `underline green`
+- `underline dotted yellow 0.2rem`
+- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
+
+To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationColor
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The decoration color for normal spelling issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+To change the ruler color, use [`cSpell.overviewRulerColor`](appearance#cspelloverviewrulercolor).
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#348feb"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationColorFlagged
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The decoration color for flagged issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#f44"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationColorSuggestion
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The decoration color for spelling suggestions.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+Common Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`
+
+Examples:
+- `green`
+- `yellow`
+- `#ff0c`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"#cf88"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.2
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationLine
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS line type used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "underline" | "overline" | "line-through" )`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"underline"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationStyle
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS line style used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"dashed"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+textDecorationThickness
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+The CSS line thickness used to decorate issues.
+
+See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
+
+Examples:
+- `auto`
+- `from-font`
+- `0.2rem`
+- `1.5px`
+- `10%`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`"auto"`_
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.0.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
 ```ts
 {
   overviewRulerColor?: string;
@@ -227,6 +1506,8 @@ Type
   textDecorationThickness?: string;
 }
 ```
+
+</details>
 
 </dd>
 
@@ -738,6 +2019,25 @@ Type
 </dt>
 <dd>
 
+**Any of:**
+
+<ul>
+
+<li>
+
+`"underline"`
+</li>
+<li>
+
+`"overline"`
+</li>
+<li>
+
+`"line-through"`
+</li>
+
+</ul>
+
 `( "underline" | "overline" | "line-through" )`
 
 </dd>
@@ -803,6 +2103,33 @@ See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozi
 Type
 </dt>
 <dd>
+
+**Any of:**
+
+<ul>
+
+<li>
+
+`"solid"`
+</li>
+<li>
+
+`"wavy"`
+</li>
+<li>
+
+`"dotted"`
+</li>
+<li>
+
+`"dashed"`
+</li>
+<li>
+
+`"double"`
+</li>
+
+</ul>
 
 `( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
 
