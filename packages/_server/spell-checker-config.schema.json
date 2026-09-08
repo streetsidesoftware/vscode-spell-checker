@@ -280,6 +280,18 @@
                           "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                           "type": "boolean"
                         },
+                        "kind": {
+                          "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                          "enum": [
+                            "words",
+                            "flag-words",
+                            "ignore-words",
+                            "suggest-words"
+                          ],
+                          "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                          "since": "10.3.0",
+                          "type": "string"
+                        },
                         "name": {
                           "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                           "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -359,6 +371,18 @@
                           "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                           "type": "boolean"
                         },
+                        "kind": {
+                          "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                          "enum": [
+                            "words",
+                            "flag-words",
+                            "ignore-words",
+                            "suggest-words"
+                          ],
+                          "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                          "since": "10.3.0",
+                          "type": "string"
+                        },
                         "name": {
                           "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -410,6 +434,18 @@
                           "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
                           "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                           "type": "boolean"
+                        },
+                        "kind": {
+                          "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                          "enum": [
+                            "words",
+                            "flag-words",
+                            "ignore-words",
+                            "suggest-words"
+                          ],
+                          "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                          "since": "10.3.0",
+                          "type": "string"
                         },
                         "name": {
                           "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -797,6 +833,18 @@
                                 "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                                 "type": "boolean"
                               },
+                              "kind": {
+                                "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                                "enum": [
+                                  "words",
+                                  "flag-words",
+                                  "ignore-words",
+                                  "suggest-words"
+                                ],
+                                "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                                "since": "10.3.0",
+                                "type": "string"
+                              },
                               "name": {
                                 "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                                 "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -876,6 +924,18 @@
                                 "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                                 "type": "boolean"
                               },
+                              "kind": {
+                                "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                                "enum": [
+                                  "words",
+                                  "flag-words",
+                                  "ignore-words",
+                                  "suggest-words"
+                                ],
+                                "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                                "since": "10.3.0",
+                                "type": "string"
+                              },
                               "name": {
                                 "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                                 "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -927,6 +987,18 @@
                                 "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
                                 "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                                 "type": "boolean"
+                              },
+                              "kind": {
+                                "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                                "enum": [
+                                  "words",
+                                  "flag-words",
+                                  "ignore-words",
+                                  "suggest-words"
+                                ],
+                                "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                                "since": "10.3.0",
+                                "type": "string"
                               },
                               "name": {
                                 "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -2261,6 +2333,18 @@
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
                   },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
+                  },
                   "name": {
                     "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -2378,6 +2462,18 @@
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
                   },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
+                  },
                   "name": {
                     "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -2457,6 +2553,18 @@
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
                   },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
+                  },
                   "name": {
                     "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -2508,6 +2616,18 @@
                     "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
+                  },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
                   },
                   "name": {
                     "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -2675,6 +2795,18 @@
                           "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                           "type": "boolean"
                         },
+                        "kind": {
+                          "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                          "enum": [
+                            "words",
+                            "flag-words",
+                            "ignore-words",
+                            "suggest-words"
+                          ],
+                          "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                          "since": "10.3.0",
+                          "type": "string"
+                        },
                         "name": {
                           "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                           "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -2754,6 +2886,18 @@
                           "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                           "type": "boolean"
                         },
+                        "kind": {
+                          "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                          "enum": [
+                            "words",
+                            "flag-words",
+                            "ignore-words",
+                            "suggest-words"
+                          ],
+                          "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                          "since": "10.3.0",
+                          "type": "string"
+                        },
                         "name": {
                           "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -2805,6 +2949,18 @@
                           "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
                           "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                           "type": "boolean"
+                        },
+                        "kind": {
+                          "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                          "enum": [
+                            "words",
+                            "flag-words",
+                            "ignore-words",
+                            "suggest-words"
+                          ],
+                          "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                          "since": "10.3.0",
+                          "type": "string"
                         },
                         "name": {
                           "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
@@ -3722,6 +3878,18 @@
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
                   },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
+                  },
                   "name": {
                     "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -3898,6 +4066,18 @@
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
                   },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
+                  },
                   "name": {
                     "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
@@ -4073,6 +4253,18 @@
                     "description": "Some dictionaries may contain forbidden words to prevent compounding from generating words that are not valid in the language. These are often words that are used in other languages or might be generated through compounding. This setting allows flagged words to be ignored when checking the dictionary. The effect is similar to the word not being in the dictionary.",
                     "markdownDescription": "Some dictionaries may contain forbidden words to prevent compounding from generating\nwords that are not valid in the language. These are often\nwords that are used in other languages or might be generated through compounding.\nThis setting allows flagged words to be ignored when checking the dictionary.\nThe effect is similar to the word not being in the dictionary.",
                     "type": "boolean"
+                  },
+                  "kind": {
+                    "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
+                    "enum": [
+                      "words",
+                      "flag-words",
+                      "ignore-words",
+                      "suggest-words"
+                    ],
+                    "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
+                    "since": "10.3.0",
+                    "type": "string"
                   },
                   "name": {
                     "description": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary. If you use: `typescript` it will replace the built-in TypeScript dictionary.",
