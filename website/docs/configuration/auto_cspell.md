@@ -1818,6 +1818,58 @@ Name
 </dt>
 <dd>
 
+`kind`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Used to specify the type of dictionary being referenced.
+Values:
+- `words` - (default) A dictionary containing words.
+- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.
+- `ignore-words` - A dictionary containing words to ignore.
+   This is the same as setting `noSuggest` to `true`.
+- `suggest-words` - A dictionary containing suggested word corrections. Words found in the
+   dictionary will be treated like `suggestWords`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "words" | "flag-words" | "ignore-words" | "suggest-words" )`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
 `noSuggest`
 
 </dd>
@@ -1954,6 +2006,7 @@ TypeScript:
   btrie?: string;
   description?: string;
   ignoreForbiddenWords?: boolean;
+  kind?: ("words" | "flag-words" | "ignore-words" | "suggest-words");
   name: string;
   noSuggest?: boolean;
   path: string;
@@ -2237,6 +2290,58 @@ Name
 </dt>
 <dd>
 
+`kind`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Used to specify the type of dictionary being referenced.
+Values:
+- `words` - (default) A dictionary containing words.
+- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.
+- `ignore-words` - A dictionary containing words to ignore.
+   This is the same as setting `noSuggest` to `true`.
+- `suggest-words` - A dictionary containing suggested word corrections. Words found in the
+   dictionary will be treated like `suggestWords`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "words" | "flag-words" | "ignore-words" | "suggest-words" )`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
 `noSuggest`
 
 </dd>
@@ -2333,6 +2438,7 @@ TypeScript:
   btrie?: string;
   description?: string;
   ignoreForbiddenWords?: boolean;
+  kind?: ("words" | "flag-words" | "ignore-words" | "suggest-words");
   name: string;
   noSuggest?: boolean;
   path: string;
@@ -2660,6 +2766,58 @@ Name
 </dt>
 <dd>
 
+`kind`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Used to specify the type of dictionary being referenced.
+Values:
+- `words` - (default) A dictionary containing words.
+- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.
+- `ignore-words` - A dictionary containing words to ignore.
+   This is the same as setting `noSuggest` to `true`.
+- `suggest-words` - A dictionary containing suggested word corrections. Words found in the
+   dictionary will be treated like `suggestWords`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`( "words" | "flag-words" | "ignore-words" | "suggest-words" )`
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.0
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
 `noSuggest`
 
 </dd>
@@ -2795,6 +2953,7 @@ TypeScript:
   btrie?: string;
   description?: string;
   ignoreForbiddenWords?: boolean;
+  kind?: ("words" | "flag-words" | "ignore-words" | "suggest-words");
   name: string;
   noSuggest?: boolean;
   path: string;
