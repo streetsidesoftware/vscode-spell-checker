@@ -1,4 +1,7 @@
 import type { ICommand } from '../vscode/types.ts';
+import { whenClause } from './whenClause.ts';
+
+const ts = whenClause;
 
 export const commands: ICommand[] = [
     {
@@ -55,13 +58,17 @@ export const commands: ICommand[] = [
         command: 'cSpell.enableCurrentLanguage',
         category: 'Spell',
         title: 'Enable Spell Checking Document Type',
-        enablement: 'cSpell.showLegacyCommands.enableCurrentLanguage',
+        enablement: ts`
+            cSpell.showLegacyCommands.enableCurrentLanguage
+        `,
     },
     {
         command: 'cSpell.disableCurrentLanguage',
         category: 'Spell',
         title: 'Disable Spell Checking Document Type',
-        enablement: 'cSpell.showLegacyCommands.disableCurrentLanguage',
+        enablement: ts`
+            cSpell.showLegacyCommands.disableCurrentLanguage
+        `,
     },
     {
         command: 'cSpell.enableCurrentFileType',
@@ -168,7 +175,9 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpell.suggestSpellingCorrections',
-        enablement: 'editorTextFocus && cSpell.editorMenuContext.showSuggestions',
+        enablement: ts`
+            editorTextFocus && cSpell.editorMenuContext.showSuggestions
+        `,
         category: 'Spell',
         title: 'Spelling Suggestions...',
     },
@@ -195,19 +204,25 @@ export const commands: ICommand[] = [
     {
         command: 'cSpellRegExpTester.testRegExp',
         title: 'Test a Regular Expression on the current document.',
-        enablement: 'config.cSpell.experimental.enableRegexpView',
+        enablement: ts`
+            config.cSpell.experimental.enableRegexpView
+        `,
     },
     {
         command: 'cSpellRegExpTester.editRegExp',
         title: 'Edit',
         icon: '$(edit)',
-        enablement: 'config.cSpell.experimental.enableRegexpView',
+        enablement: ts`
+            config.cSpell.experimental.enableRegexpView
+        `,
     },
     {
         command: 'cSpell.experimental.executeDocumentSymbolProvider',
         title: 'Execute Document Symbol Provider on the current document.',
         icon: '$(code)',
-        enablement: 'config.cSpell.experimental.symbols',
+        enablement: ts`
+            config.cSpell.experimental.symbols
+        `,
     },
     {
         command: 'cSpell.autoFixSpellingIssues',
@@ -218,33 +233,43 @@ export const commands: ICommand[] = [
         command: 'cSpell.issueViewer.item.openSuggestionsForIssue',
         title: 'Show Suggestions',
         icon: '$(list-unordered)',
-        enablement: 'view == cSpellIssuesViewByIssue',
+        enablement: ts`
+            view == cSpellIssuesViewByIssue
+        `,
     },
     {
         command: 'cSpell.issueViewer.item.autoFixSpellingIssues',
         title: 'Fix issue with preferred suggestion in the current document.',
         icon: '$(lightbulb-autofix)',
-        enablement: 'view == cSpellIssuesViewByIssue',
+        enablement: ts`
+            view == cSpellIssuesViewByIssue
+        `,
     },
     {
         command: 'cSpell.issueViewer.item.addWordToDictionary',
         category: 'Spell',
         title: 'Add Word to Dictionary',
         icon: '$(book)',
-        enablement: 'view == cSpellIssuesViewByIssue',
+        enablement: ts`
+            view == cSpellIssuesViewByIssue
+        `,
     },
     {
         command: 'cSpell.issuesViewByFile.item.autoFixSpellingIssues',
         title: 'Fix issue with preferred suggestion in the current document.',
         icon: '$(lightbulb-autofix)',
-        enablement: 'view == cSpellIssuesViewByFile',
+        enablement: ts`
+            view == cSpellIssuesViewByFile
+        `,
     },
     {
         command: 'cSpell.issuesViewByFile.item.addWordToDictionary',
         category: 'Spell',
         title: 'Add Word to Dictionary',
         icon: '$(book)',
-        enablement: 'view == cSpellIssuesViewByFile',
+        enablement: ts`
+            view == cSpellIssuesViewByFile
+        `,
     },
     {
         command: 'cSpell.insertDisableNextLineDirective',
@@ -340,35 +365,45 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpell.supportRequest',
-        enablement: 'config.cSpell.command.enableSupportRequest',
+        enablement: ts`
+            config.cSpell.command.enableSupportRequest
+        `,
         category: 'Spell',
         title: 'Request Support with the Spell Checker',
         icon: '$(github)',
     },
     {
         command: 'cSpell.reportIssue',
-        enablement: 'config.cSpell.command.reportIssue',
+        enablement: ts`
+            config.cSpell.command.reportIssue
+        `,
         category: 'Spell',
         title: 'Report an Issue with the Spell Checker',
         icon: '$(github)',
     },
     {
         command: 'cSpell.about',
-        enablement: 'config.cSpell.command.about',
+        enablement: ts`
+            config.cSpell.command.about
+        `,
         category: 'Spell',
         title: 'About the Spell Checker',
         icon: '$(home)',
     },
     {
         command: 'cSpell.releaseNotes',
-        enablement: 'config.cSpell.command.releaseNotes',
+        enablement: ts`
+            config.cSpell.command.releaseNotes
+        `,
         category: 'Spell',
         title: 'Show Spell Checker Release Notes',
         icon: '$(heart)',
     },
     {
         command: 'cSpell.sponsor',
-        enablement: 'config.cSpell.command.sponsor',
+        enablement: ts`
+            config.cSpell.command.sponsor
+        `,
         category: 'Spell',
         title: 'Sponsor the Spell Checker',
         icon: '$(heart)',
