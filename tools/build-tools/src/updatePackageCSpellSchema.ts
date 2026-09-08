@@ -3,7 +3,7 @@ import * as fs from 'fs/promises';
 import type { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 import * as Path from 'path';
 
-import { normalizeDescriptions } from './normalizeDescriptions.js';
+import { normalizeDescriptions } from './normalizeDescriptions.ts';
 
 export function commandUpdatePackageCSpellSchema(): Command {
     const command = new Command('update-package-schema');
@@ -28,7 +28,7 @@ export async function updatePackageCSpellSchema(packageFile: string, schemaFile:
     const _schemaFile = Path.resolve(cwd, schemaFile);
 
     console.log(`
-Update Package Cspell Schema
+Update Package CSpell Schema
   Package File: ${Path.resolve(_packageFile)}
   Schema File: ${Path.resolve(_schemaFile)}
 `);

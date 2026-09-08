@@ -4828,6 +4828,7 @@
     "@vitest/coverage-istanbul": "~4.1.11",
     "@vscode/vsce": "^3.9.2",
     "ansi-styles": "^7.0.0",
+    "build-tools": "file:./tools/build-tools",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
     "cspell": "^10.3.0",
