@@ -19,18 +19,52 @@ export function commandUpdatePackageCSpellSchema(): Command {
     return command;
 }
 
+type KeyPairs<T> = {
+    [K in keyof T]: K;
+};
+
+type ContribKeyMap = KeyPairs<Required<Omit<IExtensionContributions, 'configuration'>>>;
+
+const contribKeys: ContribKeyMap = {
+    authentication: 'authentication',
+    colors: 'colors',
+    commands: 'commands',
+    configurationDefaults: 'configurationDefaults',
+    debuggers: 'debuggers',
+    grammars: 'grammars',
+    iconThemes: 'iconThemes',
+    jsonValidation: 'jsonValidation',
+    jsonValidationRegistry: 'jsonValidationRegistry',
+    keybindings: 'keybindings',
+    languages: 'languages',
+    localizations: 'localizations',
+    menus: 'menus',
+    productIconThemes: 'productIconThemes',
+    snippets: 'snippets',
+    startEntries: 'startEntries',
+    themes: 'themes',
+    views: 'views',
+    viewsContainers: 'viewsContainers',
+    walkthroughs: 'walkthroughs',
+};
+
 interface Options {
     root?: string | undefined;
 }
 
 function updateContributionsFromClient(packageJson: PackageJson) {
-    const contributes = packageJson.contributes;
-    if (clientContributions.commands) {
-        contributes.commands = clientContributions.commands;
-    }
+    const contributes = packageJson.contributes as IExtensionContributions;
 
-    for (const [key, value] of Object.entries(clientContributions)) {
-        contributes[key as keyof IExtensionContributions] = value;
+    const keys = Object.values(contribKeys);
+
+    for (const key of keys) {
+        updateValue(contributes, clientContributions, key);
+    }
+}
+
+function updateValue<K extends keyof ContribKeyMap>(target: IExtensionContributions, source: IExtensionContributions, key: K) {
+    if (source[key]) {
+        target[key] = source[key];
     }
 }
 
@@ -67,8 +101,10 @@ function update(schema: JSONSchema7) {
     };
 }
 
+interface PackageJsonContributes extends Omit<IExtensionContributions, 'configuration'> {
+    configuration: JSONSchema7Definition | JSONSchema7Definition[];
+}
+
 interface PackageJson {
-    contributes: Omit<IExtensionContributions, 'configuration'> & {
-        configuration: JSONSchema7Definition | JSONSchema7Definition[];
-    };
+    contributes: PackageJsonContributes;
 }
