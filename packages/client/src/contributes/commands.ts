@@ -55,13 +55,13 @@ export const commands: ICommand[] = [
         command: 'cSpell.enableCurrentLanguage',
         category: 'Spell',
         title: 'Enable Spell Checking Document Type',
-        when: 'cSpell.showLegacyCommands.enableCurrentLanguage',
+        enablement: 'cSpell.showLegacyCommands.enableCurrentLanguage',
     },
     {
         command: 'cSpell.disableCurrentLanguage',
         category: 'Spell',
         title: 'Disable Spell Checking Document Type',
-        when: 'cSpell.showLegacyCommands.disableCurrentLanguage',
+        enablement: 'cSpell.showLegacyCommands.disableCurrentLanguage',
     },
     {
         command: 'cSpell.enableCurrentFileType',
@@ -282,7 +282,6 @@ export const commands: ICommand[] = [
         category: 'Spell',
         title: 'Show Spelling Issues',
         shortTitle: 'Show',
-        when: '!cSpell.context.showDecorations',
         icon: '$(eye)',
     },
     {
@@ -290,7 +289,6 @@ export const commands: ICommand[] = [
         category: 'Spell',
         title: 'Hide Spelling Issues',
         shortTitle: 'Hide',
-        when: 'cSpell.context.showDecorations',
         icon: '$(eye-closed)',
     },
     {

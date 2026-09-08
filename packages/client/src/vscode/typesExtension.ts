@@ -21,7 +21,6 @@ export interface ICommand {
     // Additional properties for the command can be added here.
     shortTitle?: string | ILocalizedString;
     icon?: Icon;
-    when?: WhenClause;
     enablement?: WhenClause;
 }
 
