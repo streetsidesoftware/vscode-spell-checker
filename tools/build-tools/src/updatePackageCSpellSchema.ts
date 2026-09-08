@@ -32,6 +32,7 @@ const contribKeys: ContribKeyMap = {
     configurationDefaults: 'configurationDefaults',
     debuggers: 'debuggers',
     grammars: 'grammars',
+    icons: 'icons',
     iconThemes: 'iconThemes',
     jsonValidation: 'jsonValidation',
     jsonValidationRegistry: 'jsonValidationRegistry',
@@ -42,9 +43,12 @@ const contribKeys: ContribKeyMap = {
     productIconThemes: 'productIconThemes',
     snippets: 'snippets',
     startEntries: 'startEntries',
+    submenus: 'submenus',
+    terminal: 'terminal',
     themes: 'themes',
     views: 'views',
     viewsContainers: 'viewsContainers',
+    viewsWelcome: 'viewsWelcome',
     walkthroughs: 'walkthroughs',
 };
 

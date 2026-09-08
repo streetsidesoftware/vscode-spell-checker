@@ -56,14 +56,36 @@ export interface IKeyBinding {
 export interface ILanguage {
     id: string;
     extensions: string[];
-    aliases: string[];
+    aliases?: string[];
 }
 
-export interface IMenu {
+export interface IMenuItem {
     command: string;
     alt?: string;
     when?: string;
     group?: string;
+    order?: number;
+}
+
+export interface IMenuSubmenuItem {
+    submenu: string;
+    when?: string;
+    group?: string;
+    order?: number;
+}
+
+export type IMenuEntry = IMenuItem | IMenuSubmenuItem;
+
+/**
+ * Submenu attributes for VS Code menus.
+ */
+export interface ISubmenu {
+    /**
+     * The unique identifier for the submenu.
+     * Must match {@link IMenuSubmenuItem.submenu}
+     */
+    id: string;
+    label: string;
 }
 
 export interface ISnippet {
@@ -77,11 +99,25 @@ export interface ITheme {
 export interface IViewContainer {
     id: string;
     title: string;
+    contextualTitle?: string;
+    icon: Icon;
+}
+
+export interface IViewWelcome {
+    view: string;
+    contents: string;
+    when?: string;
 }
 
 export interface IView {
     id: string;
     name: string;
+    icon: Icon;
+    contextualTitle?: string;
+    type?: 'tree' | 'webview';
+    when?: string;
+    initialSize?: number;
+    visibility?: 'visible' | 'hidden';
 }
 
 export interface IColor {
@@ -224,42 +260,49 @@ export interface IConfigurationDefaults {
 
 type JSONSchemaItem = unknown;
 
+export interface Menus {
+    [context: string]: IMenuEntry[];
+}
+
+export interface ViewContainers {
+    [location: string]: IViewContainer[];
+}
+
+export interface Views {
+    [location: string]: IView[];
+}
+
+export interface CustomIcon {
+    description: string;
+    default: string;
+}
+
 export interface IExtensionContributions {
+    authentication?: IAuthenticationContribution[];
+    colors?: IColor[];
     commands?: ICommand[];
     configuration?: JSONSchemaItem[];
     configurationDefaults?: IConfigurationDefaults;
     debuggers?: IDebugger[];
     grammars?: IGrammar[];
+    icons?: { [key: string]: CustomIcon };
+    iconThemes?: ITheme[];
     jsonValidation?: IJSONValidation[];
     jsonValidationRegistry?: IJSONValidationRegistry[];
     keybindings?: IKeyBinding[];
     languages?: ILanguage[];
-    menus?: { [context: string]: IMenu[] };
-    snippets?: ISnippet[];
-    themes?: ITheme[];
-    iconThemes?: ITheme[];
-    productIconThemes?: ITheme[];
-    viewsContainers?: { [location: string]: IViewContainer[] };
-    views?: { [location: string]: IView[] };
-    colors?: IColor[];
     localizations?: ILocalizationContribution[];
-    // readonly customEditors?: readonly IWebviewEditor[];
-    // readonly codeActions?: readonly ICodeActionContribution[];
-    authentication?: IAuthenticationContribution[];
-    walkthroughs?: IWalkthrough[];
+    menus?: Menus;
+    productIconThemes?: ITheme[];
+    snippets?: ISnippet[];
     startEntries?: IStartEntry[];
-    // readonly notebooks?: INotebookEntry[];
-    // readonly notebookRenderer?: INotebookRendererContribution[];
-    // readonly debugVisualizers?: IDebugVisualizationContribution[];
-    // readonly chatParticipants?: ReadonlyArray<IChatParticipantContribution>;
-    // readonly chatPromptFiles?: ReadonlyArray<IChatFileContribution>;
-    // readonly chatInstructions?: ReadonlyArray<IChatFileContribution>;
-    // readonly chatAgents?: ReadonlyArray<IChatFileContribution>;
-    // readonly chatSkills?: ReadonlyArray<IChatFileContribution>;
-    // readonly chatPlugins?: ReadonlyArray<IChatFileContribution>;
-    // readonly languageModelTools?: ReadonlyArray<IToolContribution>;
-    // readonly languageModelToolSets?: ReadonlyArray<IToolSetContribution>;
-    // readonly mcpServerDefinitionProviders?: ReadonlyArray<IMcpCollectionContribution>;
+    submenus?: ISubmenu[];
+    terminal?: ITerminalContribution;
+    themes?: ITheme[];
+    views?: Views;
+    viewsContainers?: ViewContainers;
+    viewsWelcome?: IViewWelcome[];
+    walkthroughs?: IWalkthrough[];
 }
 
 export interface IExtensionCapabilities {
@@ -334,4 +377,46 @@ export type IExtensionManifest = Readonly<IRelaxedExtensionManifest>;
 export const enum ExtensionType {
     System,
     User,
+}
+
+export interface ITerminalContribution {
+    /**
+     * Defines additional terminal profiles that the user can create.
+     */
+    profiles?: ITerminalProfile[];
+
+    /**
+     * Defines terminal completion providers that will be registered when the extension activates.
+     */
+    completionProviders?: ITerminalCompletionProvider[];
+}
+
+export interface ITerminalProfile {
+    /**
+     * The ID of the terminal profile provider.
+     */
+    id: string;
+
+    /**
+     * Title for this terminal profile.
+     */
+    title: string;
+
+    /**
+     * A codicon, URI, or light and dark URIs to associate with this terminal type.
+     */
+    icon?: Icon;
+
+    /**
+     * A title template string for the terminal tab. Supports variables like ${sequence}, ${process}, ${cwd}, etc.
+     * Overrides the default terminal.integrated.tabs.title setting for terminals created with this profile.
+     */
+    titleTemplate?: string;
+}
+
+export interface ITerminalCompletionProvider {
+    /**
+     * A description of what the completion provider does. This will be shown in the settings UI.
+     */
+    description?: string;
 }
