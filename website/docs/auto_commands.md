@@ -29,12 +29,12 @@ id: commands
 | `cSpell.createCSpellTerminal` |  Open a new CSpell REPL Terminal |
 | `cSpell.createCustomDictionary` |  Create a Custom Dictionary File. |
 | `cSpell.disableCurrentFileType` |  Disable Spell Checking File Type |
-| `cSpell.disableCurrentLanguage` |  Disable Spell Checking Document Type |
+| `cSpell.disableCurrentLanguage` |  Disable Spell Checking Document Type<br />**When:**<br />  `cSpell.showLegacyCommands.disableCurrentLanguage` |
 | `cSpell.disableForGlobal` |  Disable Spell Checking by Default |
 | `cSpell.disableForWorkspace` |  Disable Spell Checking For Workspace |
 | `cSpell.displayCSpellInfo` |  Show Spell Checker Configuration Info |
 | `cSpell.enableCurrentFileType` |  Enable Spell Checking File Type |
-| `cSpell.enableCurrentLanguage` |  Enable Spell Checking Document Type |
+| `cSpell.enableCurrentLanguage` |  Enable Spell Checking Document Type<br />**When:**<br />  `cSpell.showLegacyCommands.enableCurrentLanguage` |
 | `cSpell.enableForGlobal` |  Enable Spell Checking by Default |
 | `cSpell.enableForWorkspace` |  Enable Spell Checking For Workspace |
 | `cSpell.experimental.executeDocumentSymbolProvider` |  Execute Document Symbol Provider on the current document.<br />**When:**<br />  `config.cSpell.experimental.symbols` |
