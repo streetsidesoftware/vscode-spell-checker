@@ -19,6 +19,9 @@
   "bin": {
     "build": "./build.mjs"
   },
+  "exports": {
+    "./contributionPoints": "./src/contributionPoints.mts"
+  },
   "scripts": {
     "build": "npm run build:tsdown && npm run build:tsc",
     "build-production": "npm run clean-build-production",

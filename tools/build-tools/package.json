@@ -5,22 +5,10 @@
   "private": true,
   "type": "module",
   "bin": {
-    "build-tools": "bin.js"
-  },
-  "types": "dist/index.d.ts",
-  "exports": {
-    "build-tools": "./dist/index.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dist/*",
-        "dist/*.d.ts"
-      ]
-    }
+    "build-tools": "./bin.ts"
   },
   "scripts": {
-    "update-package-schema": "node ./bin.js",
+    "update-package-schema": "node ./bin.ts",
     "build-production": "npm run clean-build",
     "build": "tsc -p .",
     "clean-build": "npm run clean && npm run build",
@@ -34,6 +22,7 @@
     "@types/json-schema": "^7.0.15"
   },
   "dependencies": {
+    "client": "file:../../packages/client",
     "commander": "^15.0.0",
     "json-schema": "0.4.0",
     "json-schema-traverse": "1.0.0"
