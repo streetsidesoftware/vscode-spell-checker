@@ -1,4 +1,4 @@
-import type { ICommand } from '../vscode/types.js';
+import type { ICommand } from '../vscode/types.ts';
 
 export const commands: ICommand[] = [
     {

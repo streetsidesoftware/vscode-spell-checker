@@ -7,6 +7,7 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "isolatedDeclarations": true,
+        "allowImportingTsExtensions": true,
         "noEmit": true
     },
     "include": ["src"],

@@ -90,14 +90,6 @@ export interface IColor {
     defaults: { light: string; dark: string; highContrast: string };
 }
 
-interface IWebviewEditor {
-    readonly viewType: string;
-    readonly priority: string;
-    readonly selector: readonly {
-        readonly filenamePattern?: string;
-    }[];
-}
-
 export interface ICodeActionContributionAction {
     readonly kind: string;
     readonly title: string;
@@ -251,14 +243,14 @@ export interface IExtensionContributions {
     views?: { [location: string]: IView[] };
     colors?: IColor[];
     localizations?: ILocalizationContribution[];
-    readonly customEditors?: readonly IWebviewEditor[];
-    readonly codeActions?: readonly ICodeActionContribution[];
+    // readonly customEditors?: readonly IWebviewEditor[];
+    // readonly codeActions?: readonly ICodeActionContribution[];
     authentication?: IAuthenticationContribution[];
     walkthroughs?: IWalkthrough[];
     startEntries?: IStartEntry[];
-    readonly notebooks?: INotebookEntry[];
-    readonly notebookRenderer?: INotebookRendererContribution[];
-    readonly debugVisualizers?: IDebugVisualizationContribution[];
+    // readonly notebooks?: INotebookEntry[];
+    // readonly notebookRenderer?: INotebookRendererContribution[];
+    // readonly debugVisualizers?: IDebugVisualizationContribution[];
     // readonly chatParticipants?: ReadonlyArray<IChatParticipantContribution>;
     // readonly chatPromptFiles?: ReadonlyArray<IChatFileContribution>;
     // readonly chatInstructions?: ReadonlyArray<IChatFileContribution>;

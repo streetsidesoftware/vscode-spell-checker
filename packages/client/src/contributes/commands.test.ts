@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { commands } from './commands.js';
+import { commands } from './commands.ts';
 
 describe('commands', () => {
     test('Commands are unique', () => {
