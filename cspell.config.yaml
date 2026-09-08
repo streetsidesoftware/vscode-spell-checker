@@ -25,6 +25,7 @@ ignorePaths:
   - .cspell*.{json,yaml}
   - dist
   - fixtures/workspaces/**
+  - graphify-out
   - languageCodes.ts
   - package-lock.json
   - fixtures/_server/sampleSourceFiles/**
@@ -63,3 +64,4 @@ useGitignore: true
 words:
   - dbaeumer
   - esbenp
+  - graphify

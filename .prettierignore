@@ -15,6 +15,7 @@
 **/yarn.lock
 CHANGELOG.md
 coverage
+graphify-out
 node_modules
 package-lock.json
 packages/_integrationTests/out/
