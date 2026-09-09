@@ -4427,6 +4427,29 @@
           "scope": "resource",
           "type": "boolean"
         },
+        "cSpell.menuItemsOnCSpellConfigMenu": {
+          "additionalProperties": false,
+          "default": {
+            "createCSpellConfig": true,
+            "createCustomDictionary": true
+          },
+          "description": "Control which menu items are shown on the Spelling Config Menu.",
+          "markdownDescription": "Control which menu items are shown on the Spelling Config Menu.",
+          "properties": {
+            "createCSpellConfig": {
+              "description": "Enable Menu Item: Create a CSpell Configuration File",
+              "markdownDescription": "Enable Menu Item: Create a CSpell Configuration File",
+              "type": "boolean"
+            },
+            "createCustomDictionary": {
+              "description": "Enable Menu Item: Create a Custom Dictionary File",
+              "markdownDescription": "Enable Menu Item: Create a Custom Dictionary File",
+              "type": "boolean"
+            }
+          },
+          "sinceVersion": "4.9.1",
+          "type": "object"
+        },
         "cSpell.menuItemsOnEditorContextMenu": {
           "additionalProperties": false,
           "default": {
@@ -4475,16 +4498,14 @@
             "addWordToUserSettings": true,
             "addWordToWorkspaceDictionary": true,
             "addWordToWorkspaceSettings": true,
-            "createCSpellConfig": true,
-            "createCustomDictionary": true,
             "suggestSpellingCorrections": true
           },
           "description": "Control which menu items are shown on the Spelling Context Menu.",
           "markdownDescription": "Control which menu items are shown on the Spelling Context Menu.",
           "properties": {
             "addIgnoreWord": {
-              "description": "Enable Menu Item: Ignore Word(s)",
-              "markdownDescription": "Enable Menu Item: Ignore Word(s)",
+              "description": "Enable Menu Item: Ignore Word",
+              "markdownDescription": "Enable Menu Item: Ignore Word",
               "type": "boolean"
             },
             "addIssuesToDictionary": {
@@ -4493,53 +4514,43 @@
               "type": "boolean"
             },
             "addWordToCSpellConfig": {
-              "description": "Enable Menu Item: Add Word(s) to CSpell Configuration",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to CSpell Configuration",
+              "description": "Enable Menu Item: Add Word to CSpell Configuration",
+              "markdownDescription": "Enable Menu Item: Add Word to CSpell Configuration",
               "type": "boolean"
             },
             "addWordToDictionary": {
-              "description": "Enable Menu Item: Add Word(s) to Dictionary",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to Dictionary",
+              "description": "Enable Menu Item: Add Word to Dictionary",
+              "markdownDescription": "Enable Menu Item: Add Word to Dictionary",
               "type": "boolean"
             },
             "addWordToFolderDictionary": {
-              "description": "Enable Menu Item: Add Word(s) to Folder Dictionary",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to Folder Dictionary",
+              "description": "Enable Menu Item: Add Word to Folder Dictionary",
+              "markdownDescription": "Enable Menu Item: Add Word to Folder Dictionary",
               "type": "boolean"
             },
             "addWordToFolderSettings": {
-              "description": "Enable Menu Item: Add Word(s) to Folder Settings",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to Folder Settings",
+              "description": "Enable Menu Item: Add Word to Folder Settings",
+              "markdownDescription": "Enable Menu Item: Add Word to Folder Settings",
               "type": "boolean"
             },
             "addWordToUserDictionary": {
-              "description": "Enable Menu Item: Add Word(s) to User Dictionary",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to User Dictionary",
+              "description": "Enable Menu Item: Add Word to User Dictionary",
+              "markdownDescription": "Enable Menu Item: Add Word to User Dictionary",
               "type": "boolean"
             },
             "addWordToUserSettings": {
-              "description": "Enable Menu Item: Add Word(s) to User Settings",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to User Settings",
+              "description": "Enable Menu Item: Add Word to User Settings",
+              "markdownDescription": "Enable Menu Item: Add Word to User Settings",
               "type": "boolean"
             },
             "addWordToWorkspaceDictionary": {
-              "description": "Enable Menu Item: Add Word(s) to Workspace Dictionary",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to Workspace Dictionary",
+              "description": "Enable Menu Item: Add Word to Workspace Dictionary",
+              "markdownDescription": "Enable Menu Item: Add Word to Workspace Dictionary",
               "type": "boolean"
             },
             "addWordToWorkspaceSettings": {
-              "description": "Enable Menu Item: Add Word(s) to Workspace Settings",
-              "markdownDescription": "Enable Menu Item: Add Word(s) to Workspace Settings",
-              "type": "boolean"
-            },
-            "createCSpellConfig": {
-              "description": "Enable Menu Item: Create a CSpell Configuration File",
-              "markdownDescription": "Enable Menu Item: Create a CSpell Configuration File",
-              "type": "boolean"
-            },
-            "createCustomDictionary": {
-              "description": "Enable Menu Item: Create a Custom Dictionary File",
-              "markdownDescription": "Enable Menu Item: Create a Custom Dictionary File",
+              "description": "Enable Menu Item: Add Word to Workspace Settings",
+              "markdownDescription": "Enable Menu Item: Add Word to Workspace Settings",
               "type": "boolean"
             },
             "suggestSpellingCorrections": {

@@ -66,101 +66,101 @@
       "editor/context": [
         {
           "command": "cSpell.suggestSpellingCorrections",
-          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions && cSpell.context.showDecorations",
+          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions && cSpell.context.showDecorations && config.cSpell.menuItemsOnEditorContextMenu.suggestSpellingCorrections",
           "group": "A_cspell@000"
         },
         {
           "submenu": "cSpell.spelling",
           "group": "A_cspell@001",
-          "when": "!editorReadonly && editorTextFocus && config.cSpell.showCommandsInEditorContextMenu"
+          "when": "!editorReadonly && editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && config.cSpell.menuItemsOnEditorContextMenu.spellingContextMenu"
         },
         {
           "command": "cSpell.show",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && !cSpell.context.showDecorations",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && !cSpell.context.showDecorations && config.cSpell.menuItemsOnEditorContextMenu.showIssues",
           "group": "A_cspell@002"
         },
         {
           "command": "cSpell.hide",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && cSpell.context.showDecorations",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && cSpell.context.showDecorations && config.cSpell.menuItemsOnEditorContextMenu.hideIssues",
           "group": "A_cspell@002"
         }
       ],
       "cSpell.spelling": [
         {
           "command": "cSpell.suggestSpellingCorrections",
-          "when": "editorTextFocus && !config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions",
+          "when": "editorTextFocus && !config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions && config.cSpell.menuItemsOnSpellingContextMenu.suggestSpellingCorrections",
           "group": "A_cspell@001"
         },
         {
           "command": "cSpell.addWordToDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToDictionary && config.cSpell.menuItemsOnSpellingContextMenu.addWordToDictionary",
           "group": "A_cspell@010"
         },
         {
           "command": "cSpell.addWordToFolderDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderDictionary && config.cSpell.menuItemsOnSpellingContextMenu.addWordToFolderDictionary",
           "group": "A_cspell@020"
         },
         {
           "command": "cSpell.addWordToWorkspaceDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceDictionary && config.cSpell.menuItemsOnSpellingContextMenu.addWordToWorkspaceDictionary",
           "group": "A_cspell@030"
         },
         {
           "command": "cSpell.addWordToCSpellConfig",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToCSpellConfig",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToCSpellConfig && config.cSpell.menuItemsOnSpellingContextMenu.addWordToCSpellConfig",
           "group": "A_cspell@050"
         },
         {
           "command": "cSpell.addWordToFolderSettings",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderSettings",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderSettings && config.cSpell.menuItemsOnSpellingContextMenu.addWordToFolderSettings",
           "group": "A_cspell@051"
         },
         {
           "command": "cSpell.addWordToWorkspaceSettings",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceSettings",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceSettings && config.cSpell.menuItemsOnSpellingContextMenu.addWordToWorkspaceSettings",
           "group": "A_cspell@052"
         },
         {
           "command": "cSpell.addWordToUserDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserDictionary && config.cSpell.menuItemsOnSpellingContextMenu.addWordToUserDictionary",
           "group": "A_cspell@055"
         },
         {
           "command": "cSpell.addWordToUserSettings",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserSettings",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserSettings && config.cSpell.menuItemsOnSpellingContextMenu.addWordToUserSettings",
           "group": "A_cspell@056"
         },
         {
           "command": "cSpell.addIssuesToDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addIssuesToDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addIssuesToDictionary && config.cSpell.menuItemsOnSpellingContextMenu.addIssuesToDictionary",
           "group": "A_cspell@060"
         },
         {
           "command": "cSpell.addIgnoreWord",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addIgnoreWord",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addIgnoreWord && config.cSpell.menuItemsOnSpellingContextMenu.addIgnoreWord",
           "group": "A_cspell@090"
         },
         {
           "command": "cSpell.createCSpellConfig",
-          "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig && config.cSpell.menuItemsOnSpellingContextMenu.createCSpellConfig",
           "group": "B_cspell@010"
         },
         {
           "command": "cSpell.createCustomDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary && config.cSpell.menuItemsOnSpellingContextMenu.createCustomDictionary",
           "group": "B_cspell@020"
         }
       ],
       "cSpell.configMenu": [
         {
           "command": "cSpell.createCSpellConfig",
-          "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig && cSpell.menuItemsOnCSpellConfigMenu.createCSpellConfig",
           "group": "A_cspell@010"
         },
         {
           "command": "cSpell.createCustomDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary && cSpell.menuItemsOnCSpellConfigMenu.createCustomDictionary",
           "group": "A_cspell@070"
         }
       ],
@@ -296,32 +296,32 @@
       {
         "command": "cSpell.addWordToWorkspaceDictionary",
         "category": "Spell",
-        "title": "Add Word(s) to Workspace Dictionary"
+        "title": "Add Word to Workspace Dictionary"
       },
       {
         "command": "cSpell.addWordToFolderDictionary",
         "category": "Spell",
-        "title": "Add Word(s) to Folder Dictionary"
+        "title": "Add Word to Folder Dictionary"
       },
       {
         "command": "cSpell.addWordToUserDictionary",
         "category": "Spell",
-        "title": "Add Word(s) to User Dictionary"
+        "title": "Add Word to User Dictionary"
       },
       {
         "command": "cSpell.addWordToWorkspaceSettings",
         "category": "Spell",
-        "title": "Add Word(s) to Workspace Settings"
+        "title": "Add Word to Workspace Settings"
       },
       {
         "command": "cSpell.addWordToFolderSettings",
         "category": "Spell",
-        "title": "Add Word(s) to Folder Settings"
+        "title": "Add Word to Folder Settings"
       },
       {
         "command": "cSpell.addWordToUserSettings",
         "category": "Spell",
-        "title": "Add Word(s) to User Settings"
+        "title": "Add Word to User Settings"
       },
       {
         "command": "cSpell.enableForWorkspace",
@@ -395,17 +395,17 @@
       {
         "command": "cSpell.removeWordFromFolderDictionary",
         "category": "Spell",
-        "title": "Remove Word(s) from the Folder Dictionary"
+        "title": "Remove Word from the Folder Dictionary"
       },
       {
         "command": "cSpell.removeWordFromWorkspaceDictionary",
         "category": "Spell",
-        "title": "Remove Word(s) from the Workspace Dictionaries"
+        "title": "Remove Word from the Workspace Dictionaries"
       },
       {
         "command": "cSpell.removeWordFromUserDictionary",
         "category": "Spell",
-        "title": "Remove Word(s) from the Global Dictionary"
+        "title": "Remove Word from the Global Dictionary"
       },
       {
         "command": "cSpell.logPerfTimeline",
@@ -415,7 +415,7 @@
       {
         "command": "cSpell.addIgnoreWord",
         "category": "Spell",
-        "title": "Ignore Word(s)"
+        "title": "Ignore Word"
       },
       {
         "command": "cSpell.addIgnoreWordsToFolder",
@@ -425,23 +425,23 @@
       {
         "command": "cSpell.addIgnoreWordsToWorkspace",
         "category": "Spell",
-        "title": "Ignore Word(s) in Workspace Settings"
+        "title": "Ignore Word in Workspace Settings"
       },
       {
         "command": "cSpell.addIgnoreWordsToUser",
         "category": "Spell",
-        "title": "Ignore Word(s) in User Settings"
+        "title": "Ignore Word in User Settings"
       },
       {
         "command": "cSpell.addWordToDictionary",
         "category": "Spell",
-        "title": "Add Word(s) to Dictionary",
+        "title": "Add Word to Dictionary",
         "icon": "$(book)"
       },
       {
         "command": "cSpell.addWordToCSpellConfig",
         "category": "Spell",
-        "title": "Add Word(s) to CSpell Configuration"
+        "title": "Add Word to CSpell Configuration"
       },
       {
         "command": "cSpell.addIssuesToDictionary",
@@ -553,7 +553,7 @@
       {
         "command": "cSpell.insertIgnoreWordsDirective",
         "category": "Spell",
-        "title": "Insert Ignore Word(s) Directive",
+        "title": "Insert Ignore Words Directive",
         "icon": "$(comment-discussion)"
       },
       {
@@ -4551,6 +4551,25 @@
             "scope": "resource",
             "type": "boolean"
           },
+          "cSpell.menuItemsOnCSpellConfigMenu": {
+            "additionalProperties": false,
+            "default": {
+              "createCSpellConfig": true,
+              "createCustomDictionary": true
+            },
+            "markdownDescription": "Control which menu items are shown on the Spelling Config Menu.",
+            "properties": {
+              "createCSpellConfig": {
+                "markdownDescription": "Enable Menu Item: Create a CSpell Configuration File",
+                "type": "boolean"
+              },
+              "createCustomDictionary": {
+                "markdownDescription": "Enable Menu Item: Create a Custom Dictionary File",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
           "cSpell.menuItemsOnEditorContextMenu": {
             "additionalProperties": false,
             "default": {
@@ -4593,14 +4612,12 @@
               "addWordToUserSettings": true,
               "addWordToWorkspaceDictionary": true,
               "addWordToWorkspaceSettings": true,
-              "createCSpellConfig": true,
-              "createCustomDictionary": true,
               "suggestSpellingCorrections": true
             },
             "markdownDescription": "Control which menu items are shown on the Spelling Context Menu.",
             "properties": {
               "addIgnoreWord": {
-                "markdownDescription": "Enable Menu Item: Ignore Word(s)",
+                "markdownDescription": "Enable Menu Item: Ignore Word",
                 "type": "boolean"
               },
               "addIssuesToDictionary": {
@@ -4608,43 +4625,35 @@
                 "type": "boolean"
               },
               "addWordToCSpellConfig": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to CSpell Configuration",
+                "markdownDescription": "Enable Menu Item: Add Word to CSpell Configuration",
                 "type": "boolean"
               },
               "addWordToDictionary": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to Dictionary",
+                "markdownDescription": "Enable Menu Item: Add Word to Dictionary",
                 "type": "boolean"
               },
               "addWordToFolderDictionary": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to Folder Dictionary",
+                "markdownDescription": "Enable Menu Item: Add Word to Folder Dictionary",
                 "type": "boolean"
               },
               "addWordToFolderSettings": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to Folder Settings",
+                "markdownDescription": "Enable Menu Item: Add Word to Folder Settings",
                 "type": "boolean"
               },
               "addWordToUserDictionary": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to User Dictionary",
+                "markdownDescription": "Enable Menu Item: Add Word to User Dictionary",
                 "type": "boolean"
               },
               "addWordToUserSettings": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to User Settings",
+                "markdownDescription": "Enable Menu Item: Add Word to User Settings",
                 "type": "boolean"
               },
               "addWordToWorkspaceDictionary": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to Workspace Dictionary",
+                "markdownDescription": "Enable Menu Item: Add Word to Workspace Dictionary",
                 "type": "boolean"
               },
               "addWordToWorkspaceSettings": {
-                "markdownDescription": "Enable Menu Item: Add Word(s) to Workspace Settings",
-                "type": "boolean"
-              },
-              "createCSpellConfig": {
-                "markdownDescription": "Enable Menu Item: Create a CSpell Configuration File",
-                "type": "boolean"
-              },
-              "createCustomDictionary": {
-                "markdownDescription": "Enable Menu Item: Create a Custom Dictionary File",
+                "markdownDescription": "Enable Menu Item: Add Word to Workspace Settings",
                 "type": "boolean"
               },
               "suggestSpellingCorrections": {

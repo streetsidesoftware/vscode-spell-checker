@@ -153,54 +153,6 @@ export interface SpellCheckerUserSettings {
     fixSpellingWithRenameProvider?: boolean;
 
     /**
-     * Show Spell Checker actions in Editor Context Menu
-     * @scope application
-     * @default true
-     */
-    showCommandsInEditorContextMenu?: boolean;
-
-    /**
-     * Show Spelling Suggestions link in the top level context menu.
-     * @scope application
-     * @default true
-     */
-    showSuggestionsLinkInEditorContextMenu?: boolean;
-
-    /**
-     * Control which menu items are shown on the Editor Context Menu.
-     *
-     * @sinceVersion 4.9.1
-     * @default {
-     *   suggestSpellingCorrections: true,
-     *   spellingContextMenu: true,
-     *   hideIssues: true,
-     *   showIssues: true
-     * }
-     */
-    menuItemsOnEditorContextMenu?: EnabledItemsInEditorContextMenu;
-
-    /**
-     * Control which menu items are shown on the Spelling Context Menu.
-     * @sinceVersion 4.9.1
-     * @default {
-     *   suggestSpellingCorrections: true,
-     *   addWordToDictionary: true,
-     *   addWordToFolderDictionary: true,
-     *   addWordToWorkspaceDictionary: true,
-     *   addWordToCSpellConfig: true,
-     *   addWordToFolderSettings: true,
-     *   addWordToWorkspaceSettings: true,
-     *   addWordToUserDictionary: true,
-     *   addWordToUserSettings: true,
-     *   addIssuesToDictionary: true,
-     *   addIgnoreWord: true,
-     *   createCSpellConfig: true,
-     *   createCustomDictionary: true
-     * }
-     */
-    menuItemsOnSpellingContextMenu?: EnabledItemsInSpellingContextMenu;
-
-    /**
      * Define the path to the workspace root folder in a multi-root workspace.
      * By default it is the first folder.
      *
@@ -283,23 +235,6 @@ export interface SpellCheckerUserSettings {
      * @default false
      */
     spellCheckOnlyWorkspaceFiles?: boolean;
-
-    /**
-     * The type of menu used to display spelling suggestions.
-     * @scope resource
-     * @default "quickPick"
-     * @enumDescriptions [
-     *  "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
-     *  "Suggestions will appear inline near the word, inside the text editor."]
-     */
-    suggestionMenuType?: 'quickPick' | 'quickFix';
-
-    /**
-     * Hide the options to add words to dictionaries or settings.
-     * @scope resource
-     * @default false
-     */
-    hideAddToDictionaryCodeActions?: boolean;
 
     /**
      * Specify where words can be added to. This setting is used to control the "Add to Dictionary" code actions.
@@ -423,6 +358,81 @@ export interface SpellCheckerUserSettings {
      * @deprecationMessage  Use Unknown Words settings instead.
      */
     reportUnknownWords?: UnknownWordsReportingLevel | undefined;
+}
+
+export interface MenusAndActions {
+    /**
+     * Hide the options to add words to dictionaries or settings.
+     * @scope resource
+     * @default false
+     */
+    hideAddToDictionaryCodeActions?: boolean;
+
+    /**
+     * Control which menu items are shown on the Editor Context Menu.
+     *
+     * @sinceVersion 4.9.1
+     * @default {
+     *   suggestSpellingCorrections: true,
+     *   spellingContextMenu: true,
+     *   hideIssues: true,
+     *   showIssues: true
+     * }
+     */
+    menuItemsOnEditorContextMenu?: EnabledItemsOnEditorContextMenu;
+
+    /**
+     * Control which menu items are shown on the Spelling Context Menu.
+     * @sinceVersion 4.9.1
+     * @default {
+     *   suggestSpellingCorrections: true,
+     *   addWordToDictionary: true,
+     *   addWordToFolderDictionary: true,
+     *   addWordToWorkspaceDictionary: true,
+     *   addWordToCSpellConfig: true,
+     *   addWordToFolderSettings: true,
+     *   addWordToWorkspaceSettings: true,
+     *   addWordToUserDictionary: true,
+     *   addWordToUserSettings: true,
+     *   addIssuesToDictionary: true,
+     *   addIgnoreWord: true,
+     * }
+     */
+    menuItemsOnSpellingContextMenu?: EnabledItemsOnSpellingContextMenu;
+
+    /**
+     * Control which menu items are shown on the Spelling Config Menu.
+     * @sinceVersion 4.9.1
+     * @default {
+     *   createCSpellConfig: true,
+     *   createCustomDictionary: true
+     * }
+     */
+    menuItemsOnCSpellConfigMenu?: EnabledItemsOnCSpellConfigMenu;
+
+    /**
+     * Show Spell Checker actions in Editor Context Menu
+     * @scope application
+     * @default true
+     */
+    showCommandsInEditorContextMenu?: boolean;
+
+    /**
+     * Show Spelling Suggestions link in the top level context menu.
+     * @scope application
+     * @default true
+     */
+    showSuggestionsLinkInEditorContextMenu?: boolean;
+
+    /**
+     * The type of menu used to display spelling suggestions.
+     * @scope resource
+     * @default "quickPick"
+     * @enumDescriptions [
+     *  "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
+     *  "Suggestions will appear inline near the word, inside the text editor."]
+     */
+    suggestionMenuType?: 'quickPick' | 'quickFix';
 }
 
 export interface ExperimentalSettings {
@@ -577,7 +587,7 @@ export interface ActionAddToTargets {
     dictionaries?: AddToOptions;
 }
 
-export interface EnabledItemsInEditorContextMenu {
+export interface EnabledItemsOnEditorContextMenu {
     /** Enable Menu Item: `Spelling Suggestions...` */
     suggestSpellingCorrections?: boolean;
     /** Enable Menu Item: `Spelling` */
@@ -588,29 +598,32 @@ export interface EnabledItemsInEditorContextMenu {
     showIssues?: boolean;
 }
 
-export interface EnabledItemsInSpellingContextMenu {
+export interface EnabledItemsOnSpellingContextMenu {
     /** Enable Menu Item: Spelling Suggestions... */
     suggestSpellingCorrections?: boolean;
-    /** Enable Menu Item: Add Word(s) to Dictionary */
+    /** Enable Menu Item: Add Word to Dictionary */
     addWordToDictionary?: boolean;
-    /** Enable Menu Item: Add Word(s) to Folder Dictionary */
+    /** Enable Menu Item: Add Word to Folder Dictionary */
     addWordToFolderDictionary?: boolean;
-    /** Enable Menu Item: Add Word(s) to Workspace Dictionary */
+    /** Enable Menu Item: Add Word to Workspace Dictionary */
     addWordToWorkspaceDictionary?: boolean;
-    /** Enable Menu Item: Add Word(s) to CSpell Configuration */
+    /** Enable Menu Item: Add Word to CSpell Configuration */
     addWordToCSpellConfig?: boolean;
-    /** Enable Menu Item: Add Word(s) to Folder Settings */
+    /** Enable Menu Item: Add Word to Folder Settings */
     addWordToFolderSettings?: boolean;
-    /** Enable Menu Item: Add Word(s) to Workspace Settings */
+    /** Enable Menu Item: Add Word to Workspace Settings */
     addWordToWorkspaceSettings?: boolean;
-    /** Enable Menu Item: Add Word(s) to User Dictionary */
+    /** Enable Menu Item: Add Word to User Dictionary */
     addWordToUserDictionary?: boolean;
-    /** Enable Menu Item: Add Word(s) to User Settings */
+    /** Enable Menu Item: Add Word to User Settings */
     addWordToUserSettings?: boolean;
     /** Enable Menu Item: Add All Spelling Issues to Dictionary */
     addIssuesToDictionary?: boolean;
-    /** Enable Menu Item: Ignore Word(s) */
+    /** Enable Menu Item: Ignore Word */
     addIgnoreWord?: boolean;
+}
+
+export interface EnabledItemsOnCSpellConfigMenu {
     /** Enable Menu Item: Create a CSpell Configuration File */
     createCSpellConfig?: boolean;
     /** Enable Menu Item: Create a Custom Dictionary File */
@@ -650,4 +663,5 @@ export interface SpellCheckerSettings
         AppearanceSettings,
         ExperimentalSettings,
         AdvancedSettings,
+        MenusAndActions,
         SpellCheckerUserSettings {}

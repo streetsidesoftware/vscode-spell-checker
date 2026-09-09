@@ -7,32 +7,32 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.addWordToWorkspaceDictionary',
         category: 'Spell',
-        title: 'Add Word(s) to Workspace Dictionary',
+        title: 'Add Word to Workspace Dictionary',
     },
     {
         command: 'cSpell.addWordToFolderDictionary',
         category: 'Spell',
-        title: 'Add Word(s) to Folder Dictionary',
+        title: 'Add Word to Folder Dictionary',
     },
     {
         command: 'cSpell.addWordToUserDictionary',
         category: 'Spell',
-        title: 'Add Word(s) to User Dictionary',
+        title: 'Add Word to User Dictionary',
     },
     {
         command: 'cSpell.addWordToWorkspaceSettings',
         category: 'Spell',
-        title: 'Add Word(s) to Workspace Settings',
+        title: 'Add Word to Workspace Settings',
     },
     {
         command: 'cSpell.addWordToFolderSettings',
         category: 'Spell',
-        title: 'Add Word(s) to Folder Settings',
+        title: 'Add Word to Folder Settings',
     },
     {
         command: 'cSpell.addWordToUserSettings',
         category: 'Spell',
-        title: 'Add Word(s) to User Settings',
+        title: 'Add Word to User Settings',
     },
     {
         command: 'cSpell.enableForWorkspace',
@@ -110,17 +110,17 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.removeWordFromFolderDictionary',
         category: 'Spell',
-        title: 'Remove Word(s) from the Folder Dictionary',
+        title: 'Remove Word from the Folder Dictionary',
     },
     {
         command: 'cSpell.removeWordFromWorkspaceDictionary',
         category: 'Spell',
-        title: 'Remove Word(s) from the Workspace Dictionaries',
+        title: 'Remove Word from the Workspace Dictionaries',
     },
     {
         command: 'cSpell.removeWordFromUserDictionary',
         category: 'Spell',
-        title: 'Remove Word(s) from the Global Dictionary',
+        title: 'Remove Word from the Global Dictionary',
     },
     {
         command: 'cSpell.logPerfTimeline',
@@ -130,7 +130,7 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.addIgnoreWord',
         category: 'Spell',
-        title: 'Ignore Word(s)',
+        title: 'Ignore Word',
     },
     {
         command: 'cSpell.addIgnoreWordsToFolder',
@@ -140,23 +140,23 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.addIgnoreWordsToWorkspace',
         category: 'Spell',
-        title: 'Ignore Word(s) in Workspace Settings',
+        title: 'Ignore Word in Workspace Settings',
     },
     {
         command: 'cSpell.addIgnoreWordsToUser',
         category: 'Spell',
-        title: 'Ignore Word(s) in User Settings',
+        title: 'Ignore Word in User Settings',
     },
     {
         command: 'cSpell.addWordToDictionary',
         category: 'Spell',
-        title: 'Add Word(s) to Dictionary',
+        title: 'Add Word to Dictionary',
         icon: '$(book)',
     },
     {
         command: 'cSpell.addWordToCSpellConfig',
         category: 'Spell',
-        title: 'Add Word(s) to CSpell Configuration',
+        title: 'Add Word to CSpell Configuration',
     },
     {
         command: 'cSpell.addIssuesToDictionary',
@@ -286,7 +286,7 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.insertIgnoreWordsDirective',
         category: 'Spell',
-        title: 'Insert Ignore Word(s) Directive',
+        title: 'Insert Ignore Words Directive',
         icon: '$(comment-discussion)',
     },
     {

@@ -15,6 +15,7 @@ import type { PrefixWithCspell } from './Generics.mjs';
 import type {
     AdvancedSettings,
     ExperimentalSettings,
+    MenusAndActions,
     SpellCheckerBehaviorSettings,
     SpellCheckerSettings,
 } from './SpellCheckerSettings.mjs';
@@ -239,15 +240,7 @@ type _VSConfigPerf = Pick<
  * @order 7
  */
 type VSConfigMenusAndActions = PrefixWithCspell<_VSConfigMenusAndActions>;
-type _VSConfigMenusAndActions = Pick<
-    SpellCheckerSettingsVSCodeBase,
-    | 'hideAddToDictionaryCodeActions'
-    | 'menuItemsOnEditorContextMenu'
-    | 'menuItemsOnSpellingContextMenu'
-    | 'showCommandsInEditorContextMenu'
-    | 'showSuggestionsLinkInEditorContextMenu'
-    | 'suggestionMenuType'
->;
+type _VSConfigMenusAndActions = Pick<SpellCheckerSettingsVSCodeBase, keyof MenusAndActions>;
 
 type ExtensionConfigKeys =
     | keyof _VSConfigAdvanced

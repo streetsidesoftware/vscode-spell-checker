@@ -13,6 +13,7 @@ export const menus: Menus = {
                 && config.cSpell.showSuggestionsLinkInEditorContextMenu
                 && cSpell.editorMenuContext.showSuggestions
                 && cSpell.context.showDecorations
+                && config.cSpell.menuItemsOnEditorContextMenu.suggestSpellingCorrections
             `,
             group: 'A_cspell@000',
         },
@@ -23,6 +24,7 @@ export const menus: Menus = {
                 !editorReadonly
                 && editorTextFocus
                 && config.cSpell.showCommandsInEditorContextMenu
+                && config.cSpell.menuItemsOnEditorContextMenu.spellingContextMenu
             `,
         },
         {
@@ -32,6 +34,7 @@ export const menus: Menus = {
                 && config.cSpell.showCommandsInEditorContextMenu
                 && cSpell.editorMenuContext.hasIssues
                 && !cSpell.context.showDecorations
+                && config.cSpell.menuItemsOnEditorContextMenu.showIssues
             `,
             group: 'A_cspell@002',
         },
@@ -42,6 +45,7 @@ export const menus: Menus = {
                 && config.cSpell.showCommandsInEditorContextMenu
                 && cSpell.editorMenuContext.hasIssues
                 && cSpell.context.showDecorations
+                && config.cSpell.menuItemsOnEditorContextMenu.hideIssues
             `,
             group: 'A_cspell@002',
         },
@@ -53,6 +57,7 @@ export const menus: Menus = {
                 editorTextFocus
                 && !config.cSpell.showSuggestionsLinkInEditorContextMenu
                 && cSpell.editorMenuContext.showSuggestions
+                && config.cSpell.menuItemsOnSpellingContextMenu.suggestSpellingCorrections
             `,
             group: 'A_cspell@001',
         },
@@ -61,6 +66,7 @@ export const menus: Menus = {
             when: ts`
                 editorTextFocus
                 && cSpell.editorMenuContext.addWordToDictionary
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToDictionary
             `,
             group: 'A_cspell@010',
         },
@@ -69,6 +75,7 @@ export const menus: Menus = {
             when: ts`
                 editorTextFocus
                 && cSpell.editorMenuContext.addWordToFolderDictionary
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToFolderDictionary
             `,
             group: 'A_cspell@020',
         },
@@ -77,6 +84,7 @@ export const menus: Menus = {
             when: ts`
                 editorTextFocus
                 && cSpell.editorMenuContext.addWordToWorkspaceDictionary
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToWorkspaceDictionary
             `,
             group: 'A_cspell@030',
         },
@@ -85,62 +93,79 @@ export const menus: Menus = {
             when: ts`
                 editorTextFocus
                 && cSpell.editorMenuContext.addWordToCSpellConfig
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToCSpellConfig
             `,
             group: 'A_cspell@050',
         },
         {
             command: 'cSpell.addWordToFolderSettings',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.addWordToFolderSettings
+                editorTextFocus
+                && cSpell.editorMenuContext.addWordToFolderSettings
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToFolderSettings
             `,
             group: 'A_cspell@051',
         },
         {
             command: 'cSpell.addWordToWorkspaceSettings',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceSettings
+                editorTextFocus
+                && cSpell.editorMenuContext.addWordToWorkspaceSettings
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToWorkspaceSettings
             `,
             group: 'A_cspell@052',
         },
         {
             command: 'cSpell.addWordToUserDictionary',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.addWordToUserDictionary
+                editorTextFocus
+                && cSpell.editorMenuContext.addWordToUserDictionary
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToUserDictionary
             `,
             group: 'A_cspell@055',
         },
         {
             command: 'cSpell.addWordToUserSettings',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.addWordToUserSettings
+                editorTextFocus
+                && cSpell.editorMenuContext.addWordToUserSettings
+                && config.cSpell.menuItemsOnSpellingContextMenu.addWordToUserSettings
             `,
             group: 'A_cspell@056',
         },
         {
             command: 'cSpell.addIssuesToDictionary',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.addIssuesToDictionary
+                editorTextFocus
+                && cSpell.editorMenuContext.addIssuesToDictionary
+                && config.cSpell.menuItemsOnSpellingContextMenu.addIssuesToDictionary
             `,
             group: 'A_cspell@060',
         },
         {
             command: 'cSpell.addIgnoreWord',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.addIgnoreWord
+                editorTextFocus
+                && cSpell.editorMenuContext.addIgnoreWord
+                && config.cSpell.menuItemsOnSpellingContextMenu.addIgnoreWord
             `,
             group: 'A_cspell@090',
         },
         {
             command: 'cSpell.createCSpellConfig',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.createCSpellConfig
+                editorTextFocus
+                && cSpell.editorMenuContext.createCSpellConfig
+                && config.cSpell.menuItemsOnSpellingContextMenu.createCSpellConfig
             `,
             group: 'B_cspell@010',
         },
         {
             command: 'cSpell.createCustomDictionary',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.createCustomDictionary
+                editorTextFocus
+                && cSpell.editorMenuContext.createCustomDictionary
+                && config.cSpell.menuItemsOnSpellingContextMenu.createCustomDictionary
             `,
             group: 'B_cspell@020',
         },
@@ -149,14 +174,18 @@ export const menus: Menus = {
         {
             command: 'cSpell.createCSpellConfig',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.createCSpellConfig
+                editorTextFocus
+                && cSpell.editorMenuContext.createCSpellConfig
+                && cSpell.menuItemsOnCSpellConfigMenu.createCSpellConfig
             `,
             group: 'A_cspell@010',
         },
         {
             command: 'cSpell.createCustomDictionary',
             when: ts`
-                editorTextFocus && cSpell.editorMenuContext.createCustomDictionary
+                editorTextFocus
+                && cSpell.editorMenuContext.createCustomDictionary
+                && cSpell.menuItemsOnCSpellConfigMenu.createCustomDictionary
             `,
             group: 'A_cspell@070',
         },

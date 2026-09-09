@@ -51,6 +51,23 @@ Hide the options to add words to dictionaries or settings.
 <tr>
 <td>
 
+[`cSpell.menuItemsOnCSpellConfigMenu`](#cspellmenuitemsoncspellconfigmenu)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Control which menu items are shown on the Spelling Config Menu.
+
+</td>
+</tr>
+<tr>
+<td>
+
 [`cSpell.menuItemsOnEditorContextMenu`](#cspellmenuitemsoneditorcontextmenu)
 
 </td>
@@ -194,6 +211,74 @@ _`false`_
 ---
 
 
+### `cSpell.menuItemsOnCSpellConfigMenu`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.menuItemsOnCSpellConfigMenu`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which menu items are shown on the Spelling Config Menu.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+[`EnabledItemsOnCSpellConfigMenu`](#enableditemsoncspellconfigmenu)
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+```json5 title="default"
+{
+  "createCSpellConfig": true,
+  "createCustomDictionary": true
+}
+```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.9.1
+
+</dd>
+
+</dl>
+
+---
+
+
 ### `cSpell.menuItemsOnEditorContextMenu`
 
 <dl>
@@ -221,7 +306,7 @@ Type
 </dt>
 <dd>
 
-[`EnabledItemsInEditorContextMenu`](#enableditemsineditorcontextmenu)
+[`EnabledItemsOnEditorContextMenu`](#enableditemsoneditorcontextmenu)
 
 </dd>
 
@@ -291,7 +376,7 @@ Type
 </dt>
 <dd>
 
-[`EnabledItemsInSpellingContextMenu`](#enableditemsinspellingcontextmenu)
+[`EnabledItemsOnSpellingContextMenu`](#enableditemsonspellingcontextmenu)
 
 </dd>
 
@@ -316,7 +401,6 @@ Default
   "addWordToFolderDictionary": true, "addWordToFolderSettings": true,
   "addWordToUserDictionary": true, "addWordToUserSettings": true,
   "addWordToWorkspaceDictionary": true, "addWordToWorkspaceSettings": true,
-  "createCSpellConfig": true, "createCustomDictionary": true,
   "suggestSpellingCorrections": true
 }
 ```
@@ -521,7 +605,7 @@ _`"quickPick"`_
 ## Type Definitions
 
 
-### `EnabledItemsInEditorContextMenu`
+### `EnabledItemsOnCSpellConfigMenu`
 
 <dl>
 
@@ -530,7 +614,143 @@ Name
 </dt>
 <dd>
 
-EnabledItemsInEditorContextMenu
+EnabledItemsOnCSpellConfigMenu
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which menu items are shown on the Spelling Config Menu.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`createCSpellConfig`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable Menu Item: Create a CSpell Configuration File
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`createCustomDictionary`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable Menu Item: Create a Custom Dictionary File
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+```ts
+{
+  createCSpellConfig?: boolean;
+  createCustomDictionary?: boolean;
+}
+```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.9.1
+
+</dd>
+
+</dl>
+
+---
+
+
+### `EnabledItemsOnEditorContextMenu`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+EnabledItemsOnEditorContextMenu
 
 </dd>
 
@@ -731,7 +951,7 @@ Since Extension Version
 ---
 
 
-### `EnabledItemsInSpellingContextMenu`
+### `EnabledItemsOnSpellingContextMenu`
 
 <dl>
 
@@ -740,7 +960,7 @@ Name
 </dt>
 <dd>
 
-EnabledItemsInSpellingContextMenu
+EnabledItemsOnSpellingContextMenu
 
 </dd>
 
@@ -788,7 +1008,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Ignore Word(s)
+Enable Menu Item: Ignore Word
 
 </dd>
 
@@ -860,7 +1080,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to CSpell Configuration
+Enable Menu Item: Add Word to CSpell Configuration
 
 </dd>
 
@@ -896,7 +1116,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to Dictionary
+Enable Menu Item: Add Word to Dictionary
 
 </dd>
 
@@ -932,7 +1152,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to Folder Dictionary
+Enable Menu Item: Add Word to Folder Dictionary
 
 </dd>
 
@@ -968,7 +1188,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to Folder Settings
+Enable Menu Item: Add Word to Folder Settings
 
 </dd>
 
@@ -1004,7 +1224,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to User Dictionary
+Enable Menu Item: Add Word to User Dictionary
 
 </dd>
 
@@ -1040,7 +1260,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to User Settings
+Enable Menu Item: Add Word to User Settings
 
 </dd>
 
@@ -1076,7 +1296,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to Workspace Dictionary
+Enable Menu Item: Add Word to Workspace Dictionary
 
 </dd>
 
@@ -1112,79 +1332,7 @@ Description
 </dt>
 <dd>
 
-Enable Menu Item: Add Word(s) to Workspace Settings
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-`createCSpellConfig`
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-Enable Menu Item: Create a CSpell Configuration File
-
-</dd>
-
-<dt>
-Type
-</dt>
-<dd>
-
-`boolean`
-
-</dd>
-
-</dl>
-
-</td>
-</tr>
-<tr>
-<td>
-
-<dl>
-
-<dt>
-Name
-</dt>
-<dd>
-
-`createCustomDictionary`
-
-</dd>
-
-<dt>
-Description
-</dt>
-<dd>
-
-Enable Menu Item: Create a Custom Dictionary File
+Enable Menu Item: Add Word to Workspace Settings
 
 </dd>
 
@@ -1259,8 +1407,6 @@ TypeScript:
   addWordToUserSettings?: boolean;
   addWordToWorkspaceDictionary?: boolean;
   addWordToWorkspaceSettings?: boolean;
-  createCSpellConfig?: boolean;
-  createCustomDictionary?: boolean;
   suggestSpellingCorrections?: boolean;
 }
 ```

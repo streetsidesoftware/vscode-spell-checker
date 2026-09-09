@@ -651,7 +651,23 @@
       },
       "type": "object"
     },
-    "EnabledItemsInEditorContextMenu": {
+    "EnabledItemsOnCSpellConfigMenu": {
+      "additionalProperties": false,
+      "properties": {
+        "createCSpellConfig": {
+          "description": "Enable Menu Item: Create a CSpell Configuration File",
+          "markdownDescription": "Enable Menu Item: Create a CSpell Configuration File",
+          "type": "boolean"
+        },
+        "createCustomDictionary": {
+          "description": "Enable Menu Item: Create a Custom Dictionary File",
+          "markdownDescription": "Enable Menu Item: Create a Custom Dictionary File",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "EnabledItemsOnEditorContextMenu": {
       "additionalProperties": false,
       "properties": {
         "hideIssues": {
@@ -677,12 +693,12 @@
       },
       "type": "object"
     },
-    "EnabledItemsInSpellingContextMenu": {
+    "EnabledItemsOnSpellingContextMenu": {
       "additionalProperties": false,
       "properties": {
         "addIgnoreWord": {
-          "description": "Enable Menu Item: Ignore Word(s)",
-          "markdownDescription": "Enable Menu Item: Ignore Word(s)",
+          "description": "Enable Menu Item: Ignore Word",
+          "markdownDescription": "Enable Menu Item: Ignore Word",
           "type": "boolean"
         },
         "addIssuesToDictionary": {
@@ -691,53 +707,43 @@
           "type": "boolean"
         },
         "addWordToCSpellConfig": {
-          "description": "Enable Menu Item: Add Word(s) to CSpell Configuration",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to CSpell Configuration",
+          "description": "Enable Menu Item: Add Word to CSpell Configuration",
+          "markdownDescription": "Enable Menu Item: Add Word to CSpell Configuration",
           "type": "boolean"
         },
         "addWordToDictionary": {
-          "description": "Enable Menu Item: Add Word(s) to Dictionary",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to Dictionary",
+          "description": "Enable Menu Item: Add Word to Dictionary",
+          "markdownDescription": "Enable Menu Item: Add Word to Dictionary",
           "type": "boolean"
         },
         "addWordToFolderDictionary": {
-          "description": "Enable Menu Item: Add Word(s) to Folder Dictionary",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to Folder Dictionary",
+          "description": "Enable Menu Item: Add Word to Folder Dictionary",
+          "markdownDescription": "Enable Menu Item: Add Word to Folder Dictionary",
           "type": "boolean"
         },
         "addWordToFolderSettings": {
-          "description": "Enable Menu Item: Add Word(s) to Folder Settings",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to Folder Settings",
+          "description": "Enable Menu Item: Add Word to Folder Settings",
+          "markdownDescription": "Enable Menu Item: Add Word to Folder Settings",
           "type": "boolean"
         },
         "addWordToUserDictionary": {
-          "description": "Enable Menu Item: Add Word(s) to User Dictionary",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to User Dictionary",
+          "description": "Enable Menu Item: Add Word to User Dictionary",
+          "markdownDescription": "Enable Menu Item: Add Word to User Dictionary",
           "type": "boolean"
         },
         "addWordToUserSettings": {
-          "description": "Enable Menu Item: Add Word(s) to User Settings",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to User Settings",
+          "description": "Enable Menu Item: Add Word to User Settings",
+          "markdownDescription": "Enable Menu Item: Add Word to User Settings",
           "type": "boolean"
         },
         "addWordToWorkspaceDictionary": {
-          "description": "Enable Menu Item: Add Word(s) to Workspace Dictionary",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to Workspace Dictionary",
+          "description": "Enable Menu Item: Add Word to Workspace Dictionary",
+          "markdownDescription": "Enable Menu Item: Add Word to Workspace Dictionary",
           "type": "boolean"
         },
         "addWordToWorkspaceSettings": {
-          "description": "Enable Menu Item: Add Word(s) to Workspace Settings",
-          "markdownDescription": "Enable Menu Item: Add Word(s) to Workspace Settings",
-          "type": "boolean"
-        },
-        "createCSpellConfig": {
-          "description": "Enable Menu Item: Create a CSpell Configuration File",
-          "markdownDescription": "Enable Menu Item: Create a CSpell Configuration File",
-          "type": "boolean"
-        },
-        "createCustomDictionary": {
-          "description": "Enable Menu Item: Create a Custom Dictionary File",
-          "markdownDescription": "Enable Menu Item: Create a Custom Dictionary File",
+          "description": "Enable Menu Item: Add Word to Workspace Settings",
+          "markdownDescription": "Enable Menu Item: Add Word to Workspace Settings",
           "type": "boolean"
         },
         "suggestSpellingCorrections": {
@@ -1838,7 +1844,7 @@
       ],
       "type": "object"
     },
-    "Prefix<alias-653189051-10236-10539-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-10044-10347-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.advanced.feature.useReferenceProviderRemove": {
@@ -1903,7 +1909,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-10736-10944-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-10544-10752-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.experimental.enableRegexpView": {
@@ -1933,7 +1939,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5436-5506-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-5457-5527-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.enabled": {
@@ -1946,7 +1952,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5732-6154-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-5753-6175-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowWordsToBeAddTo": {
@@ -2075,7 +2081,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-6359-6877-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-6380-6898-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.autoFormatConfigFile": {
@@ -2228,7 +2234,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7049-7337-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-7070-7358-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
@@ -2276,7 +2282,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7558-7864-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-7579-7672-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.hideAddToDictionaryCodeActions": {
@@ -2286,8 +2292,18 @@
           "scope": "resource",
           "type": "boolean"
         },
+        "cSpell.menuItemsOnCSpellConfigMenu": {
+          "$ref": "#/definitions/EnabledItemsOnCSpellConfigMenu",
+          "default": {
+            "createCSpellConfig": true,
+            "createCustomDictionary": true
+          },
+          "description": "Control which menu items are shown on the Spelling Config Menu.",
+          "markdownDescription": "Control which menu items are shown on the Spelling Config Menu.",
+          "sinceVersion": "4.9.1"
+        },
         "cSpell.menuItemsOnEditorContextMenu": {
-          "$ref": "#/definitions/EnabledItemsInEditorContextMenu",
+          "$ref": "#/definitions/EnabledItemsOnEditorContextMenu",
           "default": {
             "hideIssues": true,
             "showIssues": true,
@@ -2299,7 +2315,7 @@
           "sinceVersion": "4.9.1"
         },
         "cSpell.menuItemsOnSpellingContextMenu": {
-          "$ref": "#/definitions/EnabledItemsInSpellingContextMenu",
+          "$ref": "#/definitions/EnabledItemsOnSpellingContextMenu",
           "default": {
             "addIgnoreWord": true,
             "addIssuesToDictionary": true,
@@ -2311,8 +2327,6 @@
             "addWordToUserSettings": true,
             "addWordToWorkspaceDictionary": true,
             "addWordToWorkspaceSettings": true,
-            "createCSpellConfig": true,
-            "createCustomDictionary": true,
             "suggestSpellingCorrections": true
           },
           "description": "Control which menu items are shown on the Spelling Context Menu.",
@@ -2351,7 +2365,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8565-8647-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-8373-8455-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.engines": {
@@ -2606,7 +2620,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8865-9343-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-8673-9151-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowedSchemas": {
@@ -2818,7 +2832,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9525-9616-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-9333-9424-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.dark": {
@@ -3101,7 +3115,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9796-10065-653189051-0-11488,\"cSpell.\">": {
+    "Prefix<alias-653189051-9604-9873-653189051-0-11296,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowCompoundWords": {
@@ -3191,38 +3205,38 @@
       },
       "type": "object"
     },
-    "PrefixWithCspell<alias-653189051-10236-10539-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10236-10539-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10044-10347-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10044-10347-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-10736-10944-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10736-10944-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10544-10752-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10544-10752-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5436-5506-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5436-5506-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5457-5527-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5457-5527-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5732-6154-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5732-6154-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5753-6175-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5753-6175-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-6359-6877-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-6359-6877-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-6380-6898-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-6380-6898-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7049-7337-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7049-7337-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7070-7358-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7070-7358-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7558-7864-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7558-7864-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7579-7672-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7579-7672-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8565-8647-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8565-8647-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8373-8455-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8373-8455-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8865-9343-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8865-9343-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8673-9151-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8673-9151-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9525-9616-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9525-9616-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9333-9424-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9333-9424-653189051-0-11296%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9796-10065-653189051-0-11488>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9796-10065-653189051-0-11488%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9604-9873-653189051-0-11296>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9604-9873-653189051-0-11296%2C%22cSpell.%22%3E"
     },
     "RegExpList": {
       "items": {
@@ -3241,61 +3255,61 @@
           "$ref": "#/definitions/VSConfigAdvanced"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9525-9616-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9333-9424-653189051-0-11296%3E",
           "description": "Settings that control the appearance of the spell checker.",
           "order": 6,
           "title": "Appearance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8565-8647-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8373-8455-653189051-0-11296%3E",
           "description": "Settings related to CSpell Command Line Tool.",
           "order": 5,
           "title": "CSpell"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10736-10944-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10544-10752-653189051-0-11296%3E",
           "description": "Experimental settings that may change or be removed in the future.",
           "order": 19,
           "title": "Experimental"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8865-9343-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8673-9151-653189051-0-11296%3E",
           "description": "Settings that control which files and folders are spell checked.",
           "order": 3,
           "title": "Files, Folders, and Workspaces"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5732-6154-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5753-6175-653189051-0-11296%3E",
           "description": "Settings that control dictionaries and language preferences.",
           "order": 1,
           "title": "Languages and Dictionaries"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9796-10065-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9604-9873-653189051-0-11296%3E",
           "description": "Legacy settings that have been deprecated or are not commonly used.",
           "order": 20,
           "title": "Legacy"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7558-7864-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7579-7672-653189051-0-11296%3E",
           "description": "Settings that control the menu items and actions available in the spell checker.",
           "order": 7,
           "title": "Menus and Actions"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7049-7337-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7070-7358-653189051-0-11296%3E",
           "description": "Settings that control the performance of the spell checker.",
           "order": 4,
           "title": "Performance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6359-6877-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6380-6898-653189051-0-11296%3E",
           "description": "Settings that control how the spell checker reports and displays errors.",
           "order": 2,
           "title": "Reporting and Display"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5436-5506-653189051-0-11488%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5457-5527-653189051-0-11296%3E",
           "description": "Settings that control the behavior of the spell checker.",
           "order": 0,
           "title": "Code Spell Checker"
@@ -3315,7 +3329,7 @@
       "type": "string"
     },
     "VSConfigAdvanced": {
-      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10236-10539-653189051-0-11488%3E",
+      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10044-10347-653189051-0-11296%3E",
       "description": "Advanced settings that are not commonly used.",
       "order": 18,
       "title": "Advanced"

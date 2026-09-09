@@ -41,6 +41,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     maxNumberOfProblems: 'maxNumberOfProblems',
     menuItemsOnEditorContextMenu: 'menuItemsOnEditorContextMenu',
     menuItemsOnSpellingContextMenu: 'menuItemsOnSpellingContextMenu',
+    menuItemsOnCSpellConfigMenu: 'menuItemsOnCSpellConfigMenu',
     mergeCSpellSettings: 'mergeCSpellSettings',
     mergeCSpellSettingsFields: 'mergeCSpellSettingsFields',
     noSuggestDictionaries: 'noSuggestDictionaries',
