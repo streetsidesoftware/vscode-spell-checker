@@ -34,6 +34,23 @@ Description
 <tr>
 <td>
 
+[`cSpell.allowWordsToBeAddTo`](#cspellallowwordstobeaddto)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Specify where words can be added to. This setting is used to control the "Add to Dictionary"…
+
+</td>
+</tr>
+<tr>
+<td>
+
 [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)
 
 </td>
@@ -56,7 +73,7 @@ Hide the options to add words to dictionaries or settings.
 </td>
 <td>
 
-
+resource
 
 </td>
 <td>
@@ -73,7 +90,7 @@ Control which menu items are shown on the Spelling Config Menu.
 </td>
 <td>
 
-
+resource
 
 </td>
 <td>
@@ -85,12 +102,29 @@ Control which menu items are shown on the Editor Context Menu.
 <tr>
 <td>
 
+[`cSpell.menuItemsOnSpellCheckerActionMenu`](#cspellmenuitemsonspellcheckeractionmenu)
+
+</td>
+<td>
+
+resource
+
+</td>
+<td>
+
+Control which menu items are shown on the Spell Checker Action Menu.
+
+</td>
+</tr>
+<tr>
+<td>
+
 [`cSpell.menuItemsOnSpellingContextMenu`](#cspellmenuitemsonspellingcontextmenu)
 
 </td>
 <td>
 
-
+resource
 
 </td>
 <td>
@@ -107,7 +141,7 @@ Control which menu items are shown on the Spelling Context Menu.
 </td>
 <td>
 
-application
+resource
 
 </td>
 <td>
@@ -124,7 +158,7 @@ Show Spell Checker actions in Editor Context Menu
 </td>
 <td>
 
-application
+resource
 
 </td>
 <td>
@@ -155,6 +189,97 @@ The type of menu used to display spelling suggestions.
 
 
 ## Settings
+
+
+### `cSpell.allowWordsToBeAddTo`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.allowWordsToBeAddTo`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Specify where words can be added to. This setting is used to control the "Add to Dictionary" code actions.
+
+**Examples**
+
+To disable adding words to user settings, but allow adding words to workspace settings:
+
+```js
+"cSpell.addWordTo": {
+  "user": false // Do not allow adding words to user settings
+}
+```
+
+To disable adding words to all VSCode settings:
+
+```js
+"cSpell.addWordTo": {
+  "user": false       // Do not allow adding words to user settings
+  "workspace": false, // Do not allow adding words to workspace settings
+  "folder": false     // Do not allow adding words to folder settings
+}
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+[`ActionAddToTargets`](#actionaddtotargets)
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+```json5 title="default"
+{
+  "cspell": true,
+  "dictionaries": true,
+  "folder": true,
+  "user": true,
+  "workspace": true
+}
+```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.9.1
+
+</dd>
+
+</dl>
+
+---
 
 
 ### `cSpell.hideAddToDictionaryCodeActions`
@@ -247,7 +372,7 @@ Scope
 </dt>
 <dd>
 
-_- none -_
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -315,7 +440,7 @@ Scope
 </dt>
 <dd>
 
-_- none -_
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -330,6 +455,78 @@ Default
   "showIssues": true,
   "spellingContextMenu": true,
   "suggestSpellingCorrections": true
+}
+```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.9.1
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.menuItemsOnSpellCheckerActionMenu`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.menuItemsOnSpellCheckerActionMenu`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which menu items are shown on the Spell Checker Action Menu.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+[`EnabledItemsOnActionMenu`](#enableditemsonactionmenu)
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+```json5 title="default"
+{
+  "allowDocumentScheme": true, "createCSpellConfig": true,
+  "disableFileType": true, "editKeyboardShortcuts": true,
+  "editSpellCheckerSettings": true, "enableFileType": true,
+  "excludeDocumentScheme": true, "hideIssues": true, "openConfigFiles": true,
+  "openFileInfoView": true, "openIssuesPanel": true,
+  "openSpellCheckerConsole": true, "showIssues": true
 }
 ```
 
@@ -385,7 +582,7 @@ Scope
 </dt>
 <dd>
 
-_- none -_
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -457,7 +654,7 @@ Scope
 </dt>
 <dd>
 
-application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -511,7 +708,7 @@ Scope
 </dt>
 <dd>
 
-application - Settings that apply to all instances of VS Code and can only be configured in user settings.
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
 
 </dd>
 
@@ -603,6 +800,337 @@ _`"quickPick"`_
 
 
 ## Type Definitions
+
+
+### `ActionAddToTargets`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+ActionAddToTargets
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Specify where words can be added to. This setting is used to control the "Add to Dictionary" code actions.
+
+**Examples**
+
+To disable adding words to user settings, but allow adding words to workspace settings:
+
+```js
+"cSpell.addWordTo": {
+  "user": false // Do not allow adding words to user settings
+}
+```
+
+To disable adding words to all VSCode settings:
+
+```js
+"cSpell.addWordTo": {
+  "user": false       // Do not allow adding words to user settings
+  "workspace": false, // Do not allow adding words to workspace settings
+  "folder": false     // Do not allow adding words to folder settings
+}
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cspell`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allow adding words cspell configuration file settings.
+- `true` - allow add to cspell settings
+- `false` - never enable add to cspell settings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`dictionaries`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allow adding words user defined dictionaries settings.
+- `true` - allow add to cspell settings
+- `false` - never enable add to cspell settings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`folder`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allow adding words to folder settings.
+- `true` - allow add to folder settings
+- `false` - never enable add to folder settings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`user`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allow adding words to user settings.
+- `true` - allow add to user settings
+- `false` - never enable add to user settings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`workspace`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allow adding words to workspace settings.
+- `true` - allow  add to workspace settings
+- `false` - never enable add to workspace settings
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
+```ts
+{
+  cspell?: boolean;
+  dictionaries?: boolean;
+  folder?: boolean;
+  user?: boolean;
+  workspace?: boolean;
+}
+```
+
+</details>
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.9.1
+
+</dd>
+
+</dl>
+
+---
 
 
 ### `EnabledItemsOnCSpellConfigMenu`
@@ -934,6 +1462,76 @@ Type
   suggestSpellingCorrections?: boolean;
 }
 ```
+
+</dd>
+
+<dt>
+Since Extension Version
+</dt>
+<dd>
+
+4.9.1
+
+</dd>
+
+</dl>
+
+---
+
+
+### `EnabledItemsOnActionMenu`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+EnabledItemsOnActionMenu
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which menu items are shown on the Spell Checker Action Menu.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<details>
+<summary>
+
+TypeScript:
+
+</summary>
+
+```ts
+{
+  allowDocumentScheme?: boolean;
+  createCSpellConfig?: boolean;
+  disableFileType?: boolean;
+  editKeyboardShortcuts?: boolean;
+  editSpellCheckerSettings?: boolean;
+  enableFileType?: boolean;
+  excludeDocumentScheme?: boolean;
+  hideIssues?: boolean;
+  openConfigFiles?: boolean;
+  openFileInfoView?: boolean;
+  openIssuesPanel?: boolean;
+  openSpellCheckerConsole?: boolean;
+  showIssues?: boolean;
+}
+```
+
+</details>
 
 </dd>
 
