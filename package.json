@@ -2936,46 +2936,6 @@
         "markdownDescription": "Settings that control dictionaries and language preferences.",
         "order": 1,
         "properties": {
-          "cSpell.allowWordsToBeAddTo": {
-            "additionalProperties": false,
-            "default": {
-              "cspell": true,
-              "dictionaries": true,
-              "folder": true,
-              "user": true,
-              "workspace": true
-            },
-            "markdownDescription": "Specify where words can be added to. This setting is used to control the \"Add to Dictionary\" code actions.\n\n**Examples**\n\nTo disable adding words to user settings, but allow adding words to workspace settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false // Do not allow adding words to user settings\n}\n```\n\nTo disable adding words to all VSCode settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false       // Do not allow adding words to user settings\n  \"workspace\": false, // Do not allow adding words to workspace settings\n  \"folder\": false     // Do not allow adding words to folder settings\n}\n```",
-            "properties": {
-              "cspell": {
-                "default": true,
-                "markdownDescription": "Allow adding words cspell configuration file settings.\n- `true` - allow add to cspell settings\n- `false` - never enable add to cspell settings",
-                "type": "boolean"
-              },
-              "dictionaries": {
-                "default": true,
-                "markdownDescription": "Allow adding words user defined dictionaries settings.\n- `true` - allow add to cspell settings\n- `false` - never enable add to cspell settings",
-                "type": "boolean"
-              },
-              "folder": {
-                "default": true,
-                "markdownDescription": "Allow adding words to folder settings.\n- `true` - allow add to folder settings\n- `false` - never enable add to folder settings",
-                "type": "boolean"
-              },
-              "user": {
-                "default": true,
-                "markdownDescription": "Allow adding words to user settings.\n- `true` - allow add to user settings\n- `false` - never enable add to user settings",
-                "type": "boolean"
-              },
-              "workspace": {
-                "default": true,
-                "markdownDescription": "Allow adding words to workspace settings.\n- `true` - allow  add to workspace settings\n- `false` - never enable add to workspace settings",
-                "type": "boolean"
-              }
-            },
-            "scope": "resource",
-            "type": "object"
-          },
           "cSpell.caseSensitive": {
             "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  **Note:** Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
             "scope": "resource",
@@ -4545,6 +4505,46 @@
         "markdownDescription": "Settings that control the menu items and actions available in the spell checker.",
         "order": 7,
         "properties": {
+          "cSpell.allowWordsToBeAddTo": {
+            "additionalProperties": false,
+            "default": {
+              "cspell": true,
+              "dictionaries": true,
+              "folder": true,
+              "user": true,
+              "workspace": true
+            },
+            "markdownDescription": "Specify where words can be added to. This setting is used to control the \"Add to Dictionary\" code actions.\n\n**Examples**\n\nTo disable adding words to user settings, but allow adding words to workspace settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false // Do not allow adding words to user settings\n}\n```\n\nTo disable adding words to all VSCode settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false       // Do not allow adding words to user settings\n  \"workspace\": false, // Do not allow adding words to workspace settings\n  \"folder\": false     // Do not allow adding words to folder settings\n}\n```",
+            "properties": {
+              "cspell": {
+                "default": true,
+                "markdownDescription": "Allow adding words cspell configuration file settings.\n- `true` - allow add to cspell settings\n- `false` - never enable add to cspell settings",
+                "type": "boolean"
+              },
+              "dictionaries": {
+                "default": true,
+                "markdownDescription": "Allow adding words user defined dictionaries settings.\n- `true` - allow add to cspell settings\n- `false` - never enable add to cspell settings",
+                "type": "boolean"
+              },
+              "folder": {
+                "default": true,
+                "markdownDescription": "Allow adding words to folder settings.\n- `true` - allow add to folder settings\n- `false` - never enable add to folder settings",
+                "type": "boolean"
+              },
+              "user": {
+                "default": true,
+                "markdownDescription": "Allow adding words to user settings.\n- `true` - allow add to user settings\n- `false` - never enable add to user settings",
+                "type": "boolean"
+              },
+              "workspace": {
+                "default": true,
+                "markdownDescription": "Allow adding words to workspace settings.\n- `true` - allow  add to workspace settings\n- `false` - never enable add to workspace settings",
+                "type": "boolean"
+              }
+            },
+            "scope": "resource",
+            "type": "object"
+          },
           "cSpell.hideAddToDictionaryCodeActions": {
             "default": false,
             "markdownDescription": "Hide the options to add words to dictionaries or settings.",

@@ -1889,7 +1889,7 @@
       ],
       "type": "object"
     },
-    "Prefix<alias-653189051-10044-10347-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-10016-10319-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.advanced.feature.useReferenceProviderRemove": {
@@ -1954,7 +1954,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-10544-10752-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-10516-10724-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.experimental.enableRegexpView": {
@@ -1984,7 +1984,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5457-5527-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-5457-5527-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.enabled": {
@@ -1997,23 +1997,9 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5753-6175-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-5753-6147-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
-        "cSpell.allowWordsToBeAddTo": {
-          "$ref": "#/definitions/ActionAddToTargets",
-          "default": {
-            "cspell": true,
-            "dictionaries": true,
-            "folder": true,
-            "user": true,
-            "workspace": true
-          },
-          "description": "Specify where words can be added to. This setting is used to control the \"Add to Dictionary\" code actions.\n\n**Examples**\n\nTo disable adding words to user settings, but allow adding words to workspace settings:\n\n```js \"cSpell.addWordTo\": {   \"user\": false // Do not allow adding words to user settings } ```\n\nTo disable adding words to all VSCode settings:\n\n```js \"cSpell.addWordTo\": {   \"user\": false       // Do not allow adding words to user settings   \"workspace\": false, // Do not allow adding words to workspace settings   \"folder\": false     // Do not allow adding words to folder settings } ```",
-          "markdownDescription": "Specify where words can be added to. This setting is used to control the \"Add to Dictionary\" code actions.\n\n**Examples**\n\nTo disable adding words to user settings, but allow adding words to workspace settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false // Do not allow adding words to user settings\n}\n```\n\nTo disable adding words to all VSCode settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false       // Do not allow adding words to user settings\n  \"workspace\": false, // Do not allow adding words to workspace settings\n  \"folder\": false     // Do not allow adding words to folder settings\n}\n```",
-          "scope": "resource",
-          "sinceVersion": "4.9.1"
-        },
         "cSpell.caseSensitive": {
           "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.   **Note:** Some languages like Portuguese have case sensitivity turned on by default.   You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
           "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  **Note:** Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
@@ -2126,7 +2112,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-6380-6898-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-6352-6870-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.autoFormatConfigFile": {
@@ -2279,7 +2265,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7070-7358-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-7042-7330-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
@@ -2327,9 +2313,23 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7579-7672-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-7551-7644-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
+        "cSpell.allowWordsToBeAddTo": {
+          "$ref": "#/definitions/ActionAddToTargets",
+          "default": {
+            "cspell": true,
+            "dictionaries": true,
+            "folder": true,
+            "user": true,
+            "workspace": true
+          },
+          "description": "Specify where words can be added to. This setting is used to control the \"Add to Dictionary\" code actions.\n\n**Examples**\n\nTo disable adding words to user settings, but allow adding words to workspace settings:\n\n```js \"cSpell.addWordTo\": {   \"user\": false // Do not allow adding words to user settings } ```\n\nTo disable adding words to all VSCode settings:\n\n```js \"cSpell.addWordTo\": {   \"user\": false       // Do not allow adding words to user settings   \"workspace\": false, // Do not allow adding words to workspace settings   \"folder\": false     // Do not allow adding words to folder settings } ```",
+          "markdownDescription": "Specify where words can be added to. This setting is used to control the \"Add to Dictionary\" code actions.\n\n**Examples**\n\nTo disable adding words to user settings, but allow adding words to workspace settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false // Do not allow adding words to user settings\n}\n```\n\nTo disable adding words to all VSCode settings:\n\n```js\n\"cSpell.addWordTo\": {\n  \"user\": false       // Do not allow adding words to user settings\n  \"workspace\": false, // Do not allow adding words to workspace settings\n  \"folder\": false     // Do not allow adding words to folder settings\n}\n```",
+          "scope": "resource",
+          "sinceVersion": "4.9.1"
+        },
         "cSpell.hideAddToDictionaryCodeActions": {
           "default": false,
           "description": "Hide the options to add words to dictionaries or settings.",
@@ -2435,7 +2435,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8373-8455-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-8345-8427-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.engines": {
@@ -2690,7 +2690,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8673-9151-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-8645-9123-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowedSchemas": {
@@ -2902,7 +2902,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9333-9424-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-9305-9396-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.dark": {
@@ -3185,7 +3185,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9604-9873-653189051-0-11296,\"cSpell.\">": {
+    "Prefix<alias-653189051-9576-9845-653189051-0-11268,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowCompoundWords": {
@@ -3275,38 +3275,38 @@
       },
       "type": "object"
     },
-    "PrefixWithCspell<alias-653189051-10044-10347-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10044-10347-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10016-10319-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10016-10319-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-10544-10752-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10544-10752-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10516-10724-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10516-10724-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5457-5527-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5457-5527-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5457-5527-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5457-5527-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5753-6175-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5753-6175-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5753-6147-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5753-6147-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-6380-6898-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-6380-6898-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-6352-6870-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-6352-6870-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7070-7358-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7070-7358-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7042-7330-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7042-7330-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7579-7672-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7579-7672-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7551-7644-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7551-7644-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8373-8455-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8373-8455-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8345-8427-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8345-8427-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8673-9151-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8673-9151-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8645-9123-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8645-9123-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9333-9424-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9333-9424-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9305-9396-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9305-9396-653189051-0-11268%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9604-9873-653189051-0-11296>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9604-9873-653189051-0-11296%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9576-9845-653189051-0-11268>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9576-9845-653189051-0-11268%2C%22cSpell.%22%3E"
     },
     "RegExpList": {
       "items": {
@@ -3325,61 +3325,61 @@
           "$ref": "#/definitions/VSConfigAdvanced"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9333-9424-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9305-9396-653189051-0-11268%3E",
           "description": "Settings that control the appearance of the spell checker.",
           "order": 6,
           "title": "Appearance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8373-8455-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8345-8427-653189051-0-11268%3E",
           "description": "Settings related to CSpell Command Line Tool.",
           "order": 5,
           "title": "CSpell"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10544-10752-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10516-10724-653189051-0-11268%3E",
           "description": "Experimental settings that may change or be removed in the future.",
           "order": 19,
           "title": "Experimental"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8673-9151-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8645-9123-653189051-0-11268%3E",
           "description": "Settings that control which files and folders are spell checked.",
           "order": 3,
           "title": "Files, Folders, and Workspaces"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5753-6175-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5753-6147-653189051-0-11268%3E",
           "description": "Settings that control dictionaries and language preferences.",
           "order": 1,
           "title": "Languages and Dictionaries"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9604-9873-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9576-9845-653189051-0-11268%3E",
           "description": "Legacy settings that have been deprecated or are not commonly used.",
           "order": 20,
           "title": "Legacy"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7579-7672-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7551-7644-653189051-0-11268%3E",
           "description": "Settings that control the menu items and actions available in the spell checker.",
           "order": 7,
           "title": "Menus and Actions"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7070-7358-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7042-7330-653189051-0-11268%3E",
           "description": "Settings that control the performance of the spell checker.",
           "order": 4,
           "title": "Performance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6380-6898-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6352-6870-653189051-0-11268%3E",
           "description": "Settings that control how the spell checker reports and displays errors.",
           "order": 2,
           "title": "Reporting and Display"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5457-5527-653189051-0-11296%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5457-5527-653189051-0-11268%3E",
           "description": "Settings that control the behavior of the spell checker.",
           "order": 0,
           "title": "Code Spell Checker"
@@ -3399,7 +3399,7 @@
       "type": "string"
     },
     "VSConfigAdvanced": {
-      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10044-10347-653189051-0-11296%3E",
+      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10016-10319-653189051-0-11268%3E",
       "description": "Advanced settings that are not commonly used.",
       "order": 18,
       "title": "Advanced"

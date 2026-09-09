@@ -1,5 +1,4 @@
 import { mustBeDefined } from '@internal/common-utils/util';
-import type { CSpellUserSettings } from 'cspell-lib';
 import { searchForConfig } from 'cspell-lib';
 import * as Path from 'path';
 import { describe, expect, test } from 'vitest';
@@ -8,6 +7,7 @@ import { URI } from 'vscode-uri';
 import type { WorkspaceConfigForDocument } from '../api.js';
 import { __testing__, calculateConfigTargets } from './configTargetsHelper.mjs';
 import type { DictionaryDef } from './cspellConfig/CustomDictionary.mjs';
+import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
 
 const { workspaceConfigToTargets, cspellToTargets, dictionariesToTargets, sortTargets } = __testing__;
@@ -27,7 +27,7 @@ describe('Validate configTargetsHelper', () => {
             },
             ignoreWords: {},
         };
-        const r = [...workspaceConfigToTargets(wConfig)];
+        const r = [...workspaceConfigToTargets({ user: true, workspace: true, folder: true }, wConfig)];
         expect(r).toEqual([
             oc({
                 kind: 'vscode',
@@ -44,6 +44,16 @@ describe('Validate configTargetsHelper', () => {
                 has: { words: undefined, ignoreWords: undefined },
             }),
         ]);
+        expect([...workspaceConfigToTargets({ user: false, workspace: true, folder: true }, wConfig)]).toEqual([
+            oc({
+                kind: 'vscode',
+                scope: 'workspace',
+                name: 'Workspace',
+                docUri: expect.stringContaining('file:'),
+                has: { words: undefined, ignoreWords: undefined },
+            }),
+        ]);
+        expect([...workspaceConfigToTargets({ user: false, workspace: false, folder: true }, wConfig)]).toEqual([]);
     });
 
     test('workspaceConfigToTargets in multi root workspace', () => {
@@ -59,7 +69,7 @@ describe('Validate configTargetsHelper', () => {
                 folder: true,
             },
         };
-        const r = [...workspaceConfigToTargets(wConfig)];
+        const r = [...workspaceConfigToTargets({ user: true, workspace: true, folder: true }, wConfig)];
         expect(r).toEqual([
             oc({
                 kind: 'vscode',
@@ -83,6 +93,16 @@ describe('Validate configTargetsHelper', () => {
                 has: { words: true, ignoreWords: true },
             }),
         ]);
+        expect([...workspaceConfigToTargets({ workspace: true }, wConfig)]).toEqual([
+            oc({
+                kind: 'vscode',
+                scope: 'workspace',
+                name: 'Workspace',
+                docUri: wConfig.uri,
+                has: { words: undefined, ignoreWords: undefined },
+            }),
+        ]);
+        expect([...workspaceConfigToTargets({ workspace: false }, wConfig)]).toEqual([]);
     });
 
     test('workspaceConfigToTargets with no workspace', () => {
@@ -95,7 +115,7 @@ describe('Validate configTargetsHelper', () => {
             },
             ignoreWords: {},
         };
-        const r = [...workspaceConfigToTargets(wConfig)];
+        const r = [...workspaceConfigToTargets({ user: true, workspace: true, folder: true }, wConfig)];
         expect(r).toEqual([
             oc({
                 kind: 'vscode',
@@ -105,12 +125,13 @@ describe('Validate configTargetsHelper', () => {
                 has: { words: true, ignoreWords: undefined },
             }),
         ]);
+        expect([...workspaceConfigToTargets({ user: false }, wConfig)]).toEqual([]);
     });
 
     test('cspellToTargets', async () => {
         const cfg = mustBeDefined(await searchForConfig(__dirname));
         const sources = extractCSpellFileConfigurations(cfg);
-        const r = cspellToTargets(sources);
+        const r = cspellToTargets({ cspell: true }, sources);
         expect(r).toEqual([
             oc({
                 kind: 'cspell',
@@ -127,6 +148,7 @@ describe('Validate configTargetsHelper', () => {
                 has: { words: true, ignoreWords: true },
             }),
         ]);
+        expect(cspellToTargets({ cspell: false }, sources)).toEqual([]);
     });
 
     test('dictionariesToTargets', async () => {
@@ -144,7 +166,7 @@ describe('Validate configTargetsHelper', () => {
                 scope: 'user',
             },
         ]);
-        const r = sortTargets(dictionariesToTargets(dictionaries));
+        const r = sortTargets(dictionariesToTargets({ dictionaries: true }, dictionaries));
         expect(r).toEqual([
             oc({
                 kind: 'dictionary',
@@ -165,6 +187,7 @@ describe('Validate configTargetsHelper', () => {
                 dictionaryUri: expect.stringContaining('user-words.txt'),
             }),
         ]);
+        expect(sortTargets(dictionariesToTargets({ dictionaries: false }, dictionaries))).toEqual([]);
     });
 
     test('calculateConfigTargets user', async () => {
@@ -178,7 +201,14 @@ describe('Validate configTargetsHelper', () => {
             ignoreWords: {},
         };
         const cfg = mustBeDefined(await searchForConfig(__dirname));
-        const settings = { ...cfg };
+        const allowWordsToBeAddTo: CSpellUserAndExtensionSettings['allowWordsToBeAddTo'] = {
+            cspell: true,
+            user: true,
+            workspace: true,
+            dictionaries: true,
+        };
+
+        const settings = { ...cfg, allowWordsToBeAddTo };
         const r = await calculateConfigTargets(settings, wConfig);
         expect(r).toEqual([
             oc({
@@ -231,7 +261,12 @@ describe('Validate configTargetsHelper', () => {
         const cfg = mustBeDefined(await searchForConfig(__dirname));
         const defs: DictionaryDef[] = [cd('custom-words', 'path/to/custom-words.txt', false)];
         const dictionaries: string[] = (cfg.dictionaries || []).concat('custom-words');
-        const settings: CSpellUserSettings = { ...cfg, dictionaryDefinitions: defs, dictionaries };
+        const allowWordsToBeAddTo: CSpellUserAndExtensionSettings['allowWordsToBeAddTo'] = {
+            cspell: true,
+            user: true,
+            workspace: true,
+        };
+        const settings: CSpellUserAndExtensionSettings = { ...cfg, dictionaryDefinitions: defs, dictionaries, allowWordsToBeAddTo };
         const r = (await calculateConfigTargets(settings, wConfig)).sort(
             (a, b) => col.compare(a.kind, b.kind) || col.compare(a.name, b.name),
         );
