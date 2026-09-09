@@ -15,6 +15,7 @@ id: configuration
 - [Performance](configuration/performance)  - Settings that control the performance of the spell checker.
 - [CSpell](configuration/cspell)  - Settings related to CSpell Command Line Tool.
 - [Appearance](configuration/appearance)  - Settings that control the appearance of the spell checker.
+- [Menus and Actions](configuration/menus-and-actions)  - Settings that control the menu items and actions available in the spell checker.
 - [Advanced](configuration/advanced)  - Advanced settings that are not commonly used.
 - [Experimental](configuration/experimental)  - Experimental settings that may change or be removed in the future.
 - [Legacy](configuration/legacy)  - Legacy settings that have been deprecated or are not commonly used.

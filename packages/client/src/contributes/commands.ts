@@ -7,32 +7,32 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.addWordToWorkspaceDictionary',
         category: 'Spell',
-        title: 'Add Words to Workspace Dictionary',
+        title: 'Add Word to Workspace Dictionary',
     },
     {
         command: 'cSpell.addWordToFolderDictionary',
         category: 'Spell',
-        title: 'Add Words to Folder Dictionary',
+        title: 'Add Word to Folder Dictionary',
     },
     {
         command: 'cSpell.addWordToUserDictionary',
         category: 'Spell',
-        title: 'Add Words to User Dictionary',
+        title: 'Add Word to User Dictionary',
     },
     {
         command: 'cSpell.addWordToWorkspaceSettings',
         category: 'Spell',
-        title: 'Add Words to Workspace Settings',
+        title: 'Add Word to Workspace Settings',
     },
     {
         command: 'cSpell.addWordToFolderSettings',
         category: 'Spell',
-        title: 'Add Words to Folder Settings',
+        title: 'Add Word to Folder Settings',
     },
     {
         command: 'cSpell.addWordToUserSettings',
         category: 'Spell',
-        title: 'Add Words to User Settings',
+        title: 'Add Word to User Settings',
     },
     {
         command: 'cSpell.enableForWorkspace',
@@ -110,17 +110,17 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.removeWordFromFolderDictionary',
         category: 'Spell',
-        title: 'Remove Words from the Folder Dictionary',
+        title: 'Remove Word from the Folder Dictionary',
     },
     {
         command: 'cSpell.removeWordFromWorkspaceDictionary',
         category: 'Spell',
-        title: 'Remove Words from the Workspace Dictionaries',
+        title: 'Remove Word from the Workspace Dictionaries',
     },
     {
         command: 'cSpell.removeWordFromUserDictionary',
         category: 'Spell',
-        title: 'Remove Words from the Global Dictionary',
+        title: 'Remove Word from the Global Dictionary',
     },
     {
         command: 'cSpell.logPerfTimeline',
@@ -130,7 +130,7 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.addIgnoreWord',
         category: 'Spell',
-        title: 'Ignore Words',
+        title: 'Ignore Word',
     },
     {
         command: 'cSpell.addIgnoreWordsToFolder',
@@ -140,23 +140,23 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.addIgnoreWordsToWorkspace',
         category: 'Spell',
-        title: 'Ignore Words in Workspace Settings',
+        title: 'Ignore Word in Workspace Settings',
     },
     {
         command: 'cSpell.addIgnoreWordsToUser',
         category: 'Spell',
-        title: 'Ignore Words in User Settings',
+        title: 'Ignore Word in User Settings',
     },
     {
         command: 'cSpell.addWordToDictionary',
         category: 'Spell',
-        title: 'Add Words to Dictionary',
+        title: 'Add Word to Dictionary',
         icon: '$(book)',
     },
     {
         command: 'cSpell.addWordToCSpellConfig',
         category: 'Spell',
-        title: 'Add Words to CSpell Configuration',
+        title: 'Add Word to CSpell Configuration',
     },
     {
         command: 'cSpell.addIssuesToDictionary',
@@ -166,12 +166,12 @@ export const commands: ICommand[] = [
     {
         command: 'cSpell.createCustomDictionary',
         category: 'Spell',
-        title: 'Create a Custom Dictionary File.',
+        title: 'Create a Custom Dictionary File',
     },
     {
         command: 'cSpell.createCSpellConfig',
         category: 'Spell',
-        title: 'Create a CSpell Configuration File.',
+        title: 'Create a CSpell Configuration File',
     },
     {
         command: 'cSpell.suggestSpellingCorrections',
@@ -203,7 +203,7 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpellRegExpTester.testRegExp',
-        title: 'Test a Regular Expression on the current document.',
+        title: 'Test a Regular Expression on the current document',
         enablement: ts`
             config.cSpell.experimental.enableRegexpView
         `,
@@ -218,7 +218,7 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpell.experimental.executeDocumentSymbolProvider',
-        title: 'Execute Document Symbol Provider on the current document.',
+        title: 'Execute Document Symbol Provider on the current document',
         icon: '$(code)',
         enablement: ts`
             config.cSpell.experimental.symbols
@@ -226,7 +226,7 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpell.autoFixSpellingIssues',
-        title: 'Fix all issues with a preferred suggestion in the current document.',
+        title: 'Fix all issues with a preferred suggestion in the current document',
         icon: '$(lightbulb-autofix)',
     },
     {
@@ -239,7 +239,7 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpell.issueViewer.item.autoFixSpellingIssues',
-        title: 'Fix issue with preferred suggestion in the current document.',
+        title: 'Fix issue with preferred suggestion in the current document',
         icon: '$(lightbulb-autofix)',
         enablement: ts`
             view == cSpellIssuesViewByIssue
@@ -256,7 +256,7 @@ export const commands: ICommand[] = [
     },
     {
         command: 'cSpell.issuesViewByFile.item.autoFixSpellingIssues',
-        title: 'Fix issue with preferred suggestion in the current document.',
+        title: 'Fix issue with preferred suggestion in the current document',
         icon: '$(lightbulb-autofix)',
         enablement: ts`
             view == cSpellIssuesViewByFile

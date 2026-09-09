@@ -27,14 +27,7 @@ export type DiagnosticLevelExt = 'Error' | 'Warning' | 'Information' | 'Hint' | 
 
 export type UseVSCodeDiagnosticSeverity = Record<string, DiagnosticLevelExt>;
 
-export interface SpellCheckerSettings
-    extends
-        SpellCheckerShouldCheckDocSettings,
-        FileTypesAndSchemeSettings,
-        SpellCheckerBehaviorSettings,
-        AppearanceSettings,
-        ExperimentalSettings,
-        AdvancedSettings {
+export interface SpellCheckerUserSettings {
     /**
      * Enable / Disable autocorrect while typing.
      * @title Autocorrect
@@ -160,20 +153,6 @@ export interface SpellCheckerSettings
     fixSpellingWithRenameProvider?: boolean;
 
     /**
-     * Show Spell Checker actions in Editor Context Menu
-     * @scope application
-     * @default true
-     */
-    showCommandsInEditorContextMenu?: boolean;
-
-    /**
-     * Show Spelling Suggestions link in the top level context menu.
-     * @scope application
-     * @default true
-     */
-    showSuggestionsLinkInEditorContextMenu?: boolean;
-
-    /**
      * Define the path to the workspace root folder in a multi-root workspace.
      * By default it is the first folder.
      *
@@ -258,42 +237,40 @@ export interface SpellCheckerSettings
     spellCheckOnlyWorkspaceFiles?: boolean;
 
     /**
-     * The type of menu used to display spelling suggestions.
-     * @scope resource
-     * @default "quickPick"
-     * @enumDescriptions [
-     *  "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
-     *  "Suggestions will appear inline near the word, inside the text editor."]
-     */
-    suggestionMenuType?: 'quickPick' | 'quickFix';
-
-    /**
-     * Hide the options to add words to dictionaries or settings.
-     * @scope resource
-     * @default false
-     */
-    hideAddToDictionaryCodeActions?: boolean;
-
-    /**
-     * Specify where words can be added.
+     * Specify where words can be added to. This setting is used to control the "Add to Dictionary" code actions.
      *
-     * **Note:** Dictionary names should be prefixed with `#`
+     * **Examples**
      *
-     * **Example:**
+     * To disable adding words to user settings, but allow adding words to workspace settings:
      *
      * ```js
      * "cSpell.addWordTo": {
-     *   "cspell": true, // Add words to cspell configuration
-     *   "#company-terms": true // Add words to the company terms dictionary.
+     *   "user": false // Do not allow adding words to user settings
      * }
      * ```
      *
-     * NOTE: This is NOT yest supported.
+     * To disable adding words to all VSCode settings:
      *
+     * ```js
+     * "cSpell.addWordTo": {
+     *   "user": false       // Do not allow adding words to user settings
+     *   "workspace": false, // Do not allow adding words to workspace settings
+     *   "folder": false     // Do not allow adding words to folder settings
+     * }
+     * ```
+     *
+     * @default {
+     *   folder: true,
+     *   workspace: true,
+     *   user: true,
+     *   cspell: true,
+     *   dictionaries: true
+     * }
+     *
+     * @sinceVersion 4.9.1
      * @scope resource
-     * @hidden
      */
-    // addWordsTo?: AddToTargets;
+    allowWordsToBeAddTo?: ActionAddToTargets;
 
     /**
      * Specify if fields from `.vscode/settings.json` are passed to the spell checker.
@@ -383,6 +360,81 @@ export interface SpellCheckerSettings
     reportUnknownWords?: UnknownWordsReportingLevel | undefined;
 }
 
+export interface MenusAndActions {
+    /**
+     * Hide the options to add words to dictionaries or settings.
+     * @scope resource
+     * @default false
+     */
+    hideAddToDictionaryCodeActions?: boolean;
+
+    /**
+     * Control which menu items are shown on the Editor Context Menu.
+     *
+     * @sinceVersion 4.9.1
+     * @default {
+     *   suggestSpellingCorrections: true,
+     *   spellingContextMenu: true,
+     *   hideIssues: true,
+     *   showIssues: true
+     * }
+     */
+    menuItemsOnEditorContextMenu?: EnabledItemsOnEditorContextMenu;
+
+    /**
+     * Control which menu items are shown on the Spelling Context Menu.
+     * @sinceVersion 4.9.1
+     * @default {
+     *   suggestSpellingCorrections: true,
+     *   addWordToDictionary: true,
+     *   addWordToFolderDictionary: true,
+     *   addWordToWorkspaceDictionary: true,
+     *   addWordToCSpellConfig: true,
+     *   addWordToFolderSettings: true,
+     *   addWordToWorkspaceSettings: true,
+     *   addWordToUserDictionary: true,
+     *   addWordToUserSettings: true,
+     *   addIssuesToDictionary: true,
+     *   addIgnoreWord: true,
+     * }
+     */
+    menuItemsOnSpellingContextMenu?: EnabledItemsOnSpellingContextMenu;
+
+    /**
+     * Control which menu items are shown on the Spelling Config Menu.
+     * @sinceVersion 4.9.1
+     * @default {
+     *   createCSpellConfig: true,
+     *   createCustomDictionary: true
+     * }
+     */
+    menuItemsOnCSpellConfigMenu?: EnabledItemsOnCSpellConfigMenu;
+
+    /**
+     * Show Spell Checker actions in Editor Context Menu
+     * @scope application
+     * @default true
+     */
+    showCommandsInEditorContextMenu?: boolean;
+
+    /**
+     * Show Spelling Suggestions link in the top level context menu.
+     * @scope application
+     * @default true
+     */
+    showSuggestionsLinkInEditorContextMenu?: boolean;
+
+    /**
+     * The type of menu used to display spelling suggestions.
+     * @scope resource
+     * @default "quickPick"
+     * @enumDescriptions [
+     *  "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
+     *  "Suggestions will appear inline near the word, inside the text editor."]
+     */
+    suggestionMenuType?: 'quickPick' | 'quickFix';
+}
+
 export interface ExperimentalSettings {
     /**
      * Show Regular Expression Explorer
@@ -470,7 +522,10 @@ export interface SpellCheckerBehaviorSettings {
     enabledNotifications?: EnabledNotifications;
 }
 
-type AutoOrBoolean = boolean | 'auto';
+/**
+ *
+ */
+type AddToOptions = boolean;
 
 /**
  * Reference to a dictionary
@@ -478,44 +533,101 @@ type AutoOrBoolean = boolean | 'auto';
  */
 type DictionaryRef = string;
 
-type Prefix<T, P extends string> = {
-    [K in keyof T as K extends string ? `${P}${K}` : K]: T[K];
-};
-type AddToDictionaryTarget = Prefix<Record<DictionaryRef, AutoOrBoolean>, '#'>;
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface AddToDictionaryTarget {
+    /**
+     * Custom Add To dictionary targets. The key is the dictionary name prefixed with `#`.
+     * The value is `true` to enable adding words to the dictionary, `false` to disable adding words to the dictionary, or `undefined` to autodetect.
+     */
+    [key: DictionaryRef]: AddToOptions;
+}
 
-export interface AddToTargets extends AddToDictionaryTarget {
+/**
+ * Action targets for adding words to various settings.
+ *
+ * Controls which action items are allowed.
+ * @sinceVersion 4.9.1
+ */
+export interface ActionAddToTargets {
     /**
-     * Add words to folder settings.
-     * - `true` - always enable add to folder settings
+     * Allow adding words to folder settings.
+     * - `true` - allow add to folder settings
      * - `false` - never enable add to folder settings
-     * - `auto` - autodetect
-     * @default "auto"
+     * @default true
      */
-    folder?: AutoOrBoolean;
+    folder?: AddToOptions;
     /**
-     * Add words to workspace settings.
-     * - `true` - always enable add to workspace settings
+     * Allow adding words to workspace settings.
+     * - `true` - allow  add to workspace settings
      * - `false` - never enable add to workspace settings
-     * - `auto` - autodetect
-     * @default "auto"
+     * @default true
      */
-    workspace?: AutoOrBoolean;
+    workspace?: AddToOptions;
     /**
-     * Add words to user settings.
-     * - `true` - always enable add to user settings
+     * Allow adding words to user settings.
+     * - `true` - allow add to user settings
      * - `false` - never enable add to user settings
-     * - `auto` - autodetect
-     * @default "auto"
+     * @default true
      */
-    user?: AutoOrBoolean;
+    user?: AddToOptions;
     /**
-     * Add words to user settings.
-     * - `true` - always enable add to cspell settings
+     * Allow adding words cspell configuration file settings.
+     * - `true` - allow add to cspell settings
      * - `false` - never enable add to cspell settings
-     * - `auto` - autodetect
-     * @default "auto"
+     * @default true
      */
-    cspell?: AutoOrBoolean;
+    cspell?: AddToOptions;
+
+    /**
+     * Allow adding words user defined dictionaries settings.
+     * - `true` - allow add to cspell settings
+     * - `false` - never enable add to cspell settings
+     * @default true
+     */
+    dictionaries?: AddToOptions;
+}
+
+export interface EnabledItemsOnEditorContextMenu {
+    /** Enable Menu Item: `Spelling Suggestions...` */
+    suggestSpellingCorrections?: boolean;
+    /** Enable Menu Item: `Spelling` */
+    spellingContextMenu?: boolean;
+    /** Enable Menu Item: `Hide Spelling Issues` */
+    hideIssues?: boolean;
+    /** Enable Menu Item: `Show Spelling Issues` */
+    showIssues?: boolean;
+}
+
+export interface EnabledItemsOnSpellingContextMenu {
+    /** Enable Menu Item: Spelling Suggestions... */
+    suggestSpellingCorrections?: boolean;
+    /** Enable Menu Item: Add Word to Dictionary */
+    addWordToDictionary?: boolean;
+    /** Enable Menu Item: Add Word to Folder Dictionary */
+    addWordToFolderDictionary?: boolean;
+    /** Enable Menu Item: Add Word to Workspace Dictionary */
+    addWordToWorkspaceDictionary?: boolean;
+    /** Enable Menu Item: Add Word to CSpell Configuration */
+    addWordToCSpellConfig?: boolean;
+    /** Enable Menu Item: Add Word to Folder Settings */
+    addWordToFolderSettings?: boolean;
+    /** Enable Menu Item: Add Word to Workspace Settings */
+    addWordToWorkspaceSettings?: boolean;
+    /** Enable Menu Item: Add Word to User Dictionary */
+    addWordToUserDictionary?: boolean;
+    /** Enable Menu Item: Add Word to User Settings */
+    addWordToUserSettings?: boolean;
+    /** Enable Menu Item: Add All Spelling Issues to Dictionary */
+    addIssuesToDictionary?: boolean;
+    /** Enable Menu Item: Ignore Word */
+    addIgnoreWord?: boolean;
+}
+
+export interface EnabledItemsOnCSpellConfigMenu {
+    /** Enable Menu Item: Create a CSpell Configuration File */
+    createCSpellConfig?: boolean;
+    /** Enable Menu Item: Create a Custom Dictionary File */
+    createCustomDictionary?: boolean;
 }
 
 export type UnknownWordsReportingLevel = 'all' | 'simple' | 'typos' | 'flagged';
@@ -542,3 +654,14 @@ export interface EnabledNotifications {
 }
 
 export type NotificationMessageId = keyof EnabledNotifications;
+
+export interface SpellCheckerSettings
+    extends
+        SpellCheckerShouldCheckDocSettings,
+        FileTypesAndSchemeSettings,
+        SpellCheckerBehaviorSettings,
+        AppearanceSettings,
+        ExperimentalSettings,
+        AdvancedSettings,
+        MenusAndActions,
+        SpellCheckerUserSettings {}
