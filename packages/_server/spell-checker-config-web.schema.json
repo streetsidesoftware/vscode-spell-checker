@@ -2345,6 +2345,7 @@
           },
           "description": "Control which menu items are shown on the Spelling Config Menu.",
           "markdownDescription": "Control which menu items are shown on the Spelling Config Menu.",
+          "scope": "resource",
           "sinceVersion": "4.9.1"
         },
         "cSpell.menuItemsOnEditorContextMenu": {
@@ -2357,6 +2358,7 @@
           },
           "description": "Control which menu items are shown on the Editor Context Menu.",
           "markdownDescription": "Control which menu items are shown on the Editor Context Menu.",
+          "scope": "resource",
           "sinceVersion": "4.9.1"
         },
         "cSpell.menuItemsOnSpellCheckerActionMenu": {
@@ -2378,6 +2380,7 @@
           },
           "description": "Control which menu items are shown on the Spell Checker Action Menu.",
           "markdownDescription": "Control which menu items are shown on the Spell Checker Action Menu.",
+          "scope": "resource",
           "sinceVersion": "4.9.1"
         },
         "cSpell.menuItemsOnSpellingContextMenu": {
@@ -2397,20 +2400,21 @@
           },
           "description": "Control which menu items are shown on the Spelling Context Menu.",
           "markdownDescription": "Control which menu items are shown on the Spelling Context Menu.",
+          "scope": "resource",
           "sinceVersion": "4.9.1"
         },
         "cSpell.showCommandsInEditorContextMenu": {
           "default": true,
           "description": "Show Spell Checker actions in Editor Context Menu",
           "markdownDescription": "Show Spell Checker actions in Editor Context Menu",
-          "scope": "application",
+          "scope": "resource",
           "type": "boolean"
         },
         "cSpell.showSuggestionsLinkInEditorContextMenu": {
           "default": true,
           "description": "Show Spelling Suggestions link in the top level context menu.",
           "markdownDescription": "Show Spelling Suggestions link in the top level context menu.",
-          "scope": "application",
+          "scope": "resource",
           "type": "boolean"
         },
         "cSpell.suggestionMenuType": {

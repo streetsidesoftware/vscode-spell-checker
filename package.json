@@ -4568,6 +4568,7 @@
                 "type": "boolean"
               }
             },
+            "scope": "resource",
             "type": "object"
           },
           "cSpell.menuItemsOnEditorContextMenu": {
@@ -4597,6 +4598,7 @@
                 "type": "boolean"
               }
             },
+            "scope": "resource",
             "type": "object"
           },
           "cSpell.menuItemsOnSpellCheckerActionMenu": {
@@ -4658,6 +4660,7 @@
                 "type": "boolean"
               }
             },
+            "scope": "resource",
             "type": "object"
           },
           "cSpell.menuItemsOnSpellingContextMenu": {
@@ -4722,18 +4725,19 @@
                 "type": "boolean"
               }
             },
+            "scope": "resource",
             "type": "object"
           },
           "cSpell.showCommandsInEditorContextMenu": {
             "default": true,
             "markdownDescription": "Show Spell Checker actions in Editor Context Menu",
-            "scope": "application",
+            "scope": "resource",
             "type": "boolean"
           },
           "cSpell.showSuggestionsLinkInEditorContextMenu": {
             "default": true,
             "markdownDescription": "Show Spelling Suggestions link in the top level context menu.",
-            "scope": "application",
+            "scope": "resource",
             "type": "boolean"
           },
           "cSpell.suggestionMenuType": {

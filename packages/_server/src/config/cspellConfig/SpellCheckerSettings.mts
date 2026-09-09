@@ -371,6 +371,7 @@ export interface MenusAndActions {
     /**
      * Control which menu items are shown on the Editor Context Menu.
      *
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   suggestSpellingCorrections: true,
@@ -383,6 +384,7 @@ export interface MenusAndActions {
 
     /**
      * Control which menu items are shown on the Spelling Context Menu.
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   suggestSpellingCorrections: true,
@@ -402,6 +404,7 @@ export interface MenusAndActions {
 
     /**
      * Control which menu items are shown on the Spelling Config Menu.
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   createCSpellConfig: true,
@@ -412,6 +415,7 @@ export interface MenusAndActions {
 
     /**
      * Control which menu items are shown on the Spell Checker Action Menu.
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   allowDocumentScheme: true,
@@ -433,14 +437,14 @@ export interface MenusAndActions {
 
     /**
      * Show Spell Checker actions in Editor Context Menu
-     * @scope application
+     * @scope resource
      * @default true
      */
     showCommandsInEditorContextMenu?: boolean;
 
     /**
      * Show Spelling Suggestions link in the top level context menu.
-     * @scope application
+     * @scope resource
      * @default true
      */
     showSuggestionsLinkInEditorContextMenu?: boolean;
