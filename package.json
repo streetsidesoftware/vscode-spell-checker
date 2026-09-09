@@ -4599,6 +4599,67 @@
             },
             "type": "object"
           },
+          "cSpell.menuItemsOnSpellCheckerActionMenu": {
+            "additionalProperties": false,
+            "default": {
+              "allowDocumentScheme": true,
+              "createCSpellConfig": true,
+              "disableFileType": true,
+              "editKeyboardShortcuts": true,
+              "editSpellCheckerSettings": true,
+              "enableFileType": true,
+              "excludeDocumentScheme": true,
+              "hideIssues": true,
+              "openConfigFiles": true,
+              "openFileInfoView": true,
+              "openIssuesPanel": true,
+              "openSpellCheckerConsole": true,
+              "showIssues": true
+            },
+            "markdownDescription": "Control which menu items are shown on the Spell Checker Action Menu.",
+            "properties": {
+              "allowDocumentScheme": {
+                "type": "boolean"
+              },
+              "createCSpellConfig": {
+                "type": "boolean"
+              },
+              "disableFileType": {
+                "type": "boolean"
+              },
+              "editKeyboardShortcuts": {
+                "type": "boolean"
+              },
+              "editSpellCheckerSettings": {
+                "type": "boolean"
+              },
+              "enableFileType": {
+                "type": "boolean"
+              },
+              "excludeDocumentScheme": {
+                "type": "boolean"
+              },
+              "hideIssues": {
+                "type": "boolean"
+              },
+              "openConfigFiles": {
+                "type": "boolean"
+              },
+              "openFileInfoView": {
+                "type": "boolean"
+              },
+              "openIssuesPanel": {
+                "type": "boolean"
+              },
+              "openSpellCheckerConsole": {
+                "type": "boolean"
+              },
+              "showIssues": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
           "cSpell.menuItemsOnSpellingContextMenu": {
             "additionalProperties": false,
             "default": {

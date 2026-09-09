@@ -411,6 +411,27 @@ export interface MenusAndActions {
     menuItemsOnCSpellConfigMenu?: EnabledItemsOnCSpellConfigMenu;
 
     /**
+     * Control which menu items are shown on the Spell Checker Action Menu.
+     * @sinceVersion 4.9.1
+     * @default {
+     *   allowDocumentScheme: true,
+     *   createCSpellConfig: true,
+     *   disableFileType: true,
+     *   editKeyboardShortcuts: true,
+     *   editSpellCheckerSettings: true,
+     *   enableFileType: true,
+     *   excludeDocumentScheme: true,
+     *   hideIssues: true,
+     *   openConfigFiles: true,
+     *   openFileInfoView: true,
+     *   openIssuesPanel: true,
+     *   openSpellCheckerConsole: true,
+     *   showIssues: true
+     * }
+     */
+    menuItemsOnSpellCheckerActionMenu?: EnabledItemsOnActionMenu;
+
+    /**
      * Show Spell Checker actions in Editor Context Menu
      * @scope application
      * @default true
@@ -628,6 +649,22 @@ export interface EnabledItemsOnCSpellConfigMenu {
     createCSpellConfig?: boolean;
     /** Enable Menu Item: Create a Custom Dictionary File */
     createCustomDictionary?: boolean;
+}
+
+export interface EnabledItemsOnActionMenu {
+    allowDocumentScheme?: boolean;
+    createCSpellConfig?: boolean;
+    disableFileType?: boolean;
+    editKeyboardShortcuts?: boolean;
+    editSpellCheckerSettings?: boolean;
+    enableFileType?: boolean;
+    excludeDocumentScheme?: boolean;
+    hideIssues?: boolean;
+    openConfigFiles?: boolean;
+    openFileInfoView?: boolean;
+    openIssuesPanel?: boolean;
+    openSpellCheckerConsole?: boolean;
+    showIssues?: boolean;
 }
 
 export type UnknownWordsReportingLevel = 'all' | 'simple' | 'typos' | 'flagged';
