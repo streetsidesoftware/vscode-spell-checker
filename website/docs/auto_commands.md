@@ -11,23 +11,23 @@ id: commands
 | Command | Title |
 | ------- | ----- |
 | `cSpell.about` |  About the Spell Checker<br />**When:**<br />  `config.cSpell.command.about` |
-| `cSpell.addIgnoreWord` |  Ignore Words |
+| `cSpell.addIgnoreWord` |  Ignore Word |
 | `cSpell.addIgnoreWordsToFolder` |  Ignore Word in Folder Settings |
-| `cSpell.addIgnoreWordsToUser` |  Ignore Words in User Settings |
-| `cSpell.addIgnoreWordsToWorkspace` |  Ignore Words in Workspace Settings |
+| `cSpell.addIgnoreWordsToUser` |  Ignore Word in User Settings |
+| `cSpell.addIgnoreWordsToWorkspace` |  Ignore Word in Workspace Settings |
 | `cSpell.addIssuesToDictionary` |  Add All Spelling Issues to Dictionary |
-| `cSpell.addWordToCSpellConfig` |  Add Words to CSpell Configuration |
-| `cSpell.addWordToDictionary` |  Add Words to Dictionary |
-| `cSpell.addWordToFolderDictionary` |  Add Words to Folder Dictionary |
-| `cSpell.addWordToFolderSettings` |  Add Words to Folder Settings |
-| `cSpell.addWordToUserDictionary` |  Add Words to User Dictionary |
-| `cSpell.addWordToUserSettings` |  Add Words to User Settings |
-| `cSpell.addWordToWorkspaceDictionary` |  Add Words to Workspace Dictionary |
-| `cSpell.addWordToWorkspaceSettings` |  Add Words to Workspace Settings |
-| `cSpell.autoFixSpellingIssues` |  Fix all issues with a preferred suggestion in the current document. |
-| `cSpell.createCSpellConfig` |  Create a CSpell Configuration File. |
+| `cSpell.addWordToCSpellConfig` |  Add Word to CSpell Configuration |
+| `cSpell.addWordToDictionary` |  Add Word to Dictionary |
+| `cSpell.addWordToFolderDictionary` |  Add Word to Folder Dictionary |
+| `cSpell.addWordToFolderSettings` |  Add Word to Folder Settings |
+| `cSpell.addWordToUserDictionary` |  Add Word to User Dictionary |
+| `cSpell.addWordToUserSettings` |  Add Word to User Settings |
+| `cSpell.addWordToWorkspaceDictionary` |  Add Word to Workspace Dictionary |
+| `cSpell.addWordToWorkspaceSettings` |  Add Word to Workspace Settings |
+| `cSpell.autoFixSpellingIssues` |  Fix all issues with a preferred suggestion in the current document |
+| `cSpell.createCSpellConfig` |  Create a CSpell Configuration File |
 | `cSpell.createCSpellTerminal` |  Open a new CSpell REPL Terminal |
-| `cSpell.createCustomDictionary` |  Create a Custom Dictionary File. |
+| `cSpell.createCustomDictionary` |  Create a Custom Dictionary File |
 | `cSpell.disableCurrentFileType` |  Disable Spell Checking File Type |
 | `cSpell.disableCurrentLanguage` |  Disable Spell Checking Document Type<br />**When:**<br />  `cSpell.showLegacyCommands.disableCurrentLanguage` |
 | `cSpell.disableForGlobal` |  Disable Spell Checking by Default |
@@ -37,7 +37,7 @@ id: commands
 | `cSpell.enableCurrentLanguage` |  Enable Spell Checking Document Type<br />**When:**<br />  `cSpell.showLegacyCommands.enableCurrentLanguage` |
 | `cSpell.enableForGlobal` |  Enable Spell Checking by Default |
 | `cSpell.enableForWorkspace` |  Enable Spell Checking For Workspace |
-| `cSpell.experimental.executeDocumentSymbolProvider` |  Execute Document Symbol Provider on the current document.<br />**When:**<br />  `config.cSpell.experimental.symbols` |
+| `cSpell.experimental.executeDocumentSymbolProvider` |  Execute Document Symbol Provider on the current document<br />**When:**<br />  `config.cSpell.experimental.symbols` |
 | `cSpell.goToNextSpellingIssue` |  Go to Next Spelling Issue |
 | `cSpell.goToNextSpellingIssueAndSuggest` |  Go to Next Spelling Issue and Suggest |
 | `cSpell.goToPreviousSpellingIssue` |  Go to Previous Spelling Issue |
@@ -49,9 +49,9 @@ id: commands
 | `cSpell.insertIgnoreWordsDirective` |  Insert Ignore Words Directive |
 | `cSpell.insertWordsDirective` |  Insert Words Directive |
 | `cSpell.issuesViewByFile.item.addWordToDictionary` |  Add Word to Dictionary<br />**When:**<br />  `view == cSpellIssuesViewByFile` |
-| `cSpell.issuesViewByFile.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document.<br />**When:**<br />  `view == cSpellIssuesViewByFile` |
+| `cSpell.issuesViewByFile.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document<br />**When:**<br />  `view == cSpellIssuesViewByFile` |
 | `cSpell.issueViewer.item.addWordToDictionary` |  Add Word to Dictionary<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
-| `cSpell.issueViewer.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document.<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
+| `cSpell.issueViewer.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
 | `cSpell.issueViewer.item.openSuggestionsForIssue` |  Show Suggestions<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
 | `cSpell.logPerfTimeline` |  Log CSpell performance times to console |
 | `cSpell.openFileInfoView` |  Open Spell Checker File Information View |
@@ -60,9 +60,9 @@ id: commands
 | `cSpell.rateTheSpellChecker` |  Rate the Spell Checker |
 | `cSpell.releaseNotes` |  Show Spell Checker Release Notes<br />**When:**<br />  `config.cSpell.command.releaseNotes` |
 | `cSpell.reload` |  Reload Spell Checker Configuration and Dictionaries |
-| `cSpell.removeWordFromFolderDictionary` |  Remove Words from the Folder Dictionary |
-| `cSpell.removeWordFromUserDictionary` |  Remove Words from the Global Dictionary |
-| `cSpell.removeWordFromWorkspaceDictionary` |  Remove Words from the Workspace Dictionaries |
+| `cSpell.removeWordFromFolderDictionary` |  Remove Word from the Folder Dictionary |
+| `cSpell.removeWordFromUserDictionary` |  Remove Word from the Global Dictionary |
+| `cSpell.removeWordFromWorkspaceDictionary` |  Remove Word from the Workspace Dictionaries |
 | `cSpell.reportIssue` |  Report an Issue with the Spell Checker<br />**When:**<br />  `config.cSpell.command.reportIssue` |
 | `cSpell.restart` |  Restart Spell Checker Server |
 | `cSpell.show` |  Show Spelling Issues |
