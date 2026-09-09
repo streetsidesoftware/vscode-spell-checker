@@ -237,42 +237,6 @@ export interface SpellCheckerUserSettings {
     spellCheckOnlyWorkspaceFiles?: boolean;
 
     /**
-     * Specify where words can be added to. This setting is used to control the "Add to Dictionary" code actions.
-     *
-     * **Examples**
-     *
-     * To disable adding words to user settings, but allow adding words to workspace settings:
-     *
-     * ```js
-     * "cSpell.addWordTo": {
-     *   "user": false // Do not allow adding words to user settings
-     * }
-     * ```
-     *
-     * To disable adding words to all VSCode settings:
-     *
-     * ```js
-     * "cSpell.addWordTo": {
-     *   "user": false       // Do not allow adding words to user settings
-     *   "workspace": false, // Do not allow adding words to workspace settings
-     *   "folder": false     // Do not allow adding words to folder settings
-     * }
-     * ```
-     *
-     * @default {
-     *   folder: true,
-     *   workspace: true,
-     *   user: true,
-     *   cspell: true,
-     *   dictionaries: true
-     * }
-     *
-     * @sinceVersion 4.9.1
-     * @scope resource
-     */
-    allowWordsToBeAddTo?: ActionAddToTargets;
-
-    /**
      * Specify if fields from `.vscode/settings.json` are passed to the spell checker.
      * This only applies when there is a CSpell configuration file in the workspace.
      *
@@ -361,6 +325,42 @@ export interface SpellCheckerUserSettings {
 }
 
 export interface MenusAndActions {
+    /**
+     * Specify where words can be added to. This setting is used to control the "Add to Dictionary" code actions.
+     *
+     * **Examples**
+     *
+     * To disable adding words to user settings, but allow adding words to workspace settings:
+     *
+     * ```js
+     * "cSpell.addWordTo": {
+     *   "user": false // Do not allow adding words to user settings
+     * }
+     * ```
+     *
+     * To disable adding words to all VSCode settings:
+     *
+     * ```js
+     * "cSpell.addWordTo": {
+     *   "user": false       // Do not allow adding words to user settings
+     *   "workspace": false, // Do not allow adding words to workspace settings
+     *   "folder": false     // Do not allow adding words to folder settings
+     * }
+     * ```
+     *
+     * @default {
+     *   folder: true,
+     *   workspace: true,
+     *   user: true,
+     *   cspell: true,
+     *   dictionaries: true
+     * }
+     *
+     * @sinceVersion 4.9.1
+     * @scope resource
+     */
+    allowWordsToBeAddTo?: ActionAddToTargets;
+
     /**
      * Hide the options to add words to dictionaries or settings.
      * @scope resource

@@ -13,6 +13,7 @@ import type {
 } from './configTargets.mjs';
 import { ConfigKinds, ConfigScopes, weight } from './configTargets.mjs';
 import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
+import type { ActionAddToTargets } from './cspellConfig/SpellCheckerSettings.mjs';
 import type { CSpellSettingsWithFileSource } from './documentSettings.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries, filterExistingCSpellFileConfigurations } from './documentSettings.mjs';
 
@@ -27,6 +28,7 @@ export async function calculateConfigTargets(
         const href = toFileUri(filename).toString();
         return found.has(href);
     }
+    const allowedTargets = settings.allowWordsToBeAddTo || {};
     const targets: ConfigTarget[] = [];
     const possibleSources = extractCSpellFileConfigurations(settings).filter((cfg) => !cfg.readonly);
     const sources = configFilesFound
@@ -34,14 +36,17 @@ export async function calculateConfigTargets(
         : await filterExistingCSpellFileConfigurations(possibleSources);
     const dictionaries = extractTargetDictionaries(settings);
 
-    targets.push(...workspaceConfigToTargets(workspaceConfig));
-    targets.push(...cspellToTargets(sources));
-    targets.push(...dictionariesToTargets(dictionaries));
+    targets.push(...workspaceConfigToTargets(allowedTargets, workspaceConfig));
+    targets.push(...cspellToTargets(allowedTargets, sources));
+    targets.push(...dictionariesToTargets(allowedTargets, dictionaries));
 
     return sortTargets(targets);
 }
 
-function* workspaceConfigToTargets(workspaceConfig: WorkspaceConfigForDocument): Generator<ConfigTargetVSCode> {
+function* workspaceConfigToTargets(
+    addToTargets: ActionAddToTargets,
+    workspaceConfig: WorkspaceConfigForDocument,
+): Generator<ConfigTargetVSCode> {
     function toTarget(scope: ConfigScopeVScode): ConfigTargetVSCode {
         return {
             kind: ConfigKinds.Vscode,
@@ -56,15 +61,17 @@ function* workspaceConfigToTargets(workspaceConfig: WorkspaceConfigForDocument):
         };
     }
 
-    yield toTarget(ConfigScopes.User);
+    if (addToTargets.user) {
+        yield toTarget(ConfigScopes.User);
+    }
 
     // If it is part of a workspace folder, it is either a multi-root or single root workspace
-    if (workspaceConfig.workspaceFolder) {
+    if (addToTargets.workspace && workspaceConfig.workspaceFolder) {
         yield toTarget(ConfigScopes.Workspace);
     }
 
     // If there is a workspace file, give the folder option.
-    if (workspaceConfig.workspaceFile) {
+    if (addToTargets.folder && workspaceConfig.workspaceFile) {
         yield toTarget(ConfigScopes.Folder);
     }
 }
@@ -73,7 +80,7 @@ function basename(path: string): string {
     return path.split(/[/\\]/g).slice(-1).join('');
 }
 
-function cspellToTargets(sources: CSpellSettingsWithFileSource[]): ConfigTargetCSpell[] {
+function cspellToTargets(addToTargets: ActionAddToTargets, sources: CSpellSettingsWithFileSource[]): ConfigTargetCSpell[] {
     function toTarget(cfg: CSpellSettingsWithFileSource, index: number): ConfigTargetCSpell {
         return {
             kind: ConfigKinds.Cspell,
@@ -87,10 +94,10 @@ function cspellToTargets(sources: CSpellSettingsWithFileSource[]): ConfigTargetC
             sortKey: index,
         };
     }
-    return sources.map(toTarget);
+    return addToTargets.cspell ? sources.map(toTarget) : [];
 }
 
-function dictionariesToTargets(dicts: DictionaryDefinitionCustom[]): ConfigTargetDictionary[] {
+function dictionariesToTargets(addToTargets: ActionAddToTargets, dicts: DictionaryDefinitionCustom[]): ConfigTargetDictionary[] {
     function* dictToT(d: DictionaryDefinitionCustom): Generator<ConfigTargetDictionary> {
         const scopeMask = extractDictScopeFromCustomDictionary(d);
         const base: ConfigTargetDictionary = {
@@ -105,7 +112,7 @@ function dictionariesToTargets(dicts: DictionaryDefinitionCustom[]): ConfigTarge
         if (scopeMask & scopeMaskMap.unknown) yield { ...base, scope: ConfigScopes.Unknown };
     }
 
-    return dicts.map(dictToT).flatMap((x) => [...x]);
+    return addToTargets.dictionaries ? dicts.map(dictToT).flatMap((x) => [...x]) : [];
 }
 
 type DictScopeMapKnown = Record<ConfigScope, number>;
