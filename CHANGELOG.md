@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.9.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.9.0...code-spell-checker-v4.9.1) (2026-09-09)
+
+
+### Updates and Bug Fixes
+
+* Add control for menu items and actions ([#5482](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5482)) ([9a513a1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9a513a17c8b51a5dc2556a92930e99fe802aaba7))
+* Be able to control the items on the action menu ([#5488](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5488)) ([45888a3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/45888a382f9db290278697920d91587f92089db3))
+* Use allowWordsToBeAddTo to filter Actions ([#5490](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5490)) ([6cd0af7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6cd0af7d1c9e36e82a4a2771588c486e8a11e504))
+
 ## [4.9.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.8.0...code-spell-checker-v4.9.0) (2026-09-08)
 
 
