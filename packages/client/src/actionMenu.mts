@@ -141,9 +141,16 @@ class ActionMenuBuilder {
         if (enabled && !this.#allowedMenuItems?.disableFileType) return undefined;
         if (!enabled && !this.#allowedMenuItems?.enableFileType) return undefined;
         const icon = enabled ? '$(code)' : '$(code)';
-        const action = () => {
+        const actionBase = () => {
             return updateEnabledFileTypeForResource({ [fileType]: !enabled }, uri);
         };
+        const action = enabled
+            ? actionConfirm({
+                  message: `Stop spell checking ${fileType}`,
+                  detail: `This will disable spell checking for the file type: ${fileType}.`,
+                  onOk: actionBase,
+              })
+            : actionBase;
         const item = new MenuItem(`${icon} ${enabled ? 'Disable' : 'Enable'} File Type:`, fileType, action);
         item.detail = `File Type: "${fileType}" is currently ${enabled ? 'enabled' : 'disabled'}.`;
         item.buttons = [
@@ -174,9 +181,15 @@ class ActionMenuBuilder {
 
         const item = new MenuItem(`$(code) ${schemeAllowed ? 'Exclude' : 'Allow'} Scheme:`, uri.scheme);
         item.detail = `Scheme: "${uri.scheme}" is currently ${schemeAllowed ? 'allowed' : 'excluded'}.`;
-        item.action = () => {
-            return updateEnabledSchemesResource({ [uri.scheme]: !schemeAllowed }, uri);
-        };
+        const actionBase = () => updateEnabledSchemesResource({ [uri.scheme]: !schemeAllowed }, uri);
+        item.action = schemeAllowed
+            ? actionConfirm({
+                  message: `Stop Spell Checking Scheme: \`${uri.scheme}\``,
+                  detail: `This will disable spell checking for the files with schema: \`${uri.scheme}\`.`,
+                  onOk: actionBase,
+              })
+            : actionBase;
+
         item.buttons = [
             new CommandButtonItem(new vscode.ThemeIcon('gear'), {
                 title: 'Edit Enable Scheme in Settings',
@@ -384,4 +397,31 @@ async function runCommand(command: vscode.Command) {
 
 function commandFn(command: vscode.Command) {
     return () => runCommand(command);
+}
+
+interface ConfirmationDialogOptions {
+    message: string;
+    detail?: string | undefined;
+    onOk: Action;
+    onCancel?: Action;
+}
+
+function actionConfirm(options: ConfirmationDialogOptions): Action {
+    return () => showConfirmDialog(options);
+}
+
+async function showConfirmDialog(options: ConfirmationDialogOptions) {
+    const msgOptions: vscode.MessageOptions = {
+        modal: true,
+    };
+    if (options.detail) {
+        msgOptions.detail = options.detail;
+    }
+    const selection = await vscode.window.showInformationMessage(options.message, msgOptions, 'OK');
+
+    if (selection === 'OK') {
+        await options.onOk();
+    } else {
+        await options.onCancel?.();
+    }
 }
