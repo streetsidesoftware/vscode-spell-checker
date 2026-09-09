@@ -28,6 +28,7 @@ const sidebars: SidebarsConfig = {
                 'configuration/files-folders-and-workspaces',
                 'configuration/languages-and-dictionaries',
                 'configuration/reporting-and-display',
+                'configuration/menus-and-actions',
                 'configuration/appearance',
                 'configuration/cspell',
                 'configuration/performance',

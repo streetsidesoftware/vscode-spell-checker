@@ -1,7 +1,11 @@
 /* eslint-disable no-irregular-whitespace */
 // Export the cspell settings to the client.
 
-import type { LanguageSetting as CSpellLanguageSetting, OverrideSettings as CSpellOverrideSettings } from '@cspell/cspell-types';
+import type {
+    CSpellUserSettings as CSpellLibSettings,
+    LanguageSetting as CSpellLanguageSetting,
+    OverrideSettings as CSpellOverrideSettings,
+} from '@cspell/cspell-types';
 
 import type { AppearanceSettings } from './AppearanceSettings.mjs';
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties.mjs';
@@ -173,7 +177,7 @@ type _VSConfigRoot = Pick<SpellCheckerSettingsVSCodeBase, 'enabled'>;
 type VSConfigLanguageAndDictionaries = PrefixWithCspell<_VSConfigLanguageAndDictionaries>;
 type _VSConfigLanguageAndDictionaries = Pick<
     SpellCheckerSettingsVSCodeBase,
-    // | 'addWordsTo'
+    | 'allowWordsToBeAddTo'
     | 'caseSensitive'
     | 'customDictionaries'
     | 'dictionaries'
@@ -201,16 +205,12 @@ type _VSConfigReporting = Pick<
     | 'autoFormatConfigFile'
     | 'diagnosticLevel'
     | 'diagnosticLevelFlaggedWords'
-    | 'hideAddToDictionaryCodeActions'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
     | 'minWordLength'
     | 'numSuggestions'
     // | 'reportUnknownWords' // to ba added when it has been finalized.
     | 'showAutocompleteDirectiveSuggestions'
-    | 'showCommandsInEditorContextMenu'
-    | 'showSuggestionsLinkInEditorContextMenu'
-    | 'suggestionMenuType'
     | 'suggestionNumChanges'
     | 'unknownWords'
     | 'validateDirectives'
@@ -234,23 +234,44 @@ type _VSConfigPerf = Pick<
 >;
 
 /**
+ * @title Menus and Actions
+ * @description Settings that control the menu items and actions available in the spell checker.
+ * @order 7
+ */
+type VSConfigMenusAndActions = PrefixWithCspell<_VSConfigMenusAndActions>;
+type _VSConfigMenusAndActions = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    | 'hideAddToDictionaryCodeActions'
+    | 'menuItemsOnEditorContextMenu'
+    | 'menuItemsOnSpellingContextMenu'
+    | 'showCommandsInEditorContextMenu'
+    | 'showSuggestionsLinkInEditorContextMenu'
+    | 'suggestionMenuType'
+>;
+
+type ExtensionConfigKeys =
+    | keyof _VSConfigAdvanced
+    | keyof _VSConfigAppearance
+    | keyof _VSConfigExperimental
+    | keyof _VSConfigFilesAndFolders
+    | keyof _VSConfigLanguageAndDictionaries
+    | keyof _VSConfigLegacy
+    | keyof _VSConfigMenusAndActions
+    | keyof _VSConfigPerf
+    | keyof _VSConfigReporting
+    | keyof _VSConfigRoot;
+
+type KeysCSpellLibSettings = keyof CSpellLibSettings;
+
+type UnassignedConfigKeysGoingToCSpell = Exclude<keyof SpellCheckerSettingsVSCodeBase, ExtensionConfigKeys | KeysCSpellLibSettings>;
+
+/**
  * @title CSpell
  * @description Settings related to CSpell Command Line Tool.
  * @order 5
  */
 type VSConfigCSpell = PrefixWithCspell<_VSConfigCSpell>;
-type _VSConfigCSpell = Omit<
-    SpellCheckerSettingsVSCodeBase,
-    | keyof _VSConfigAdvanced
-    | keyof _VSConfigAppearance
-    | keyof _VSConfigExperimental
-    | keyof _VSConfigLanguageAndDictionaries
-    | keyof _VSConfigLegacy
-    | keyof _VSConfigPerf
-    | keyof _VSConfigReporting
-    | keyof _VSConfigRoot
-    | keyof _VSConfigFilesAndFolders
->;
+type _VSConfigCSpell = Omit<SpellCheckerSettingsVSCodeBase, ExtensionConfigKeys>;
 
 /**
  * @title Files, Folders, and Workspaces
@@ -334,14 +355,21 @@ type _VSConfigExperimental = Pick<
 >;
 
 export type SpellCheckerSettingsVSCode = [
-    VSConfigRoot,
     VSConfigAdvanced,
+    VSConfigAppearance,
     VSConfigCSpell,
     VSConfigExperimental,
     VSConfigFilesAndFolders,
     VSConfigLanguageAndDictionaries,
-    VSConfigAppearance,
     VSConfigLegacy,
+    VSConfigMenusAndActions,
     VSConfigPerf,
     VSConfigReporting,
+    VSConfigRoot,
 ];
+
+/**
+ * This is a compile-time check to ensure that there are no unassigned
+ * configuration keys going to CSpell.
+ */
+export const unusedConfig: unknown = {} as const satisfies Record<UnassignedConfigKeysGoingToCSpell, boolean>;
