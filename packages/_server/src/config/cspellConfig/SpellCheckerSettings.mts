@@ -371,6 +371,7 @@ export interface MenusAndActions {
     /**
      * Control which menu items are shown on the Editor Context Menu.
      *
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   suggestSpellingCorrections: true,
@@ -383,6 +384,7 @@ export interface MenusAndActions {
 
     /**
      * Control which menu items are shown on the Spelling Context Menu.
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   suggestSpellingCorrections: true,
@@ -402,6 +404,7 @@ export interface MenusAndActions {
 
     /**
      * Control which menu items are shown on the Spelling Config Menu.
+     * @scope resource
      * @sinceVersion 4.9.1
      * @default {
      *   createCSpellConfig: true,
@@ -411,15 +414,37 @@ export interface MenusAndActions {
     menuItemsOnCSpellConfigMenu?: EnabledItemsOnCSpellConfigMenu;
 
     /**
+     * Control which menu items are shown on the Spell Checker Action Menu.
+     * @scope resource
+     * @sinceVersion 4.9.1
+     * @default {
+     *   allowDocumentScheme: true,
+     *   createCSpellConfig: true,
+     *   disableFileType: true,
+     *   editKeyboardShortcuts: true,
+     *   editSpellCheckerSettings: true,
+     *   enableFileType: true,
+     *   excludeDocumentScheme: true,
+     *   hideIssues: true,
+     *   openConfigFiles: true,
+     *   openFileInfoView: true,
+     *   openIssuesPanel: true,
+     *   openSpellCheckerConsole: true,
+     *   showIssues: true
+     * }
+     */
+    menuItemsOnSpellCheckerActionMenu?: EnabledItemsOnActionMenu;
+
+    /**
      * Show Spell Checker actions in Editor Context Menu
-     * @scope application
+     * @scope resource
      * @default true
      */
     showCommandsInEditorContextMenu?: boolean;
 
     /**
      * Show Spelling Suggestions link in the top level context menu.
-     * @scope application
+     * @scope resource
      * @default true
      */
     showSuggestionsLinkInEditorContextMenu?: boolean;
@@ -628,6 +653,22 @@ export interface EnabledItemsOnCSpellConfigMenu {
     createCSpellConfig?: boolean;
     /** Enable Menu Item: Create a Custom Dictionary File */
     createCustomDictionary?: boolean;
+}
+
+export interface EnabledItemsOnActionMenu {
+    allowDocumentScheme?: boolean;
+    createCSpellConfig?: boolean;
+    disableFileType?: boolean;
+    editKeyboardShortcuts?: boolean;
+    editSpellCheckerSettings?: boolean;
+    enableFileType?: boolean;
+    excludeDocumentScheme?: boolean;
+    hideIssues?: boolean;
+    openConfigFiles?: boolean;
+    openFileInfoView?: boolean;
+    openIssuesPanel?: boolean;
+    openSpellCheckerConsole?: boolean;
+    showIssues?: boolean;
 }
 
 export type UnknownWordsReportingLevel = 'all' | 'simple' | 'typos' | 'flagged';

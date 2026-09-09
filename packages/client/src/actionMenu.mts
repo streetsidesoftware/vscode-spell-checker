@@ -1,10 +1,13 @@
 import { isDefined } from '@internal/common-utils';
+import type { CSpellUserAndExtensionSettings } from 'code-spell-checker-server/lib';
 import { ConfigFields } from 'code-spell-checker-server/lib';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, QuickPickItem } from 'vscode';
 import vscode from 'vscode';
 
+import type { GetConfigurationForDocumentResult } from './client/index.mts';
 import { generateOpenSettingsCommand, knownCommands } from './commands.mjs';
+import { extensionId } from './constants.ts';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
 import { handleErrors, logErrors } from './util/errors.js';
@@ -27,7 +30,7 @@ type Action = () => Promise<void>;
 interface ActionMenuItem extends QuickPickItem {
     /**
      * This was conflicting with QuickPickItem we can add it back later.
-     * See: https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.quickPickItemResource.d.ts
+     * See: https://github.com/microsoft/vscode/blob/322d4efe0fefe31adff4c7deddda06035ba2d8d1/src/vscode-dts/vscode.d.ts#L1950
      *
      * Related to: https://github.com/microsoft/vscode/pull/271598
      */
@@ -37,39 +40,180 @@ interface ActionMenuItem extends QuickPickItem {
 
 async function actionMenu(options: ActionsMenuOptions) {
     const document = vscode.window.activeTextEditor?.document;
-    const isEnabledForDoc = await handleErrors(
-        document ? getClient().getConfigurationForDocument(document, {}) : Promise.resolve(undefined),
-        'Language Status',
-    );
+    return ActionMenuBuilder.actionMenu(document, options);
+}
 
-    const items: QuickPickItem[] = [
-        // menuItem('Item 1', 'Description for Item 1'),
-        // menuItem('Item 2', 'Description for Item 2'),
-        itemDocFileType(document?.uri, isEnabledForDoc?.languageId, isEnabledForDoc?.languageIdEnabled),
-        itemDocScheme(document?.uri, isEnabledForDoc?.schemeIsAllowed),
-        ...itemsConfigFiles(isEnabledForDoc?.configFiles.map((uri) => vscode.Uri.parse(uri))),
-        { label: '', kind: vscode.QuickPickItemKind.Separator },
-        itemIssuesShowHide(options),
-        // itemDictionaries(),
-        itemCommand({ title: '$(file) Show File Info...', command: knownCommands['cSpell.openFileInfoView'] }),
-        itemCommand({
-            title: '$(console) Open Spell Checker REPL Console.',
-            command: knownCommands['cSpell.createCSpellTerminal'],
-        }),
-        itemCommand({ title: '$(issues) Open Spelling Issues Panel.', command: 'cSpell.openIssuesPanel' }),
-        itemSeparator(),
-        itemCommand({
-            title: '$(keyboard) Edit Keyboard Shortcuts...',
-            command: 'workbench.action.openGlobalKeybindings',
-            arguments: ['Spell:'],
-        }),
-        itemCommand({
-            title: '$(gear) Edit Settings...',
-            ...generateOpenSettingsCommand(),
-        }),
-    ].filter(isDefined);
+type AllowedMenuItems = Exclude<CSpellUserAndExtensionSettings['menuItemsOnSpellCheckerActionMenu'], undefined>;
 
-    return logErrors(quickPickMenu({ items, title: 'Spell Checker Actions Menu' }), 'Actions Menu');
+class ActionMenuBuilder {
+    #document: vscode.TextDocument | undefined;
+    #options: ActionsMenuOptions;
+    #docConfig: GetConfigurationForDocumentResult<never> | undefined;
+    #allowedMenuItems: AllowedMenuItems;
+
+    constructor(
+        document: vscode.TextDocument | undefined,
+        options: ActionsMenuOptions,
+        docConfig: GetConfigurationForDocumentResult<never> | undefined,
+    ) {
+        this.#document = document;
+        this.#options = options;
+        this.#docConfig = docConfig;
+        this.#allowedMenuItems =
+            vscode.workspace.getConfiguration(extensionId, document?.uri).get(ConfigFields.menuItemsOnSpellCheckerActionMenu) ?? {};
+    }
+
+    build(): Promise<void> {
+        const document = this.#document;
+        const options = this.#options;
+        const docConfig = this.#docConfig;
+
+        const items: QuickPickItem[] = [
+            this.#allowedItemCommand(this.#allowedMenuItems?.openFileInfoView, {
+                title: '$(file) Show File Info...',
+                command: knownCommands['cSpell.openFileInfoView'],
+            }),
+            this.#itemDocFileType(document?.uri, docConfig?.languageId, docConfig?.languageIdEnabled),
+            this.#itemDocScheme(document?.uri, docConfig?.schemeIsAllowed),
+            ...this.#itemsConfigFiles(docConfig?.configFiles.map((uri) => vscode.Uri.parse(uri))),
+            itemSeparator(),
+            this.#itemIssuesShowHide(options),
+            // itemDictionaries(),
+            this.#allowedItemCommand(this.#allowedMenuItems.openSpellCheckerConsole, {
+                title: '$(console) Open Spell Checker REPL Console.',
+                command: knownCommands['cSpell.createCSpellTerminal'],
+            }),
+            this.#allowedItemCommand(this.#allowedMenuItems.openIssuesPanel, {
+                title: '$(issues) Open Spelling Issues Panel.',
+                command: 'cSpell.openIssuesPanel',
+            }),
+            itemSeparator(),
+            this.#allowedItemCommand(this.#allowedMenuItems.editKeyboardShortcuts, {
+                title: '$(keyboard) Edit Keyboard Shortcuts...',
+                command: 'workbench.action.openGlobalKeybindings',
+                arguments: ['Spell:'],
+            }),
+            this.#allowedItemCommand(this.#allowedMenuItems.editSpellCheckerSettings, {
+                title: '$(gear) Edit Settings...',
+                ...generateOpenSettingsCommand(),
+            }),
+        ].filter(isDefined);
+
+        if (items.length <= 2) {
+            items.length = 0;
+            items.push(this.#itemNoActionsAvailable());
+        }
+
+        return logErrors(quickPickMenu({ items, title: 'Spell Checker Actions Menu' }), 'Actions Menu');
+    }
+
+    static async actionMenu(document: vscode.TextDocument | undefined, options: ActionsMenuOptions): Promise<void> {
+        const isEnabledForDoc = await handleErrors(
+            document ? getClient().getConfigurationForDocument(document, {}) : Promise.resolve(undefined),
+            'actionMenu',
+        );
+
+        return new ActionMenuBuilder(document, options, isEnabledForDoc).build();
+    }
+
+    #itemCommand(command: vscode.Command, description?: string) {
+        return new CommandMenuItem(command, description);
+    }
+
+    #allowedItemCommand(allowed: boolean | undefined, command: vscode.Command, description?: string): CommandMenuItem | undefined {
+        return allowed ? this.#itemCommand(command, description) : undefined;
+    }
+
+    #itemIssuesShowHide(options: Pick<ActionsMenuOptions, 'areIssuesVisible'>) {
+        const visible = options.areIssuesVisible();
+        if (visible && !this.#allowedMenuItems.hideIssues) return undefined;
+        if (!visible && !this.#allowedMenuItems.showIssues) return undefined;
+        return visible
+            ? this.#allowedItemCommand(this.#allowedMenuItems.hideIssues, {
+                  title: '$(eye-closed) Hide Spelling Issues',
+                  command: 'cSpell.hide',
+              })
+            : this.#allowedItemCommand(this.#allowedMenuItems.showIssues, { title: '$(eye) Show Spelling Issues', command: 'cSpell.show' });
+    }
+
+    #itemDocFileType(uri: vscode.Uri | undefined, fileType: string | undefined, enabled: boolean | undefined) {
+        if (!fileType || enabled === undefined) return undefined;
+        if (enabled && !this.#allowedMenuItems?.disableFileType) return undefined;
+        if (!enabled && !this.#allowedMenuItems?.enableFileType) return undefined;
+        const icon = enabled ? '$(code)' : '$(code)';
+        const actionBase = () => {
+            return updateEnabledFileTypeForResource({ [fileType]: !enabled }, uri);
+        };
+        const action = enabled
+            ? actionConfirm({
+                  message: `Stop spell checking ${fileType}`,
+                  detail: `This will disable spell checking for the file type: ${fileType}.`,
+                  onOk: actionBase,
+              })
+            : actionBase;
+        const item = new MenuItem(`${icon} ${enabled ? 'Disable' : 'Enable'} File Type:`, fileType, action);
+        item.detail = `File Type: "${fileType}" is currently ${enabled ? 'enabled' : 'disabled'}.`;
+        item.buttons = [
+            new CommandButtonItem(new vscode.ThemeIcon('gear'), {
+                title: 'Edit Enable File Type in Settings',
+                ...generateOpenSettingsCommand(ConfigFields.enabledFileTypes),
+            }),
+        ];
+        return item;
+    }
+
+    #itemNoActionsAvailable() {
+        const item = new MenuItem('$(warning) No Actions Available');
+        item.detail = 'All menu items are currently disabled.';
+        item.buttons = [
+            new CommandButtonItem(new vscode.ThemeIcon('gear'), {
+                title: 'Edit Enable File Type in Settings',
+                ...generateOpenSettingsCommand(ConfigFields.menuItemsOnSpellCheckerActionMenu),
+            }),
+        ];
+        return item;
+    }
+
+    #itemDocScheme(uri: vscode.Uri | undefined, schemeAllowed: boolean | undefined) {
+        if (!uri) return undefined;
+        if (schemeAllowed && !this.#allowedMenuItems.excludeDocumentScheme) return undefined;
+        if (!schemeAllowed && !this.#allowedMenuItems.allowDocumentScheme) return undefined;
+
+        const item = new MenuItem(`$(code) ${schemeAllowed ? 'Exclude' : 'Allow'} Scheme:`, uri.scheme);
+        item.detail = `Scheme: "${uri.scheme}" is currently ${schemeAllowed ? 'allowed' : 'excluded'}.`;
+        const actionBase = () => updateEnabledSchemesResource({ [uri.scheme]: !schemeAllowed }, uri);
+        item.action = schemeAllowed
+            ? actionConfirm({
+                  message: `Stop Spell Checking Scheme: \`${uri.scheme}\``,
+                  detail: `This will disable spell checking for the files with schema: \`${uri.scheme}\`.`,
+                  onOk: actionBase,
+              })
+            : actionBase;
+
+        item.buttons = [
+            new CommandButtonItem(new vscode.ThemeIcon('gear'), {
+                title: 'Edit Enable Scheme in Settings',
+                ...generateOpenSettingsCommand(ConfigFields.enabledSchemes),
+            }),
+        ];
+        return item;
+    }
+
+    #itemsConfigFiles(configUris?: vscode.Uri[]) {
+        if (!this.#allowedMenuItems.openConfigFiles) return [];
+        if (!configUris?.length)
+            return [new CommandMenuItem({ title: '$(new-file) Create Config...', command: knownCommands['cSpell.createCSpellConfig'] })];
+        return configUris.map((uri) => {
+            const item = new CommandMenuItem(
+                { title: 'Open Config File:', command: 'vscode.open', arguments: [uri] },
+                vscode.workspace.asRelativePath(uri),
+            );
+            item.iconPath = vscode.ThemeIcon.File;
+            item.detail = vscode.workspace.asRelativePath(uri, true);
+            item._resourceUri = uri;
+            return item;
+        });
+    }
 }
 
 type QuickPick = vscode.QuickPick<QuickPickItem>;
@@ -232,68 +376,8 @@ class CommandMenuItem extends MenuItem {
     }
 }
 
-function itemCommand(command: vscode.Command, description?: string) {
-    return new CommandMenuItem(command, description);
-}
-
 function itemSeparator(): QuickPickItem {
     return { label: '', kind: vscode.QuickPickItemKind.Separator };
-}
-
-function itemIssuesShowHide(options: Pick<ActionsMenuOptions, 'areIssuesVisible'>) {
-    const visible = options.areIssuesVisible();
-    return visible
-        ? itemCommand({ title: '$(eye-closed) Hide Spelling Issues', command: 'cSpell.hide' })
-        : itemCommand({ title: '$(eye) Show Spelling Issues', command: 'cSpell.show' });
-}
-
-function itemDocFileType(uri: vscode.Uri | undefined, fileType: string | undefined, enabled: boolean | undefined) {
-    if (!fileType || enabled === undefined) return undefined;
-    const icon = enabled ? '$(code)' : '$(code)';
-    const action = () => {
-        return updateEnabledFileTypeForResource({ [fileType]: !enabled }, uri);
-    };
-    const item = new MenuItem(`${icon} ${enabled ? 'Disable' : 'Enable'} File Type:`, fileType, action);
-    item.detail = `File Type: "${fileType}" is currently ${enabled ? 'enabled' : 'disabled'}.`;
-    item.buttons = [
-        new CommandButtonItem(new vscode.ThemeIcon('gear'), {
-            title: 'Edit Enable File Type in Settings',
-            ...generateOpenSettingsCommand(ConfigFields.enabledFileTypes),
-        }),
-    ];
-    return item;
-}
-
-function itemDocScheme(uri: vscode.Uri | undefined, schemeAllowed: boolean | undefined) {
-    if (!uri) return undefined;
-
-    const item = new MenuItem(`$(code) ${schemeAllowed ? 'Exclude' : 'Allow'} Scheme:`, uri.scheme);
-    item.detail = `Scheme: "${uri.scheme}" is currently ${schemeAllowed ? 'allowed' : 'excluded'}.`;
-    item.action = () => {
-        return updateEnabledSchemesResource({ [uri.scheme]: !schemeAllowed }, uri);
-    };
-    item.buttons = [
-        new CommandButtonItem(new vscode.ThemeIcon('gear'), {
-            title: 'Edit Enable Scheme in Settings',
-            ...generateOpenSettingsCommand(ConfigFields.enabledSchemes),
-        }),
-    ];
-    return item;
-}
-
-function itemsConfigFiles(configUris?: vscode.Uri[]) {
-    if (!configUris?.length)
-        return [new CommandMenuItem({ title: '$(new-file) Create Config...', command: knownCommands['cSpell.createCSpellConfig'] })];
-    return configUris.map((uri) => {
-        const item = new CommandMenuItem(
-            { title: 'Open Config File:', command: 'vscode.open', arguments: [uri] },
-            vscode.workspace.asRelativePath(uri),
-        );
-        item.iconPath = vscode.ThemeIcon.File;
-        item.detail = vscode.workspace.asRelativePath(uri, true);
-        item._resourceUri = uri;
-        return item;
-    });
 }
 
 // function itemDictionaries() {
@@ -313,4 +397,31 @@ async function runCommand(command: vscode.Command) {
 
 function commandFn(command: vscode.Command) {
     return () => runCommand(command);
+}
+
+interface ConfirmationDialogOptions {
+    message: string;
+    detail?: string | undefined;
+    onOk: Action;
+    onCancel?: Action;
+}
+
+function actionConfirm(options: ConfirmationDialogOptions): Action {
+    return () => showConfirmDialog(options);
+}
+
+async function showConfirmDialog(options: ConfirmationDialogOptions) {
+    const msgOptions: vscode.MessageOptions = {
+        modal: true,
+    };
+    if (options.detail) {
+        msgOptions.detail = options.detail;
+    }
+    const selection = await vscode.window.showInformationMessage(options.message, msgOptions, 'OK');
+
+    if (selection === 'OK') {
+        await options.onOk();
+    } else {
+        await options.onCancel?.();
+    }
 }
