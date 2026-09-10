@@ -18,14 +18,24 @@
 }
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-    --ifm-color-primary: #25c2a0;
-    --ifm-color-primary-dark: #21af90;
-    --ifm-color-primary-darker: #1fa588;
-    --ifm-color-primary-darkest: #1a8870;
-    --ifm-color-primary-light: #29d5b0;
-    --ifm-color-primary-lighter: #32d8b4;
-    --ifm-color-primary-lightest: #4fddbf;
-    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    /* Lighter green: the light-mode #2e8555 fails contrast on dark surfaces (link text 3.1:1,
+       code-in-link 2.8:1). #4caf7d matches the landing page hero title and measures 6.3:1+. */
+    --ifm-color-primary: #4caf7d;
+    --ifm-color-primary-dark: #3fa06e;
+    --ifm-color-primary-darker: #3b9768;
+    --ifm-color-primary-darkest: #317c56;
+    --ifm-color-primary-light: #5fbb8b;
+    --ifm-color-primary-lighter: #6cc194;
+    --ifm-color-primary-lightest: #8ad0ab;
+
+    /* Hover must go lighter in dark mode, not darker. */
+    --ifm-link-hover-color: var(--ifm-color-primary-lighter);
+
+    /* Recess inline code instead of lifting it. Raises code-in-link
+       contrast from 2.8:1 to 6.8:1 and reads closer to an editor. */
+    --ifm-code-background: rgb(0 0 0 / 30%);
+
+    --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 30%);
 }
 
 /* .navbar__brand, .navbar__link, .navbar, {
@@ -75,4 +85,17 @@ dt > :last-child {
 
 dd > :last-child {
     margin-bottom: 0;
+}
+
+/* Inline code inside a link takes the link colour. The recessed code
+   background from the palette block carries the contrast; no border —
+   the generated configuration tables have a code link in every row, and
+   an outlined chip per row makes those pages unreadably noisy. */
+a code {
+    color: inherit;
+    border: none;
+}
+
+a:hover code {
+    color: inherit;
 }

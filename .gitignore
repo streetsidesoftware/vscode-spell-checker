@@ -54,6 +54,7 @@ tools/*/dist/
 tools/*/temp/
 website/build
 /graphify-out
+/design_handoff*
 
 !**/server/.vscode
 !**/client/.vscode

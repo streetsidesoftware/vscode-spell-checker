@@ -381,3 +381,19 @@
         font-size: 1.0625rem;
     }
 }
+
+/* The rust and blue kickers are outside the Infima palette and need
+   lighter values on dark surfaces. */
+[data-theme='dark'] .kickerRust {
+    color: #e2705a; /* 5.5:1 */
+}
+
+[data-theme='dark'] .kickerBlue {
+    color: #6ba5ff; /* 6.9:1 */
+}
+
+/* The squiggle is decoration, not text, but the darker red disappears
+   against the dark sample panel. */
+[data-theme='dark'] .bad {
+    text-decoration-color: #e2705a;
+}
