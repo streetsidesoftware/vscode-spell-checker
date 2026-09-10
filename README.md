@@ -425,20 +425,20 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
     // The minimum length of a word before checking it against a dictionary.
     "cSpell.minWordLength": 4,
 
-    // Specify file types to spell check.
-    "cSpell.enabledLanguageIds": [
-        "csharp",
-        "go",
-        "javascript",
-        "javascriptreact",
-        "markdown",
-        "php",
-        "plaintext",
-        "typescript",
-        "typescriptreact",
-        "yaml",
-        "sql"
-    ],
+    // Enable / disable checking file types (languageIds).
+    "cSpell.enabledFileTypes": {
+        "csharp": true,
+        "go": true,
+        "javascript": true,
+        "javascriptreact": true,
+        "markdown": true,
+        "php": true,
+        "plaintext": true,
+        "typescript": true,
+        "typescriptreact": true,
+        "yaml": true,
+        "sql": true
+    },
 
     // Enable / Disable the spell checker.
     "cSpell.enabled": true,
