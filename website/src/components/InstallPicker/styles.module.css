@@ -1,0 +1,117 @@
+.panel {
+    background: #21252b;
+    border: 1px solid #3a4149;
+    border-radius: 8px;
+    padding: 18px;
+    max-width: 520px;
+}
+
+.label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #9aa4b2;
+    margin: 0 0 0.75rem;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 0.875rem;
+}
+
+.tab {
+    background: transparent;
+    color: #cfd6dd;
+    border: 1px solid #4a525b;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    min-height: 32px;
+    cursor: pointer;
+}
+
+.tab:hover {
+    background: #2e3238;
+}
+
+.tabActive,
+.tabActive:hover {
+    background: var(--ifm-color-primary);
+    border-color: var(--ifm-color-primary);
+    color: #fff;
+}
+
+.commandRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #16191d;
+    border: 1px solid #3a4149;
+    border-radius: 6px;
+    padding: 10px 12px;
+}
+
+.command {
+    display: flex;
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #cfd6dd;
+    font-size: 0.8125rem;
+}
+
+.prompt {
+    color: #6b7681;
+    user-select: none;
+}
+
+.copy {
+    flex: none;
+    background: #2e3238;
+    color: #cfd6dd;
+    border: 1px solid #4a525b;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.copy:hover {
+    background: #3a4046;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 1rem;
+}
+
+.install {
+    background: var(--ifm-color-primary);
+    color: #fff;
+    font-weight: 600;
+    padding: 11px 20px;
+    border-radius: 6px;
+}
+
+.install:hover {
+    background: var(--ifm-color-primary-dark);
+    color: #fff;
+    text-decoration: none;
+}
+
+.hint {
+    font-size: 0.875rem;
+    color: #9aa4b2;
+}

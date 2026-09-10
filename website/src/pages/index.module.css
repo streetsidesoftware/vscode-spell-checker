@@ -1,23 +1,399 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+/* Landing page. Dark surfaces reuse the existing --ifm-hero-background-color (#282c34). */
 
-.heroBanner {
-    padding: 4rem 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+.hero {
+    background: var(--ifm-hero-background-color);
+    color: #e3e3e3;
+    padding: 4.5rem 1.5rem 5rem;
 }
 
-@media screen and (max-width: 996px) {
-    .heroBanner {
-        padding: 2rem;
+.heroInner {
+    max-width: var(--ifm-container-width-xl);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 3.5rem;
+    align-items: center;
+}
+
+.eyebrow {
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9aa4b2;
+    font-weight: 600;
+    margin: 0 0 1.125rem;
+}
+
+.heroTitle {
+    font-size: 2.875rem;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.25rem;
+    color: var(--ifm-color-primary-lightest);
+}
+
+.heroLead {
+    font-size: 1.1875rem;
+    max-width: 34em;
+    margin: 0 0 0.875rem;
+}
+
+.heroLead code,
+.heroNote code {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: inherit;
+}
+
+.heroNote {
+    color: #9aa4b2;
+    margin: 0 0 1.875rem;
+}
+
+.heroFigure {
+    margin: 0;
+}
+
+.heroFigure img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.heroFigure > div + img {
+    border-radius: 0 0 10px 10px;
+}
+
+.heroFigure figcaption {
+    font-family: var(--ifm-font-family-monospace);
+    font-size: 0.8125rem;
+    color: #9aa4b2;
+    margin-top: 0.625rem;
+}
+
+.windowChrome {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    background: #21252b;
+    border: 1px solid #3a4149;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.windowChrome span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4a525b;
+}
+
+/* Sections */
+
+.section {
+    max-width: var(--ifm-container-width-xl);
+    margin: 0 auto;
+    padding: 4rem 1.5rem 0;
+}
+
+.sectionEyebrow {
+    font-size: 0.9375rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ifm-color-emphasis-700);
+    font-weight: 700;
+    margin: 0 0 0.375rem;
+}
+
+.sectionLead {
+    font-size: 1.25rem;
+    max-width: 36em;
+    margin: 0 0 2rem;
+}
+
+/* Doors */
+
+.doorGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.door {
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 10px;
+    padding: 1.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.door:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 6px 20px rgb(0 0 0 / 7%);
+}
+
+.door h3 {
+    margin: 0;
+    font-size: 1.375rem;
+    line-height: 1.25;
+}
+
+.kicker {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.kickerGreen {
+    color: var(--ifm-color-primary);
+}
+.kickerRust {
+    color: #a62c17;
+}
+.kickerBlue {
+    color: #3578e5;
+}
+
+.doorBody,
+.doorList {
+    margin: 0;
+    color: var(--ifm-color-emphasis-800);
+    font-size: 0.9375rem;
+}
+
+.doorList {
+    padding-left: 1.125rem;
+    display: grid;
+    gap: 0.25rem;
+}
+
+.doorLink {
+    margin-top: auto;
+    padding-top: 0.875rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+/* Code sample */
+
+.sample {
+    font-family: var(--ifm-font-family-monospace);
+    font-size: 0.84375rem;
+    line-height: 1.9;
+    background: var(--ifm-color-emphasis-100);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 6px;
+    padding: 0.75rem 0.875rem;
+}
+
+.bad {
+    text-decoration: underline wavy #a62c17;
+    text-underline-offset: 3px;
+}
+.kw {
+    color: #a626a4;
+}
+.cmt {
+    color: #6b7681;
+}
+.attr {
+    color: #986801;
+}
+.val {
+    color: #50a14f;
+}
+
+/* Tasks */
+
+.taskGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.task {
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.125rem 1.25rem;
+    display: block;
+    color: var(--ifm-font-color-base);
+}
+
+.task:hover {
+    background: var(--ifm-color-emphasis-100);
+    border-color: var(--ifm-color-emphasis-400);
+    color: var(--ifm-font-color-base);
+    text-decoration: none;
+}
+
+.taskTitle {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.taskBody {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--ifm-color-emphasis-700);
+}
+
+/* Facts */
+
+.facts {
+    background: var(--ifm-color-emphasis-100);
+    border-top: 1px solid var(--ifm-color-emphasis-200);
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    margin-top: 4rem;
+}
+
+.factGrid {
+    max-width: var(--ifm-container-width-xl);
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+}
+
+.factStat {
+    font-size: 1.875rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ifm-color-primary);
+    margin: 0;
+}
+
+.factBody {
+    margin: 0.375rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--ifm-color-emphasis-800);
+}
+
+/* In the editor */
+
+.figureGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+}
+
+.figure {
+    margin: 0;
+}
+
+.figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+}
+
+.figure figcaption {
+    font-size: 0.875rem;
+    color: var(--ifm-color-emphasis-700);
+    margin-top: 0.625rem;
+}
+
+/* Closing */
+
+.closing {
+    background: var(--ifm-hero-background-color);
+    color: #e3e3e3;
+    margin-top: 4rem;
+}
+
+.closingInner {
+    max-width: var(--ifm-container-width-xl);
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.75rem;
+}
+
+.closingInner h2 {
+    margin: 0 0 0.5rem;
+    color: #fff;
+}
+
+.closingInner p {
+    margin: 0;
+    color: #9aa4b2;
+}
+
+.closingActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+}
+
+.buttonPrimary,
+.buttonSecondary {
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 6px;
+}
+
+.buttonPrimary {
+    background: var(--ifm-color-primary);
+    color: #fff;
+}
+
+.buttonPrimary:hover {
+    background: var(--ifm-color-primary-dark);
+    color: #fff;
+    text-decoration: none;
+}
+
+.buttonSecondary {
+    border: 1px solid #4a525b;
+    color: #e3e3e3;
+}
+
+.buttonSecondary:hover {
+    background: #333842;
+    color: #fff;
+    text-decoration: none;
+}
+
+@media (max-width: 996px) {
+    .hero {
+        padding: 3rem 1.5rem;
+    }
+
+    .heroInner {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.5rem;
+    }
+
+    .heroTitle {
+        font-size: 2.25rem;
+    }
+
+    .heroLead {
+        font-size: 1.0625rem;
     }
 }
 
-.buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* The rust and blue kickers are outside the Infima palette and need
+   lighter values on dark surfaces. */
+[data-theme='dark'] .kickerRust {
+    color: #e2705a; /* 5.5:1 */
+}
+
+[data-theme='dark'] .kickerBlue {
+    color: #6ba5ff; /* 6.9:1 */
+}
+
+/* The squiggle is decoration, not text, but the darker red disappears
+   against the dark sample panel. */
+[data-theme='dark'] .bad {
+    text-decoration-color: #e2705a;
 }

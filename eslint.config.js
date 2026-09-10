@@ -35,6 +35,7 @@ export default defineConfig(
             '**/scripts/ts-json-schema-generator.cjs',
             '**/temp/**',
             '**/webpack*.js',
+            'design_handoff*',
             'graphify-out',
             'package-lock.json',
             'packages/*/dist/**',

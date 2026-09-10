@@ -18,6 +18,18 @@ const sidebars: SidebarsConfig = {
     docs: [
         {
             type: 'category',
+            label: 'Getting Started',
+            link: { type: 'doc', id: 'getting-started/getting-started' },
+            items: [
+                'getting-started/install',
+                'getting-started/making-corrections',
+                'getting-started/adding-words',
+                'getting-started/choosing-a-language',
+                'getting-started/how-it-works',
+            ],
+        },
+        {
+            type: 'category',
             label: 'Configuration',
             link: {
                 type: 'doc',
@@ -39,6 +51,7 @@ const sidebars: SidebarsConfig = {
         },
         'commands',
         'extensions',
+        'reference',
         { type: 'category', label: 'Release Notes', items: ['release-notes/release-notes-v4.0', 'release-notes/release-notes-v2.0'] },
     ],
 };
