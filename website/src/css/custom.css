@@ -44,6 +44,11 @@
 }
  */
 
+:root {
+    /* Fixed dark surface for the landing page hero/closing bands, independent of light/dark theme. */
+    --ifm-hero-background-color: #282c34;
+}
+
 h1.hero__title {
     color: var(--ifm-color-primary);
 }
