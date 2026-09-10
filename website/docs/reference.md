@@ -1,11 +1,10 @@
 ---
-title: Spell Checker
-nav\_order: 1
-description: 'Spelling Checker for Visual Studio Code'
-permalink: /
+id: reference
+title: Reference
+description: 'Complete reference for the VS Code Spell Checker, generated from the project README.'
 ---
 
-<!--- @@inject: ../../../README.md --->
+<!--- @@inject: ../../README.md --->
 
 # Spelling Checker for Visual Studio Code
 
@@ -774,4 +773,4 @@ See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/main/
 
 <p align="center">Brought to you by <a href="https://streetsidesoftware.com" title="Street Side Software"><img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" /> Street Side Software</a></p>
 
-<!--- @@inject-end: ../../../README.md --->
+<!--- @@inject-end: ../../README.md --->

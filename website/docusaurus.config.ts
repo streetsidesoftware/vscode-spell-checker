@@ -38,6 +38,15 @@ const config: Config = {
         },
     },
 
+    plugins: [
+        [
+            '@docusaurus/plugin-client-redirects',
+            {
+                redirects: [{ to: '/docs/reference', from: '/readme' }],
+            },
+        ],
+    ],
+
     presets: [
         [
             'classic',
@@ -79,6 +88,7 @@ const config: Config = {
             },
             items: [
                 { label: 'Home', href: 'https://streetsidesoftware.com', position: 'left' },
+                { to: '/docs/getting-started/install', label: 'Get Started', position: 'left' },
                 {
                     type: 'docSidebar',
                     sidebarId: 'docs',
@@ -142,6 +152,7 @@ const config: Config = {
             'data-domain': 'streetsidesoftware.com',
             src: 'https://plausible.io/js/script.js',
         },
+        '/vscode-spell-checker/js/legacy-anchor-redirect.js',
     ],
 };
 
