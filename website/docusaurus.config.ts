@@ -55,7 +55,7 @@ const config: Config = {
                     sidebarPath: './sidebars.ts',
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/streetsidesoftware/vscode-spell-checker/tree/main/website/docs',
+                    editUrl: 'https://github.com/streetsidesoftware/vscode-spell-checker/tree/main/website',
                 },
                 // blog: {
                 //   showReadingTime: true,

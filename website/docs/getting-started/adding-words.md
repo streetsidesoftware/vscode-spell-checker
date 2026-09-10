@@ -42,6 +42,6 @@ project-wide entry:
 const companyName = 'woorxs sweeetbeat';
 ```
 
-See [In-document settings](/docs/reference#in-document-settings) for the full set of directives.
+See [In-document settings](../guides/in-document-settings.md) for the full set of directives.
 
 **Next:** [Choosing a language](./choosing-a-language.md)

@@ -49,6 +49,11 @@ const sidebars: SidebarsConfig = {
                 'configuration/legacy',
             ],
         },
+        {
+            type: 'category',
+            label: 'Guides',
+            items: ['guides/in-document-settings', 'guides/enable-file-types'],
+        },
         'commands',
         'extensions',
         'reference',

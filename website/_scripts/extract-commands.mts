@@ -40,7 +40,26 @@ const doc = unindent`\
 
         # Commands
 
-        ${genCommands(entries)}
+        ## Running Commands
+
+        To run a command, use the following:
+
+        | OS.     | Command |
+        | ------- | ------- |
+        | All OS  | \`F1\` \`<command>\` |
+        | MacOS   | \`Shift-Cmd-P\` \`<command>\` |
+        | Windows | \`Ctrl-Shift-P\` \`<command>\` |
+
+        ## Commands
+
+        ${genCommands(entries.filter((cmd) => !cmd.enablement))}
+
+        ## Conditional Commands
+
+        These commands are not part of the default command palette and are only available under certain conditions.
+
+        ${genCommands(entries.filter((cmd) => cmd.enablement))}
+
 
     `.replace(/\*\u200B/g, '*'); // remove zero width spaces
 
