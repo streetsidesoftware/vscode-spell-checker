@@ -87,7 +87,7 @@ dd > :last-child {
     margin-bottom: 0;
 }
 
-/* Inline code inside a link takes the link colour. The recessed code
+/* Inline code inside a link takes the link color. The recessed code
    background from the palette block carries the contrast; no border —
    the generated configuration tables have a code link in every row, and
    an outlined chip per row makes those pages unreadably noisy. */
