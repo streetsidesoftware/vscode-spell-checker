@@ -35,4 +35,8 @@ If nothing is underlined, see [Enable a file type](/docs/reference#enable--disab
 The extension operates with its default configuration. Spell checking is performed locally;
 no document content is transmitted.
 
-**Next:** [Your first correction](./making-corrections.md)
+**Next:** [Making corrections](./making-corrections.md)
+
+<!---
+cspell:ignore recieve
+--->

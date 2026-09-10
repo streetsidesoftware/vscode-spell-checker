@@ -1,11 +1,11 @@
 ---
 id: how-it-works
-title: How code is analysed
+title: How code is analyzed
 sidebar_position: 5
 description: 'How identifiers are split and which text is excluded from checking.'
 ---
 
-# How code is analysed
+# How code is analyzed
 
 The spell checker is designed to report genuine spelling errors in source code while keeping
 the number of false reports low.

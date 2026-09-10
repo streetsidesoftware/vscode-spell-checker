@@ -29,10 +29,10 @@ function Hero(): React.ReactNode {
                     </div>
                     <img
                         src={`${IMAGES}/suggestions.gif`}
-                        alt="Quick Fix suggesting a correction for an unrecognised word in Visual Studio Code"
+                        alt="Quick Fix suggesting a correction for an unrecognized word in Visual Studio Code"
                         loading="eager"
                     />
-                    <figcaption>Quick Fix on an unrecognised word: apply a suggestion, or add the word to a dictionary.</figcaption>
+                    <figcaption>Quick Fix on an unrecognized word: apply a suggestion, or add the word to a dictionary.</figcaption>
                 </figure>
             </div>
         </header>
@@ -67,13 +67,13 @@ const DOORS: Door[] = [
         linkText: 'Get Started',
     },
     {
-        kicker: 'Behaviour',
+        kicker: 'Behavior',
         kickerClass: styles.kickerRust,
         title: 'What is reported',
         body: 'Identifiers are split into their component words. Symbols, hex values, and words of three characters or fewer are not reported.',
         sample: true,
         to: '/docs/getting-started/how-it-works',
-        linkText: 'How code is analysed',
+        linkText: 'How code is analyzed',
     },
     {
         kicker: 'Configuration',
@@ -91,6 +91,7 @@ const DOORS: Door[] = [
 ];
 
 function CodeSample(): React.ReactNode {
+    // cspell:ignore recieve lenght
     return (
         <div className={styles.sample}>
             <div>

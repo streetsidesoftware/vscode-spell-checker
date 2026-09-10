@@ -43,4 +43,4 @@ The locale may also be set within a document:
 // cSpell:locale fr,en
 ```
 
-**Next:** [How code is analysed](./how-it-works.md)
+**Next:** [How code is analyzed](./how-it-works.md)

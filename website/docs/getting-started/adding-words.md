@@ -7,7 +7,7 @@ description: 'Add project terminology so that it is no longer reported.'
 
 # Adding words
 
-Not every unrecognised word is an error. Product names, identifiers, and domain terminology
+Not every unrecognized word is an error. Product names, identifiers, and domain terminology
 are typically added to a dictionary rather than corrected.
 
 ## Add a single word

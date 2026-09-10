@@ -1,11 +1,11 @@
 ---
 id: making-corrections
-title: Your first correction
+title: Making corrections
 sidebar_position: 2
 description: 'Apply a suggestion to an unrecognized word.'
 ---
 
-# Your first correction
+# Making corrections
 
 Place the cursor within an underlined word. Any of the following opens the list of suggestions:
 
