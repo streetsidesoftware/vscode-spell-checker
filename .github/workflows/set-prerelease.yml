@@ -44,7 +44,7 @@ jobs:
           commit-message: 'chore: Set Prerelease Mode to `${{ inputs.prerelease }}`'
           branch: ${{ env.BRANCH_NAME }}
           base: main
-          title: "${{ inputs.prerelease == 'true' && 'chore: Set Prerelease Mode to true' || 'fix: Prepare for Release' }}"
+          title: "${{ (inputs.prerelease == 'false' || inputs.prerelease == false) && 'fix: Prepare for Release' || 'chore: Set Prerelease Mode to true'  }}"
           body: |
             # Prerelease Mode
 
