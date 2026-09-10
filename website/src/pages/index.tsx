@@ -231,15 +231,15 @@ function InEditor(): React.ReactNode {
     return (
         <section className={styles.section}>
             <h2 className={styles.sectionEyebrow}>In the editor</h2>
-            <p className={styles.sectionLead}>Unrecognised words are marked as the document is edited.</p>
+            <p className={styles.sectionLead}>Unrecognized words are marked as the document is edited.</p>
             <div className={styles.figureGrid}>
                 <figure className={styles.figure}>
                     <img
                         src={`${IMAGES}/example.gif`}
-                        alt="Unrecognised words underlined while typing in Visual Studio Code"
+                        alt="Unrecognized words underlined while typing in Visual Studio Code"
                         loading="lazy"
                     />
-                    <figcaption>Unrecognised words are underlined, in both code and comments.</figcaption>
+                    <figcaption>Unrecognized words are underlined, in both code and comments.</figcaption>
                 </figure>
                 <figure className={styles.figure}>
                     <img src={`${IMAGES}/suggestions.gif`} alt="Suggestion list opened with Quick Fix" loading="lazy" />
