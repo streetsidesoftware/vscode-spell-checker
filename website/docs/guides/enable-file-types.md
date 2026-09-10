@@ -19,19 +19,19 @@ Ruby · Rust · Scala · SQL · Text · TypeScript · YAML
 
 If your file is not underlined and its type is absent from that list, that is the reason.
 
-## Toggle from the status bar
+## Enable using the `cSpell.enableCurrentFileType` command
 
-1. Open a file of the type in question.
-2. Click the Spell Checker item in the status bar.
-3. On the information screen, use the checkbox for the file type.
+1. `F1` `Enable Spell Checking File Type`
+  ![Enable Spell Checking File Type](/img/image-enable-spell-checking.png)
+2. Choose where to save the setting.
 
-The status bar item also tells you the current state at a glance: it is the quickest way to
-answer "is this file being checked at all?" before investigating anything else.
+The `{}` on status bar is the quickest way to see the state of the spell checker:
+![Status Bar Enabled](/img/status-bar-enabled.png)
 
 ## Configure in the settings
 
-The status bar toggle writes to
-[`cSpell.enabledFileTypes`](/docs/configuration/files-folders-and-workspaces#cspellenabledfiletypes).
+The Commands update the
+[`cSpell.enabledFileTypes`](/docs/configuration/files-folders-and-workspaces#cspellenabledfiletypes) setting.
 Editing the setting directly is worth doing when you want the same list committed to a
 repository, or applied across a team.
 

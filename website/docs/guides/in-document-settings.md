@@ -16,18 +16,18 @@ insensitive, so `cSPELL:DISABLE` also works.
 
 ## The directives
 
-| Directive | Effect | Scope |
-| --- | --- | --- |
-| `disable` | Stop checking from this point | From the directive onward |
-| `enable` | Resume checking | From the directive onward |
-| `disable-line` | Skip the current line | One line |
-| `disable-next-line` | Skip the following line | One line |
-| `ignore <words>` | Do not report these words | Entire file |
-| `words <words>` | Treat these words as correct, and offer them as suggestions | Entire file |
-| `locale <locales>` | Set the locale, e.g. `cSpell:locale fr,en` | Entire file |
-| `ignoreRegExp <pattern>` | Do not check text matching the pattern | Entire file |
-| `includeRegExp <pattern>` | Check only text matching the pattern | Entire file |
-| `enableCompoundWords` / `disableCompoundWords` | Allow or disallow glued words such as `errormessage` | Entire file |
+| Directive                                      | Effect                                                      | Scope                     |
+| ---------------------------------------------- | ----------------------------------------------------------- | ------------------------- |
+| `disable`                                      | Stop checking from this point                               | From the directive onward |
+| `enable`                                       | Resume checking                                             | From the directive onward |
+| `disable-line`                                 | Skip the current line                                       | One line                  |
+| `disable-next-line`                            | Skip the following line                                     | One line                  |
+| `ignore <words>`                               | Do not report these words                                   | Entire file               |
+| `words <words>`                                | Treat these words as correct, and offer them as suggestions | Entire file               |
+| `locale <locales>`                             | Set the locale, e.g. `cSpell:locale fr,en`                  | Entire file               |
+| `ignoreRegExp <pattern>`                       | Do not check text matching the pattern                      | Entire file               |
+| `includeRegExp <pattern>`                      | Check only text matching the pattern                        | Entire file               |
+| `enableCompoundWords` / `disableCompoundWords` | Allow or disallow glued words such as `errormessage`        | Entire file               |
 
 The distinction in the scope column matters. `disable` and `enable` mark off regions;
 everything else applies to the whole file no matter where in the file it is written.

@@ -1,10 +1,12 @@
 ignorePaths:
   - '*.svg'
   - '*.xml'
-  - '/build'
+  - /build
   - '**/auto_*'
 dictionaryDefinitions:
   - name: website
     path: ./website-terms.txt
 dictionaries:
   - website
+enabledFileTypes:
+  markdown: true
