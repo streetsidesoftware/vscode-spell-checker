@@ -39,5 +39,5 @@ Trailing `s`, `ing`, `ies`, `es`, and `ed` are retained with the preceding word,
 - The dictionaries contain omissions, and occasionally errors.
 - Compound word support is set per file, not per region.
 
-The full list of predefined include and exclude patterns is documented in the
-[Reference](/docs/reference#predefined-regexp-expressions).
+The full list of predefined include and exclude patterns is documented in
+[In-document settings](../guides/in-document-settings.md#predefined-patterns).

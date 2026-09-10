@@ -28,7 +28,7 @@ Open VSX based editors, the extension is published to the
 The spell checker adds an entry to the status bar. Open any Markdown or source file and type
 a misspelled word, for example `recieve`. The word should receive a squiggly underline.
 
-If nothing is underlined, see [Enable a file type](/docs/reference#enable--disable-file-types).
+If nothing is underlined, see [Enabling file types](../guides/enable-file-types.md).
 
 ## No configuration is required
 

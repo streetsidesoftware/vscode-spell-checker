@@ -157,12 +157,12 @@ const TASKS = [
     {
         title: 'Fine-tune checking within a file',
         body: 'In-document directives: cSpell:disable, ignore, words.',
-        to: '/docs/reference#in-document-settings',
+        to: '/docs/guides/in-document-settings',
     },
     {
         title: 'Enable a file type',
         body: 'Use the status bar control, or configure it in the settings.',
-        to: '/docs/reference#enable--disable-file-types',
+        to: '/docs/guides/enable-file-types',
     },
     {
         title: 'Check a project in CI',
