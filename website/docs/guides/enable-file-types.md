@@ -22,7 +22,7 @@ If your file is not underlined and its type is absent from that list, that is th
 ## Enable using the `cSpell.enableCurrentFileType` command
 
 1. `F1` `Enable Spell Checking File Type`
-  ![Enable Spell Checking File Type](/img/image-enable-spell-checking.png)
+   ![Enable Spell Checking File Type](/img/image-enable-spell-checking.png)
 2. Choose where to save the setting.
 
 The `{}` on status bar is the quickest way to see the state of the spell checker:
