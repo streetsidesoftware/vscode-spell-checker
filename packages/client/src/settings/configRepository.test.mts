@@ -1,6 +1,5 @@
 import { createMockWorkspaceConfiguration } from 'jest-mock-vscode';
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { when } from 'vitest-when';
 import type { WorkspaceFolder } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 
@@ -115,7 +114,7 @@ describe('configRepository', () => {
         const rw = new MemoryConfigVSReaderWriter(target, scope, {});
         const rep = createVSCodeConfigRepository(rw);
 
-        when(mockedWorkspace.getWorkspaceFolder).calledWith(expect.objectContaining(uri)).thenReturn(workspaceFolder);
+        vi.when(mockedWorkspace.getWorkspaceFolder).calledWith(expect.objectContaining(uri)).thenReturn(workspaceFolder);
         const spy = vi.spyOn(workspace, 'workspaceFolders', 'get');
         spy.mockReturnValue([workspaceFolderWorkspace, workspaceFolder]);
 
