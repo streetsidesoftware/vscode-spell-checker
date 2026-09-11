@@ -44,7 +44,7 @@ import { findRepoRoot } from '../vfs/index.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
-import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
+import { configDefaults, type CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
 import {
@@ -502,8 +502,8 @@ export class DocumentSettings {
             localDictionarySettings,
             filterMergeFields(
                 mergedSettingsFromVSCode,
-                vscodeCSpellSettings['mergeCSpellSettings'] || !settings,
-                vscodeCSpellSettings['mergeCSpellSettingsFields'],
+                (vscodeCSpellSettings.mergeCSpellSettings ?? configDefaults.mergeCSpellSettings) || !settings,
+                vscodeCSpellSettings.mergeCSpellSettingsFields ?? configDefaults.mergeCSpellSettingsFields,
             ),
             settings,
         );

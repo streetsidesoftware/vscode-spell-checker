@@ -1,6 +1,68 @@
 import type { AllSpellCheckerSettingsInVSCode } from './cspellConfig.mjs';
 
-export const configDefaults: AllSpellCheckerSettingsInVSCode = {
+type ConfigFieldsWithDefaults =
+    | 'advanced.feature.useReferenceProviderWithRename'
+    | 'allowCompoundWords'
+    | 'allowWordsToBeAddTo'
+    | 'autocorrect'
+    | 'autoFormatConfigFile'
+    | 'blockCheckingWhenAverageChunkSizeGreaterThan'
+    | 'blockCheckingWhenLineLengthGreaterThan'
+    | 'blockCheckingWhenTextChunkSizeGreaterThan'
+    | 'checkLimit'
+    | 'checkOnlyEnabledFileTypes'
+    | 'checkVSCodeSystemFiles'
+    | 'diagnosticLevel'
+    | 'doNotUseCustomDecorationForScheme'
+    | 'enabled'
+    | 'enabledFileTypes'
+    | 'enabledNotifications'
+    | 'enabledSchemes'
+    | 'experimental.enableRegexpView'
+    | 'experimental.symbols'
+    | 'fixSpellingWithRenameProvider'
+    | 'hideAddToDictionaryCodeActions'
+    | 'hideIssuesWhileTyping'
+    | 'ignorePaths'
+    | 'ignoreRandomStrings'
+    | 'language'
+    | 'logLevel'
+    | 'maxDuplicateProblems'
+    | 'maxNumberOfProblems'
+    | 'menuItemsOnCSpellConfigMenu'
+    | 'menuItemsOnEditorContextMenu'
+    | 'menuItemsOnSpellCheckerActionMenu'
+    | 'menuItemsOnSpellingContextMenu'
+    | 'mergeCSpellSettings'
+    | 'mergeCSpellSettingsFields'
+    | 'minRandomLength'
+    | 'minWordLength'
+    | 'numSuggestions'
+    | 'overviewRulerColor'
+    | 'revealIssuesAfterDelayMS'
+    | 'showAutocompleteDirectiveSuggestions'
+    | 'showCommandsInEditorContextMenu'
+    | 'showInRuler'
+    | 'showStatus'
+    | 'showStatusAlignment'
+    | 'showSuggestionsLinkInEditorContextMenu'
+    | 'spellCheckDelayMs'
+    | 'spellCheckOnlyWorkspaceFiles'
+    | 'suggestionMenuType'
+    | 'suggestionNumChanges'
+    | 'suggestionsTimeout'
+    | 'textDecorationColor'
+    | 'textDecorationColorFlagged'
+    | 'textDecorationColorSuggestion'
+    | 'textDecorationLine'
+    | 'textDecorationStyle'
+    | 'textDecorationThickness'
+    | 'trustedWorkspace'
+    | 'useCustomDecorations'
+    | 'useGitignore'
+    | 'useLocallyInstalledCSpellDictionaries';
+
+export const configDefaults: Pick<Required<AllSpellCheckerSettingsInVSCode>, ConfigFieldsWithDefaults> = {
     'advanced.feature.useReferenceProviderWithRename': false,
     fixSpellingWithRenameProvider: true,
     logLevel: 'Error',
@@ -167,4 +229,4 @@ export const configDefaults: AllSpellCheckerSettingsInVSCode = {
     showAutocompleteDirectiveSuggestions: true,
     suggestionNumChanges: 3,
     enabled: true,
-};
+} satisfies AllSpellCheckerSettingsInVSCode;
