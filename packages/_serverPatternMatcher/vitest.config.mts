@@ -1,2 +1,2 @@
-import baseConfig from '../../vitest.config.mts';
+import baseConfig from '@internal/vitest-config';
 export default baseConfig;

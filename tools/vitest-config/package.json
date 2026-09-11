@@ -1,0 +1,20 @@
+{
+  "name": "@internal/vitest-config",
+  "version": "1.0.0",
+  "description": "Shared Configuration for Vitest",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./vitest.config.mts"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "@vitest/coverage-istanbul": "~5.0.0",
+    "vite": "^8.2.2",
+    "vitest": "~5.0.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=22.20.0"
+  }
+}
