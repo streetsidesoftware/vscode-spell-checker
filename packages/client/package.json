@@ -64,7 +64,7 @@
     "ts-loader": "^9.6.2",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
-    "vitest-when": "^0.10.2",
+    "vitest-when": "^1.0.0",
     "vscode-jsonrpc": "^9.0.2",
     "vscode-languageclient": "^10.1.1",
     "vscode-uri": "^3.2.0",
