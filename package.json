@@ -5035,7 +5035,7 @@
     "lint-docs": "prettier -w website",
     "lint-docs-ci": "prettier -c website",
     "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
-    "test": "npm --workspaces --if-present run test && echo OK",
+    "test": "npm --workspaces --if-present run test && echo OK || (echo Failed && exit 1)",
     "update-cspell": "npx npm-check-updates --root -ws --target semver -u \"cspell*\" \"@cspell/*\"  && npm i",
     "update-packages": "npm run update:packages:root && npm run update:packages:website",
     "update:packages:root": "npx npm-check-updates --root -ws --target semver -u && npm i",
@@ -5049,7 +5049,7 @@
     "@types/node": "^22.20.1",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vitest/coverage-istanbul": "~4.1.11",
+    "@vitest/coverage-istanbul": "~5.0.0",
     "@vscode/vsce": "^3.9.2",
     "ansi-styles": "^7.0.0",
     "build-tools": "file:./tools/build-tools",
@@ -5076,7 +5076,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.70.0",
     "vite": "^8.2.2",
-    "vitest": "~4.1.11"
+    "vitest": "~5.0.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.3.0",
