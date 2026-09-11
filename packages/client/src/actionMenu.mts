@@ -1,6 +1,6 @@
 import { isDefined } from '@internal/common-utils';
 import type { CSpellUserAndExtensionSettings } from 'code-spell-checker-server/lib';
-import { ConfigFields } from 'code-spell-checker-server/lib';
+import { configDefaults, ConfigFields } from 'code-spell-checker-server/lib';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, QuickPickItem } from 'vscode';
 import vscode from 'vscode';
@@ -60,7 +60,8 @@ class ActionMenuBuilder {
         this.#options = options;
         this.#docConfig = docConfig;
         this.#allowedMenuItems =
-            vscode.workspace.getConfiguration(extensionId, document?.uri).get(ConfigFields.menuItemsOnSpellCheckerActionMenu) ?? {};
+            vscode.workspace.getConfiguration(extensionId, document?.uri).get(ConfigFields.menuItemsOnSpellCheckerActionMenu) ??
+            configDefaults.menuItemsOnSpellCheckerActionMenu;
     }
 
     build(): Promise<void> {
@@ -168,7 +169,9 @@ class ActionMenuBuilder {
         item.buttons = [
             new CommandButtonItem(new vscode.ThemeIcon('gear'), {
                 title: 'Edit Enable File Type in Settings',
-                ...generateOpenSettingsCommand(ConfigFields.menuItemsOnSpellCheckerActionMenu),
+                ...generateOpenSettingsCommand(
+                    ConfigFields.menuItemsOnSpellCheckerActionMenu ?? configDefaults.menuItemsOnSpellCheckerActionMenu,
+                ),
             }),
         ];
         return item;

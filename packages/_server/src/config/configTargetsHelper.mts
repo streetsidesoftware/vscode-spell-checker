@@ -13,6 +13,7 @@ import type {
 } from './configTargets.mjs';
 import { ConfigKinds, ConfigScopes, weight } from './configTargets.mjs';
 import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
+import { configDefaults } from './cspellConfig/index.mjs';
 import type { ActionAddToTargets } from './cspellConfig/SpellCheckerSettings.mjs';
 import type { CSpellSettingsWithFileSource } from './documentSettings.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries, filterExistingCSpellFileConfigurations } from './documentSettings.mjs';
@@ -28,7 +29,7 @@ export async function calculateConfigTargets(
         const href = toFileUri(filename).toString();
         return found.has(href);
     }
-    const allowedTargets = settings.allowWordsToBeAddTo || {};
+    const allowedTargets = settings.allowWordsToBeAddTo || configDefaults.allowWordsToBeAddTo;
     const targets: ConfigTarget[] = [];
     const possibleSources = extractCSpellFileConfigurations(settings).filter((cfg) => !cfg.readonly);
     const sources = configFilesFound
