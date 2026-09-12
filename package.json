@@ -5080,7 +5080,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.3.0",
     "@cspell/cspell-types": "^10.3.0",
-    "@cspell/dict-cspell-bundle": "^2.0.73",
+    "@cspell/dict-cspell-bundle": "^2.0.75",
     "regexp-worker": "^5.0.1"
   },
   "overrides": {
