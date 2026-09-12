@@ -5058,7 +5058,7 @@
     "concurrently": "^10.0.5",
     "cspell": "^10.3.0",
     "esbuild": "^0.28.2",
-    "eslint": "~10.9.1",
+    "eslint": "~10.10.0",
     "eslint-plugin-n": "^18.3.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^74.0.0",
@@ -5072,7 +5072,7 @@
     "rollup": "^4.63.1",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.70.0"
