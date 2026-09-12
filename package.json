@@ -5048,7 +5048,7 @@
     "@eslint/js": "~10.0.1",
     "@internal/vitest-config": "file:./tools/vitest-config",
     "@tsconfig/node22": "^22.0.6",
-    "@types/node": "^22.20.1",
+    "@types/node": "^22.20.2",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/vsce": "^3.9.2",
@@ -5065,7 +5065,7 @@
     "globals": "^17.12.0",
     "inject-markdown": "^5.0.3",
     "jest-mock-vscode": "^4.13.0",
-    "ovsx": "^1.1.1",
+    "ovsx": "^1.2.0",
     "patch-package": "^8.0.1",
     "prettier": "^3.9.6",
     "prettier-plugin-svelte": "^4.1.1",
@@ -5080,7 +5080,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.3.0",
     "@cspell/cspell-types": "^10.3.0",
-    "@cspell/dict-cspell-bundle": "^2.0.73",
+    "@cspell/dict-cspell-bundle": "^2.0.75",
     "regexp-worker": "^5.0.1"
   },
   "overrides": {
