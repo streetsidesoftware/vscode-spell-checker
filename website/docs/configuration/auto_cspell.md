@@ -170,6 +170,40 @@ Defines a list of patterns that can be used with the [`cSpell.ignoreRegExpList`]
 <tr>
 <td>
 
+[`cSpell.softWordBreakDefinitions`](#cspellsoftwordbreakdefinitions)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Defines a set of word break rules that can be used for text segmentation.
+
+</td>
+</tr>
+<tr>
+<td>
+
+[`cSpell.softWordBreaks`](#cspellsoftwordbreaks)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Allows enabling or disabling soft word break rules by name.
+
+</td>
+</tr>
+<tr>
+<td>
+
 [`cSpell.substitutionDefinitions`](#cspellsubstitutiondefinitions)
 
 </td>
@@ -214,7 +248,7 @@ The set of substitutions to apply to a document before spell checking.
 </td>
 <td>
 
-Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese,…
+Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai,…
 
 </td>
 </tr>
@@ -1036,6 +1070,150 @@ _- none -_
 ---
 
 
+### `cSpell.softWordBreakDefinitions`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.softWordBreakDefinitions`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Defines a set of word break rules that can be used for text segmentation.
+
+Soft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.
+
+This allows for word breaks that might not be captured by the camel case detection.
+
+Note: soft-hyphens are removed before checking the word against the dictionaries.
+
+For example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`
+`error|code`, the following words would be checked against
+the dictionaries: `errorcode`, `error`, and `code`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: (string | string[]);
+}
+```
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.1
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.softWordBreaks`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.softWordBreaks`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allows enabling or disabling soft word break rules by name.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: boolean;
+}
+```
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.1
+
+</dd>
+
+</dl>
+
+---
+
+
 ### `cSpell.substitutionDefinitions`
 
 <dl>
@@ -1339,7 +1517,7 @@ Description
 </dt>
 <dd>
 
-Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
+Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
 The locale used for the segmentation is based on the  `language`  setting.
 
 </dd>
@@ -3800,6 +3978,114 @@ Name
 </dt>
 <dd>
 
+`softWordBreakDefinitions`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Defines a set of word break rules that can be used for text segmentation.
+
+Soft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.
+
+This allows for word breaks that might not be captured by the camel case detection.
+
+Note: soft-hyphens are removed before checking the word against the dictionaries.
+
+For example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`
+`error|code`, the following words would be checked against
+the dictionaries: `errorcode`, `error`, and `code`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: (string | string[]);
+}
+```
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.1
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`softWordBreaks`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allows enabling or disabling soft word break rules by name.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: boolean;
+}
+```
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.1
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
 `substitutionDefinitions`
 
 </dd>
@@ -4010,7 +4296,7 @@ Description
 </dt>
 <dd>
 
-Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
+Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
 The locale used for the segmentation is based on the  `language`  setting.
 
 </dd>
@@ -4105,6 +4391,12 @@ TypeScript:
     name: string;
     pattern: (string | string[]);
   }[];
+  softWordBreakDefinitions?: {
+    [key: string]: (string | string[]);
+  };
+  softWordBreaks?: {
+    [key: string]: boolean;
+  };
   substitutionDefinitions?: {
     description?: string;
     entries: [string, string][];
@@ -4698,8 +4990,8 @@ Description
 
 Enable / Disable checking file types (languageIds).
 
-These are in additional to the file types specified by  `Settings.enabledLanguageIds` .
-To disable a language, prefix with `!` as in `!json`,
+These are in addition to the file types specified by  `Settings.enabledLanguageIds` .
+To disable a language, prefix with `!` as in `!json`.
 
 **Example: individual file types**
 
@@ -5671,6 +5963,114 @@ Name
 </dt>
 <dd>
 
+`softWordBreakDefinitions`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Defines a set of word break rules that can be used for text segmentation.
+
+Soft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.
+
+This allows for word breaks that might not be captured by the camel case detection.
+
+Note: soft-hyphens are removed before checking the word against the dictionaries.
+
+For example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`
+`error|code`, the following words would be checked against
+the dictionaries: `errorcode`, `error`, and `code`.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: (string | string[]);
+}
+```
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.1
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`softWordBreaks`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Allows enabling or disabling soft word break rules by name.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+```ts
+{
+  [key: string]: boolean;
+}
+```
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.3.1
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
 `substitutionDefinitions`
 
 </dd>
@@ -5975,7 +6375,7 @@ Description
 </dt>
 <dd>
 
-Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
+Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.
 The locale used for the segmentation is based on the  `language`  setting.
 
 </dd>
@@ -6128,6 +6528,12 @@ TypeScript:
     pattern: (string | string[]);
   }[];
   pnpFiles?: string[];
+  softWordBreakDefinitions?: {
+    [key: string]: (string | string[]);
+  };
+  softWordBreaks?: {
+    [key: string]: boolean;
+  };
   substitutionDefinitions?: {
     description?: string;
     entries: [string, string][];
