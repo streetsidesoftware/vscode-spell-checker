@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+    <mask id="b" mask-type="luminance">
+        <circle cx="50%" cy="50%" r="99" fill="#fff" />
+    </mask>
+    <circle cx="50%" cy="50%" r="50%" fill="#000" />
+    <rect width="100%" height="100%" fill="#fff" mask="url(#b)" />
+    <rect x="70" width="100%" height="128" fill="#f3ec4e" mask="url(#b)" />
+    <rect y="128" width="100%" height="100%" fill="#a62c17" mask="url(#b)" />
+    <rect x="62" width="14" height="100%" fill="#000" mask="url(#b)" />
+    <rect y="121" width="100%" height="14" fill="#000" mask="url(#b)" />
+</svg>
