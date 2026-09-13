@@ -47,6 +47,11 @@ jobs:
         run: |
           echo "value=$(jq -r '.devDependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
 
+      - name: Get Current CSpell Dictionary Bundle Version
+        id: dict-bundle-current-version
+        run: |
+          echo "value=$(jq -r '.dependencies["@cspell/dict-cspell-bundle"][1:]' package.json)" >> $GITHUB_OUTPUT
+
       - name: Update
         run: |
           npm i
@@ -61,18 +66,64 @@ jobs:
         run: |
           echo "value=$(jq -r '.devDependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
 
-      - name: Update Type
-        id: cspell-update-type
+      - name: Get New CSpell Dictionary Bundle Version
+        id: dict-bundle-new-version
+        run: |
+          echo "value=$(jq -r '.dependencies["@cspell/dict-cspell-bundle"][1:]' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Update Info
+        id: update-info
         uses: actions/github-script@v9
         env:
-          CURRENT: ${{ steps.cspell-current-version.outputs.value }}
-          NEW: ${{ steps.cspell-new-version.outputs.value }}
+          CSPELL_CURRENT: ${{ steps.cspell-current-version.outputs.value }}
+          CSPELL_NEW: ${{ steps.cspell-new-version.outputs.value }}
+          DICT_CURRENT: ${{ steps.dict-bundle-current-version.outputs.value }}
+          DICT_NEW: ${{ steps.dict-bundle-new-version.outputs.value }}
         with:
           result-encoding: string
           script: |
-            const curParts = process.env.CURRENT.split('.').map(Number);
-            const newParts = process.env.NEW.split('.').map(Number);
-            return (newParts[0] > curParts[0] || newParts[1] > curParts[1]) ? 'feat' : 'fix';
+            const cspellCurrent = process.env.CSPELL_CURRENT;
+            const cspellNew = process.env.CSPELL_NEW;
+            const dictCurrent = process.env.DICT_CURRENT;
+            const dictNew = process.env.DICT_NEW;
+
+            const cspellChanged = cspellCurrent !== cspellNew;
+            const dictChanged = dictCurrent !== dictNew;
+
+            const curParts = cspellCurrent.split('.').map(Number);
+            const newParts = cspellNew.split('.').map(Number);
+            const type = (newParts[0] > curParts[0] || newParts[1] > curParts[1]) ? 'feat' : 'fix';
+
+            const cspellSubject = `Update CSpell from \`${cspellCurrent}\` to \`${cspellNew}\``;
+            const dictSubject = `Update CSpell Dictionary Bundle from \`${dictCurrent}\` to \`${dictNew}\``;
+
+            let subject;
+            if (cspellChanged && dictChanged) {
+              subject = `${cspellSubject} and Dictionary Bundle from \`${dictCurrent}\` to \`${dictNew}\``;
+            } else if (cspellChanged) {
+              subject = cspellSubject;
+            } else if (dictChanged) {
+              subject = dictSubject;
+            } else {
+              subject = 'Update CSpell dependencies';
+            }
+
+            let description;
+            if (cspellChanged && dictChanged) {
+              description = `This PR updates the CSpell version from \`${cspellCurrent}\` to \`${cspellNew}\` and the CSpell Dictionary Bundle from \`${dictCurrent}\` to \`${dictNew}\`.`;
+            } else if (cspellChanged) {
+              description = `This PR updates the CSpell version from \`${cspellCurrent}\` to \`${cspellNew}\`.`;
+            } else if (dictChanged) {
+              description = `This PR updates the CSpell Dictionary Bundle from \`${dictCurrent}\` to \`${dictNew}\`.`;
+            } else {
+              description = 'This PR updates the CSpell dependencies.';
+            }
+
+            core.setOutput('type', type);
+            core.setOutput('subject', subject);
+            core.setOutput('description', description);
+            core.setOutput('cspell-changed', String(cspellChanged));
+            core.setOutput('dict-changed', String(dictChanged));
 
       - name: Get Available CSpell Releases
         id: cspell-release-tags
@@ -102,14 +153,14 @@ jobs:
         with:
           title: Update ALL Dependencies
           message: |
-            This PR updates the CSpell version from `${{ steps.cspell-current-version.outputs.value }}` to `${{ steps.cspell-new-version.outputs.value }}`.
+            ${{ steps.update-info.outputs.description }}
 
             CSpell Releases:
             ${{ steps.cspell-releases.outputs.result }}
 
             <!---
             BEGIN_COMMIT_OVERRIDE
-            ${{ steps.cspell-update-type.outputs.result }}: Update CSpell from `${{ steps.cspell-current-version.outputs.value }}` to `${{ steps.cspell-new-version.outputs.value }}` and other dependencies
+            ${{ steps.update-info.outputs.type }}: ${{ steps.update-info.outputs.subject }} and other dependencies
             END_COMMIT_OVERRIDE
             --->
           path: package.json
@@ -121,8 +172,7 @@ jobs:
           branch: ${{ env.NEW_BRANCH }}
           base: ${{ env.REF_BRANCH }}
           title: >-
-            ${{ steps.cspell-update-type.outputs.result }}: Update CSpell
-            from `${{ steps.cspell-current-version.outputs.value }}` to `${{ steps.cspell-new-version.outputs.value }}`
+            ${{ steps.update-info.outputs.type }}: ${{ steps.update-info.outputs.subject }}
           body: ${{ steps.body.outputs.body }}
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
