@@ -783,14 +783,14 @@
                 "type": "array"
               },
               "enableFiletypes": {
-                "description": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by  {@link  Settings.enabledLanguageIds } . To disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types !json       // except for json ```",
+                "description": "Enable / Disable checking file types (languageIds).\n\nThese are in addition to the file types specified by  {@link  Settings.enabledLanguageIds } . To disable a language, prefix with `!` as in `!json`.\n\n\n**Example: individual file types**\n\n``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types !json       // except for json ```",
                 "items": {
                   "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                   "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                   "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                   "type": "string"
                 },
-                "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by  {@link  Settings.enabledLanguageIds } .\nTo disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types\n!json       // except for json\n```",
+                "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in addition to the file types specified by  {@link  Settings.enabledLanguageIds } .\nTo disable a language, prefix with `!` as in `!json`.\n\n\n**Example: individual file types**\n\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types\n!json       // except for json\n```",
                 "scope": "resource",
                 "title": "Enable File Types",
                 "type": "array",
@@ -1606,6 +1606,58 @@
                       "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
                       "type": "array"
                     },
+                    "softWordBreakDefinitions": {
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                            "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                            "since": "10.3.1",
+                            "type": "string"
+                          },
+                          {
+                            "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                            "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                            "since": "10.3.1",
+                            "type": "string"
+                          },
+                          {
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                                  "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                                  "since": "10.3.1",
+                                  "type": "string"
+                                },
+                                {
+                                  "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                                  "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                                  "since": "10.3.1",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "type": "array"
+                          }
+                        ],
+                        "description": "A named set of soft word break rules.",
+                        "markdownDescription": "A named set of soft word break rules."
+                      },
+                      "description": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code` `error|code`, the following words would be checked against the dictionaries: `errorcode`, `error`, and `code`.",
+                      "markdownDescription": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`\n`error|code`, the following words would be checked against\nthe dictionaries: `errorcode`, `error`, and `code`.",
+                      "since": "10.3.1",
+                      "type": "object"
+                    },
+                    "softWordBreaks": {
+                      "additionalProperties": {
+                        "type": "boolean"
+                      },
+                      "description": "Allows enabling or disabling soft word break rules by name.",
+                      "markdownDescription": "Allows enabling or disabling soft word break rules by name.",
+                      "since": "10.3.1",
+                      "type": "object"
+                    },
                     "substitutionDefinitions": {
                       "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
                       "items": {
@@ -1715,8 +1767,8 @@
                       "type": "string"
                     },
                     "useIntlWordSegmentation": {
-                      "description": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
-                      "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+                      "description": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
+                      "markdownDescription": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
                       "since": "10.2.0",
                       "type": "boolean"
                     },
@@ -1863,6 +1915,58 @@
                 "markdownDescription": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
                 "type": "array"
               },
+              "softWordBreakDefinitions": {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                      "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                      "since": "10.3.1",
+                      "type": "string"
+                    },
+                    {
+                      "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                      "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                      "since": "10.3.1",
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                            "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                            "since": "10.3.1",
+                            "type": "string"
+                          },
+                          {
+                            "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                            "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                            "since": "10.3.1",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    }
+                  ],
+                  "description": "A named set of soft word break rules.",
+                  "markdownDescription": "A named set of soft word break rules."
+                },
+                "description": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code` `error|code`, the following words would be checked against the dictionaries: `errorcode`, `error`, and `code`.",
+                "markdownDescription": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`\n`error|code`, the following words would be checked against\nthe dictionaries: `errorcode`, `error`, and `code`.",
+                "since": "10.3.1",
+                "type": "object"
+              },
+              "softWordBreaks": {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "description": "Allows enabling or disabling soft word break rules by name.",
+                "markdownDescription": "Allows enabling or disabling soft word break rules by name.",
+                "since": "10.3.1",
+                "type": "object"
+              },
               "substitutionDefinitions": {
                 "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
                 "items": {
@@ -1984,8 +2088,8 @@
                 "type": "string"
               },
               "useIntlWordSegmentation": {
-                "description": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
-                "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+                "description": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
+                "markdownDescription": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
                 "since": "10.2.0",
                 "type": "boolean"
               },
@@ -2053,6 +2157,58 @@
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
           "scope": "resource",
           "type": "array"
+        },
+        "cSpell.softWordBreakDefinitions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                "since": "10.3.1",
+                "type": "string"
+              },
+              {
+                "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                "since": "10.3.1",
+                "type": "string"
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                      "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                      "since": "10.3.1",
+                      "type": "string"
+                    },
+                    {
+                      "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                      "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                      "since": "10.3.1",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "type": "array"
+              }
+            ],
+            "description": "A named set of soft word break rules.",
+            "markdownDescription": "A named set of soft word break rules."
+          },
+          "description": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code` `error|code`, the following words would be checked against the dictionaries: `errorcode`, `error`, and `code`.",
+          "markdownDescription": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`\n`error|code`, the following words would be checked against\nthe dictionaries: `errorcode`, `error`, and `code`.",
+          "since": "10.3.1",
+          "type": "object"
+        },
+        "cSpell.softWordBreaks": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "description": "Allows enabling or disabling soft word break rules by name.",
+          "markdownDescription": "Allows enabling or disabling soft word break rules by name.",
+          "since": "10.3.1",
+          "type": "object"
         },
         "cSpell.substitutionDefinitions": {
           "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
@@ -2142,8 +2298,8 @@
           "type": "array"
         },
         "cSpell.useIntlWordSegmentation": {
-          "description": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
-          "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+          "description": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
+          "markdownDescription": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
           "since": "10.2.0",
           "type": "boolean"
         },
@@ -3568,6 +3724,58 @@
                 "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
                 "type": "array"
               },
+              "softWordBreakDefinitions": {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                      "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                      "since": "10.3.1",
+                      "type": "string"
+                    },
+                    {
+                      "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                      "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                      "since": "10.3.1",
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "description": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen. If the matching string is zero length, only a single soft-hyphen will be inserted. It is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                            "markdownDescription": "Represents a regular expression used for word break rules.\n\nThe matching string will be prefixed and suffixed with a soft-hyphen.\nIf the matching string is zero length, only a single soft-hyphen will be inserted.\nIt is best to use lookahead and lookbehind assertions to ensure correct word break positions.\n\nExamples:\n- `\"/(?<=\\\\bptr)/\"` -- The break would occur after the `ptr`, helping with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"/(?<=\\\\bI)(?=[A-Z])/\"` -- The break would occur before an uppercase letter following an `I` at a word boundary, helping with interface definitions like `IError`.",
+                            "since": "10.3.1",
+                            "type": "string"
+                          },
+                          {
+                            "description": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                            "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                            "since": "10.3.1",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "type": "array"
+                    }
+                  ],
+                  "description": "A named set of soft word break rules.",
+                  "markdownDescription": "A named set of soft word break rules."
+                },
+                "description": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code` `error|code`, the following words would be checked against the dictionaries: `errorcode`, `error`, and `code`.",
+                "markdownDescription": "Defines a set of word break rules that can be used for text segmentation.\n\nSoft word breaks are done through injecting soft-hyphens at the appropriate positions in the text before spell checking.\n\nThis allows for word breaks that might not be captured by the camel case detection.\n\nNote: soft-hyphens are removed before checking the word against the dictionaries.\n\nFor example, if there is a soft-hyphen (represented by a `|`) injected between `error` and `code`\n`error|code`, the following words would be checked against\nthe dictionaries: `errorcode`, `error`, and `code`.",
+                "since": "10.3.1",
+                "type": "object"
+              },
+              "softWordBreaks": {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "description": "Allows enabling or disabling soft word break rules by name.",
+                "markdownDescription": "Allows enabling or disabling soft word break rules by name.",
+                "since": "10.3.1",
+                "type": "object"
+              },
               "substitutionDefinitions": {
                 "description": "The set of available substitutions. This is a collection of substitution definitions that can be applied to a document before spell checking.",
                 "items": {
@@ -3677,8 +3885,8 @@
                 "type": "string"
               },
               "useIntlWordSegmentation": {
-                "description": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
-                "markdownDescription": "Enables enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
+                "description": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc. The locale used for the segmentation is based on the  {@link  language  }  setting.",
+                "markdownDescription": "Enables locale-sensitive text segmentation to support languages like Japanese, Chinese, Thai, Lao, Khmer, Myanmar, etc.\nThe locale used for the segmentation is based on the  {@link  language  }  setting.",
                 "since": "10.2.0",
                 "type": "boolean"
               },

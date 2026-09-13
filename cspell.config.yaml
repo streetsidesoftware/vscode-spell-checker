@@ -53,10 +53,10 @@ languageSettings:
     allowCompoundWords: false
 overrides:
   - filename: package.json
-    ignoreWords:
-      - colour
-      - canot
-      - incase
+    ignoreRegExpList:
+      - '/"description":\s+".*"/g'
+      - '/"markdownDescription":\s+".*"/g'
+
   - filename: '**/*.test.*'
     dictionaries:
       - lorem-ipsum
