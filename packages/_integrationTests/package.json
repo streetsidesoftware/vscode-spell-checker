@@ -29,7 +29,7 @@
     "@types/chai": "^5.2.3",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.20.1",
+    "@types/node": "^22.20.2",
     "chai": "^6.2.2",
     "cross-env": "^10.1.0"
   },
@@ -40,7 +40,7 @@
     "chalk": "^6.0.0",
     "glob": "^13.0.6",
     "kefir": "^3.8.8",
-    "mocha": "^12.0.0"
+    "mocha": "^12.0.1"
   },
   "overrides": {
     "mocha@11.7.5": {
