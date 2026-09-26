@@ -23,6 +23,7 @@ packages/_integrationTests/out/
 packages/*/dist/
 packages/*/out/**
 packages/webview-ui/public/build
+samples/parsers/*/src
 samples/php/**/vendor
 website/.docusaurus
 website/**/auto_*

@@ -47,6 +47,7 @@ import { isFileTypeEnabled } from './config/extractEnabledFileTypes.mjs';
 import { sanitizeSettings } from './config/sanitizeSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
+import { DocumentCheckedRangesStore } from './DocumentCheckedRangesStore.mjs';
 import { DocumentValidationController } from './DocumentValidationController.mjs';
 import { handleCheckDocumentRequest } from './handleCheckDocumentRequest.js';
 import { createProgressNotifier } from './progressNotifier.mjs';
@@ -128,6 +129,8 @@ export function run(): void {
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
+
+    const documentCheckedRangesStore = dd(new DocumentCheckedRangesStore());
 
     const handlers: PartialServerSideHandlers = {
         serverNotifications: {
@@ -323,6 +326,7 @@ export function run(): void {
         documents.onDidClose((event) => {
             const uri = event.document.uri;
             const sub = validationByDoc.get(uri);
+            documentCheckedRangesStore.clear(uri);
             if (sub) {
                 validationByDoc.delete(uri);
                 sub.unsubscribe();
@@ -478,9 +482,9 @@ export function run(): void {
         log('handleGetSpellCheckingOffsets', docRef.uri);
         const { uri } = docRef;
         const doc = documents.get(uri);
-        if (!doc) return { offsets: [] };
-        const docVal = await docValidationController.getDocumentValidator(doc);
-        const offsets = docVal.getCheckedTextRanges().flatMap((r) => [r.startPos, r.endPos]);
+        const ranges = documentCheckedRangesStore.get(uri);
+        if (!doc || !ranges) return { offsets: [] };
+        const offsets = ranges.flat();
         return { offsets };
     }
 
@@ -490,7 +494,14 @@ export function run(): void {
     }
 
     async function _handleCheckDocument(doc: Api.TextDocumentInfo, options?: Api.CheckDocumentOptions): Promise<Api.CheckDocumentResult> {
-        return handleCheckDocumentRequest(docValidationController, doc, options || {}, (uri) => documents.get(uri), shouldValidateDocument);
+        return handleCheckDocumentRequest(
+            docValidationController,
+            doc,
+            options || {},
+            documentCheckedRangesStore,
+            (uri) => documents.get(uri),
+            shouldValidateDocument,
+        );
     }
 
     async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
@@ -687,7 +698,7 @@ export function run(): void {
                     const settings = correctBadSettings(settingsToUse);
                     logProblemsWithSettings(settings);
                     dictionaryWatcher.processSettings(settings);
-                    const diagnostics: Diagnostic[] = await Validator.validateTextDocument(doc, settings);
+                    const diagnostics: Diagnostic[] = await Validator.validateTextDocument(doc, settings, documentCheckedRangesStore);
                     log(`validateTextDocument done: v${doc.version}`, uri);
                     return { ...result, diagnostics };
                 }

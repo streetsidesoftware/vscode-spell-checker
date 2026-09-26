@@ -6,6 +6,7 @@ import { describe, expect, test } from 'vitest';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { URI } from 'vscode-uri';
 
+import { DocumentCheckedRangesStore } from './DocumentCheckedRangesStore.mjs';
 import * as Validator from './validator.mjs';
 
 // cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
@@ -158,7 +159,8 @@ describe('Validator', () => {
             const settings = { ...getSettings(text, languageId), maxNumberOfProblems: 10 };
             const uri = URI.parse(import.meta.url).toString();
             const textDoc = TextDocument.create(uri, languageId, 1, text);
-            const results = await Validator.validateTextDocument(textDoc, settings);
+            const documentCheckedRangesStore = new DocumentCheckedRangesStore();
+            const results = await Validator.validateTextDocument(textDoc, settings, documentCheckedRangesStore);
             const words = results.map((diag) => diag.message);
             expect(words).toEqual(expect.arrayContaining([expect.stringContaining('wrongg')]));
             expect(words).toEqual(expect.arrayContaining([expect.stringContaining('mispelled')]));

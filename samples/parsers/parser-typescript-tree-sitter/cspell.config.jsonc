@@ -1,0 +1,4 @@
+{
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+    "import": ["@cspell/parser-typescript-tree-sitter/recommended"]
+}

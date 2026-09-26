@@ -1,0 +1,8 @@
+{
+  "name": "sample-parser-typescript-tree-sitter-wasm",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@cspell/parser-typescript-tree-sitter-wasm": "^1.1.0"
+  }
+}

@@ -46,54 +46,6 @@
         "cSpell.enabledFileTypes": { "github-actions-workflow": true },
         "svg.preview.background": "dark-transparent"
     },
-    "launch": {
-        "configurations": [
-            {
-                "type": "node",
-                "request": "launch",
-                "name": "Test: Jest current-file",
-                "program": "${workspaceFolder:Client}/../../node_modules/jest/bin/jest",
-                "cwd": "${fileDirname}",
-                "args": ["--runInBand", "${fileBasename}"],
-                "env": { "NODE_OPTIONS": "--experimental-vm-modules" },
-                "console": "integratedTerminal",
-                "internalConsoleOptions": "neverOpen"
-            },
-            {
-                "type": "node",
-                "request": "launch",
-                "name": "Test: Jest Entire Folder",
-                "program": "${workspaceFolder:Client}/../../node_modules/jest/bin/jest",
-                "cwd": "${fileWorkspaceFolder}",
-                "args": ["--runInBand"],
-                "env": { "NODE_OPTIONS": "--experimental-vm-modules" },
-                "console": "integratedTerminal",
-                "internalConsoleOptions": "neverOpen"
-            },
-            {
-                "type": "node",
-                "request": "launch",
-                "name": "Test: Vitest current-file",
-                "autoAttachChildProcesses": true,
-                "program": "${workspaceFolder:Client}/../../node_modules/vitest/vitest.mjs",
-                "cwd": "${fileWorkspaceFolder}",
-                "args": ["run", "--test-timeout=600000", "${relativeFile}"],
-                "console": "integratedTerminal"
-            },
-            {
-                "type": "node",
-                "request": "launch",
-                "name": "Test: Vitest Entire Folder",
-                "autoAttachChildProcesses": true,
-                "program": "${workspaceFolder:Client}/../../node_modules/vitest/vitest.mjs",
-                "cwd": "${fileWorkspaceFolder}",
-                "args": ["run", "--test-timeout=600000"],
-                "console": "integratedTerminal"
-            }
-        ],
-
-        "compounds": []
-    },
     "extensions": {
         "recommendations": [
             "streetsidesoftware.code-spell-checker",

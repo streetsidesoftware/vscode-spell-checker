@@ -4,6 +4,7 @@ import vscode from 'vscode';
 
 import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
+import { getDependencies } from '../di.mts';
 import type { Disposable } from '../disposable.js';
 import { createEmitter, map, pipe, throttle } from '../Subscribables/index.js';
 import { logError } from '../util/errors.js';
@@ -31,6 +32,7 @@ export class SpellingExclusionsDecorator implements Disposable {
             vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration(extensionId) && this.refreshEditor(undefined)),
             vscode.workspace.onDidChangeTextDocument((e) => this.refreshDocument(e.document)),
             vscode.languages.registerHoverProvider('*', this.getHoverProvider()),
+            getDependencies().issueTracker.onDidChangeDiagnostics((d) => this.refreshEditors(d.uris)),
             pipe(
                 this.eventEmitter,
                 map((e) => (e && this._pendingUpdates.add(e), e)),
@@ -60,6 +62,16 @@ export class SpellingExclusionsDecorator implements Disposable {
         this.eventEmitter.notify(editor);
     }
 
+    private refreshEditors(uris: readonly vscode.Uri[]) {
+        if (!this.visible) return;
+        for (const uri of uris) {
+            const editor = vscode.window.visibleTextEditors.find((e) => e.document.uri.toString() === uri.toString());
+            if (editor) {
+                this.refreshEditor(editor);
+            }
+        }
+    }
+
     private refreshDocument(doc: vscode.TextDocument) {
         if (!this.visible) return;
         const editor = vscode.window.visibleTextEditors.find((e) => e.document === doc);
@@ -82,7 +94,8 @@ export class SpellingExclusionsDecorator implements Disposable {
     private createDecorator() {
         this.decorationType?.dispose();
         this.decorationType = vscode.window.createTextEditorDecorationType({
-            opacity: '0.5',
+            opacity: '0.3',
+            textDecoration: 'line-through',
             // light: {
             //     // this color will be used in light color themes
             //     backgroundColor: '#8884',

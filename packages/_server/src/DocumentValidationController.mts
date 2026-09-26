@@ -106,7 +106,7 @@ export async function createDocumentValidator(
     const { uri, languageId, version } = textDocument;
     const docInfo = { uri, content, languageId, version };
     const doc = createTextDocument(docInfo);
-    const docVal = new DocumentValidator(doc, { noConfigSearch: true }, settings);
+    const docVal = new DocumentValidator(doc, { noConfigSearch: true, recordCheckedRanges: true }, settings);
     await docVal.prepare();
     return docVal;
 }
