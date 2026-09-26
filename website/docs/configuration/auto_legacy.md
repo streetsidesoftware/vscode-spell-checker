@@ -113,6 +113,76 @@ _`false`_
 ---
 
 
+### ~~`cSpell.allowedSchemas`~~
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+~~`cSpell.allowedSchemas`~~ -- Define Allowed Schemes
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
+
+Some schemes have special meaning like:
+- `untitled` - Used for new documents that have not yet been saved
+- `vscode-notebook-cell` - Used for validating segments of a Notebook.
+- `vscode-userdata` - Needed to spell check `.code-snippets`
+- `vscode-scm` - Needed to spell check Source Control commit messages.
+- `comment` - Used for new comment editors.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+window - Windows (instance) specific settings which can be configured in user, workspace, or remote settings.
+
+</dd>
+
+<dt>
+Deprecation Message
+</dt>
+<dd>
+
+- Use [`cSpell.enabledSchemes`](files-folders-and-workspaces#cspellenabledschemes) instead.
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+</dl>
+
+---
+
+
 ### ~~`cSpell.customFolderDictionaries`~~
 
 <dl>
@@ -324,6 +394,87 @@ Description
 <dd>
 
 Specify a list of file types to spell check. It is better to use [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes) to Enable / Disable checking files types.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`string[]`
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+resource - Resource settings, which apply to files and folders, and can be configured in all settings levels, even folder settings.
+
+</dd>
+
+<dt>
+Deprecation Message
+</dt>
+<dd>
+
+- Use [`cSpell.enabledFileTypes`](files-folders-and-workspaces#cspellenabledfiletypes) instead.
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+</dl>
+
+---
+
+
+### ~~`cSpell.enableFiletypes`~~
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+~~`cSpell.enableFiletypes`~~ -- Enable File Types
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Enable / Disable checking file types (languageIds).
+
+These are in additional to the file types specified by [`cSpell.enabledLanguageIds`](legacy#cspellenabledlanguageids).
+To disable a language, prefix with `!` as in `!json`,
+
+**Example: individual file types**
+
+```
+jsonc       // enable checking for jsonc
+!json       // disable checking for json
+kotlin      // enable checking for kotlin
+```
+
+**Example: enable all file types**
+
+```
+*           // enable checking for all file types
+!json       // except for json
+```
 
 </dd>
 
