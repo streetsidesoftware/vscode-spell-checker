@@ -160,7 +160,7 @@ many long ones that drift out of date.
 - Doc comments on shared or exported code: one line on what it does, plus anything non-obvious about how to call it.
   Use `@param` and `@returns` only when they add information beyond the name and type.
 - Tests: the test name states the intent. Comment only on setup that isn't obvious.
-- Leave existing comments alone unless you are changing that function.
+- Leave existing comments alone unless you are changing that function, or you are asked to.
 
 Settings doc comments are the exception: they are user documentation. See
 [Settings and commands](./docs/settings-and-commands.md#1-define-it).
@@ -183,6 +183,8 @@ Put a zero-width space between `*` and `/` to keep them apart. The file then nee
 ## Writing for users
 
 These rules apply to the root `README.md`, the website, settings descriptions, and `feat:`/`fix:` PR descriptions.
+
+`website/docs/` is for people who use the extension. `docs/` is for maintainers and contributors. Don't mix them.
 
 - Write for someone installing and using the extension, not for a contributor.
 - Use absolute `https://` links.

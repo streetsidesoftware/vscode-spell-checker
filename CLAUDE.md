@@ -52,63 +52,19 @@ Read the doc before changing that area. These are written for people too.
 
 ## Rules
 
-### Generated files
+These rules are written for people in the linked docs. Read the section before working in that area.
 
-Never edit these by hand. Change the source and regenerate (see `docs/settings-and-commands.md`):
-
-- `package.json` → `contributes` (all of it)
-- `packages/_server/spell-checker-config*.schema.json`
-- `website/docs/**/auto_*.md`
-- anything between `@@inject` markers, such as in `README.md` (`npm run build:readme`)
-- `CHANGELOG.md` and `.release-please-manifest.json` (Release Please)
-- the `vsce.preRelease` field in `package.json` (the Set Prerelease workflow)
-
-### Imports
-
-Relative imports name the output extension: `./foo.mjs` for `foo.mts`, and `./bar.js` for `bar.ts`. Some packages also
-allow `.ts` extensions. Match the surrounding code.
-
-### Comments
-
-The code is the source of truth. Keep the mental cost of reading it low: a few accurate comments beat many long ones
-that drift.
-
-- Don't explain what the code already shows. Explain why, only when it isn't obvious.
-- A comment should never take longer to read than the code it describes.
-- No rejected alternatives. Give a reason once, not in every place it applies.
-- No one-line comment with several clauses. Use a short multi-line list.
-- No paragraph full of `code` references. Split it into sentences or a list.
-- Comment lines stay at 140 characters or fewer.
-- Doc comments on shared or exported code: one line on what it does, plus anything non-obvious about calling it.
-  `@param` and `@returns` only when they add information beyond the name and type.
-- Tests: the test name states the intent. Comment only on setup that isn't obvious.
-- Leave existing comments alone unless you are changing that function, or you are asked to.
-
-Settings doc comments in `packages/_server/src/config/cspellConfig/` are the exception. They are user documentation: the
-Settings UI, the schema, and the website all show them. Write them for a user, with examples, following
-`docs/settings-and-commands.md`.
-
-### Invisible characters
-
-Write invisible and non-printing characters as escape sequences (`\u00a0`, `\u200b`, `\u2028`), including in strings,
-regular expressions, and `case` labels.
-
-The one exception: a zero-width space in a doc comment, between `*` and `/`, so a glob pattern or a C-style block
-comment in a Markdown code block doesn't end the comment. Doc comments can't use escapes. See `CONTRIBUTING.md`'s
-"Invisible characters".
-
-### Writing for users
-
-The root `README.md` (the Marketplace page), the `website/` docs, settings descriptions, and `feat:`/`fix:` PR
-descriptions are read by people who use the extension. Follow `CONTRIBUTING.md`'s "Writing for users". In short:
-
-- Write for someone using the extension, not a contributor.
-- Absolute `https://` links only.
-- Don't start a sentence with a code span.
-- Bold filename label above a whole-file example.
-- `cspell:ignore` comment for deliberate misspellings.
-
-`website/docs/` is for people who use the extension. `docs/` is for maintainers and contributors. Don't mix them.
+- **Generated files:** never edit them by hand. Change the source and regenerate. The list and the command for each are
+  in [`docs/build-and-packaging.md`](docs/build-and-packaging.md#generated-files).
+- **Imports:** relative imports name the output extension (`.mjs` for `.mts`). See
+  [Source files and imports](docs/build-and-packaging.md#source-files-and-imports).
+- **Comments:** few, short, and accurate; the code is the source of truth. Leave existing comments alone unless you are
+  changing that function or are asked to. Settings doc comments are user documentation. See
+  [Comments](CONTRIBUTING.md#comments).
+- **Invisible characters:** write them as escape sequences. The one exception is in doc comments. See
+  [Invisible characters](CONTRIBUTING.md#invisible-characters).
+- **Writing for users:** the root `README.md`, `website/`, settings descriptions, and `feat:`/`fix:` PR descriptions
+  are read by people who use the extension. See [Writing for users](CONTRIBUTING.md#writing-for-users).
 
 ### Docs for people
 

@@ -75,6 +75,17 @@ vitest configuration.
 - The client imports the server's shared code as `code-spell-checker-server/api` and `code-spell-checker-server/lib`.
   Both are built output. Build before running the client's tests after changing the server.
 
+## Generated files
+
+Never edit these by hand. Change the source, then regenerate.
+
+| Generated                                                                             | Regenerate with                                                               |
+| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `package.json` → `contributes`, the settings schemas, and `website/docs/**/auto_*.md` | See [Settings and commands](./settings-and-commands.md#what-is-generated)     |
+| Anything between `@@inject` markers, such as in `README.md`                           | `npm run build:readme`                                                        |
+| `CHANGELOG.md` and `.release-please-manifest.json`                                    | Release Please (see [Releasing](./releasing.md))                              |
+| The `vsce.preRelease` field in `package.json`                                         | The Set Prerelease workflow (see [Releasing](./releasing.md#prerelease-mode)) |
+
 ## Packaging the `.vsix`
 
 - `npm run test-vsce-build` packages the extension into `temp/code-spell-checker.vsix`. CI runs it on Linux to check
