@@ -90,7 +90,7 @@ Settings UI, the schema, and the website all show them. Write them for a user, w
 
 ### Invisible characters
 
-Write invisible and non-printing characters as escape sequences (` `, `​`, ` `), including in strings,
+Write invisible and non-printing characters as escape sequences (`\u00a0`, `\u200b`, `\u2028`), including in strings,
 regular expressions, and `case` labels. The exception is a rendered doc comment, which can't use escapes; see
 `CONTRIBUTING.md`'s "Invisible characters".
 
