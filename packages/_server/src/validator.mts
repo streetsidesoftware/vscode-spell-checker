@@ -9,6 +9,7 @@ import type { SpellCheckerDiagnosticData, SpellingDiagnostic, Suggestion } from 
 import type { CSpellUserAndExtensionSettings } from './config/cspellConfig/index.mjs';
 import type { UnknownWordsReportingLevel } from './config/cspellConfig/SpellCheckerSettings.mjs';
 import { diagnosticSource } from './constants.mjs';
+import type { DocumentCheckedRangesStore } from './DocumentCheckedRangesStore.mjs';
 import { createDocumentValidator } from './DocumentValidationController.mjs';
 
 export { createTextDocument, validateText } from 'cspell-lib';
@@ -24,10 +25,16 @@ const diagSeverityMap: Map<string, DiagnosticSeverity | undefined> = new Map([
     ['off', undefined],
 ]);
 
-export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserAndExtensionSettings): Promise<Diagnostic[]> {
+export async function validateTextDocument(
+    textDocument: TextDocument,
+    options: CSpellUserAndExtensionSettings,
+    documentCheckedRangesStore: DocumentCheckedRangesStore,
+): Promise<Diagnostic[]> {
     const { severity, severityFlaggedWords, severityHint } = calcSeverity(textDocument.uri, options);
     const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
+    const ranges = [...docVal.getRangesChecked()];
+    documentCheckedRangesStore.set(textDocument.uri, ranges);
     const reportUnknownWords = calcReportingLevel(options.reportUnknownWords, options);
     const diags = r
         // Convert the offset into a position

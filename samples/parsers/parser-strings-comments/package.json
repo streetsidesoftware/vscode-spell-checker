@@ -1,0 +1,8 @@
+{
+    "name": "sample-parser-strings-comments",
+    "private": true,
+    "type": "module",
+    "devDependencies": {
+        "@cspell/parser-strings-comments": "^1.1.0"
+    }
+}
