@@ -4,6 +4,7 @@ language: en-US
 flagWords:
   - hte
 ignorePaths:
+  - .claude/worktrees/**
   - .git/*/**
   - .git/!(COMMIT_EDITMSG)
   - .gitignore

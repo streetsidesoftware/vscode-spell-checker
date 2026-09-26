@@ -67,3 +67,6 @@ website/build
 # Do not add accidental yarn.lock or pnpm-lock.yaml
 yarn.lock
 pnpm-lock.yaml
+
+# Claude Code worktrees
+.claude/worktrees/

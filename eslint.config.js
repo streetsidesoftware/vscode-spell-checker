@@ -21,6 +21,7 @@ export default defineConfig(
         ignores: [
             '.github/**/*.yaml',
             '.github/**/*.yml',
+            '.claude/worktrees/**',
             '**/__snapshots__/**',
             '**/.vscode-test/**',
             '**/.yarn/**',

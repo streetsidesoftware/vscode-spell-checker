@@ -52,7 +52,7 @@
         {
             "type": "refactor",
             "section": "Code Refactoring",
-            "hidden": false
+            "hidden": true
         },
         {
             "type": "test",

@@ -116,6 +116,7 @@ uri's
 userdata
 visualstudio
 vsce
+vscodeignore
 VSIX
 vsmarketplacebadge
 webhook
@@ -124,6 +125,8 @@ webpack'ed
 webview
 webviews
 WHATWG
+worktree
+worktrees
 xhmikosr
 yandex
 unreadably
