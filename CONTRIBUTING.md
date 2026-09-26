@@ -13,7 +13,7 @@ is the root [`README.md`](./README.md). The user documentation is the [website](
 
 ## TL;DR
 
-- **Set up:** `npm install`, then `npm run build` and `npm test`. npm only: `yarn` and `pnpm` are blocked.
+- **Set up:** `npm ci`, then `npm run build` and `npm test`. npm only: `yarn` and `pnpm` are blocked.
 - **Principles:** an action changes only what the user picked, and false positives stay low. See
   [Design principles](./docs/design-principles.md).
 - **Settings and commands** are defined in TypeScript and generated into `package.json` and the website. Never edit the
@@ -38,10 +38,13 @@ is the root [`README.md`](./README.md). The user documentation is the [website](
 Use the Node.js version in `.nvmrc`.
 
 ```sh
-npm install
+npm ci
 npm run build
 npm test
 ```
+
+`npm ci` installs the exact versions in `package-lock.json` and doesn't change it. Use `npm install` only when you
+add, remove, or update a dependency.
 
 Run the tests of one package, or one file, from the repo root:
 
