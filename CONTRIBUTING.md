@@ -1,4 +1,4 @@
-# vscode-spell-checker
+# Contributing to Code Spell Checker
 
 [![](https://vsmarketplacebadges.dev/installs-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadges.dev/rating-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
