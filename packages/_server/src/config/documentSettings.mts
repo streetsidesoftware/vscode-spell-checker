@@ -230,6 +230,7 @@ export class DocumentSettings {
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
         if (!canCheckAgainstGlob(uri)) return undefined;
         if (!extSettings.settings.useGitignore) return undefined;
+        await this.addRepoRootForFile(uri);
         return await this.gitIgnore.isIgnored(urlToFilepath(uri));
     }
 
@@ -244,10 +245,7 @@ export class DocumentSettings {
     private async _isGitIgnoredEx(extSettings: ExtSettings, uri: Uri): Promise<GitignoreResultInfo | undefined> {
         if (!canCheckAgainstGlob(uri)) return undefined;
         if (!extSettings.settings.useGitignore) return undefined;
-        const root = await this.fetchRepoRootForFile(uri);
-        if (root) {
-            this.gitIgnore.addRoots([uriToGlobPath(root)]);
-        }
+        await this.addRepoRootForFile(uri);
         const results = await this.gitIgnore.isIgnoredEx(uriToGlobPath(uri));
         if (!results) return undefined;
         const info = { ...results };
@@ -374,6 +372,13 @@ export class DocumentSettings {
         ).map((v) => v || {}) as [CSpellUserAndExtensionSettings, VsCodeSettings];
 
         return { cSpell, search };
+    }
+
+    private async addRepoRootForFile(uri: Uri): Promise<void> {
+        const root = await this.fetchRepoRootForFile(uri);
+        if (root) {
+            this.gitIgnore.addRoots([uriToGlobPath(root)]);
+        }
     }
 
     private async fetchRepoRootForFile(uriFile: string | Uri) {
