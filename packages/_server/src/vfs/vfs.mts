@@ -100,10 +100,11 @@ export interface FindRepoRootOptions {
 
 /**
  * Look for the root of a git repository.
+ * The root has a `.git` directory (a clone) or a `.git` file (a worktree); the nearest one wins.
  * @param url - url to find the repo root for.
  * @returns Resolves to URL or undefined
  */
 export async function findRepoRoot(url: URL | URI | string, options?: FindRepoRootOptions): Promise<URL | undefined> {
-    const found = await findUp('.git/', { ...options, cwd: toUrl(url), predicate: (_url, stat) => stat.isDirectory() });
-    return found ? new URL('..', found) : undefined;
+    const found = await findUp('.git', { ...options, cwd: toUrl(url) });
+    return found ? new URL('.', found) : undefined;
 }
