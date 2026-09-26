@@ -42,6 +42,7 @@ export default defineConfig(
             'packages/*/dist/**',
             'packages/*/out/**',
             'packages/client/server/**',
+            'samples/parsers/*/src',
             'website/.docusaurus/**',
             'website/**',
             'website/build/**',

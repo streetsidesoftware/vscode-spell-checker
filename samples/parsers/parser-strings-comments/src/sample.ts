@@ -1,5 +1,6 @@
-import { collectionz } from './collectionz.js';
 import { craaaey } from 'craaaey';
+
+import { collectionz } from './collectionz.js';
 
 /** Doc coment: adds the itemz in the shoping cart. */
 export function calculteTotl(itemz: number[]): number {
