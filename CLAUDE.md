@@ -91,8 +91,11 @@ Settings UI, the schema, and the website all show them. Write them for a user, w
 ### Invisible characters
 
 Write invisible and non-printing characters as escape sequences (`\u00a0`, `\u200b`, `\u2028`), including in strings,
-regular expressions, and `case` labels. The exception is a rendered doc comment, which can't use escapes; see
-`CONTRIBUTING.md`'s "Invisible characters".
+regular expressions, and `case` labels.
+
+The one exception: a zero-width space in a doc comment, between `*` and `/`, so a glob pattern or a C-style block
+comment in a Markdown code block doesn't end the comment. Doc comments can't use escapes. See `CONTRIBUTING.md`'s
+"Invisible characters".
 
 ### Writing for users
 

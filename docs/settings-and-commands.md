@@ -36,6 +36,8 @@ The doc comment is what users see: it becomes the description in the Settings UI
 
 - Write for a user: what the setting does, and when to change it.
 - Add an example where it helps.
+- A glob pattern or a `/* ... */` comment in an example's code block needs a zero-width space between `*` and `/`.
+  See [`CONTRIBUTING.md`](../CONTRIBUTING.md#invisible-characters).
 - Don't start a sentence with a code span.
 - Use the tags the schema generator reads:
     - `@title`

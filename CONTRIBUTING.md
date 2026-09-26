@@ -169,9 +169,14 @@ Write invisible and non-printing characters as escape sequences (`\u00a0`, `\u20
 regular expressions, and `case` labels. A literal invisible character can't be seen in a review, and editors can
 silently change it.
 
-Doc comments that are rendered as documentation can't use escapes. Where one needs an invisible character, such as a
-zero-width space to keep `**/` from ending the comment, add `/* eslint-disable no-irregular-whitespace */` to the file,
-as `packages/_server/src/config/cspellConfig/cspellConfig.mts` does.
+The one exception is a zero-width space inside a doc comment. A doc comment can't use escapes, and some text in it
+would otherwise end the comment early. This happens in a Markdown code block inside a doc comment that shows:
+
+- a glob pattern, such as `**/*.ts`
+- a C-style block comment, such as `/* ... */`
+
+Put a zero-width space between `*` and `/` to keep them apart. The file then needs
+`/* eslint-disable no-irregular-whitespace */`. See `packages/_server/src/config/cspellConfig/cspellConfig.mts`.
 
 ## Writing for users
 
