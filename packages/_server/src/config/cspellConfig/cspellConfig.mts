@@ -241,17 +241,20 @@ type _VSConfigPerf = Pick<
 type VSConfigMenusAndActions = PrefixWithCspell<_VSConfigMenusAndActions>;
 type _VSConfigMenusAndActions = Pick<SpellCheckerSettingsVSCodeBase, keyof MenusAndActions>;
 
-type ExtensionConfigKeys =
+type NonLegacyExtensionConfigKeys =
     | keyof _VSConfigAdvanced
     | keyof _VSConfigAppearance
     | keyof _VSConfigExperimental
     | keyof _VSConfigFilesAndFolders
     | keyof _VSConfigLanguageAndDictionaries
-    | keyof _VSConfigLegacy
     | keyof _VSConfigMenusAndActions
     | keyof _VSConfigPerf
     | keyof _VSConfigReporting
     | keyof _VSConfigRoot;
+
+type ExtensionConfigKeys = NonLegacyExtensionConfigKeys | keyof _VSConfigLegacy;
+
+type LegacyKeysInOtherGroups = Extract<NonLegacyExtensionConfigKeys, LegacySettingsKeys>;
 
 type KeysCSpellLibSettings = keyof CSpellLibSettings;
 
@@ -286,7 +289,7 @@ type _VSConfigFilesAndFolders = Pick<
     | 'useGitignore'
     | 'usePnP'
     | 'workspaceRootPath'
-    | Exclude<keyof FileTypesAndSchemeSettings, 'allowedSchemas' | 'enableFiletypes'>
+    | Exclude<keyof FileTypesAndSchemeSettings, LegacySettingsKeys>
 >;
 
 /**
@@ -297,14 +300,7 @@ type _VSConfigFilesAndFolders = Pick<
 type VSConfigAppearance = PrefixWithCspell<_VSConfigAppearance>;
 type _VSConfigAppearance = Pick<SpellCheckerSettingsVSCodeBase, keyof AppearanceSettings>;
 
-/**
- * @title Legacy
- * @description Legacy settings that have been deprecated or are not commonly used.
- * @order 20
- */
-type VSConfigLegacy = PrefixWithCspell<_VSConfigLegacy>;
-type _VSConfigLegacy = Pick<
-    SpellCheckerSettingsVSCodeBase,
+type LegacySettingsKeys =
     | 'allowCompoundWords'
     | 'allowedSchemas'
     | 'customFolderDictionaries'
@@ -313,8 +309,15 @@ type _VSConfigLegacy = Pick<
     | 'enableFiletypes'
     | 'enabledLanguageIds'
     | 'showStatus'
-    | 'showStatusAlignment'
->;
+    | 'showStatusAlignment';
+
+/**
+ * @title Legacy
+ * @description Legacy settings that have been deprecated or are not commonly used.
+ * @order 20
+ */
+type VSConfigLegacy = PrefixWithCspell<_VSConfigLegacy>;
+type _VSConfigLegacy = Pick<SpellCheckerSettingsVSCodeBase, LegacySettingsKeys>;
 
 /**
  * @title Advanced
@@ -365,3 +368,8 @@ export type SpellCheckerSettingsVSCode = [
  * configuration keys going to CSpell.
  */
 export const unusedConfig: unknown = {} as const satisfies Record<UnassignedConfigKeysGoingToCSpell, boolean>;
+
+/**
+ * This is a compile-time check to ensure that legacy settings are only listed in the Legacy group.
+ */
+export const legacyConfigInOtherGroups: unknown = {} as const satisfies Record<LegacyKeysInOtherGroups, boolean>;

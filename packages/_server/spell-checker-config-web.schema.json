@@ -1993,7 +1993,7 @@
       ],
       "type": "object"
     },
-    "Prefix<alias-653189051-10063-10366-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-10240-10543-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.advanced.feature.useReferenceProviderRemove": {
@@ -2058,7 +2058,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-10563-10771-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-10740-10948-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.experimental.enableRegexpView": {
@@ -2088,7 +2088,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5457-5527-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-5457-5527-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.enabled": {
@@ -2101,7 +2101,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5753-6147-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-5753-6147-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.caseSensitive": {
@@ -2216,7 +2216,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-6352-6870-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-6352-6870-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.autoFormatConfigFile": {
@@ -2369,7 +2369,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7042-7330-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-7042-7330-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
@@ -2417,7 +2417,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7551-7644-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-7551-7644-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowWordsToBeAddTo": {
@@ -2539,7 +2539,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8345-8427-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-8499-8581-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.engines": {
@@ -2846,7 +2846,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8645-9123-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-8799-9259-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.checkOnlyEnabledFileTypes": {
@@ -3033,7 +3033,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9305-9396-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-9441-9532-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.dark": {
@@ -3316,7 +3316,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9576-9892-653189051-0-11315,\"cSpell.\">": {
+    "Prefix<alias-653189051-9988-10069-653189051-0-11715,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowCompoundWords": {
@@ -3431,38 +3431,38 @@
       },
       "type": "object"
     },
-    "PrefixWithCspell<alias-653189051-10063-10366-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10063-10366-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10240-10543-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10240-10543-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-10563-10771-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10563-10771-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10740-10948-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10740-10948-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5457-5527-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5457-5527-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5457-5527-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5457-5527-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5753-6147-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5753-6147-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5753-6147-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5753-6147-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-6352-6870-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-6352-6870-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-6352-6870-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-6352-6870-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7042-7330-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7042-7330-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7042-7330-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7042-7330-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7551-7644-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7551-7644-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7551-7644-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7551-7644-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8345-8427-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8345-8427-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8499-8581-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8499-8581-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8645-9123-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8645-9123-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8799-9259-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8799-9259-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9305-9396-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9305-9396-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9441-9532-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9441-9532-653189051-0-11715%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9576-9892-653189051-0-11315>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9576-9892-653189051-0-11315%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9988-10069-653189051-0-11715>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9988-10069-653189051-0-11715%2C%22cSpell.%22%3E"
     },
     "RegExpList": {
       "items": {
@@ -3481,61 +3481,61 @@
           "$ref": "#/definitions/VSConfigAdvanced"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9305-9396-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9441-9532-653189051-0-11715%3E",
           "description": "Settings that control the appearance of the spell checker.",
           "order": 6,
           "title": "Appearance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8345-8427-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8499-8581-653189051-0-11715%3E",
           "description": "Settings related to CSpell Command Line Tool.",
           "order": 5,
           "title": "CSpell"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10563-10771-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10740-10948-653189051-0-11715%3E",
           "description": "Experimental settings that may change or be removed in the future.",
           "order": 19,
           "title": "Experimental"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8645-9123-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8799-9259-653189051-0-11715%3E",
           "description": "Settings that control which files and folders are spell checked.",
           "order": 3,
           "title": "Files, Folders, and Workspaces"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5753-6147-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5753-6147-653189051-0-11715%3E",
           "description": "Settings that control dictionaries and language preferences.",
           "order": 1,
           "title": "Languages and Dictionaries"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9576-9892-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9988-10069-653189051-0-11715%3E",
           "description": "Legacy settings that have been deprecated or are not commonly used.",
           "order": 20,
           "title": "Legacy"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7551-7644-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7551-7644-653189051-0-11715%3E",
           "description": "Settings that control the menu items and actions available in the spell checker.",
           "order": 7,
           "title": "Menus and Actions"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7042-7330-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7042-7330-653189051-0-11715%3E",
           "description": "Settings that control the performance of the spell checker.",
           "order": 4,
           "title": "Performance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6352-6870-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6352-6870-653189051-0-11715%3E",
           "description": "Settings that control how the spell checker reports and displays errors.",
           "order": 2,
           "title": "Reporting and Display"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5457-5527-653189051-0-11315%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5457-5527-653189051-0-11715%3E",
           "description": "Settings that control the behavior of the spell checker.",
           "order": 0,
           "title": "Code Spell Checker"
@@ -3555,7 +3555,7 @@
       "type": "string"
     },
     "VSConfigAdvanced": {
-      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10063-10366-653189051-0-11315%3E",
+      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10240-10543-653189051-0-11715%3E",
       "description": "Advanced settings that are not commonly used.",
       "order": 18,
       "title": "Advanced"
