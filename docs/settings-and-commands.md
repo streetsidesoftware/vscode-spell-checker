@@ -71,7 +71,13 @@ section go to the "CSpell" section.
 Add it to `ConfigFields` in `packages/_server/src/config/cspellConfig/configFields.mts`. The type requires every
 setting, so a missing entry is a type error.
 
-### 4. Regenerate
+### 4. Add its default to `configDefaults`
+
+If the setting has a `@default`, add the same value to `configDefaults.mts` in the same folder: the key to
+`ConfigFieldsWithDefaults`, and the value to `configDefaults`. The code reads defaults from there. A test in
+`configDefaults.test.mts` checks that it matches every `@default` in the generated schema.
+
+### 5. Regenerate
 
 ```sh
 npm run build
@@ -84,10 +90,19 @@ Check the diff:
 - Both schema files changed.
 - The matching `website/docs/configuration/auto_*.md` page describes it.
 
-### 5. Use it
+### 6. Use it
 
-In the client, read it with `getSettingFromVSConfig(ConfigFields.mySetting, document)` from
-`packages/client/src/settings/vsConfig.mts`.
+- **In the client,** read it with `getSettingFromVSConfig(ConfigFields.mySetting, document)` from
+  `packages/client/src/settings/vsConfig.mts`.
+- **In the server,** it arrives with no extra wiring. The server asks VS Code for the whole `cSpell` section
+  (`packages/_server/src/config/documentSettings.mts`), and the client tells it when that section changes.
+- **Merging with cspell config files:** a setting only the extension reads needs nothing. A field that cspell itself
+  reads may need an entry in `cspellMergeFields.mts`.
+
+### 7. Test it
+
+- Add tests next to the code that uses the setting.
+- Run `npm run build` before `npm test`: the `configDefaults` test reads the generated schema.
 
 ## Adding a command
 
