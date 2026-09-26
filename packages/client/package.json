@@ -69,11 +69,11 @@
     "vscode-uri": "^3.2.0",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webpack-cli": "^7.2.3",
-    "webpack": "^5.110.3",
+    "webpack": "^5.111.1",
     "webview-api": "file:../webview-api",
     "webview-ui": "file:../webview-ui",
-    "yaml": "^2.9.0",
-    "yargs": "^18.1.0"
+    "yaml": "^2.9.1",
+    "yargs": "^18.2.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.3.3"
