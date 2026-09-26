@@ -71,7 +71,13 @@ section go to the "CSpell" section.
 Add it to `ConfigFields` in `packages/_server/src/config/cspellConfig/configFields.mts`. The type requires every
 setting, so a missing entry is a type error.
 
-### 4. Regenerate
+### 4. Add its default to `configDefaults`
+
+If the setting has a `@default`, add the same value to `configDefaults.mts` in the same folder: the key to
+`ConfigFieldsWithDefaults`, and the value to `configDefaults`. The code reads defaults from there. A test in
+`configDefaults.test.mts` checks that it matches every `@default` in the generated schema.
+
+### 5. Regenerate
 
 ```sh
 npm run build
@@ -84,10 +90,85 @@ Check the diff:
 - Both schema files changed.
 - The matching `website/docs/configuration/auto_*.md` page describes it.
 
-### 5. Use it
+### 6. Use it
 
-In the client, read it with `getSettingFromVSConfig(ConfigFields.mySetting, document)` from
-`packages/client/src/settings/vsConfig.mts`.
+- **In the client,** read it with `getSettingFromVSConfig(ConfigFields.mySetting, document)` from
+  `packages/client/src/settings/vsConfig.mts`.
+- **In the server,** it arrives with no extra wiring. The server asks VS Code for the whole `cSpell` section
+  (`packages/_server/src/config/documentSettings.mts`), and the client tells it when that section changes.
+- **Merging with cspell config files:** a setting only the extension reads needs nothing. A field that cspell itself
+  reads may need an entry in `cspellMergeFields.mts`.
+
+### 7. Test it
+
+- Add tests next to the code that uses the setting.
+- Run `npm run build` before `npm test`: the `configDefaults` test reads the generated schema.
+
+## Changing a setting
+
+People's `settings.json` files depend on a setting's name, type, and meaning. A change must keep existing setups
+working, so a setting is never renamed or removed in one step: the old one is deprecated first.
+
+### Before you start
+
+- Weigh the change against the [design principles](./design-principles.md).
+- If a decision has more than one reasonable answer with lasting effects (a new name, a new shape, a default that
+  changes what gets flagged), design it with [ADRs](./ADRs/README.md) first.
+- Pick the commit type by what users notice. See [`CONTRIBUTING.md`](../CONTRIBUTING.md#commit-messages).
+
+### Changing a default
+
+1. Change `@default` in the doc comment, and the same value in `configDefaults.mts`.
+2. Regenerate (`npm run build`, `npm run gen-docs`) and run the tests.
+3. In the release note, say what changes for users and how to keep the old behavior: set the setting to the old value.
+
+### Changing a type
+
+Changing a type in place breaks the values people already have. Either:
+
+- accept both the old and the new form, and handle both in the code, or
+- add a setting with a new name and deprecate the old one, as in [Renaming a setting](#renaming-a-setting).
+
+### Renaming a setting
+
+1. Add the new setting, following [Adding a setting](#adding-a-setting).
+2. Deprecate the old one, following [Deprecating a setting](#deprecating-a-setting).
+3. Keep the old value working:
+    - Read the old setting first, then let the new one override it. When both are set, the new one wins.
+    - When the extension writes the setting, it writes only the new name.
+    - See `packages/_server/src/config/extractEnabledFileTypes.mts` (`enabledLanguageIds` and `enableFiletypes` →
+      `enabledFileTypes`) for an example.
+4. Test the three cases: only the old name set, only the new name set, and both set.
+
+### Deprecating a setting
+
+1. Add `@deprecated true` and a `@deprecationMessage` to the doc comment:
+    - with a replacement: ``@deprecationMessage - Use `#cSpell.newName#` instead.``
+    - without one: say why, for example `@deprecationMessage No longer supported.`
+2. Move it to the Legacy section: remove it from its section's list in `cspellConfig.mts`, and add it to
+   `_VSConfigLegacy`.
+3. Keep it in `ConfigFields` and `configDefaults`, and keep reading it.
+4. Regenerate. The Settings UI shows the deprecation message, and the website lists the setting as deprecated.
+
+Moving old values to the new setting is the job of a planned migration command. It will move deprecated settings to
+their replacements, and the extension will offer to run it when it finds a deprecated setting. Until it exists, reading
+the old setting as a fallback is what keeps old values working.
+
+### Removing a setting
+
+A setting can be removed only when both are true:
+
+- it has been deprecated, and
+- the migration offer has shipped, and at least one minor release has followed it.
+
+Until the migration command exists, deprecated settings stay.
+
+To remove one:
+
+1. Delete the property from its interface, from `_VSConfigLegacy`, from `ConfigFields`, and from `configDefaults`.
+2. Delete the code that read it as a fallback.
+3. Regenerate and run the tests.
+4. Use `fix!:` if a setup that still uses the old setting would break.
 
 ## Adding a command
 
