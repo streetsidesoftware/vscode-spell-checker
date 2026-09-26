@@ -115,7 +115,8 @@ Two kinds of commit are shown in the release notes even though they aren't featu
 
 - **cspell and dictionary updates** (`Update CSpell from …`). cspell does the spell checking, so a new version changes
   what users see. `update-cspell.yml` picks the type: `feat:` for a major or minor cspell update, `fix:` for a patch.
-  Don't reclassify them.
+  Never lower that type. A major cspell update must be at least a minor release of the extension; raise it to `feat!:`
+  when it should be a major release.
 - **`fix: Prepare for Release`**, which turns off prerelease mode and starts a release. See
   [Releasing](./docs/releasing.md#prerelease-mode).
 

@@ -107,4 +107,5 @@ The full package list is in `docs/build-and-packaging.md`.
 
 Dependabot (`.github/dependabot.yml`) and the `update-dependencies.yml` and `update-cspell.yml` workflows open the
 update PRs. CSpell and dictionary updates are `feat:` (major or minor) or `fix:` (patch), set by `update-cspell.yml`.
-Don't reclassify them: cspell does the checking, so users see the change.
+Never lower that type: cspell does the checking, so users see the change. A major cspell update must be at least a
+minor release of the extension.

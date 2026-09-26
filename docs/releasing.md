@@ -60,7 +60,9 @@ The extension does its spell checking with cspell, so a new cspell version or di
 
 - `update-cspell.yml` opens `Update CSpell from … to …` PRs, and picks the type itself: `feat:` for a major or minor
   cspell update, `fix:` for a patch.
-- Don't reclassify them. Either type lists the update in the release notes and starts a release.
+- Either type lists the update in the release notes and starts a release.
+- Never lower the type. A major cspell update must be at least a minor release of the extension. A maintainer can raise
+  it to `feat!:` to make it a major release.
 - This is the only kind of dependency update that belongs in the release notes. Other dependency updates are `chore:`
   (Dependabot) or `ci:` (`update-dependencies.yml`).
 

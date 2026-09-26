@@ -37,8 +37,9 @@ PR already merged under the wrong type. It doesn't replace getting the type righ
 Read these first. They are the rules; this step only applies them:
 
 - `CONTRIBUTING.md`'s "Commit messages": which types are shown in the release notes and which are hidden, what `feat`
-  and `fix` mean, and the commits whose type is on purpose (cspell updates, `fix: Prepare for Release`). Never flag
-  those.
+  and `fix` mean, and the commits whose type is on purpose (cspell updates, `fix: Prepare for Release`). Never propose
+  a lower type for those. Do flag a major cspell update that isn't at least `feat:`: it must be at least a minor
+  release of the extension.
 - `release-please-config.json`'s `changelog-sections`: which section each shown type goes under.
 
 Fetch the release PR's description. It lists the entries by section, each linking to its source PR. For each entry:
