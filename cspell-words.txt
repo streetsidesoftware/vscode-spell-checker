@@ -125,6 +125,7 @@ webpack'ed
 webview
 webviews
 WHATWG
+worktree
 worktrees
 xhmikosr
 yandex
