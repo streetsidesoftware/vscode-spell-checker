@@ -273,10 +273,8 @@ type _VSConfigCSpell = Omit<SpellCheckerSettingsVSCodeBase, ExtensionConfigKeys>
 type VSConfigFilesAndFolders = PrefixWithCspell<_VSConfigFilesAndFolders>;
 type _VSConfigFilesAndFolders = Pick<
     SpellCheckerSettingsVSCodeBase,
-    | 'allowedSchemas'
     | 'checkOnlyEnabledFileTypes'
     | 'checkVSCodeSystemFiles'
-    | 'enableFiletypes'
     | 'files'
     | 'globRoot'
     | 'ignorePaths'
@@ -288,7 +286,7 @@ type _VSConfigFilesAndFolders = Pick<
     | 'useGitignore'
     | 'usePnP'
     | 'workspaceRootPath'
-    | keyof FileTypesAndSchemeSettings
+    | Exclude<keyof FileTypesAndSchemeSettings, 'allowedSchemas' | 'enableFiletypes'>
 >;
 
 /**
@@ -308,9 +306,11 @@ type VSConfigLegacy = PrefixWithCspell<_VSConfigLegacy>;
 type _VSConfigLegacy = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'allowCompoundWords'
+    | 'allowedSchemas'
     | 'customFolderDictionaries'
     | 'customUserDictionaries'
     | 'customWorkspaceDictionaries'
+    | 'enableFiletypes'
     | 'enabledLanguageIds'
     | 'showStatus'
     | 'showStatusAlignment'
