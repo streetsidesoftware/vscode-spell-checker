@@ -34,42 +34,25 @@ PR already merged under the wrong type. It doesn't replace getting the type righ
 
 ### 2. Audit the release PR
 
-This repo releases one package, the extension, so the release PR is one changelog. `release-please-config.json` maps
-commit types to sections.
+Read these first. They are the rules; this step only applies them:
 
-Shown in the changelog:
+- `CONTRIBUTING.md`'s "Commit messages": which types are shown in the release notes and which are hidden, what `feat`
+  and `fix` mean, and the commits whose type is on purpose (cspell updates, `fix: Prepare for Release`). Never flag
+  those.
+- `release-please-config.json`'s `changelog-sections`: which section each shown type goes under.
 
-- `### Features`: `feat` (and `feature`)
-- `### Updates and Bug Fixes`: `fix`
-- `### Performance Improvements`: `perf`
-- `### Reverts`: `revert`
+Fetch the release PR's description. It lists the entries by section, each linking to its source PR. For each entry:
 
-Hidden: `refactor`, `chore`, `docs`, `style`, `test`, `ci`, `build`, `dev`. Reclassifying an entry into a hidden type
-removes it from the release notes; it doesn't just move it.
-
-Fetch the release PR's description. It lists the entries under those headings, each linking to its source PR. Read
-`CONTRIBUTING.md`'s "Commit messages" for the current definitions:
-
-- `feat` is only for something users can do that they couldn't before.
-- `fix` is any other change users would notice: a bug fix, a changed default or behavior, a removal.
-- Everything else (tooling, `.claude/` skills, CI, lint config, internal restructuring, contributor docs) is a hidden
-  type.
-
-For each shown entry, judge from its line whether a user of the extension would notice it. For each Features entry,
-also judge whether it's a new capability; if it only changes existing behavior, it's `fix`.
-
-Never flag these. Their types are on purpose:
-
-- **`Update CSpell from … to …`** and dictionary bundle updates. `update-cspell.yml` makes them `feat:` for a major or
-  minor cspell update and `fix:` for a patch. cspell does the spell checking, so users see the change.
-- **`fix: Prepare for Release`**. It turns off prerelease mode and starts a release (see `docs/releasing.md`).
+- Would a user of the extension notice it? If not, it belongs under a hidden type. Reclassifying it removes it from
+  the release notes; it doesn't just move it.
+- For a Features entry: is it a new capability? If it only changes existing behavior, it's `fix`.
 
 Present the flagged entries with your reasoning and PR numbers, and get the user's confirmation on which to correct
 before touching anything. This is a reading of one-line summaries, not a diff review, so a human makes the call.
 
 ### 3. Decide the corrected commit message
 
-For each PR, decide the corrected `type: description`, using the types above.
+For each PR, decide the corrected `type: description`, using the types in `CONTRIBUTING.md`'s "Commit messages".
 
 - A scope is optional, for example `fix(website): …`. Keep the original scope if there was one.
 - Use `type!:` for a breaking change.

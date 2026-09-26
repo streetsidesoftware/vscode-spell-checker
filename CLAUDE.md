@@ -84,11 +84,8 @@ Follow `CONTRIBUTING.md`'s "Commit messages" and "Pull request descriptions".
 
 ### Designing a feature
 
-For a feature with more than one reasonable design, use the `feature-adr` skill before writing code. It records
-decisions in `docs/ADRs/<feature-slug>/`.
-
-- `docs/ADRs/` holds decisions. `docs/design-notes/` holds exploratory notes that haven't been decided.
-- Terms from ADRs go in `docs/ADRs/glossary.md`. Repo-wide concepts maintainers need to know go in `docs/glossary.md`.
+For a feature with more than one reasonable design, follow [`docs/ADRs/README.md`](docs/ADRs/README.md) before writing
+code. The `feature-adr` skill runs that process as an interview.
 
 ## Architecture
 
