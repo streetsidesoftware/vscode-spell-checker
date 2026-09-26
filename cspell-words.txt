@@ -125,6 +125,7 @@ webpack'ed
 webview
 webviews
 WHATWG
+worktrees
 xhmikosr
 yandex
 unreadably
