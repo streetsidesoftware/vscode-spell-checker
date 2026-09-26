@@ -88,6 +88,11 @@ Follow `CONTRIBUTING.md`'s "Commit messages" and "Pull request descriptions".
 For a feature with more than one reasonable design, follow [`docs/ADRs/README.md`](docs/ADRs/README.md) before writing
 code. The `feature-adr` skill runs that process as an interview.
 
+### Settings
+
+To add or change a setting, use the `setting-change` skill. It follows
+[`docs/settings-and-commands.md`](docs/settings-and-commands.md).
+
 ## Architecture
 
 - **Client** (`packages/client`): the extension, running in the VS Code extension host. Registers commands, menus,
