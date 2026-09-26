@@ -10,9 +10,9 @@ npm workspace root.
 A fresh clone has no `node_modules`. Run `npm ci` before anything else. npm only: `yarn` and `pnpm` are blocked.
 
 ```sh
-npm ci                     # install (runs patch-package)
+npm ci                     # install; .npmrc sets ignore-scripts, so no install scripts run
 npm run build              # build every workspace, then regenerate the schema and package.json contributes
-npm test                   # vitest in every workspace, except the integration tests
+npm test                   # each workspace's test script: mostly vitest; not the integration tests
 npm run lint               # eslint --fix, then prettier --write
 npm run prettier:check     # formatting check, no changes
 npx cspell . --dot --no-progress   # the spell check CI runs
@@ -29,7 +29,7 @@ cd packages/client && npx vitest run src/settings/configFields.test.mts -t 'Conf
 ```
 
 - Build before testing.
-    - The client imports `code-spell-checker-server/lib`, which is built output.
+    - The client imports `code-spell-checker-server/api` and `/lib`, which are built output.
     - `commands.test.mts` reads `package.json`, which only has a new command after a build.
 - `npm run build` should leave `git status` clean unless you changed a setting or contribution. If it doesn't, commit
   the regenerated files.
@@ -153,4 +153,5 @@ The full package list is in `docs/build-and-packaging.md`.
 ## Dependencies
 
 Dependabot (`.github/dependabot.yml`) and the `update-dependencies.yml` and `update-cspell.yml` workflows open the
-update PRs. CSpell and dictionary updates are `fix:` on purpose: cspell does the checking, so users see the change.
+update PRs. CSpell and dictionary updates are `feat:` (major or minor) or `fix:` (patch), set by `update-cspell.yml`.
+Don't reclassify them: cspell does the checking, so users see the change.

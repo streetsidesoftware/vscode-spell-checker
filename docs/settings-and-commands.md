@@ -55,8 +55,16 @@ The doc comment is what users see: it becomes the description in the Settings UI
 The settings are split into sections (Reporting and Display, Performance, Appearance, …) by the `_VSConfig*` types in
 `packages/_server/src/config/cspellConfig/cspellConfig.mts`.
 
-- Add the property name to the section's `Pick<…>` list.
-- A property that isn't in any section ends up in the "CSpell" section.
+A section is built in one of two ways, and a new setting joins it differently:
+
+- **From a whole interface.** Appearance (`AppearanceSettings`) and Menus and Actions (`MenusAndActions`) take every
+  property of their interface. Adding the property to that interface is enough.
+- **From a `Pick<…>` list.** The other sections list property names, some alongside a whole interface (for example
+  `keyof AdvancedSettings`). Add the name to the list, unless the property's interface is already included.
+
+A setting that only the extension has must be in a section. If it isn't, `unusedConfig` in `cspellConfig.mts` fails the
+type check. Settings that come from cspell itself (`CSpellUserSettings` in `@cspell/cspell-types`) and aren't in a
+section go to the "CSpell" section.
 
 ### 3. Add it to `ConfigFields`
 

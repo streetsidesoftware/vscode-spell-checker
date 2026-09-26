@@ -96,6 +96,7 @@ they would notice, not by how much code changed.
 Shown in the release notes:
 
 - `feat:`: something users can do that they couldn't before, such as a new setting, command, or file type.
+  `feature:` is also listed under Features, but use `feat:`.
 - `fix:`: any other change users would notice: a bug fix, a changed default or behavior, a removal.
 - `feat!:` / `fix!:`: either of the above, when it breaks existing setups.
 - `perf:`: a speed-up users would notice, with no change in behavior.
@@ -103,17 +104,18 @@ Shown in the release notes:
 
 Hidden from the release notes:
 
-- `refactor:`: internal restructuring with no behavior change.
+- `refactor:`: internal restructuring with no behavior change. A breaking `refactor!:` still shows up.
 - `docs:`: documentation only, including the website.
 - `style:`: formatting only.
 - `test:`: tests only.
-- `ci:`: GitHub Actions and workflows, including the automated dependency update PRs.
-- `chore:`: everything else: tooling, dev dependencies, lint config, Claude Code skills.
+- `ci:`: GitHub Actions and workflows, and the `update-dependencies.yml` PRs.
+- `chore:`: everything else: tooling, dev dependencies (including Dependabot PRs), lint config, Claude Code skills.
 
-Two kinds of `fix:` commit are on purpose, even though they aren't bug fixes:
+Two kinds of commit are shown in the release notes even though they aren't features or bug fixes:
 
-- **cspell and dictionary updates** (`fix: Update CSpell from …`). cspell does the spell checking, so a new version
-  changes what users see.
+- **cspell and dictionary updates** (`Update CSpell from …`). cspell does the spell checking, so a new version changes
+  what users see. `update-cspell.yml` picks the type: `feat:` for a major or minor cspell update, `fix:` for a patch.
+  Don't reclassify them.
 - **`fix: Prepare for Release`**, which turns off prerelease mode and starts a release. See
   [Releasing](./docs/releasing.md#prerelease-mode).
 

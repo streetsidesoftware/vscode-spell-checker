@@ -58,10 +58,10 @@ Fetch the release PR's description. It lists the entries under those headings, e
 For each shown entry, judge from its line whether a user of the extension would notice it. For each Features entry,
 also judge whether it's a new capability; if it only changes existing behavior, it's `fix`.
 
-Never flag these. They are `fix:` on purpose:
+Never flag these. Their types are on purpose:
 
-- **`fix: Update CSpell from … to …`** and dictionary bundle updates. cspell does the spell checking, so users see the
-  change.
+- **`Update CSpell from … to …`** and dictionary bundle updates. `update-cspell.yml` makes them `feat:` for a major or
+  minor cspell update and `fix:` for a patch. cspell does the spell checking, so users see the change.
 - **`fix: Prepare for Release`**. It turns off prerelease mode and starts a release (see `docs/releasing.md`).
 
 Present the flagged entries with your reasoning and PR numbers, and get the user's confirmation on which to correct

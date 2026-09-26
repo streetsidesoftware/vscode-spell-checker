@@ -41,10 +41,13 @@ exists is controlled by `cSpell.mergeCSpellSettings`.
 A word-list file that a user adds, set up through `cSpell.customDictionaries`. With `addWords: true`, the "add word"
 actions can write to it.
 
-## Dictionary bundle
+## Dictionary bundles
 
-`@cspell/cspell-bundled-dicts`: the set of dictionaries that ships with the extension. Updated by the same workflow as
-[cspell](#cspell).
+The extension ships two dictionary packages. Both are updated by the same workflow as [cspell](#cspell).
+
+- `@cspell/cspell-bundled-dicts`: the dictionaries that come with cspell. Its version follows cspell's.
+- `@cspell/dict-cspell-bundle`: the dictionaries included with the cspell command-line tool. This is the "Dictionary
+  Bundle" named in the update PR titles.
 
 ## File type
 

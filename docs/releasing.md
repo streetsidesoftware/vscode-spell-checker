@@ -5,8 +5,8 @@ the workflows do the rest.
 
 ## Who reads the release notes
 
-The changelog and the GitHub release notes are read by people who use the spell checker. Only `feat:`, `fix:`,
-`perf:`, and `revert:` commits show up in them, so write those commit subjects and PR titles for that reader. See
+The changelog and the GitHub release notes are read by people who use the spell checker. Only `feat:` (and `feature:`), `fix:`,
+`perf:`, and `revert:` commits show up in them, as well as any breaking change (`type!:`), so write those commit subjects and PR titles for that reader. See
 [`CONTRIBUTING.md`](../CONTRIBUTING.md#commit-messages) for the commit types.
 
 ## The flow
@@ -58,10 +58,11 @@ To release anyway, merge a `fix:` commit. The `fix: Prepare for Release` PR desc
 
 The extension does its spell checking with cspell, so a new cspell version or dictionary bundle changes what users see.
 
-- `update-cspell.yml` opens `fix: Update CSpell from … to …` PRs.
-- They stay `fix:` on purpose, so each one is listed in the release notes and starts a release.
+- `update-cspell.yml` opens `Update CSpell from … to …` PRs, and picks the type itself: `feat:` for a major or minor
+  cspell update, `fix:` for a patch.
+- Don't reclassify them. Either type lists the update in the release notes and starts a release.
 - This is the only kind of dependency update that belongs in the release notes. Other dependency updates are `chore:`
-  or `ci:`.
+  (Dependabot) or `ci:` (`update-dependencies.yml`).
 
 ## Publishing by hand
 
