@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.9.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.9.3...code-spell-checker-v4.9.4) (2026-09-26)
+
+
+### Updates and Bug Fixes
+
+* list deprecated allowedSchemas and enableFiletypes under Legacy settings ([#5539](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5539)) ([a1a3fec](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a1a3fec9c4a2e44305ef3830a655dc803782e888))
+* Toggle trace display ([#5541](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5541)) ([ba0e54e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ba0e54e35c9b28a23be21c8a580e9208e7e1bacf))
+* Update CSpell Dictionary Bundle from `2.0.73` to `2.0.75` and other dependencies ([a483ede](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a483edeca3494962a2d3c1de6698d97b61c0e74b))
+* Update CSpell from `10.3.0` to `10.3.0` and other dependencies ([fec4fdc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fec4fdca551010cdbace3150a38fbac5670f080b))
+* Update CSpell from `10.3.0` to `10.3.1` and other dependencies ([2e22ebb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2e22ebb6c3dfc35b224f7d8d4fd5d7680db5a8bb))
+* Update CSpell from `10.3.1` to `10.3.3` and Dictionary Bundle from `2.0.75` to `2.0.76` and other dependencies ([10a3b6c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/10a3b6ce536c45f97bf33ea1ea961ed7257c7931))
+* Update CSpell from `10.3.3` to `10.3.4` and other dependencies ([d9edfb1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d9edfb14d8652150d18614d475137c0a64523330))
+* Update sponsor cards ([#5520](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5520)) ([a105849](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a105849e5811de630145d0bd151968970dd8f43d))
+
 ## [4.9.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.9.2...code-spell-checker-v4.9.3) (2026-09-11)
 
 
