@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for AI coding agents (Claude Code, Copilot, and others) working in this repository. `AGENTS.md` and
+`.github/copilot-instructions.md` point here.
 
 This repo is **Code Spell Checker**, a VS Code extension. The root `package.json` is both the extension manifest and the
 npm workspace root.
