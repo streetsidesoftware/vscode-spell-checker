@@ -65,10 +65,17 @@ npm --workspace=packages/client run test -- src/settings/configFields.test.mts
 
 The server listens for the debugger on port 60048. If attaching fails because the port is still in use, check with:
 
-```bash
-netstat -anp tcp | grep 60048
-lsof -i tcp:60048
-```
+- macOS and Linux:
+
+    ```bash
+    lsof -i tcp:60048
+    ```
+
+- Windows:
+
+    ```bat
+    netstat -ano | findstr 60048
+    ```
 
 If anything shows up, the port is still held by an old process.
 
@@ -204,5 +211,5 @@ words, or to add a dictionary, see its
 [contributing guide](https://github.com/streetsidesoftware/cspell-dicts/blob/main/CONTRIBUTING.md).
 
 <!---
-    cSpell:ignore lsof netstat
+    cSpell:ignore findstr lsof netstat
 -->
