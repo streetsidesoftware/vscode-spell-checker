@@ -4,9 +4,9 @@
 [![](https://vsmarketplacebadges.dev/rating-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadges.dev/version-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
-[![Build & Test Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/build-test/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
-[![Integration Tests Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/Integration%20Tests/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
-[![Lint Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/lint/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
+[![Build & Test Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/test.yml/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/test.yml)
+[![Integration Tests Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/integration-test.yml/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/integration-test.yml)
+[![Lint Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/lint.yml/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/lint.yml)
 
 Thanks for considering a contribution to Code Spell Checker, the VS Code extension. The extension's Marketplace page
 is the root [`README.md`](./README.md). The user documentation is the [website](https://streetsidesoftware.github.io/vscode-spell-checker).
@@ -187,6 +187,7 @@ These rules apply to the root `README.md`, the website, settings descriptions, a
 `website/docs/` is for people who use the extension. `docs/` is for maintainers and contributors. Don't mix them.
 
 - Write for someone installing and using the extension, not for a contributor.
+- No badges in the root `README.md`. It is the Marketplace page.
 - Use absolute `https://` links.
 - Don't start a sentence with a code span. Lead with a word: "Use `cSpell.words` to…".
 - Label an example that is a whole file with its filename in bold, directly above the code block, for example
