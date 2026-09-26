@@ -197,84 +197,12 @@ These rules apply to the root `README.md`, the website, settings descriptions, a
 - Never edit the generated website pages (`auto_*.md`). See [Settings and commands](./docs/settings-and-commands.md).
 - In a Markdown file with deliberate misspellings, list them in a `cspell:ignore` comment at the end of the file.
 
-## Dictionaries / Word List
+## Dictionaries
 
-Improvements to existing word lists and new word lists are welcome.
-
-All dictionaries have been migrated to [cspell-dicts](https://github.com/streetsidesoftware/cspell-dicts).
-
-### Format for Dictionary Word lists
-
-The simplest format is one word per line.
-
-```text
-apple
-banana
-orange
-grape
-pineapple
-```
-
-For programming languages, a word list might look like this:
-
-```php
-ZipArchive::addGlob
-ZipArchive::addPattern
-ZipArchive::close
-ZipArchive::deleteIndex
-ZipArchive::deleteName
-ZipArchive::extractTo
-```
-
-The word list compiler will convert camelCase and snake_case words into a simple word list.
-This is both for speed and predictability.
-
-```php
-ZipArchive::deleteIndex
-```
-
-becomes:
-
-```text
-zip
-archive
-delete
-index
-```
-
-Spaces between words in the word list have a special meaning.
-
-```text
-New Delhi
-New York
-Los Angeles
-```
-
-becomes in the compiled dictionary:
-
-```text
-new delhi
-new
-delhi
-new york
-york
-los angeles
-los
-angeles
-```
-
-Spaces in the compiled dictionary have a special meaning.
-They tell the suggestion algorithm to suggest: 'newYork', 'new_york', 'new york', etc. for 'newyork'.
-
-### Locales
-
-The default language is English: `"cSpell.language": "en"`
-
-CSpell currently has English locales: `en-US` and `en-GB`.
-
-Example words differences: behaviour (en-GB) vs behavior (en-US)
+The extension's dictionaries live in [cspell-dicts](https://github.com/streetsidesoftware/cspell-dicts). To fix or add
+words, or to add a dictionary, see its
+[contributing guide](https://github.com/streetsidesoftware/cspell-dicts/blob/main/CONTRIBUTING.md).
 
 <!---
-    cSpell:ignore newyork lsof netstat
-    cSpell:words behaviour behavior
+    cSpell:ignore lsof netstat
 -->
