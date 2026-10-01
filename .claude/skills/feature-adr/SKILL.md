@@ -90,7 +90,8 @@ decisions while they're still cheap to change.
     - The skill stops at the design. If a question is easier to answer by trying it, a quick prototype is fine.
 
 9. **Finalize** when the user says the design is final: squash the ADRs as the README's "Finalize before merge"
-   describes, update the index and glossary links, and commit on the same branch.
+   describes, update the index and glossary links, and commit on the same branch. Ask whether the design gets its own
+   `docs:` PR or goes in the feature's PR, as the README's "Branches" describes.
 
 10. **Change or archive** when asked, or when step 1 finds a feature due:
     - **Change:** follow the README's "Changing a merged design".

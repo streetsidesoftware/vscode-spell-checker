@@ -106,6 +106,9 @@ each other's files, and those are deleted together.
 
 Work on a design in an `adr/<feature>` branch, and on archiving in an `adr-archive/<feature>` branch.
 
+A small feature can have its design and implementation in one PR, typed `feat:` or `fix:`. When a design is worth
+reviewing before any code is written, merge it on its own with a `docs:` PR, so it stays out of the release notes.
+
 ## With Claude Code
 
 The `feature-adr` skill runs this process as an interview: it asks one decision at a time, writes and commits the
