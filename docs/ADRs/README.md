@@ -4,6 +4,14 @@ An Architecture Decision Record (ADR) records one design decision: the situation
 ADRs are for decisions where a reasonable person could have chosen differently. Exploratory notes and ideas that
 haven't been decided go in [`../design-notes/`](../design-notes/) instead.
 
+## Purpose
+
+ADRs are a tool for designing a feature well. The goal is a well-designed feature, not the ADRs.
+
+They help us work through a design one decision at a time. Later, they show others how we got there and what we
+thought mattered. They record how the feature was designed. They aren't a contract: when building or using the feature
+shows a better answer, change the design.
+
 The templates for every file described here are in [`template.md`](./template.md).
 
 ## When to write ADRs
@@ -34,7 +42,6 @@ get separate ADRs (a setting's default, and where the work runs).
 
 - `Proposed`: under discussion.
 - `Accepted`: decided.
-- `Accepted, amended`: decided, then changed after merge (see [Amending](#amending)).
 - `Superseded by NNNN`: overturned by a later ADR in the same feature.
 
 ## Designing a feature
@@ -68,13 +75,14 @@ When the design is final, rewrite the feature's ADRs into the smallest set that 
 
 The working history stays in the branch and the PR.
 
-## Amending
+## Changing a merged design
 
-After a design has merged, don't rewrite or squash its ADRs.
+Building or using a feature often shows a better answer. When it does, change the design, and update its ADRs in the
+same PR:
 
-- To change a decision, add an `## Amendment: <what changed>` section to the ADR, and set its status to
-  `Accepted, amended`.
-- To reverse a decision, write a new ADR that supersedes it.
+- Rewrite the ADR to state the current decision, and add a sentence to its Context on what changed and why. The earlier
+  version stays in git history.
+- If a decision is replaced outright, write a new ADR and mark the old one `Superseded by NNNN`.
 
 ## Archiving
 
@@ -97,6 +105,9 @@ each other's files, and those are deleted together.
 ## Branches
 
 Work on a design in an `adr/<feature>` branch, and on archiving in an `adr-archive/<feature>` branch.
+
+A small feature can have its design and implementation in one PR, typed `feat:` or `fix:`. When a design is worth
+reviewing before any code is written, merge it on its own with a `docs:` PR, so it stays out of the release notes.
 
 ## With Claude Code
 

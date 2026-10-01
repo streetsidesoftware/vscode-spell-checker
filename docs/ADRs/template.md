@@ -60,7 +60,7 @@ Name the file with a kebab-case slug, for example `0001-default-target-is-worksp
 ```markdown
 # NNNN. <Decision title, phrased as the thing being decided>
 
-Status: Proposed | Accepted | Accepted, amended (see [Amendment](#amendment-...)) | Superseded by [NNNN](./NNNN-slug.md)
+Status: Proposed | Accepted | Superseded by [NNNN](./NNNN-slug.md)
 
 ## Context
 
@@ -75,16 +75,6 @@ The choice that was made, stated plainly ("We will ..."), not a summary of the d
 
 What this makes easier, what it makes harder, and what it rules out. Include concrete effects on this repo, for
 example: "the `cSpell.fooBar` name becomes public as soon as it ships, so renaming it later needs a deprecation".
-```
-
-## Amendment
-
-Added at the end of an ADR that changed after its design merged. Keep the original text as it was.
-
-```markdown
-## Amendment: <what changed>
-
-What changed, why (what implementation or review found), and what the decision is now.
 ```
 
 ## Archived `docs/ADRs/<feature>/README.md`

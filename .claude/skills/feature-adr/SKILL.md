@@ -1,13 +1,15 @@
 ---
 name: feature-adr
-description: 'Design a Code Spell Checker feature (a new or changed setting, command, menu action, code action, view, or spell-checking behavior) through a structured interview, recording each decision as an ADR under docs/ADRs/<feature>/ and keeping the glossaries in sync. Use this whenever the user wants to design, spec out, or plan a feature before writing code, is unsure how an edge case should behave, or asks for an ADR, a design doc, or to "figure out the details" of something. Trigger even if the user does not say "ADR" by name: any request to add behavior to the extension that has more than one reasonable interpretation is a candidate. Also use it to amend a merged ADR, or to archive a shipped feature''s ADRs into a short summary. Do not use it for pure bug fixes, refactors, dependency updates, or changes whose behavior is already fully specified.'
+description: 'Design a Code Spell Checker feature (a new or changed setting, command, menu action, code action, view, or spell-checking behavior) through a structured interview, recording each decision as an ADR under docs/ADRs/<feature>/ and keeping the glossaries in sync. Use this whenever the user wants to design, spec out, or plan a feature before writing code, is unsure how an edge case should behave, or asks for an ADR, a design doc, or to "figure out the details" of something. Trigger even if the user does not say "ADR" by name: any request to add behavior to the extension that has more than one reasonable interpretation is a candidate. Also use it to update a merged ADR when the design changes, or to archive a shipped feature''s ADRs into a short summary. Do not use it for pure bug fixes, refactors, dependency updates, or changes whose behavior is already fully specified.'
 ---
 
 # feature-adr
 
+The goal is a well-designed feature. ADRs are a tool for getting there, not a deliverable.
+
 Runs the ADR process in `docs/ADRs/README.md` as an interview. Read that README and `docs/ADRs/template.md` first: they
-define the layout, statuses, finalizing, amending, archiving, and link rules. This skill adds how to run the interview
-and when to commit.
+define the layout, statuses, finalizing, changing a merged design, archiving, and link rules. This skill adds how to
+run the interview and when to commit.
 
 Much of what a feature decides becomes public the moment it ships, and is hard to take back: setting names and
 defaults, command ids, what gets flagged, and what an action writes to users' files. The interview surfaces those
@@ -85,13 +87,14 @@ decisions while they're still cheap to change.
     - Say plainly what was left open.
     - List names still marked provisional. Each needs a decision, or a tracking issue that says when it must be decided.
     - Tell the user where the work lives: the branch, and the worktree path if there is one.
-    - Don't write implementation code as part of this skill. The ADRs are the handoff.
+    - The skill stops at the design. If a question is easier to answer by trying it, a quick prototype is fine.
 
 9. **Finalize** when the user says the design is final: squash the ADRs as the README's "Finalize before merge"
-   describes, update the index and glossary links, and commit on the same branch.
+   describes, update the index and glossary links, and commit on the same branch. Ask whether the design gets its own
+   `docs:` PR or goes in the feature's PR, as the README's "Branches" describes.
 
-10. **Amend or archive** when asked, or when step 1 finds a feature due:
-    - **Amend:** follow the README's "Amending". Never rewrite or squash a merged ADR.
+10. **Change or archive** when asked, or when step 1 finds a feature due:
+    - **Change:** follow the README's "Changing a merged design".
     - **Archive:** work on an `adr-archive/<feature>` branch, as in step 3. Follow the README's "Archiving".
         - Note the last commit on `main` that has the full ADRs, for the permalink.
         - Search the repo for links into the feature's folder (docs, code comments, other ADRs). Links should already
