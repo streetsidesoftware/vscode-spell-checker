@@ -81,7 +81,7 @@ jobs:
         id: is-prerelease
         uses: streetsidesoftware/actions/public/output@v1
         with:
-          value: ${{ fromJson(steps.package-json.outputs.result).vsce.prerelease && '**Prerelease**' || '' }}
+          value: ${{ fromJson(steps.package-json.outputs.result).vsce.preRelease && '**Prerelease**' || '' }}
 
       - name: VSCode Version Table
         id: version-table
