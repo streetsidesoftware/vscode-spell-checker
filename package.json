@@ -5234,8 +5234,8 @@
     "typescript-eslint": "^8.70.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.3.4",
-    "@cspell/cspell-types": "^10.3.4",
+    "@cspell/cspell-bundled-dicts": "^10.3.5",
+    "@cspell/cspell-types": "^10.3.5",
     "@cspell/dict-cspell-bundle": "^2.0.76",
     "regexp-worker": "^5.0.1"
   },
