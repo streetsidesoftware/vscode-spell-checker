@@ -5212,10 +5212,10 @@
     "build-tools": "file:./tools/build-tools",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
-    "cspell": "^10.3.4",
+    "cspell": "^10.3.5",
     "esbuild": "^0.28.2",
     "eslint": "~10.11.0",
-    "eslint-plugin-n": "^18.3.0",
+    "eslint-plugin-n": "^18.4.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^74.0.0",
     "globals": "^17.12.0",
@@ -5231,7 +5231,7 @@
     "tsdown": "^0.23.0",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.70.1"
+    "typescript-eslint": "^8.71.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.3.4",
