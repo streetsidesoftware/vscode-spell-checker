@@ -20,7 +20,7 @@
     "test": "npm run check:types && npm run check"
   },
   "dependencies": {
-    "@tanstack/svelte-query": "^6.2.4",
+    "@tanstack/svelte-query": "^6.3.1",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
@@ -36,7 +36,7 @@
     "svelte-check": "^4.7.6",
     "svelte-preprocess": "^6.0.5",
     "typescript": "~5.9.3",
-    "vite": "^8.3.1"
+    "vite": "^8.3.2"
   },
   "engines": {
     "node": ">=22.20.0"

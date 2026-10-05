@@ -29,18 +29,18 @@
     "@types/chai": "^5.2.3",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.20.4",
-    "chai": "^6.2.2",
+    "@types/node": "^22.20.5",
+    "chai": "^6.3.0",
     "cross-env": "^10.1.0"
   },
   "peerDependenciesMeta": {},
   "dependencies": {
     "@vscode/test-electron": "^3.1.0",
     "@xhmikosr/decompress": "^11.1.4",
-    "chalk": "^6.0.0",
+    "chalk": "^6.0.1",
     "glob": "^13.0.6",
     "kefir": "^3.8.8",
-    "mocha": "^12.0.2"
+    "mocha": "^12.0.3"
   },
   "overrides": {
     "mocha@11.7.5": {
