@@ -29,8 +29,8 @@
     "@types/chai": "^5.2.3",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.20.4",
-    "chai": "^6.2.2",
+    "@types/node": "^22.20.5",
+    "chai": "^6.3.0",
     "cross-env": "^10.1.0"
   },
   "peerDependenciesMeta": {},
