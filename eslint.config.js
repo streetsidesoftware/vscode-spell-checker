@@ -1,8 +1,5 @@
 // @ts-check
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import nodePlugin from 'eslint-plugin-n';
@@ -56,7 +53,9 @@ export default defineConfig(
         languageOptions: {
             parserOptions: {
                 // Set explicitly: with git worktrees, one ESLint process can load several configs and can't infer it.
-                tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
+                // eslint-plugin-n wrongly reports import.meta.dirname as experimental for our Node version.
+                // eslint-disable-next-line n/no-unsupported-features/node-builtins
+                tsconfigRootDir: import.meta.dirname,
             },
         },
     },
