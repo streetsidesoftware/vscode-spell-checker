@@ -1,6 +1,6 @@
 import { uriToName } from '@internal/common-utils/uriHelper';
-import type { EnabledFileTypes } from 'code-spell-checker-server/lib';
-import { extractEnabledFileTypes, schemeWildcard } from 'code-spell-checker-server/lib';
+import type { EnabledFileTypes, EnabledSchemes } from 'code-spell-checker-server/lib';
+import { extractEnabledFileTypes, isSchemeEnabled } from 'code-spell-checker-server/lib';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import type {
@@ -67,7 +67,7 @@ export async function calcSettings(
         knownLanguageIds: [...client.languageIds].sort(),
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
         configs: extractViewerConfigFromConfig(config, docConfig, document, log),
-        workspace: mapWorkspace(client.allowedSchemas, vscode.workspace),
+        workspace: mapWorkspace(client.enabledSchemes, vscode.workspace),
         activeFileUri: document?.uri.toString(),
         activeFolderUri: activeFolderUri?.toString(),
     };
@@ -359,7 +359,7 @@ interface VSCodeWorkspace {
     textDocuments: readonly vscode.TextDocument[];
 }
 
-function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace): Workspace {
+function mapWorkspace(enabledSchemes: EnabledSchemes, vsWorkspace: VSCodeWorkspace): Workspace {
     function mapWorkspaceFolder(wsf: vscode.WorkspaceFolder): WorkspaceFolder {
         const { name, index } = wsf;
         return {
@@ -383,9 +383,7 @@ function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace)
     const workspace: Workspace = {
         name,
         workspaceFolders: workspaceFolders ? workspaceFolders.map(mapWorkspaceFolder) : undefined,
-        textDocuments: textDocuments
-            .filter((td) => allowedSchemas.has(td.uri.scheme) || allowedSchemas.has(schemeWildcard))
-            .map(mapTextDocuments),
+        textDocuments: textDocuments.filter((td) => isSchemeEnabled(td.uri.scheme, enabledSchemes) === true).map(mapTextDocuments),
     };
 
     return workspace;

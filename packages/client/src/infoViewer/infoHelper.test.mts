@@ -9,7 +9,7 @@ import { __testing__ } from './infoHelper.mjs';
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
-const { extractDictionariesFromConfig, normalizeLocales, extractEnabledLanguageIds } = __testing__;
+const { extractDictionariesFromConfig, normalizeLocales, extractEnabledLanguageIds, mapWorkspace } = __testing__;
 
 describe('infoHelper', () => {
     test.each`
@@ -68,6 +68,58 @@ describe('infoHelper', () => {
 
     test('extractDictionariesFromConfig undefined', async () => {
         expect(extractDictionariesFromConfig(undefined)).toEqual([]);
+    });
+
+    describe('mapWorkspace scheme filtering', () => {
+        interface FakeDoc {
+            uri: { scheme: string; toString: () => string };
+            fileName: string;
+            languageId: string;
+            isUntitled: boolean;
+        }
+
+        function doc(scheme: string): FakeDoc {
+            return {
+                uri: { scheme, toString: () => `${scheme}://path/to/file.txt` },
+                fileName: '/path/to/file.txt',
+                languageId: 'plaintext',
+                isUntitled: false,
+            };
+        }
+
+        function docUris(enabledSchemes: Record<string, boolean>, schemes: string[]): (string | undefined)[] {
+            const ws = mapWorkspace(enabledSchemes, {
+                name: undefined,
+                workspaceFolders: undefined,
+                textDocuments: schemes.map(doc) as never[],
+            });
+            return (ws.textDocuments || []).map((d) => d.uri);
+        }
+
+        test('wildcard allows unknown schemes but not explicitly blocked ones', () => {
+            const uris = docUris({ file: true, untitled: true, '*': true, git: false, output: false, debug: false }, [
+                'file',
+                'untitled',
+                'sftp',
+                'git',
+                'output',
+                'debug',
+            ]);
+            expect(uris).toHaveLength(3);
+            expect(uris).toEqual(
+                expect.arrayContaining(['file://path/to/file.txt', 'untitled://path/to/file.txt', 'sftp://path/to/file.txt']),
+            );
+        });
+
+        test('without wildcard only explicitly enabled schemes are listed', () => {
+            const uris = docUris({ file: true, git: false }, ['file', 'git', 'untitled']);
+            expect(uris).toEqual(['file://path/to/file.txt']);
+        });
+
+        test('wildcard set to false blocks unknown schemes', () => {
+            const uris = docUris({ file: true, '*': false }, ['file', 'sftp']);
+            expect(uris).toEqual(['file://path/to/file.txt']);
+        });
     });
 });
 

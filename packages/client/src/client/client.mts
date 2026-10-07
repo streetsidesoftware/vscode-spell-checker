@@ -8,8 +8,10 @@ import type {
     SpellingSuggestionsResult,
     WorkspaceConfigForDocument,
 } from 'code-spell-checker-server/api';
+import type { EnabledSchemes } from 'code-spell-checker-server/lib';
 import {
     extractEnabledSchemeList,
+    extractEnabledSchemes,
     extractKnownFileTypeIds,
     getDefaultEnabledSchemesSettings,
     schemeWildcard,
@@ -72,6 +74,7 @@ export class CSpellClient implements Disposable {
     readonly import: Set<string> = new Set();
     readonly languageIds: Set<string>;
     readonly allowedSchemas: Set<string>;
+    readonly enabledSchemes: EnabledSchemes;
 
     serverApi: ServerApi;
     private disposables = createDisposableList();
@@ -97,6 +100,7 @@ export class CSpellClient implements Disposable {
         };
 
         this.allowedSchemas = new Set(extractEnabledSchemeList(getDefaultEnabledSchemesSettings(), settings));
+        this.enabledSchemes = extractEnabledSchemes(getDefaultEnabledSchemesSettings(), settings);
 
         this.languageIds = new Set([...languageIds, ...LanguageIds.languageIds, ...extractKnownFileTypeIds(settings)]);
 
