@@ -50,6 +50,16 @@ export default defineConfig(
         ],
     },
     {
+        languageOptions: {
+            parserOptions: {
+                // Set explicitly: with git worktrees, one ESLint process can load several configs and can't infer it.
+                // eslint-plugin-n wrongly reports import.meta.dirname as experimental for our Node version.
+                // eslint-disable-next-line n/no-unsupported-features/node-builtins
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
+    {
         plugins: {
             'simple-import-sort': simpleImportSort,
         },
