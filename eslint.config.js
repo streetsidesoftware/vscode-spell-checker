@@ -1,5 +1,8 @@
 // @ts-check
 
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import nodePlugin from 'eslint-plugin-n';
@@ -48,6 +51,14 @@ export default defineConfig(
             'website/build/**',
             'website/node_modules/**',
         ],
+    },
+    {
+        languageOptions: {
+            parserOptions: {
+                // Set explicitly: with git worktrees, one ESLint process can load several configs and can't infer it.
+                tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
+            },
+        },
     },
     {
         plugins: {
