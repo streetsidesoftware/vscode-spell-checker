@@ -5,8 +5,8 @@ import type { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
 import * as CSpell from 'cspell-lib';
 import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import type { Subscription } from 'rxjs';
-import { interval, ReplaySubject } from 'rxjs';
-import { debounceTime, filter, mergeMap, take, tap, throttle, throttleTime } from 'rxjs/operators';
+import { interval, of, ReplaySubject } from 'rxjs';
+import { debounceTime, filter, map, mergeMap, switchMap, take, tap, throttle, throttleTime } from 'rxjs/operators';
 import type { DisposableLike } from 'utils-disposables';
 import { createDisposableList } from 'utils-disposables';
 import { LogLevelMasks } from 'utils-logger';
@@ -82,6 +82,23 @@ const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.
 const dictionaryRefreshRateMs = 10000;
 
+export function changesHaveTriggerCharacters(
+    contentChanges: readonly { text: string }[] | undefined,
+    triggerCharacters: string[] | undefined,
+): boolean {
+    return !!contentChanges?.some(({ text }) => triggerCharacters?.some((character) => text.includes(character)));
+}
+
+export function getSpellCheckDelayMs(
+    contentChanges: readonly { text: string }[] | undefined,
+    triggerCharacters: string[] | undefined,
+    spellCheckDelayMs: number | undefined,
+): number {
+    const delayMs = spellCheckDelayMs || defaultDebounceMs;
+    if (!triggerCharacters?.length) return delayMs;
+    return !contentChanges || changesHaveTriggerCharacters(contentChanges, triggerCharacters) ? 0 : delayMs;
+}
+
 async function calcDefaultSettings(): Promise<CSpellUserAndExtensionSettings> {
     return {
         ...CSpell.mergeSettings(
@@ -108,11 +125,13 @@ const knownDiagnosticSeverityLevels: Set<number | undefined> = new Set([
 export function run(): void {
     // debounce buffer
     const disposables = createDisposableList();
-    const validationRequestStream: ReplaySubject<TextDocument> = new ReplaySubject(1);
+    const validationRequestStream: ReplaySubject<{ document: TextDocument; contentChanges?: readonly { text: string }[] }> =
+        new ReplaySubject(1);
     const triggerUpdateConfig: ReplaySubject<void> = new ReplaySubject(1);
     const triggerValidateAll: ReplaySubject<void> = new ReplaySubject(1);
     const validationByDoc: Map<string, Subscription> = new Map();
     const blockValidation: Map<string, number> = new Map();
+    const contentChangesByDoc = new Map<string, readonly { text: string }[]>();
     let isValidationBusy = false;
     const dictionaryWatcher = dd(new DictionaryWatcher());
     dd(disposeValidationByDoc);
@@ -128,7 +147,13 @@ export function run(): void {
     const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
 
     // Create a simple text document manager.
-    const documents = new TextDocuments(TextDocument);
+    const documents = new TextDocuments({
+        create: (uri, languageId, version, text) => TextDocument.create(uri, languageId, version, text),
+        update: (document, changes, version) => {
+            contentChangesByDoc.set(document.uri, changes);
+            return TextDocument.update(document, changes, version);
+        },
+    });
 
     const documentCheckedRangesStore = dd(new DocumentCheckedRangesStore());
 
@@ -228,40 +253,66 @@ export function run(): void {
 
     // validate documents
     ds(
-        validationRequestStream.pipe(filter((doc) => !validationByDoc.has(doc.uri))).subscribe((doc) => {
-            if (validationByDoc.has(doc.uri)) return;
-            const uri = doc.uri;
+        validationRequestStream.pipe(filter(({ document }) => !validationByDoc.has(document.uri))).subscribe((request) => {
+            if (validationByDoc.has(request.document.uri)) return;
+            const uri = request.document.uri;
 
             log('Register Document Handler:', uri);
 
             if (isUriBlockedBySettings(uri, {})) {
                 validationByDoc.set(
-                    doc.uri,
+                    request.document.uri,
                     validationRequestStream
                         .pipe(
-                            filter((doc) => uri === doc.uri),
+                            filter(({ document }) => uri === document.uri),
                             take(1),
-                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
-                            tap((doc) => log('Ignoring:', doc.uri)),
+                            tap(({ document }) => progressNotifier.emitSpellCheckDocumentStep(document, 'ignore')),
+                            tap(({ document }) => log('Ignoring:', document.uri)),
                         )
                         .subscribe(),
                 );
             } else {
                 validationByDoc.set(
-                    doc.uri,
+                    request.document.uri,
                     validationRequestStream
                         .pipe(
-                            filter((doc) => uri === doc.uri),
-                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
-                            tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
+                            filter(({ document }) => uri === document.uri),
+                            tap(({ document }) => progressNotifier.emitSpellCheckDocumentStep(document, 'start')),
+                            tap(({ document }) => log(`Request Validate: v${document.version}`, document.uri)),
                         )
                         .pipe(
-                            throttleTime(defaultDebounceMs, undefined, { leading: true, trailing: true }),
-                            mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
+                            mergeMap(async (request) => ({
+                                doc: request.document,
+                                contentChanges: request.contentChanges,
+                                settings: await getActiveSettings(request.document),
+                            })),
                             tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
+                            map((dsp) => ({
+                                ...dsp,
+                                noDelay:
+                                    getSpellCheckDelayMs(
+                                        dsp.contentChanges,
+                                        dsp.settings.spellCheckTriggerCharacters,
+                                        dsp.settings.spellCheckDelayMs,
+                                    ) === 0,
+                            })),
+                            switchMap((dsp) => {
+                                const triggerCharacters = dsp.settings.spellCheckTriggerCharacters;
+                                if (!triggerCharacters?.length || dsp.noDelay) return of(dsp);
+
+                                return interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(
+                                    filter(() => !isValidationBusy),
+                                    take(1),
+                                    map(() => dsp),
+                                );
+                            }),
                             throttle(
                                 (dsp) =>
-                                    interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
+                                    interval(
+                                        dsp.settings.spellCheckTriggerCharacters?.length
+                                            ? 0
+                                            : dsp.settings.spellCheckDelayMs || defaultDebounceMs,
+                                    ).pipe(filter(() => !isValidationBusy)),
                                 { leading: true, trailing: true },
                             ),
                             filter((dsp) => !blockValidation.has(dsp.doc.uri)),
@@ -290,7 +341,7 @@ export function run(): void {
     ds(
         triggerValidateAll.pipe(debounceTime(250)).subscribe(() => {
             log('Validate all documents');
-            documents.all().forEach((doc) => validationRequestStream.next(doc));
+            documents.all().forEach((document) => validationRequestStream.next({ document }));
         }),
     );
 
@@ -304,7 +355,11 @@ export function run(): void {
         // The content of a text document has changed. This event is emitted
         // when the text document first opened or when its content has changed.
         documents.onDidChangeContent((event) => {
-            validationRequestStream.next(event.document);
+            validationRequestStream.next({
+                document: event.document,
+                contentChanges: contentChangesByDoc.get(event.document.uri),
+            });
+            contentChangesByDoc.delete(event.document.uri);
         }),
 
         // We want to block validation during saving.
@@ -319,7 +374,7 @@ export function run(): void {
             const { uri, version } = event.document;
             log(`onDidSave: v${version}`, uri);
             blockValidation.delete(uri);
-            validationRequestStream.next(event.document);
+            validationRequestStream.next({ document: event.document });
         }),
 
         // Remove subscriptions when a document closes.

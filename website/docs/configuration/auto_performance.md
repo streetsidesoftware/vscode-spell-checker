@@ -202,8 +202,6 @@ _`200`_
 </dl>
 
 ---
-
-
 ### `cSpell.blockCheckingWhenLineLengthGreaterThan`
 
 <dl>
@@ -492,5 +490,3 @@ _`400`_
 </dl>
 
 ---
-
-
