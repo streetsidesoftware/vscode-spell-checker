@@ -5214,7 +5214,7 @@
     "concurrently": "^10.0.5",
     "cspell": "^10.3.6",
     "esbuild": "^0.28.2",
-    "eslint": "~10.11.0",
+    "eslint": "~10.12.0",
     "eslint-plugin-n": "^18.4.1",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^76.0.0",
@@ -5231,7 +5231,7 @@
     "tsdown": "^0.23.0",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.71.0"
+    "typescript-eslint": "^8.71.1"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.3.6",
