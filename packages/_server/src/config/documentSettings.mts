@@ -72,7 +72,7 @@ export interface SettingsVSCode {
     };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type VsCodeSettings = Record<string, any>;
 
 interface ExtSettings {
@@ -83,7 +83,7 @@ interface ExtSettings {
     includeGlobMatcher: GlobMatcher;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type PromiseType<T extends Promise<any>> = T extends Promise<infer R> ? R : never;
 type GitignoreResultP = ReturnType<GitIgnore['isIgnoredEx']>;
 type GitignoreResultInfo = PromiseType<GitignoreResultP>;
@@ -877,7 +877,7 @@ const checkScheme: Record<string, boolean | undefined> = {
 
 function findPackageJSON(packageName: string, url: URL): URL | undefined {
     try {
-        // eslint-disable-next-line n/no-unsupported-features/node-builtins
+        // oxlint-disable-next-line n/no-unsupported-features/node-builtins
         const found = nodeModule.findPackageJSON(packageName, url);
         return found ? pathToFileURL(found) : undefined;
     } catch {

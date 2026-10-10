@@ -1,11 +1,11 @@
-import { Command } from 'commander';
+import { Command } from 'commander'
 
-import { commandUpdatePackageCSpellSchema } from './updatePackageCSpellSchema.ts';
+import { commandUpdatePackageCSpellSchema } from './updatePackageCSpellSchema.ts'
 
-const program = new Command();
+const program = new Command()
 
-program.addCommand(commandUpdatePackageCSpellSchema());
+program.addCommand(commandUpdatePackageCSpellSchema())
 
 program.parseAsync(process.argv).catch((e) => {
-    console.log(e);
-});
+  console.log(e)
+})

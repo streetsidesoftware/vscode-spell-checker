@@ -1,4 +1,4 @@
-// eslint-disable-next-line n/no-extraneous-import
+// oxlint-disable-next-line n/no-extraneous-import
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({

@@ -1,8 +1,8 @@
 {
-    "extends": "../../tsconfig.packages.base.json",
-    "compilerOptions": {
-        "outDir": "./dist",
-        "emitDeclarationOnly": true
-    },
-    "files": ["src/api.ts"]
+  "extends": "../../tsconfig.packages.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "emitDeclarationOnly": true
+  },
+  "files": ["src/api.ts"]
 }

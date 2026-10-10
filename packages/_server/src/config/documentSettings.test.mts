@@ -36,7 +36,7 @@ vi.mock('node:module', () => ({
     },
 }));
 
-// eslint-disable-next-line n/no-unsupported-features/node-builtins
+// oxlint-disable-next-line n/no-unsupported-features/node-builtins
 const mockFindPackageJSON = vi.mocked(nodeModule.findPackageJSON);
 
 const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);

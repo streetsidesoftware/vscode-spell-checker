@@ -2,6 +2,8 @@
   "name": "pkg",
   "version": "1.0.0",
   "description": "Sample Package",
+  "license": "MIT",
+  "author": "",
   "main": "index.js",
   "scripts": {
     "test": "echo test"
@@ -10,7 +12,5 @@
     "words": [
       "customterm"
     ]
-  },
-  "author": "",
-  "license": "MIT"
+  }
 }

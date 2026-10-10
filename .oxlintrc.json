@@ -1,0 +1,54 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "node", "unicorn", "oxc"],
+  "jsPlugins": ["eslint-plugin-simple-import-sort"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "react/static-components": "off",
+
+    "eslint/no-unused-expressions": "off",
+
+    "eslint/no-sparse-arrays": "off",
+
+    "react/preserve-manual-memoization": "off",
+
+    "react/refs": "off",
+    "react/purity": "off",
+
+    "react-hooks/exhaustive-deps": "off",
+    "react/set-state-in-effect": "off",
+    "react/immutability": "off",
+
+    "typescript/no-unused-vars": "error",
+    "typescript/no-non-null-assertion": "error",
+    "no-unused-vars": "off",
+    "no-console": "off",
+    "no-debugger": "warn",
+    "no-undef": "error",
+    "no-unreachable": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "no-const-assign": "error",
+    "no-this-before-super": "error",
+    "constructor-super": "error",
+    "valid-typeof": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  },
+  "ignorePatterns": [
+    "**/build/**",
+    "**/coverage/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/out/**",
+    "website/**",
+    "package-lock.json"
+  ],
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "node": true
+  }
+}

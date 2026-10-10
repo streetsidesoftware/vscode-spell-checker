@@ -1,16 +1,26 @@
 {
   "name": "utils-disposables",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "Helper methods for creating Disposables.",
-  "sideEffects": false,
+  "keywords": [
+    "disposables",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "Street Side Software",
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "!dist/**/*.test.*"
+  ],
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/index.js"
     }
   },
-  "devDependencies": {},
   "scripts": {
     "build": "npm run build:esm",
     "build:esm": "tsc -p tsconfig.json",
@@ -19,18 +29,8 @@
     "coverage": "vitest run --coverage",
     "test": "vitest run"
   },
-  "files": [
-    "dist",
-    "!dist/**/*.map",
-    "!dist/**/*.test.*"
-  ],
-  "keywords": [
-    "typescript",
-    "disposables"
-  ],
+  "devDependencies": {},
   "engines": {
     "node": ">=22.20.0"
-  },
-  "author": "Street Side Software",
-  "license": "MIT"
+  }
 }

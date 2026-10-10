@@ -1,8 +1,0 @@
-
-_site/**
-.docusaurus/**
-.vscode/**
-**/auto_*
-build/**
-**/*.mdx
-docs/configuration/index.md

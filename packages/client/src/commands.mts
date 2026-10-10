@@ -76,7 +76,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
     },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type ExplicitAny = any;
 
 type CommandHandler =
@@ -253,7 +253,7 @@ function addWordsToDictionaryTarget(words: string[], dictTarget: DictionaryTarge
 
 function dispose() {}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function registerCmd(cmd: string, fn: (...args: any[]) => unknown): Disposable {
     if (fn === handlerResolvedLater) {
         return { dispose };

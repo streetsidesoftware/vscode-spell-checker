@@ -1,10 +1,10 @@
 {
-    "extends": "../../tsconfig.packages.base.json",
-    "compilerOptions": {
-        "types": ["node"],
-        "outDir": "dist",
-        "rootDir": "src"
-    },
-    "include": ["src"],
-    "exclude": []
+  "extends": "../../tsconfig.packages.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": []
 }

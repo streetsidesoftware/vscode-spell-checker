@@ -318,7 +318,8 @@ The spell checker works in the following way:
 */
 // cSpell:ignoreRegExp /[^\s]{40,}/    -- will ignore long strings with no spaces.
 // cSpell:ignoreRegExp Email           -- this will ignore email like patterns -- see Predefined RegExp expressions
-var encodedImage = 'HR+cPzr7XGAOJNurPL0G8I2kU0UhKcqFssoKvFTR7z0T3VJfK37vS025uKroHfJ9nA6WWbHZ/ASn...';
+var encodedImage =
+  'HR+cPzr7XGAOJNurPL0G8I2kU0UhKcqFssoKvFTR7z0T3VJfK37vS025uKroHfJ9nA6WWbHZ/ASn...';
 var email1 = 'emailaddress@myfancynewcompany.com';
 var email2 = '<emailaddress@myfancynewcompany.com>';
 ```
@@ -687,30 +688,30 @@ The _medicalTerms_ dictionary is only used when editing _markdown_ or _plaintext
 
 ```ts
 interface DictionaryDefinition {
-    /**
-     * This is the name of a dictionary.
-     *
-     * Name Format:
-     * - Must contain at least 1 number or letter.
-     * - Spaces are allowed.
-     * - Leading and trailing space will be removed.
-     * - Names ARE case-sensitive.
-     * - Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.
-     */
-    name: DictionaryId;
-    /** Optional description. */
-    description?: string;
-    /** Path to custom dictionary text file. */
-    path: CustomDictionaryPath;
-    /**
-     * Defines the scope for when words will be added to the dictionary.
-     * Scope values: `user`, `workspace`, `folder`.
-     */
-    scope?: CustomDictionaryScope | CustomDictionaryScope[];
-    /**
-     * When `true`, let's the spell checker know that words can be added to this dictionary.
-     */
-    addWords: boolean;
+  /**
+   * This is the name of a dictionary.
+   *
+   * Name Format:
+   * - Must contain at least 1 number or letter.
+   * - Spaces are allowed.
+   * - Leading and trailing space will be removed.
+   * - Names ARE case-sensitive.
+   * - Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.
+   */
+  name: DictionaryId;
+  /** Optional description. */
+  description?: string;
+  /** Path to custom dictionary text file. */
+  path: CustomDictionaryPath;
+  /**
+   * Defines the scope for when words will be added to the dictionary.
+   * Scope values: `user`, `workspace`, `folder`.
+   */
+  scope?: CustomDictionaryScope | CustomDictionaryScope[];
+  /**
+   * When `true`, let's the spell checker know that words can be added to this dictionary.
+   */
+  addWords: boolean;
 }
 ```
 

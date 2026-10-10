@@ -1,25 +1,16 @@
 {
-    "cSpell.dictionaries": [
-        "lorem-ipsum"
-    ],
-    "cSpell.ignoreWords": [
-        "arraylength",
-        "languageclient",
-        "restructuredtext"
-    ],
-    "files.exclude": {
-        "out": false
-    },
-    "search.exclude": {
-        "**/node_modules": true,
-        "**/bower_components": true,
-        ".vscode-test": true,
-        "server": true,
-        "out": true
-    },
-    "typescript.tsdk": "./node_modules/typescript/lib",
-    "cSpell.enableFiletypes": [
-        "literate haskell",
-        "shellscript"
-    ]
+  "cSpell.dictionaries": ["lorem-ipsum"],
+  "cSpell.ignoreWords": ["arraylength", "languageclient", "restructuredtext"],
+  "files.exclude": {
+    "out": false
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    ".vscode-test": true,
+    "server": true,
+    "out": true
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "cSpell.enableFiletypes": ["literate haskell", "shellscript"]
 }

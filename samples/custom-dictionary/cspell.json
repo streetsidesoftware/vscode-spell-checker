@@ -1,19 +1,19 @@
 {
-    "version": "0.2",
-    "name": "custom-dictionary",
-    "description": "Config with a custom dictionary.",
-    "dictionaryDefinitions": [
-        {
-            "name": "words",
-            "path": "./words.txt"
-        },
-        {
-            "name": "dict",
-            "path": "./dict.dic",
-            "addWords": true
-        }
-    ],
-    "ignorePaths": ["*.dic"],
-    "dictionaries": ["words", "dict"],
-    "words": []
+  "version": "0.2",
+  "name": "custom-dictionary",
+  "description": "Config with a custom dictionary.",
+  "dictionaryDefinitions": [
+    {
+      "name": "words",
+      "path": "./words.txt"
+    },
+    {
+      "name": "dict",
+      "path": "./dict.dic",
+      "addWords": true
+    }
+  ],
+  "ignorePaths": ["*.dic"],
+  "dictionaries": ["words", "dict"],
+  "words": []
 }

@@ -1,3 +1,3 @@
 export interface Disposable {
-    dispose: () => unknown;
+  dispose: () => unknown
 }

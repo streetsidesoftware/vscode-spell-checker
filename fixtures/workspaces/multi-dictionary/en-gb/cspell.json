@@ -1,14 +1,14 @@
 {
-    "language": "en-gb",
-    "import": ["../cspell.json"],
-    "ignorePaths": [".cspell/**"],
-    "flagWords": ["color"],
-    "dictionaries": ["forbidden-words"],
-    "dictionaryDefinitions": [
-        {
-            "name": "forbidden-words",
-            "path": "./.cspell/forbidden-words.txt",
-            "addWords": true
-        }
-    ]
+  "language": "en-gb",
+  "import": ["../cspell.json"],
+  "ignorePaths": [".cspell/**"],
+  "flagWords": ["color"],
+  "dictionaries": ["forbidden-words"],
+  "dictionaryDefinitions": [
+    {
+      "name": "forbidden-words",
+      "path": "./.cspell/forbidden-words.txt",
+      "addWords": true
+    }
+  ]
 }

@@ -1,15 +1,15 @@
 {
-    "extends": "../../tsconfig.packages.base.json",
-    "compilerOptions": {
-        "rootDir": "src",
-        "types": ["node"],
-        "target": "ES2022",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
-        "isolatedDeclarations": true,
-        "allowImportingTsExtensions": true,
-        "noEmit": true
-    },
-    "include": ["src"],
-    "exclude": []
+  "extends": "../../tsconfig.packages.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "types": ["node"],
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "isolatedDeclarations": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src"],
+  "exclude": []
 }

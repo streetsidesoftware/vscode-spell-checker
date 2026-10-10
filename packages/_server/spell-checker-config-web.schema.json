@@ -195,12 +195,7 @@
         },
         "kind": {
           "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
-          "enum": [
-            "words",
-            "flag-words",
-            "ignore-words",
-            "suggest-words"
-          ],
+          "enum": ["words", "flag-words", "ignore-words", "suggest-words"],
           "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
           "since": "10.3.0",
           "type": "string"
@@ -238,22 +233,14 @@
           "anyOf": [
             {
               "description": "Specifies the scope of a dictionary.",
-              "enum": [
-                "user",
-                "workspace",
-                "folder"
-              ],
+              "enum": ["user", "workspace", "folder"],
               "markdownDescription": "Specifies the scope of a dictionary.",
               "type": "string"
             },
             {
               "items": {
                 "description": "Specifies the scope of a dictionary.",
-                "enum": [
-                  "user",
-                  "workspace",
-                  "folder"
-                ],
+                "enum": ["user", "workspace", "folder"],
                 "markdownDescription": "Specifies the scope of a dictionary.",
                 "type": "string"
               },
@@ -303,12 +290,7 @@
         },
         "kind": {
           "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
-          "enum": [
-            "words",
-            "flag-words",
-            "ignore-words",
-            "suggest-words"
-          ],
+          "enum": ["words", "flag-words", "ignore-words", "suggest-words"],
           "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
           "since": "10.3.0",
           "type": "string"
@@ -334,22 +316,14 @@
           "anyOf": [
             {
               "description": "Specifies the scope of a dictionary.",
-              "enum": [
-                "user",
-                "workspace",
-                "folder"
-              ],
+              "enum": ["user", "workspace", "folder"],
               "markdownDescription": "Specifies the scope of a dictionary.",
               "type": "string"
             },
             {
               "items": {
                 "description": "Specifies the scope of a dictionary.",
-                "enum": [
-                  "user",
-                  "workspace",
-                  "folder"
-                ],
+                "enum": ["user", "workspace", "folder"],
                 "markdownDescription": "Specifies the scope of a dictionary.",
                 "type": "string"
               },
@@ -367,10 +341,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "name",
-        "path"
-      ],
+      "required": ["name", "path"],
       "type": "object"
     },
     "CustomDictionaryAugmentExistingDictionary": {
@@ -411,22 +382,14 @@
           "anyOf": [
             {
               "description": "Specifies the scope of a dictionary.",
-              "enum": [
-                "user",
-                "workspace",
-                "folder"
-              ],
+              "enum": ["user", "workspace", "folder"],
               "markdownDescription": "Specifies the scope of a dictionary.",
               "type": "string"
             },
             {
               "items": {
                 "description": "Specifies the scope of a dictionary.",
-                "enum": [
-                  "user",
-                  "workspace",
-                  "folder"
-                ],
+                "enum": ["user", "workspace", "folder"],
                 "markdownDescription": "Specifies the scope of a dictionary.",
                 "type": "string"
               },
@@ -438,9 +401,7 @@
           "title": "Scope of dictionary"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "CustomDictionaryEntry": {
@@ -460,12 +421,7 @@
       ]
     },
     "DiagnosticLevel": {
-      "enum": [
-        "Error",
-        "Warning",
-        "Information",
-        "Hint"
-      ],
+      "enum": ["Error", "Warning", "Information", "Hint"],
       "type": "string"
     },
     "DictionaryDef": {
@@ -507,12 +463,7 @@
         },
         "kind": {
           "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
-          "enum": [
-            "words",
-            "flag-words",
-            "ignore-words",
-            "suggest-words"
-          ],
+          "enum": ["words", "flag-words", "ignore-words", "suggest-words"],
           "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
           "since": "10.3.0",
           "type": "string"
@@ -536,22 +487,14 @@
           "anyOf": [
             {
               "description": "Specifies the scope of a dictionary.",
-              "enum": [
-                "user",
-                "workspace",
-                "folder"
-              ],
+              "enum": ["user", "workspace", "folder"],
               "markdownDescription": "Specifies the scope of a dictionary.",
               "type": "string"
             },
             {
               "items": {
                 "description": "Specifies the scope of a dictionary.",
-                "enum": [
-                  "user",
-                  "workspace",
-                  "folder"
-                ],
+                "enum": ["user", "workspace", "folder"],
                 "markdownDescription": "Specifies the scope of a dictionary.",
                 "type": "string"
               },
@@ -568,11 +511,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "path",
-        "addWords",
-        "name"
-      ],
+      "required": ["path", "addWords", "name"],
       "type": "object"
     },
     "DictionaryDefPreferred": {
@@ -596,12 +535,7 @@
         },
         "kind": {
           "description": "Used to specify the type of dictionary being referenced. Values:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.    This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the    dictionary will be treated like `suggestWords`.",
-          "enum": [
-            "words",
-            "flag-words",
-            "ignore-words",
-            "suggest-words"
-          ],
+          "enum": ["words", "flag-words", "ignore-words", "suggest-words"],
           "markdownDescription": "Used to specify the type of dictionary being referenced.\nValues:\n- `words` - (default) A dictionary containing words.\n- `flag-words` - A dictionary containing flag words. Words found in the dictionary will be treated like `flagWords`.\n- `ignore-words` - A dictionary containing words to ignore.\n   This is the same as setting `noSuggest` to `true`.\n- `suggest-words` - A dictionary containing suggested word corrections. Words found in the\n   dictionary will be treated like `suggestWords`.",
           "since": "10.3.0",
           "type": "string"
@@ -628,10 +562,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "path",
-        "name"
-      ],
+      "required": ["path", "name"],
       "type": "object"
     },
     "EnableCustomDictionary": {
@@ -1146,10 +1077,7 @@
                 "markdownDescription": "RegExp pattern or array of RegExp patterns."
               }
             },
-            "required": [
-              "name",
-              "pattern"
-            ],
+            "required": ["name", "pattern"],
             "type": "object"
           },
           "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
@@ -1249,10 +1177,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "name",
-              "entries"
-            ],
+            "required": ["name", "entries"],
             "since": "9.7.0",
             "type": "object"
           },
@@ -1330,9 +1255,7 @@
           "type": "array"
         }
       },
-      "required": [
-        "languageId"
-      ],
+      "required": ["languageId"],
       "type": "object"
     },
     "OverrideSettings": {
@@ -1686,10 +1609,7 @@
           "description": "The Maximum size of a file to spell check. This is used to prevent spell checking very large files.\n\nThe value can be number or a string formatted `<number>[units]`, number with optional units.\n\nSupported units:\n\n- K, KB - value * 1024\n- M, MB - value * 2^20\n- G, GB - value * 2^30\n\nSpecial values:\n- `0` - has the effect of removing the limit.\n\nExamples:\n- `1000000` - 1 million bytes\n- `1000K` or `1000KB` - 1 thousand kilobytes\n- `0.5M` or `0.5MB` - 0.5 megabytes\n\ndefault: no limit",
           "markdownDescription": "The Maximum size of a file to spell check. This is used to prevent spell checking very large files.\n\nThe value can be number or a string formatted `<number>[units]`, number with optional units.\n\nSupported units:\n\n- K, KB - value * 1024\n- M, MB - value * 2^20\n- G, GB - value * 2^30\n\nSpecial values:\n- `0` - has the effect of removing the limit.\n\nExamples:\n- `1000000` - 1 million bytes\n- `1000K` or `1000KB` - 1 thousand kilobytes\n- `0.5M` or `0.5MB` - 0.5 megabytes\n\ndefault: no limit",
           "since": "9.4.0",
-          "type": [
-            "number",
-            "string"
-          ]
+          "type": ["number", "string"]
         },
         "maxNumberOfProblems": {
           "default": 10000,
@@ -1774,20 +1694,14 @@
                 "markdownDescription": "RegExp pattern or array of RegExp patterns."
               }
             },
-            "required": [
-              "name",
-              "pattern"
-            ],
+            "required": ["name", "pattern"],
             "type": "object"
           },
           "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
           "type": "array"
         },
         "pnpFiles": {
-          "default": [
-            ".pnp.js",
-            ".pnp.cjs"
-          ],
+          "default": [".pnp.js", ".pnp.cjs"],
           "description": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
           "items": {
             "type": "string"
@@ -1889,10 +1803,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "name",
-              "entries"
-            ],
+            "required": ["name", "entries"],
             "since": "9.7.0",
             "type": "object"
           },
@@ -1988,9 +1899,7 @@
           "type": "array"
         }
       },
-      "required": [
-        "filename"
-      ],
+      "required": ["filename"],
       "type": "object"
     },
     "Prefix<alias-653189051-10016-10319-653189051-0-11268,\"cSpell.\">": {
@@ -2028,13 +1937,7 @@
         "cSpell.logLevel": {
           "default": "Error",
           "description": "Set the Debug Level for logging messages.",
-          "enum": [
-            "None",
-            "Error",
-            "Warning",
-            "Information",
-            "Debug"
-          ],
+          "enum": ["None", "Error", "Warning", "Information", "Debug"],
           "enumDescriptions": [
             "Do not log",
             "Log only errors",
@@ -2279,12 +2182,7 @@
         "cSpell.hideIssuesWhileTyping": {
           "default": "Word",
           "description": "Control how spelling issues are displayed while typing. See: `#cSpell.revealIssuesAfterDelayMS#` to control when issues are revealed.",
-          "enum": [
-            "Off",
-            "Word",
-            "Line",
-            "Document"
-          ],
+          "enum": ["Off", "Word", "Line", "Document"],
           "enumDescriptions": [
             "Show issues while typing",
             "Hide issues while typing in the current word",
@@ -2524,10 +2422,7 @@
         "cSpell.suggestionMenuType": {
           "default": "quickPick",
           "description": "The type of menu used to display spelling suggestions.",
-          "enum": [
-            "quickPick",
-            "quickFix"
-          ],
+          "enum": ["quickPick", "quickFix"],
           "enumDescriptions": [
             "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
             "Suggestions will appear inline near the word, inside the text editor."
@@ -2598,10 +2493,7 @@
           "description": "The Maximum size of a file to spell check. This is used to prevent spell checking very large files.\n\nThe value can be number or a string formatted `<number>[units]`, number with optional units.\n\nSupported units:\n\n- K, KB - value * 1024\n- M, MB - value * 2^20\n- G, GB - value * 2^30\n\nSpecial values:\n- `0` - has the effect of removing the limit.\n\nExamples:\n- `1000000` - 1 million bytes\n- `1000K` or `1000KB` - 1 thousand kilobytes\n- `0.5M` or `0.5MB` - 0.5 megabytes\n\ndefault: no limit",
           "markdownDescription": "The Maximum size of a file to spell check. This is used to prevent spell checking very large files.\n\nThe value can be number or a string formatted `<number>[units]`, number with optional units.\n\nSupported units:\n\n- K, KB - value * 1024\n- M, MB - value * 2^20\n- G, GB - value * 2^30\n\nSpecial values:\n- `0` - has the effect of removing the limit.\n\nExamples:\n- `1000000` - 1 million bytes\n- `1000K` or `1000KB` - 1 thousand kilobytes\n- `0.5M` or `0.5MB` - 0.5 megabytes\n\ndefault: no limit",
           "since": "9.4.0",
-          "type": [
-            "number",
-            "string"
-          ]
+          "type": ["number", "string"]
         },
         "cSpell.minRandomLength": {
           "default": 40,
@@ -2649,10 +2541,7 @@
                 "markdownDescription": "RegExp pattern or array of RegExp patterns."
               }
             },
-            "required": [
-              "name",
-              "pattern"
-            ],
+            "required": ["name", "pattern"],
             "type": "object"
           },
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
@@ -2753,10 +2642,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "name",
-              "entries"
-            ],
+            "required": ["name", "entries"],
             "since": "9.7.0",
             "type": "object"
           },
@@ -2817,11 +2703,7 @@
               },
               "encoding": {
                 "description": "The encoding of the data. In most cases the encoding is determined from the data type and filename url.",
-                "enum": [
-                  "base64",
-                  "plaintext",
-                  "utf8"
-                ],
+                "enum": ["base64", "plaintext", "utf8"],
                 "markdownDescription": "The encoding of the data. In most cases the encoding is determined from the data type and filename url.",
                 "type": "string"
               },
@@ -2832,9 +2714,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "data"
-            ],
+            "required": ["data"],
             "since": "9.7.0",
             "type": "object"
           },
@@ -3108,11 +2988,7 @@
             "textDecorationLine": {
               "default": "underline",
               "description": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
-              "enum": [
-                "underline",
-                "overline",
-                "line-through"
-              ],
+              "enum": ["underline", "overline", "line-through"],
               "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
               "scope": "application",
               "sinceVersion": "4.0.0",
@@ -3121,13 +2997,7 @@
             "textDecorationStyle": {
               "default": "dashed",
               "description": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
-              "enum": [
-                "solid",
-                "wavy",
-                "dotted",
-                "dashed",
-                "double"
-              ],
+              "enum": ["solid", "wavy", "dotted", "dashed", "double"],
               "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
               "scope": "application",
               "sinceVersion": "4.0.0",
@@ -3209,11 +3079,7 @@
             "textDecorationLine": {
               "default": "underline",
               "description": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
-              "enum": [
-                "underline",
-                "overline",
-                "line-through"
-              ],
+              "enum": ["underline", "overline", "line-through"],
               "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
               "scope": "application",
               "sinceVersion": "4.0.0",
@@ -3222,13 +3088,7 @@
             "textDecorationStyle": {
               "default": "dashed",
               "description": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
-              "enum": [
-                "solid",
-                "wavy",
-                "dotted",
-                "dashed",
-                "double"
-              ],
+              "enum": ["solid", "wavy", "dotted", "dashed", "double"],
               "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
               "scope": "application",
               "sinceVersion": "4.0.0",
@@ -3297,11 +3157,7 @@
         "cSpell.textDecorationLine": {
           "default": "underline",
           "description": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
-          "enum": [
-            "underline",
-            "overline",
-            "line-through"
-          ],
+          "enum": ["underline", "overline", "line-through"],
           "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
           "scope": "application",
           "sinceVersion": "4.0.0",
@@ -3310,13 +3166,7 @@
         "cSpell.textDecorationStyle": {
           "default": "dashed",
           "description": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
-          "enum": [
-            "solid",
-            "wavy",
-            "dotted",
-            "dashed",
-            "double"
-          ],
+          "enum": ["solid", "wavy", "dotted", "dashed", "double"],
           "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
           "scope": "application",
           "sinceVersion": "4.0.0",
@@ -3416,14 +3266,8 @@
           "deprecated": true,
           "deprecationMessage": "No longer supported.",
           "description": "The side of the status bar to display the spell checker status.",
-          "enum": [
-            "Left",
-            "Right"
-          ],
-          "enumDescriptions": [
-            "Left Side of Statusbar",
-            "Right Side of Statusbar"
-          ],
+          "enum": ["Left", "Right"],
+          "enumDescriptions": ["Left Side of Statusbar", "Right Side of Statusbar"],
           "markdownDescription": "The side of the status bar to display the spell checker status.",
           "scope": "application",
           "type": "string"
@@ -3546,12 +3390,7 @@
       "type": "array"
     },
     "UnknownWordsReportingLevel": {
-      "enum": [
-        "all",
-        "simple",
-        "typos",
-        "flagged"
-      ],
+      "enum": ["all", "simple", "typos", "flagged"],
       "type": "string"
     },
     "VSConfigAdvanced": {

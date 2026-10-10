@@ -1,3 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+/* oxlint-disable typescript/no-require-imports */
 
-module.exports = require('jest-mock-vscode').createVSCodeMock(jest);
+module.exports = require('jest-mock-vscode').createVSCodeMock(jest)

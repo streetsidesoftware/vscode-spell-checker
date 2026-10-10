@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-// eslint-disable-next-line n/no-unsupported-features/node-builtins
+// oxlint-disable-next-line n/no-unsupported-features/node-builtins
 import readline from 'node:readline/promises';
 import { formatWithOptions } from 'node:util';
 

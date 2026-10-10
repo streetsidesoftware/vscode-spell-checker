@@ -1,33 +1,37 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export type Func = (...p: any) => any;
+/* oxlint-disable typescript/no-explicit-any */
+export type Func = (...p: any) => any
 
-export type FuncVoid = (...p: any) => void;
+export type FuncVoid = (...p: any) => void
 
-export type AsyncFunc = (...p: any) => Promise<any>;
+export type AsyncFunc = (...p: any) => Promise<any>
 
-export type AsyncFuncVoid = (...p: any) => Promise<void>;
+export type AsyncFuncVoid = (...p: any) => Promise<void>
 
 export type KeepFieldsOfType<T, Keep> = {
-    [K in keyof T as T[K] extends Keep ? K : never]: T[K];
-};
+  [K in keyof T as T[K] extends Keep ? K : never]: T[K]
+}
 
-export type ReturnPromise<T> = T extends Func ? (T extends AsyncFunc ? T : (...p: Parameters<T>) => Promise<ReturnType<T>>) : never;
+export type ReturnPromise<T> = T extends Func
+  ? T extends AsyncFunc
+    ? T
+    : (...p: Parameters<T>) => Promise<ReturnType<T>>
+  : never
 
 export type MakeMethodsAsync<T> = {
-    [K in keyof T]: ReturnPromise<T[K]>;
-};
+  [K in keyof T]: ReturnPromise<T[K]>
+}
 
-export type GenericRequestHandler<R> = (params: any) => R | Promise<R>;
+export type GenericRequestHandler<R> = (params: any) => R | Promise<R>
 
-export type GenericNotificationHandler = (params: any) => void;
+export type GenericNotificationHandler = (params: any) => void
 
 export interface Disposable {
-    dispose(): void;
+  dispose(): void
 }
 
 export interface MessageConnection {
-    sendRequest<R>(method: string, params: any): Promise<R>;
-    onRequest<R>(method: string, handler: GenericRequestHandler<R>): Disposable;
-    sendNotification(method: string, params: any): Promise<void>;
-    onNotification(method: string, handler: GenericNotificationHandler): Disposable;
+  sendRequest<R>(method: string, params: any): Promise<R>
+  onRequest<R>(method: string, handler: GenericRequestHandler<R>): Disposable
+  sendNotification(method: string, params: any): Promise<void>
+  onNotification(method: string, handler: GenericNotificationHandler): Disposable
 }

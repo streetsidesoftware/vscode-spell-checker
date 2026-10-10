@@ -1,9 +1,9 @@
 export interface Todo {
-    id: string;
-    name: string;
-    done: boolean;
+  id: string
+  name: string
+  done: boolean
 }
 
-export type DateString = string;
+export type DateString = string
 
-export type TodoList = Todo[];
+export type TodoList = Todo[]

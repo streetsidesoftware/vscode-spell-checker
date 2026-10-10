@@ -1,76 +1,76 @@
 {
-    "release-type": "node",
-    "changelog-sections": [
-        {
-            "type": "feat",
-            "section": "Features",
-            "hidden": false
-        },
-        {
-            "type": "feature",
-            "section": "Features",
-            "hidden": false
-        },
-        {
-            "type": "fix",
-            "section": "Updates and Bug Fixes",
-            "hidden": false
-        },
-        {
-            "type": "perf",
-            "section": "Performance Improvements"
-        },
-        {
-            "type": "ci",
-            "section": "Continuous Integration",
-            "hidden": true
-        },
-        {
-            "type": "chore",
-            "section": "Miscellaneous",
-            "hidden": true
-        },
-        {
-            "type": "revert",
-            "section": "Reverts"
-        },
-        {
-            "type": "docs",
-            "section": "Documentation",
-            "hidden": true
-        },
-        {
-            "type": "dev",
-            "section": "Development In Progress",
-            "hidden": true
-        },
-        {
-            "type": "style",
-            "section": "Styles",
-            "hidden": true
-        },
-        {
-            "type": "refactor",
-            "section": "Code Refactoring",
-            "hidden": false
-        },
-        {
-            "type": "test",
-            "section": "Tests",
-            "hidden": true
-        },
-        {
-            "type": "build",
-            "section": "Build System",
-            "hidden": true
-        },
-        {
-            "type": "",
-            "section": "Changes",
-            "hidden": true
-        }
-    ],
-    "packages": {
-        ".": {}
+  "release-type": "node",
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features",
+      "hidden": false
+    },
+    {
+      "type": "feature",
+      "section": "Features",
+      "hidden": false
+    },
+    {
+      "type": "fix",
+      "section": "Updates and Bug Fixes",
+      "hidden": false
+    },
+    {
+      "type": "perf",
+      "section": "Performance Improvements"
+    },
+    {
+      "type": "ci",
+      "section": "Continuous Integration",
+      "hidden": true
+    },
+    {
+      "type": "chore",
+      "section": "Miscellaneous",
+      "hidden": true
+    },
+    {
+      "type": "revert",
+      "section": "Reverts"
+    },
+    {
+      "type": "docs",
+      "section": "Documentation",
+      "hidden": true
+    },
+    {
+      "type": "dev",
+      "section": "Development In Progress",
+      "hidden": true
+    },
+    {
+      "type": "style",
+      "section": "Styles",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "Code Refactoring",
+      "hidden": false
+    },
+    {
+      "type": "test",
+      "section": "Tests",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "Build System",
+      "hidden": true
+    },
+    {
+      "type": "",
+      "section": "Changes",
+      "hidden": true
     }
+  ],
+  "packages": {
+    ".": {}
+  }
 }

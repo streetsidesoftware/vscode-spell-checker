@@ -1,192 +1,147 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Client: Launch Extension",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension -- All extensions",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension -- virtual workspace",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "--folder-uri=vscode-vfs://github/streetsidesoftware/cspell-dicts"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - .gitignore",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/multi-git-ignore/multi-git-ignore.code-workspace"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - multi-root",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/multi-root/multi-root.code-workspace"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - single-root",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/single-root/single-root.code-workspace"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - single",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/single/single.code-workspace"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - no-workspace",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/no-workspace"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - single file",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/single/README.md"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "name": "Client: Launch Extension - notebook",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--disable-extensions",
-                "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}/fixtures/workspaces/jupyter"
-            ],
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceRoot}/packages/client/dist/**"
-            ],
-            "smartStep": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        }
-    ],
-    "compounds": []
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Client: Launch Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": ["--disable-extensions", "--extensionDevelopmentPath=${workspaceRoot}"],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension -- All extensions",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension -- virtual workspace",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "--folder-uri=vscode-vfs://github/streetsidesoftware/cspell-dicts"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - .gitignore",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/multi-git-ignore/multi-git-ignore.code-workspace"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - multi-root",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/multi-root/multi-root.code-workspace"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - single-root",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/single-root/single-root.code-workspace"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - single",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/single/single.code-workspace"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - no-workspace",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/no-workspace"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - single file",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/single/README.md"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Client: Launch Extension - notebook",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "${workspaceRoot}/fixtures/workspaces/jupyter"
+      ],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/packages/client/dist/**"],
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "compounds": []
 }

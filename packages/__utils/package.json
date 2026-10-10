@@ -1,10 +1,10 @@
 {
   "name": "@internal/common-utils",
   "version": "1.0.0",
-  "description": "Shared Utils between server and client",
   "private": true,
-  "sideEffects": false,
+  "description": "Shared Utils between server and client",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/index.js"

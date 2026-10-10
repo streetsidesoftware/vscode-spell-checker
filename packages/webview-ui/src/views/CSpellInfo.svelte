@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { appState } from '../state/appState';
   import { createMutation, createQuery, getQueryClientContext } from '@tanstack/svelte-query';
-  import { getServerApi, getServerNotificationApi } from '../api';
   import type { Settings } from 'webview-api';
-  import VscodeLink from '../components/VscodeLink.svelte';
-  import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
   import type { TextDocumentRef, UpdateEnabledFileTypesRequest } from 'webview-api/apiModels';
+
+  import { getServerApi, getServerNotificationApi } from '../api';
+  import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
+  import VscodeLink from '../components/VscodeLink.svelte';
+  import { appState } from '../state/appState';
 
   const queryClient = getQueryClientContext();
   const api = getServerApi();

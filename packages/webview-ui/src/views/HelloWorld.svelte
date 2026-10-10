@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getClientApi, getLocalState } from '../api';
+  import CheckboxLogDebug from '../components/CheckboxLogDebug.svelte';
   import VscodeButton from '../components/VscodeButton.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
-  import VsCodeComponents from './VSCodeComponents.svelte';
   import { appState } from '../state/appState';
-  import CheckboxLogDebug from '../components/CheckboxLogDebug.svelte';
+  import VsCodeComponents from './VSCodeComponents.svelte';
 
   interface Props {
     showVsCodeComponents?: any;

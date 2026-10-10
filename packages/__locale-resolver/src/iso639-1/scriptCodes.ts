@@ -216,9 +216,11 @@ Zsye	Symbols (emoji variant)
 Zxxx	Code for unwritten documents
 Zyyy	Code for undetermined script
 Zzzz	Code for uncoded script
-`;
+`
 // cspell:enable
 
-export type ScriptCodeEntry = [code: string, name: string];
+export type ScriptCodeEntry = [code: string, name: string]
 
-export const scriptCodes = src.split('\n').map((line) => line.split('\t') as ScriptCodeEntry);
+export const scriptCodes = src
+  .split('\n')
+  .map((line) => line.split('\t') as ScriptCodeEntry)

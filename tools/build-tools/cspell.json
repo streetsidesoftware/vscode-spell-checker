@@ -1,7 +1,7 @@
 {
-    "version": "0.2",
-    "import": ["../../cspell.config.yaml"],
-    "ignorePaths": ["fileTypeMap.json"],
-    "enableFiletypes": ["literate haskell", "shellscript"],
-    "overrides": []
+  "version": "0.2",
+  "import": ["../../cspell.config.yaml"],
+  "ignorePaths": ["fileTypeMap.json"],
+  "enableFiletypes": ["literate haskell", "shellscript"],
+  "overrides": []
 }

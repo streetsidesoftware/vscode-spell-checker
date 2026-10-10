@@ -43,7 +43,7 @@ jobs:
       - name: Generate Website Docs
         run: |
           npm run build:all
-          npx prettier -c website
+          npm run oxfmt:check
 
       - name: GenBody
         id: body

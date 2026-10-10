@@ -810,7 +810,7 @@ function resolveRef(root: JSONSchema4, ref: JSONSchema4): JSONSchema4 {
     if (!ref.$ref) return ref;
 
     const path = ref.$ref.replace(/^#\//, '').split('/').map(decodeURIComponent);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     const resolved = path.reduce<any>((node, key) => node?.[key], root);
     if (!resolved) {
         throw new Error(`Unable to resolve $ref: ${ref.$ref}`);

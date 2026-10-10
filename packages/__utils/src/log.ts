@@ -1,90 +1,90 @@
-import { format } from 'node:util';
+import { format } from 'node:util'
 
-import { Logger } from './logger.js';
+import { Logger } from './logger.js'
 
-export { LogLevel } from './logger.js';
+export { LogLevel } from './logger.js'
 
-let workspaceBase = '';
-let workspaceFolders: string[] = [];
+let workspaceBase = ''
+let workspaceFolders: string[] = []
 
-export const logger = new Logger();
+export const logger = new Logger()
 export function log(msg: string, uri?: string | string[]) {
-    logger.log(formatMessage(msg, uri));
+  logger.log(formatMessage(msg, uri))
 }
 
 export function logError(msg: string, uri?: string | string[]) {
-    logger.error(formatMessage(msg, uri));
+  logger.error(formatMessage(msg, uri))
 }
 
 export function logInfo(msg: string, uri?: string | string[]) {
-    logger.info(formatMessage(msg, uri));
+  logger.info(formatMessage(msg, uri))
 }
 
 export function logDebug(msg: string, uri?: string | string[]) {
-    logger.debug(formatMessage(msg, uri));
+  logger.debug(formatMessage(msg, uri))
 }
 
 export function consoleLog(...args: Parameters<typeof console.log>) {
-    logger.log(format(...args));
+  logger.log(format(...args))
 }
 
 export function consoleInfo(...args: Parameters<typeof console.log>) {
-    logger.info(format(...args));
+  logger.info(format(...args))
 }
 
 export function consoleWarn(...args: Parameters<typeof console.log>) {
-    logger.warn(format(...args));
+  logger.warn(format(...args))
 }
 
 export function consoleDebug(...args: Parameters<typeof console.log>) {
-    logger.debug(format(...args));
+  logger.debug(format(...args))
 }
 
 export function consoleError(...args: Parameters<typeof console.log>) {
-    logger.error(format(...args));
+  logger.error(format(...args))
 }
 
 export function setWorkspaceBase(uri: string) {
-    log(`setWorkspaceBase URI: ${uri}`);
-    workspaceBase = uri;
+  log(`setWorkspaceBase URI: ${uri}`)
+  workspaceBase = uri
 }
 
 export function setWorkspaceFolders(folders: string[]) {
-    log(`setWorkspaceFolders folders URI: [${folders.join('\n')}]`);
-    workspaceFolders = folders;
-    setWorkspaceBase(findCommonBasis(workspaceFolders));
+  log(`setWorkspaceFolders folders URI: [${folders.join('\n')}]`)
+  workspaceFolders = folders
+  setWorkspaceBase(findCommonBasis(workspaceFolders))
 }
 
 function formatMessage(msg: string, uri?: string | string[]) {
-    const uris = Array.isArray(uri) ? uri : [uri];
-    return msg + '\t' + uris.map(normalizeUri).join('\n\t\t\t');
+  const uris = Array.isArray(uri) ? uri : [uri]
+  return msg + '\t' + uris.map(normalizeUri).join('\n\t\t\t')
 }
 
 function normalizeUri(uri?: string) {
-    if (!uri) {
-        return '';
-    }
-    const base = findCommonBase(uri, workspaceBase);
-    return base ? uri.replace(base, '...') : uri;
+  if (!uri) {
+    return ''
+  }
+  const base = findCommonBase(uri, workspaceBase)
+  return base ? uri.replace(base, '...') : uri
 }
 
 function findCommonBasis(folders: string[]): string {
-    return folders.reduce((a, b) => findCommonBase(a || b, b), '');
+  return folders.reduce((a, b) => findCommonBase(a || b, b), '')
 }
 
 function findCommonBase(a: string, b: string): string {
-    const limit = matchingUriLength(a, b);
-    return a.slice(0, limit);
+  const limit = matchingUriLength(a, b)
+  return a.slice(0, limit)
 }
 
 function matchingUriLength(a: string, b: string): number {
-    const sep = '/';
-    const aParts = a.split(sep);
-    const bParts = b.split(sep);
-    const limit = Math.min(aParts.length, bParts.length);
-    let i = 0;
-    while (i < limit && aParts[i] === bParts[i]) {
-        ++i;
-    }
-    return aParts.slice(0, i).join(sep).length;
+  const sep = '/'
+  const aParts = a.split(sep)
+  const bParts = b.split(sep)
+  const limit = Math.min(aParts.length, bParts.length)
+  let i = 0
+  while (i < limit && aParts[i] === bParts[i]) {
+    ++i
+  }
+  return aParts.slice(0, i).join(sep).length
 }

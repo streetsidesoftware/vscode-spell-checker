@@ -1,37 +1,37 @@
-export type IconIdentifier = string;
+export type IconIdentifier = string
 
 export interface ThemeColor {
-    id: string;
+  id: string
 }
 
 export interface ThemeIcon {
-    readonly id: string;
-    readonly color?: ThemeColor;
+  readonly id: string
+  readonly color?: ThemeColor
 }
 
 export type Categories = Readonly<{
-    View: ILocalizedString;
-    Help: ILocalizedString;
-    Test: ILocalizedString;
-    File: ILocalizedString;
-    Preferences: ILocalizedString;
-    Developer: ILocalizedString;
-}>;
+  View: ILocalizedString
+  Help: ILocalizedString
+  Test: ILocalizedString
+  File: ILocalizedString
+  Preferences: ILocalizedString
+  Developer: ILocalizedString
+}>
 
 export interface ILocalizedString {
-    /**
-     * The localized value of the string.
-     */
-    value: string;
+  /**
+   * The localized value of the string.
+   */
+  value: string
 
-    /**
-     * The original (non localized value of the string)
-     */
-    original: string;
+  /**
+   * The original (non localized value of the string)
+   */
+  original: string
 }
 
-type URI = string;
+type URI = string
 
-export type Icon = { dark?: URI; light?: URI } | ThemeIcon | IconIdentifier;
+export type Icon = { dark?: URI; light?: URI } | ThemeIcon | IconIdentifier
 
-export type WhenClause = string;
+export type WhenClause = string

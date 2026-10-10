@@ -1,8 +1,8 @@
-import type { MessageItem, MessageOptions } from 'vscode';
-import { window } from 'vscode';
+import type { MessageItem, MessageOptions } from 'vscode'
+import { window } from 'vscode'
 
-import { silenceErrors } from './errors.js';
-import { pVoid } from './pVoid.js';
+import { silenceErrors } from './errors.js'
+import { pVoid } from './pVoid.js'
 
 /**
  * Show an error message.
@@ -12,7 +12,7 @@ import { pVoid } from './pVoid.js';
  * @returns window.showErrorMessage() result or `undefined` if the promise was rejected.
  */
 export function pvShowErrorMessage(message: string): Promise<void> {
-    return pVoid(window.showErrorMessage(message), 'showErrorMessage helper');
+  return pVoid(window.showErrorMessage(message), 'showErrorMessage helper')
 }
 
 /**
@@ -23,7 +23,10 @@ export function pvShowErrorMessage(message: string): Promise<void> {
  * @param items A set of items that will be rendered as actions in the message.
  * @returns A Promise that resolves to the selected item or `undefined` when being dismissed.
  */
-export function showInformationMessage<T extends string>(message: string, ...items: T[]): Promise<T | undefined>;
+export function showInformationMessage<T extends string>(
+  message: string,
+  ...items: T[]
+): Promise<T | undefined>
 
 /**
  * Show an information message to users. Optionally provide an array of items which will be presented as
@@ -34,7 +37,11 @@ export function showInformationMessage<T extends string>(message: string, ...ite
  * @param items A set of items that will be rendered as actions in the message.
  * @returns A Promise that resolves to the selected item or `undefined` when being dismissed.
  */
-export function showInformationMessage<T extends string>(message: string, options: MessageOptions, ...items: T[]): Promise<T | undefined>;
+export function showInformationMessage<T extends string>(
+  message: string,
+  options: MessageOptions,
+  ...items: T[]
+): Promise<T | undefined>
 
 /**
  * Show an information message.
@@ -45,7 +52,10 @@ export function showInformationMessage<T extends string>(message: string, option
  * @param items A set of items that will be rendered as actions in the message.
  * @returns A Promise that resolves to the selected item or `undefined` when being dismissed.
  */
-export function showInformationMessage<T extends MessageItem>(message: string, ...items: T[]): Promise<T | undefined>;
+export function showInformationMessage<T extends MessageItem>(
+  message: string,
+  ...items: T[]
+): Promise<T | undefined>
 
 /**
  * Show an information message.
@@ -58,15 +68,20 @@ export function showInformationMessage<T extends MessageItem>(message: string, .
  * @returns A Promise that resolves to the selected item or `undefined` when being dismissed.
  */
 export function showInformationMessage<T extends MessageItem>(
-    message: string,
-    options: MessageOptions,
-    ...items: T[]
-): Promise<T | undefined>;
+  message: string,
+  options: MessageOptions,
+  ...items: T[]
+): Promise<T | undefined>
 
-export function showInformationMessage(...params: Parameters<typeof window.showInformationMessage>) {
-    return silenceErrors(window.showInformationMessage(...params), 'pvShowInformationMessage');
+export function showInformationMessage(
+  ...params: Parameters<typeof window.showInformationMessage>
+) {
+  return silenceErrors(
+    window.showInformationMessage(...params),
+    'pvShowInformationMessage',
+  )
 }
 
 export function pvShowInformationMessage(message: string): Promise<void> {
-    return pVoid(showInformationMessage(message), 'pvShowInformationMessage');
+  return pVoid(showInformationMessage(message), 'pvShowInformationMessage')
 }

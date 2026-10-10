@@ -1,33 +1,35 @@
-import { disposeOf } from 'utils-disposables';
+import { disposeOf } from 'utils-disposables'
 
-import { createEmitter } from '../createFunctions.js';
-import type { Subscribable, SubscribableEvent } from '../Subscribables.js';
+import { createEmitter } from '../createFunctions.js'
+import type { Subscribable, SubscribableEvent } from '../Subscribables.js'
 
-export function fromIterable<T>(iter: IterableIterator<T> | Iterable<T>): Subscribable<T> {
-    const emitter = createEmitter<T>();
-    let stop = false;
-    const disposeEventListener = emitter.onEvent(handleEvents);
+export function fromIterable<T>(
+  iter: IterableIterator<T> | Iterable<T>,
+): Subscribable<T> {
+  const emitter = createEmitter<T>()
+  let stop = false
+  const disposeEventListener = emitter.onEvent(handleEvents)
 
-    function handleEvents(e: SubscribableEvent) {
-        if (e.name === 'onStart') {
-            setTimeout(emitValues);
-        }
-        if (e.name === 'onStop' || e.name === 'onDone') {
-            stop = true;
-        }
+  function handleEvents(e: SubscribableEvent) {
+    if (e.name === 'onStart') {
+      setTimeout(emitValues)
     }
-
-    function emitValues() {
-        try {
-            for (const val of iter) {
-                if (stop) break;
-                emitter.notify(val);
-            }
-        } finally {
-            disposeOf(disposeEventListener);
-            emitter.done();
-        }
+    if (e.name === 'onStop' || e.name === 'onDone') {
+      stop = true
     }
+  }
 
-    return emitter;
+  function emitValues() {
+    try {
+      for (const val of iter) {
+        if (stop) break
+        emitter.notify(val)
+      }
+    } finally {
+      disposeOf(disposeEventListener)
+      emitter.done()
+    }
+  }
+
+  return emitter
 }

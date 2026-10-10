@@ -2,6 +2,8 @@
   "name": "workspace2",
   "version": "1.0.0",
   "description": "Sample Workspace 2",
+  "license": "MIT",
+  "author": "",
   "main": "index.js",
   "scripts": {
     "test": "echo test"
@@ -11,7 +13,5 @@
     "words": [
       "workspacetwo"
     ]
-  },
-  "author": "",
-  "license": "MIT"
+  }
 }

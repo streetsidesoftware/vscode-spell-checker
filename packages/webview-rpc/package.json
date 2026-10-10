@@ -1,18 +1,25 @@
 {
   "name": "vscode-webview-rpc",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "Make JSON-RPC calls to VSCode Webviews",
-  "sideEffects": false,
+  "keywords": [
+    "json-rpc",
+    "vscode",
+    "webviews"
+  ],
+  "license": "MIT",
+  "author": "Street Side Software",
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "!dist/**/*.test.*",
+    "!dist/**/test/**",
+    "!dist/esm/**/*.js",
+    "!dist/esm/**/*.ts"
+  ],
   "type": "module",
-  "scripts": {
-    "build": "npm run build:tsc",
-    "build:tsc": "tsc -p tsconfig.json",
-    "build-production": "npm run clean && npm run build",
-    "clean": "shx rm -rf dist",
-    "coverage": "echo ok",
-    "test": "echo ok"
-  },
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/esm/index.js"
@@ -24,28 +31,21 @@
       "import": "./dist/esm/extension/index.js"
     }
   },
-  "keywords": [
-    "json-rpc",
-    "webviews",
-    "vscode"
-  ],
-  "author": "Street Side Software",
-  "license": "MIT",
+  "scripts": {
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.json",
+    "build-production": "npm run clean && npm run build",
+    "clean": "shx rm -rf dist",
+    "coverage": "echo ok",
+    "test": "echo ok"
+  },
   "dependencies": {
     "json-rpc-api": "file:../json-rpc-api",
     "utils-disposables": "file:../utils-disposables",
     "vscode-jsonrpc": "^9.0.2"
   },
-  "files": [
-    "dist",
-    "!dist/**/*.map",
-    "!dist/**/*.test.*",
-    "!dist/**/test/**",
-    "!dist/esm/**/*.js",
-    "!dist/esm/**/*.ts"
-  ],
+  "devDependencies": {},
   "engines": {
     "node": ">=22.20.0"
-  },
-  "devDependencies": {}
+  }
 }

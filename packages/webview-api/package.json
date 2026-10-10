@@ -2,6 +2,8 @@
   "name": "webview-api",
   "version": "1.0.0",
   "description": "Define the API between the extension and the webviews.",
+  "license": "MIT",
+  "author": "Street Side Software",
   "type": "module",
   "exports": {
     ".": {
@@ -20,8 +22,6 @@
     "clean": "shx rm -rf dist",
     "test": "vitest run"
   },
-  "author": "Street Side Software",
-  "license": "MIT",
   "dependencies": {
     "json-rpc-api": "file:../json-rpc-api",
     "utils-disposables": "file:../utils-disposables",

@@ -129,7 +129,7 @@ export class Application {
         public usage = '',
     ) {}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     addCommand(...commands: Command<any, any>[]): this {
         for (const cmd of commands) {
             this.#commands.set(cmd.name, cmd);
@@ -137,7 +137,7 @@ export class Application {
         return this;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     addCommands(commands: Command<any, any>[]): this {
         return this.addCommand(...commands);
     }

@@ -57,7 +57,7 @@ export class MementoFile<T> implements Memento<T>, Disposable {
             const key: K = keyOrData;
             this.#data = this.#data ?? ({} as T);
             if (value === undefined) {
-                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+                // oxlint-disable-next-line typescript/no-dynamic-delete
                 delete this.#data[key];
             } else {
                 this.#data[key] = value;

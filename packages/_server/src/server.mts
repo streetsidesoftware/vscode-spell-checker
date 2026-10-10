@@ -130,7 +130,7 @@ export function run(): void {
     const triggerValidateAll: ReplaySubject<void> = new ReplaySubject(1);
     const validationByDoc: Map<string, Subscription> = new Map();
     const blockValidation: Map<string, number> = new Map();
-    const contentChangesByDoc = new Map<string, readonly { text: string }[]>();
+    const contentChangesByDoc: Map<string, readonly { text: string }[]> = new Map();
     let isValidationBusy = false;
     const dictionaryWatcher = dd(new DictionaryWatcher());
     dd(disposeValidationByDoc);

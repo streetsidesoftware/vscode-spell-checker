@@ -1,11 +1,11 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "noEmit": true,
-        "outDir": "./out",
-        "rootDir": "./src",
-        "skipLibCheck": true,
-        "types": ["node"]
-    },
-    "files": ["src/api.ts", "src/lib/index.mts"]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "outDir": "./out",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "files": ["src/api.ts", "src/lib/index.mts"]
 }

@@ -1,31 +1,15 @@
 {
   "name": "utils-logger",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "A logger interface.",
-  "sideEffects": false,
-  "type": "module",
-  "scripts": {
-    "build": "npm run build:tsc",
-    "build:tsc": "tsc -p tsconfig.json",
-    "build-production": "npm run clean && npm run build",
-    "clean": "shx rm -rf dist",
-    "coverage": "vitest run --coverage",
-    "test": "vitest run"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/logger.js"
-    }
-  },
   "keywords": [
     "json-rpc",
-    "webviews",
-    "vscode"
+    "vscode",
+    "webviews"
   ],
-  "author": "Street Side Software",
   "license": "MIT",
-  "dependencies": {},
+  "author": "Street Side Software",
   "files": [
     "dist",
     "!dist/**/*.map",
@@ -34,8 +18,24 @@
     "!dist/esm/**/*.js",
     "!dist/esm/**/*.ts"
   ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./dist/logger.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.json",
+    "build-production": "npm run clean && npm run build",
+    "clean": "shx rm -rf dist",
+    "coverage": "vitest run --coverage",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {},
   "engines": {
     "node": ">=22.20.0"
-  },
-  "devDependencies": {}
+  }
 }

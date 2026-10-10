@@ -41,10 +41,10 @@ where `??` operator means take left value unless it is `null` or `undefined`, th
 
 ```ts
 cSpell.spellCheckDelayMs =
-    folder.cSpell.spellCheckDelayMs ??
-    workspace.cSpell.spellCheckDelayMs ??
-    user.cSpell.spellCheckDelayMs ??
-    defaults.cSpell.spellCheckDelayMs;
+  folder.cSpell.spellCheckDelayMs ??
+  workspace.cSpell.spellCheckDelayMs ??
+  user.cSpell.spellCheckDelayMs ??
+  defaults.cSpell.spellCheckDelayMs;
 ```
 
 `cspell` uses and extends logic, which is similar to VS Code but some fields are merged instead of overwritten.

@@ -33,7 +33,6 @@ export default defineConfig({
                 '_snapshots_',
                 '.eslint*',
                 'vitest*',
-                '.prettier*',
                 '**/*.test.*',
                 '**/temp/**',
             ],

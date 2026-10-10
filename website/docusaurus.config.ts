@@ -1,159 +1,179 @@
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from 'prism-react-renderer'
+import type { Config } from '@docusaurus/types'
+import type * as Preset from '@docusaurus/preset-classic'
 
-const isStrict = false; // process.env.DOCUSAURUS_STRICT === 'true';
+const isStrict = false // process.env.DOCUSAURUS_STRICT === 'true';
 
 const config: Config = {
-    title: 'VS Code Spell Checker',
-    tagline: 'A spell checker for VS Code!',
-    favicon: 'img/favicon.ico',
+  title: 'VS Code Spell Checker',
+  tagline: 'A spell checker for VS Code!',
+  favicon: 'img/favicon.ico',
 
-    // Set the production url of your site here
-    url: 'https://streetsidesoftware.com',
-    // Set the /<baseUrl>/ pathname under which your site is served
-    // For GitHub pages deployment, it is often '/<projectName>/'
-    baseUrl: '/vscode-spell-checker/',
+  // Set the production url of your site here
+  url: 'https://streetsidesoftware.com',
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: '/vscode-spell-checker/',
 
-    // GitHub pages deployment config.
-    // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'streetsidesoftware', // Usually your GitHub org/user name.
-    projectName: 'vscode-spell-checker', // Usually your repo name.
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: 'streetsidesoftware', // Usually your GitHub org/user name.
+  projectName: 'vscode-spell-checker', // Usually your repo name.
 
-    trailingSlash: false,
+  trailingSlash: false,
 
-    onBrokenLinks: 'throw',
+  onBrokenLinks: 'throw',
 
-    // Even if you don't use internationalization, you can use this field to set
-    // useful metadata like html lang. For example, if your site is Chinese, you
-    // may want to replace "en" with "zh-Hans".
-    i18n: {
-        defaultLocale: 'en',
-        locales: ['en'],
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
     },
+  },
 
-    markdown: {
-        hooks: {
-            onBrokenMarkdownLinks: 'warn',
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [{ to: '/docs/reference', from: '/readme' }],
+      },
+    ],
+  ],
+
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          sidebarPath: './sidebars.ts',
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/streetsidesoftware/vscode-spell-checker/tree/main/website',
         },
+        // blog: {
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        // },
+        theme: {
+          customCss: './src/css/custom.css',
+        },
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  themeConfig: {
+    // Replace with your project's social card
+    //image: 'img/docusaurus-social-card.jpg',
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: false,
     },
-
-    plugins: [
-        [
-            '@docusaurus/plugin-client-redirects',
-            {
-                redirects: [{ to: '/docs/reference', from: '/readme' }],
-            },
-        ],
-    ],
-
-    presets: [
-        [
-            'classic',
-            {
-                docs: {
-                    sidebarPath: './sidebars.ts',
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/streetsidesoftware/vscode-spell-checker/tree/main/website',
-                },
-                // blog: {
-                //   showReadingTime: true,
-                //   // Please change this to your repo.
-                //   // Remove this to remove the "edit this page" links.
-                //   editUrl:
-                //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                // },
-                theme: {
-                    customCss: './src/css/custom.css',
-                },
-            } satisfies Preset.Options,
-        ],
-    ],
-
-    themeConfig: {
-        // Replace with your project's social card
-        //image: 'img/docusaurus-social-card.jpg',
-        colorMode: {
-            defaultMode: 'light',
-            disableSwitch: false,
-            respectPrefersColorScheme: false,
-        },
-        navbar: {
-            title: 'VS Code Spell Checker',
-            logo: {
-                alt: 'Street Side Software Logo',
-                src: 'img/logo.png',
-                target: '/',
-            },
-            items: [
-                { label: 'Home', href: 'https://streetsidesoftware.com', position: 'left' },
-                { to: '/docs/getting-started/install', label: 'Get Started', position: 'left' },
-                {
-                    type: 'docSidebar',
-                    sidebarId: 'docs',
-                    position: 'left',
-                    label: 'Docs',
-                },
-                { to: '/about', label: 'About', position: 'left' },
-                { label: 'Sponsor', href: 'https://streetsidesoftware.com/sponsor', position: 'right' },
-                // { label: 'CSpell', href: 'https://cspell.org', position: 'right' },
-                // {to: '/blog', label: 'Blog', position: 'left'},
-                {
-                    href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
-                    label: 'GitHub',
-                    position: 'right',
-                },
-            ],
-        },
-        footer: {
-            style: 'dark',
-            links: [
-                {
-                    title: 'Street Side Software',
-                    items: [
-                        { label: 'Home', href: 'https://streetsidesoftware.com' },
-                        { label: 'CSpell', href: 'https://cspell.org' },
-                        { label: 'Sponsor', href: 'https://streetsidesoftware.com/sponsor/' },
-                    ],
-                },
-                {
-                    title: 'GitHub',
-                    items: [
-                        { label: 'GitHub', href: 'https://github.com/streetsidesoftware/vscode-spell-checker' },
-                        { label: 'Issues', href: 'https://github.com/streetsidesoftware/vscode-spell-checker/issues' },
-                        { label: 'Discussions', href: 'https://github.com/streetsidesoftware/vscode-spell-checker/discussions' },
-                        { label: 'Sponsor through GitHub', href: 'https://github.com/sponsors/streetsidesoftware' },
-                    ],
-                },
-                {
-                    title: 'VS Code Marketplace',
-                    items: [
-                        {
-                            label: 'VS Code Spell Checker Extension',
-                            href: 'https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker',
-                        },
-                        { label: 'Other Extensions', href: 'https://marketplace.visualstudio.com/publishers/streetsidesoftware' },
-                    ],
-                },
-            ],
-            copyright: `Copyright © 2016 - ${new Date().getFullYear()} Street Side Software <img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" />`,
-        },
-        prism: {
-            theme: prismThemes.github,
-            darkTheme: prismThemes.vsDark,
-            additionalLanguages: ['json5', 'bash', 'javascript', 'typescript', 'yaml'],
-        },
-    } satisfies Preset.ThemeConfig,
-
-    scripts: [
+    navbar: {
+      title: 'VS Code Spell Checker',
+      logo: {
+        alt: 'Street Side Software Logo',
+        src: 'img/logo.png',
+        target: '/',
+      },
+      items: [
+        { label: 'Home', href: 'https://streetsidesoftware.com', position: 'left' },
+        { to: '/docs/getting-started/install', label: 'Get Started', position: 'left' },
         {
-            defer: true,
-            'data-domain': 'streetsidesoftware.com',
-            src: 'https://plausible.io/js/script.js',
+          type: 'docSidebar',
+          sidebarId: 'docs',
+          position: 'left',
+          label: 'Docs',
         },
-        '/vscode-spell-checker/js/legacy-anchor-redirect.js',
-    ],
-};
+        { to: '/about', label: 'About', position: 'left' },
+        {
+          label: 'Sponsor',
+          href: 'https://streetsidesoftware.com/sponsor',
+          position: 'right',
+        },
+        // { label: 'CSpell', href: 'https://cspell.org', position: 'right' },
+        // {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
+    },
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Street Side Software',
+          items: [
+            { label: 'Home', href: 'https://streetsidesoftware.com' },
+            { label: 'CSpell', href: 'https://cspell.org' },
+            { label: 'Sponsor', href: 'https://streetsidesoftware.com/sponsor/' },
+          ],
+        },
+        {
+          title: 'GitHub',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/streetsidesoftware/vscode-spell-checker',
+            },
+            {
+              label: 'Issues',
+              href: 'https://github.com/streetsidesoftware/vscode-spell-checker/issues',
+            },
+            {
+              label: 'Discussions',
+              href: 'https://github.com/streetsidesoftware/vscode-spell-checker/discussions',
+            },
+            {
+              label: 'Sponsor through GitHub',
+              href: 'https://github.com/sponsors/streetsidesoftware',
+            },
+          ],
+        },
+        {
+          title: 'VS Code Marketplace',
+          items: [
+            {
+              label: 'VS Code Spell Checker Extension',
+              href: 'https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker',
+            },
+            {
+              label: 'Other Extensions',
+              href: 'https://marketplace.visualstudio.com/publishers/streetsidesoftware',
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © 2016 - ${new Date().getFullYear()} Street Side Software <img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" />`,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.vsDark,
+      additionalLanguages: ['json5', 'bash', 'javascript', 'typescript', 'yaml'],
+    },
+  } satisfies Preset.ThemeConfig,
 
-export default config;
+  scripts: [
+    {
+      defer: true,
+      'data-domain': 'streetsidesoftware.com',
+      src: 'https://plausible.io/js/script.js',
+    },
+    '/vscode-spell-checker/js/legacy-anchor-redirect.js',
+  ],
+}
+
+export default config

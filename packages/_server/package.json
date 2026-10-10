@@ -1,10 +1,10 @@
 {
   "name": "code-spell-checker-server",
+  "version": "2.0.0",
   "private": true,
   "description": "Spell Checker Server",
-  "version": "2.0.0",
-  "author": "Jason Dent",
   "license": "MIT",
+  "author": "Jason Dent",
   "repository": {
     "type": "git",
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
@@ -12,10 +12,15 @@
   "bin": {
     "build": "./build.mjs"
   },
+  "files": [
+    "dist",
+    "out",
+    "spell-checker-config.schema.json"
+  ],
   "type": "module",
+  "sideEffects": false,
   "main": "dist/main.cjs",
   "types": "dist/main.d.cts",
-  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/main.js",
@@ -29,6 +34,20 @@
       "import": "./out/lib/index.js",
       "require": "./out/lib/index.cjs"
     }
+  },
+  "scripts": {
+    "build": "tsdown && npm run build:tsc && npm run build-schema",
+    "build-production": "npm run clean-build-production",
+    "build-schema": "node ./scripts/build-schema.mts",
+    "build:production": "tsdown --production --minify && npm run build-schema",
+    "build:tsc": "tsc -p tsconfig.test.json && tsc -p scripts",
+    "clean-build-production": "npm run clean && npm run build:production",
+    "clean-build": "npm run clean && npm run build",
+    "clean": "shx rm -rf dist temp out coverage lib",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@cspell/cspell-bundled-dicts": "^10.3.1"
   },
   "devDependencies": {
     "@cspell/cspell-pipe": "^10.3.1",
@@ -47,31 +66,12 @@
     "ts-json-schema-generator": "^2.9.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
+    "vscode-languageserver": "^10.1.1",
     "vscode-languageserver-textdocument": "^1.0.14",
     "vscode-languageserver-types": "^3.18.3",
-    "vscode-languageserver": "^10.1.1",
     "vscode-uri": "^3.2.0"
-  },
-  "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.3.1"
-  },
-  "scripts": {
-    "build": "tsdown && npm run build:tsc && npm run build-schema",
-    "build-production": "npm run clean-build-production",
-    "build-schema": "node ./scripts/build-schema.mts",
-    "build:production": "tsdown --production --minify && npm run build-schema",
-    "build:tsc": "tsc -p tsconfig.test.json && tsc -p scripts",
-    "clean-build-production": "npm run clean && npm run build:production",
-    "clean-build": "npm run clean && npm run build",
-    "clean": "shx rm -rf dist temp out coverage lib",
-    "test": "vitest run"
   },
   "engines": {
     "node": ">=22.20.0"
-  },
-  "files": [
-    "dist",
-    "out",
-    "spell-checker-config.schema.json"
-  ]
+  }
 }

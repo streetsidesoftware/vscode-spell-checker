@@ -1,64 +1,129 @@
 {
   "name": "code-spell-checker",
-  "description": "Spelling checker for source code",
   "displayName": "Code Spell Checker",
-  "icon": "images/SpellCheck.png",
-  "author": "Jason Dent",
-  "license": "GPL-3.0-or-later",
   "version": "4.9.3",
-  "publisher": "streetsidesoftware",
   "private": true,
-  "type": "module",
-  "main": "./packages/client/dist/extension.cjs",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
-  },
-  "bugs": {
-    "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
-  },
-  "homepage": "https://streetsidesoftware.github.io/vscode-spell-checker",
-  "packageManager": "npm@11.12.0+sha512.c4f84e6a9e196c95b277b0c03ae90fe7ae161703521aeff615e4d114786288ab6171abb1847fcda64240426db8c43f9c027f1abf9b50d34a618bdf03aad7cbb2",
-  "engineStrict": true,
-  "engines": {
-    "node": ">=22.20.0",
-    "pnpm": "0",
-    "yarn": "0",
-    "vscode": "^1.104.0"
-  },
-  "sponsor": {
-    "url": "https://github.com/sponsors/streetsidesoftware"
-  },
-  "extensionKind": [
-    "workspace"
-  ],
+  "description": "Spelling checker for source code",
   "categories": [
     "Linters",
     "Other"
   ],
   "keywords": [
-    "spell",
     "checker",
-    "spelling",
-    "spellchecker"
+    "spell",
+    "spellchecker",
+    "spelling"
   ],
+  "homepage": "https://streetsidesoftware.github.io/vscode-spell-checker",
+  "bugs": {
+    "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Jason Dent",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
+  },
+  "sponsor": {
+    "url": "https://github.com/sponsors/streetsidesoftware"
+  },
   "qna": "marketplace",
-  "activationEvents": [
-    "onStartupFinished"
+  "publisher": "streetsidesoftware",
+  "workspaces": [
+    "tools/build-tools",
+    "packages/utils-logger",
+    "packages/utils-disposables",
+    "packages/json-rpc-api",
+    "packages/webview-rpc",
+    "packages/webview-api",
+    "packages/webview-ui",
+    "packages/__locale-resolver",
+    "packages/__utils",
+    "packages/_server",
+    "packages/_serverPatternMatcher",
+    "packages/client",
+    "packages/_integrationTests",
+    "scripts",
+    "website"
   ],
-  "capabilities": {
-    "virtualWorkspaces": {
-      "supported": "limited",
-      "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
+  "type": "module",
+  "main": "./packages/client/dist/extension.cjs",
+  "scripts": {
+    "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run oxfmt:fix-schema",
+    "build": "npm run build:workspaces && npm run build:schema",
+    "build:docs": "npm run gen-docs",
+    "build:all": "npm run build && npm run build:docs",
+    "build:readme": "inject-markdown README.md && npm run oxfmt:fix",
+    "build:schema": "npm run build-package-schema",
+    "build:workspaces": "npm --workspaces --if-present run build",
+    "build:extension": "npm run package-extension",
+    "clean": "npm --workspaces --if-present run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
+    "build-production": "npm --workspaces --if-present run build-production",
+    "build-release": "npm run build && npm run package-extension",
+    "build-website": "cd website && npm i && npm run build-site",
+    "gen-docs": "npm --if-present -ws run gen-docs",
+    "package-extension": "vsce package -o ./build",
+    "test-vsce-build": "shx mkdir -p temp && vsce package -o ./temp/code-spell-checker.vsix",
+    "remove-test-files": "shx rm -rf \"packages/*/{out,dist,settingsViewer}/**/*.test.*js\"",
+    "vscode:prepublish": "npm run build-production && npm run remove-test-files",
+    "lint": "npm run lint:oxlint && npm run oxfmt:fix",
+    "lint-docs": "npm run oxfmt:fix",
+    "lint-docs-ci": "npm run oxfmt:check",
+    "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
+    "test": "npm --workspaces --if-present run test && echo OK || (echo Failed && exit 1)",
+    "test:run": "vitest run",
+    "update-cspell": "npx npm-check-updates --root -w -s --target semver -u \"cspell*\" \"@cspell/*\"  && npm i",
+    "update-packages": "npm run update:packages:root && npm run update:packages:website",
+    "update:packages:root": "npx npm-check-updates --root -w -s --target semver -u && npm i",
+    "update:packages:website": "cd website && npm run update-packages",
+    "postinstall": "patch-package",
+    "oxfmt:check": "oxfmt --check \"**/*.{ts,tsx,js,jsx,json,css}\"",
+    "oxfmt:fix": "oxfmt --write \"**/*.{ts,tsx,js,jsx,json,css}\"",
+    "oxfmt:fix-schema": "oxfmt --write \"**/*.schema.json\"",
+    "lint:oxlint": "oxlint . --fix"
+  },
+  "dependencies": {
+    "@cspell/cspell-bundled-dicts": "^10.3.1",
+    "@cspell/cspell-types": "^10.3.1",
+    "@cspell/dict-cspell-bundle": "^2.0.75",
+    "regexp-worker": "^5.0.1"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@internal/vitest-config": "file:./tools/vitest-config",
+    "@tsconfig/node22": "^22.0.6",
+    "@types/node": "^22.20.2",
+    "@types/vscode": "1.104.0",
+    "@types/vscode-webview": "^1.57.5",
+    "@vscode/vsce": "^3.9.2",
+    "ansi-styles": "^7.0.0",
+    "build-tools": "file:./tools/build-tools",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^10.0.5",
+    "cspell": "^10.3.1",
+    "esbuild": "^0.28.2",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "globals": "^17.12.0",
+    "inject-markdown": "^5.0.3",
+    "jest-mock-vscode": "^4.13.0",
+    "ovsx": "^1.2.0",
+    "oxfmt": "0.72.0",
+    "oxlint": "^1.87.0",
+    "oxlint-plugin-require-js-extension": "^0.1.1",
+    "patch-package": "^8.0.1",
+    "rollup": "^4.63.1",
+    "rollup-plugin-dts": "^6.5.1",
+    "shx": "^0.4.0",
+    "tsdown": "^0.23.0",
+    "tsup": "^8.5.1",
+    "typescript": "~5.9.3"
+  },
+  "overrides": {
+    "mocha@11.7.5": {
+      "diff": "8.0.3"
     },
-    "untrustedWorkspaces": {
-      "supported": "limited",
-      "description": "JavaScript configuration files will NOT be loaded.",
-      "restrictedConfigurations": [
-        "cSpell.logFile",
-        "cSpell.trustedWorkspace",
-        "cSpell.usePnP"
-      ]
+    "mocha@11.8.0": {
+      "diff": "8.0.3"
     }
   },
   "contributes": {
@@ -5157,108 +5222,21 @@
       ]
     }
   },
-  "workspaces": [
-    "tools/build-tools",
-    "packages/utils-logger",
-    "packages/utils-disposables",
-    "packages/json-rpc-api",
-    "packages/webview-rpc",
-    "packages/webview-api",
-    "packages/webview-ui",
-    "packages/__locale-resolver",
-    "packages/__utils",
-    "packages/_server",
-    "packages/_serverPatternMatcher",
-    "packages/client",
-    "packages/_integrationTests",
-    "scripts",
-    "website"
+  "activationEvents": [
+    "onStartupFinished"
   ],
-  "scripts": {
-    "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run prettier:fix-schema",
-    "build": "npm run build:workspaces && npm run build:schema",
-    "build:docs": "npm run gen-docs",
-    "build:all": "npm run build && npm run build:docs",
-    "build:readme": "inject-markdown README.md && prettier -w README.md && inject-markdown website && prettier -w website",
-    "build:schema": "npm run build-package-schema",
-    "build:workspaces": "npm --workspaces --if-present run build",
-    "build:extension": "npm run package-extension",
-    "clean": "npm --workspaces --if-present run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
-    "build-production": "npm --workspaces --if-present run build-production",
-    "build-release": "npm run build && npm run package-extension",
-    "build-website": "cd website && npm i && npm run build-site",
-    "gen-docs": "npm --if-present -ws run gen-docs",
-    "package-extension": "vsce package -o ./build",
-    "prettier:check": "prettier . -c",
-    "prettier:fix": "npm run prettier:check -- -w",
-    "prettier:fix-schema": "prettier -w \"**/*.schema.json\"",
-    "test-vsce-build": "shx mkdir -p temp && vsce package -o ./temp/code-spell-checker.vsix",
-    "remove-test-files": "shx rm -rf \"packages/*/{out,dist,settingsViewer}/**/*.test.*js\"",
-    "vscode:prepublish": "npm run build-production && npm run remove-test-files",
-    "lint": "npm run lint:eslint && npm run prettier:fix",
-    "lint:eslint": "eslint . --fix --cache",
-    "lint-docs": "prettier -w website",
-    "lint-docs-ci": "prettier -c website",
-    "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
-    "test": "npm --workspaces --if-present run test && echo OK || (echo Failed && exit 1)",
-    "test:run": "vitest run",
-    "update-cspell": "npx npm-check-updates --root -w -s --target semver -u \"cspell*\" \"@cspell/*\"  && npm i",
-    "update-packages": "npm run update:packages:root && npm run update:packages:website",
-    "update:packages:root": "npx npm-check-updates --root -w -s --target semver -u && npm i",
-    "update:packages:website": "cd website && npm run update-packages",
-    "postinstall": "patch-package"
+  "extensionKind": [
+    "workspace"
+  ],
+  "icon": "images/SpellCheck.png",
+  "engines": {
+    "node": ">=22.20.0",
+    "pnpm": "0",
+    "vscode": "^1.104.0",
+    "yarn": "0"
   },
-  "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.5",
-    "@eslint/js": "~10.0.1",
-    "@internal/vitest-config": "file:./tools/vitest-config",
-    "@tsconfig/node22": "^22.0.6",
-    "@types/node": "^22.20.2",
-    "@types/vscode": "1.104.0",
-    "@types/vscode-webview": "^1.57.5",
-    "@vscode/vsce": "^3.9.2",
-    "ansi-styles": "^7.0.0",
-    "build-tools": "file:./tools/build-tools",
-    "chokidar-cli": "^3.0.0",
-    "concurrently": "^10.0.5",
-    "cspell": "^10.3.1",
-    "esbuild": "^0.28.2",
-    "eslint": "~10.10.0",
-    "eslint-plugin-n": "^18.3.0",
-    "eslint-plugin-simple-import-sort": "^14.0.0",
-    "eslint-plugin-unicorn": "^74.0.0",
-    "globals": "^17.12.0",
-    "inject-markdown": "^5.0.3",
-    "jest-mock-vscode": "^4.13.0",
-    "ovsx": "^1.2.0",
-    "patch-package": "^8.0.1",
-    "prettier": "^3.9.6",
-    "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.63.1",
-    "rollup-plugin-dts": "^6.5.1",
-    "shx": "^0.4.0",
-    "tsdown": "^0.23.0",
-    "tsup": "^8.5.1",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.70.0"
-  },
-  "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.3.1",
-    "@cspell/cspell-types": "^10.3.1",
-    "@cspell/dict-cspell-bundle": "^2.0.75",
-    "regexp-worker": "^5.0.1"
-  },
-  "overrides": {
-    "mocha@11.8.0": {
-      "diff": "8.0.3"
-    },
-    "mocha@11.7.5": {
-      "diff": "8.0.3"
-    }
-  },
-  "vsce": {
-    "preRelease": true
-  },
+  "engineStrict": true,
+  "packageManager": "npm@11.12.0+sha512.c4f84e6a9e196c95b277b0c03ae90fe7ae161703521aeff615e4d114786288ab6171abb1847fcda64240426db8c43f9c027f1abf9b50d34a618bdf03aad7cbb2",
   "allowScripts": {
     "@vscode/vsce-sign": false,
     "core-js": false,
@@ -5266,5 +5244,23 @@
     "fsevents": false,
     "keytar": false,
     "svelte-preprocess": false
+  },
+  "capabilities": {
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
+    },
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "JavaScript configuration files will NOT be loaded.",
+      "restrictedConfigurations": [
+        "cSpell.logFile",
+        "cSpell.trustedWorkspace",
+        "cSpell.usePnP"
+      ]
+    }
+  },
+  "vsce": {
+    "preRelease": true
   }
 }

@@ -1,18 +1,18 @@
 {
-    "extends": "@tsconfig/node22",
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "target": "es2022",
-        "lib": ["es2023", "esnext.disposable", "dom"],
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
-        "esModuleInterop": true,
-        "importHelpers": true,
-        "sourceMap": true,
-        "declaration": true,
-        "declarationMap": true,
-        "rootDir": "./src",
-        "strict": true
-    },
-    "include": ["./src"]
+  "extends": "@tsconfig/node22",
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "target": "es2022",
+    "lib": ["es2023", "esnext.disposable", "dom"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "./src",
+    "strict": true
+  },
+  "include": ["./src"]
 }

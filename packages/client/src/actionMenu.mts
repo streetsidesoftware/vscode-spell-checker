@@ -320,7 +320,7 @@ async function openMenu(options: QuickPickMenuOptions): Promise<QuickPickItem | 
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+// oxlint-disable-next-line typescript/no-extraneous-class
 class NavigationStep {
     static back = new NavigationStep();
     static cancel = new NavigationStep();

@@ -1,1 +1,1 @@
-export type { AppStateData, ServerSideApi, ServerSideApiDef, TodoList } from 'webview-api';
+export type { AppStateData, ServerSideApi, ServerSideApiDef, TodoList } from 'webview-api'

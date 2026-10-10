@@ -1,8 +1,16 @@
 {
   "name": "@internal/integration-tests",
   "version": "2.0.0",
-  "description": "Integration tests for the spell checker extension",
   "private": true,
+  "description": "Integration tests for the spell checker extension",
+  "license": "MIT",
+  "author": "",
+  "workspaces": {
+    "nohoist": [
+      "*",
+      "**"
+    ]
+  },
   "type": "module",
   "main": "out/index.cjs",
   "scripts": {
@@ -15,14 +23,14 @@
     "test-integration": "npm run build2 && npm run test-integration-vscode",
     "test": "echo Run test-integration"
   },
-  "workspaces": {
-    "nohoist": [
-      "*",
-      "**"
-    ]
+  "dependencies": {
+    "@vscode/test-electron": "^3.1.0",
+    "@xhmikosr/decompress": "^11.1.4",
+    "chalk": "^6.0.0",
+    "glob": "^13.0.6",
+    "kefir": "^3.8.8",
+    "mocha": "^12.0.1"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@cspell/cspell-types": "^10.3.1",
     "@cspell/dict-de-de": "^4.1.2",
@@ -34,14 +42,6 @@
     "cross-env": "^10.1.0"
   },
   "peerDependenciesMeta": {},
-  "dependencies": {
-    "@vscode/test-electron": "^3.1.0",
-    "@xhmikosr/decompress": "^11.1.4",
-    "chalk": "^6.0.0",
-    "glob": "^13.0.6",
-    "kefir": "^3.8.8",
-    "mocha": "^12.0.1"
-  },
   "overrides": {
     "mocha@11.7.5": {
       "diff": "8.0.3"

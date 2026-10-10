@@ -1,27 +1,27 @@
-import { toFileURL } from '@cspell/url';
-import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+import { toFileURL } from '@cspell/url'
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri'
 
-const regExpIsUri = /^[\w._-]{2,}:/;
+const regExpIsUri = /^[\w._-]{2,}:/
 
-export function toUri(uri: string | Uri | URL): Uri;
-export function toUri(uri: undefined | null): undefined;
-export function toUri(uri: string | Uri | URL | undefined | null): Uri | undefined;
+export function toUri(uri: string | Uri | URL): Uri
+export function toUri(uri: undefined | null): undefined
+export function toUri(uri: string | Uri | URL | undefined | null): Uri | undefined
 export function toUri(uri: string | Uri | URL | undefined | null): Uri | undefined {
-    return toFileUri(uri);
+  return toFileUri(uri)
 }
 
-export function toFileUri(uri: string | Uri | URL): Uri;
-export function toFileUri(uri: undefined | null): undefined;
-export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined;
+export function toFileUri(uri: string | Uri | URL): Uri
+export function toFileUri(uri: undefined | null): undefined
+export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined
 export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined {
-    if (typeof uri === 'string') {
-        return regExpIsUri.test(uri) ? Uri.parse(uri) : Uri.parse(toFileURL(uri).toString());
-    }
-    if (!uri) return undefined;
-    if (uri instanceof URL) {
-        return Uri.parse(uri.toString());
-    }
-    return uri;
+  if (typeof uri === 'string') {
+    return regExpIsUri.test(uri) ? Uri.parse(uri) : Uri.parse(toFileURL(uri).toString())
+  }
+  if (!uri) return undefined
+  if (uri instanceof URL) {
+    return Uri.parse(uri.toString())
+  }
+  return uri
 }
 
 /**
@@ -32,22 +32,22 @@ export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | und
  * @param uriTo
  */
 export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
-    if (uriFrom.scheme !== uriTo.scheme) return cleanUri(uriTo).toString();
-    const fromSegments = splitUri(uriFrom);
-    const toSegments = splitUri(uriTo);
-    let i = 0;
-    for (; i < fromSegments.length && i < toSegments.length; ++i) {
-        const a = fromSegments[i];
-        const b = toSegments[i];
-        if (a === b) continue;
-        const a1 = decodeURIComponent(a).toLowerCase();
-        const b1 = decodeURIComponent(b).toLowerCase();
+  if (uriFrom.scheme !== uriTo.scheme) return cleanUri(uriTo).toString()
+  const fromSegments = splitUri(uriFrom)
+  const toSegments = splitUri(uriTo)
+  let i = 0
+  for (; i < fromSegments.length && i < toSegments.length; ++i) {
+    const a = fromSegments[i]
+    const b = toSegments[i]
+    if (a === b) continue
+    const a1 = decodeURIComponent(a).toLowerCase()
+    const b1 = decodeURIComponent(b).toLowerCase()
 
-        if (a1.endsWith(':') && a1 == b1 && a1.length == 2) continue;
-        break;
-    }
-    const prefix = '../'.repeat(fromSegments.length - i);
-    return (prefix + toSegments.slice(i).join('/')).replace(/\/$/, '');
+    if (a1.endsWith(':') && a1 == b1 && a1.length == 2) continue
+    break
+  }
+  const prefix = '../'.repeat(fromSegments.length - i)
+  return (prefix + toSegments.slice(i).join('/')).replace(/\/$/, '')
 }
 
 /**
@@ -57,16 +57,19 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
  * @returns
  */
 export function relativeToFile(uriFromFile: Uri, uriTo: Uri): string {
-    return relativeTo(uriFromFile.path.endsWith('/') ? uriFromFile : UriUtils.dirname(uriFromFile), uriTo);
+  return relativeTo(
+    uriFromFile.path.endsWith('/') ? uriFromFile : UriUtils.dirname(uriFromFile),
+    uriTo,
+  )
 }
 
 export function cleanUri(uri: Uri): Uri {
-    return uri.with({ fragment: '', query: '' });
+  return uri.with({ fragment: '', query: '' })
 }
 
 export interface UriToNameOptions {
-    segments?: number;
-    relativeTo?: Uri | string;
+  segments?: number
+  relativeTo?: Uri | string
 }
 
 /**
@@ -74,25 +77,25 @@ export interface UriToNameOptions {
  * @param uri - uri of file
  */
 export function uriToName(uri: Uri, options: UriToNameOptions = {}): string {
-    const { segments = 2, relativeTo: relTo } = options;
-    if (relTo) {
-        const rel = relativeTo(toUri(relTo), uri);
-        if (!regExpIsUri.test(rel)) {
-            return decodeURIComponent(rel.split('/').slice(-segments).join('/'));
-        }
+  const { segments = 2, relativeTo: relTo } = options
+  if (relTo) {
+    const rel = relativeTo(toUri(relTo), uri)
+    if (!regExpIsUri.test(rel)) {
+      return decodeURIComponent(rel.split('/').slice(-segments).join('/'))
     }
-    const parts = splitUri(uri).slice(-segments);
-    return decodeURIComponent(parts.join('/'));
+  }
+  const parts = splitUri(uri).slice(-segments)
+  return decodeURIComponent(parts.join('/'))
 }
 
 function splitUri(uri: Uri) {
-    return cleanUri(uri)
-        .toString()
-        .split('/')
-        .filter((a) => !!a);
+  return cleanUri(uri)
+    .toString()
+    .split('/')
+    .filter((a) => !!a)
 }
 
 export function uriToFilePathOrHref(url: Uri | URL | string): string {
-    const uri = Uri.isUri(url) ? url : toUri(url.toString());
-    return uri.scheme === 'file' ? uri.fsPath : uri.toString();
+  const uri = Uri.isUri(url) ? url : toUri(url.toString())
+  return uri.scheme === 'file' ? uri.fsPath : uri.toString()
 }

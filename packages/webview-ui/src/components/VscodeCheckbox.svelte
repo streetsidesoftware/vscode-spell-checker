@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { ChangeEvent } from '../types';
   import type { Checkbox } from '@vscode/webview-ui-toolkit';
+
+  import type { ChangeEvent } from '../types';
 
   interface Props {
     /** Determines if the element should receive document focus on page load. */

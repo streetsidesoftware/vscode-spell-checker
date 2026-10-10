@@ -3,6 +3,7 @@
   import { allComponents, provideVSCodeDesignSystem } from '@vscode/webview-ui-toolkit';
   import { onDestroy } from 'svelte';
   import { createDisposableList } from 'utils-disposables';
+
   import { supportedViewsByName } from './api';
   import CSpellInfo from './views/CSpellInfo.svelte';
   import HelloWorld from './views/HelloWorld.svelte';

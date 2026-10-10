@@ -1,5 +1,5 @@
 {
-    "[php]": {
-        "cSpell.fixSpellingWithRenameProvider": false
-    }
+  "[php]": {
+    "cSpell.fixSpellingWithRenameProvider": false
+  }
 }

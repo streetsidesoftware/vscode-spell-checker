@@ -1,10 +1,10 @@
 {
   "name": "@internal/locale-resolver",
   "version": "1.0.0",
-  "description": "Language Code Resolver",
   "private": true,
-  "sideEffects": false,
+  "description": "Language Code Resolver",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/index.js"

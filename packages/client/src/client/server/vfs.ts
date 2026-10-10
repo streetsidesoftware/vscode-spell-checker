@@ -1,6 +1,6 @@
-import type { FileContent, FileStat, UriString } from 'code-spell-checker-server/api';
-import type { FileType } from 'vscode';
-import { Uri, workspace } from 'vscode';
+import type { FileContent, FileStat, UriString } from 'code-spell-checker-server/api'
+import type { FileType } from 'vscode'
+import { Uri, workspace } from 'vscode'
 
 /**
  * Retrieve metadata about a file.
@@ -9,9 +9,9 @@ import { Uri, workspace } from 'vscode';
  * @return The file metadata about the file.
  */
 export async function vfsStat(href: UriString): Promise<FileStat> {
-    const uri = Uri.parse(href);
-    const stat = await workspace.fs.stat(uri);
-    return stat;
+  const uri = Uri.parse(href)
+  const stat = await workspace.fs.stat(uri)
+  return stat
 }
 
 /**
@@ -21,9 +21,9 @@ export async function vfsStat(href: UriString): Promise<FileStat> {
  * @return An array of name/type-tuples or a promise that resolves to such.
  */
 export async function vfsReadDirectory(href: UriString): Promise<[string, FileType][]> {
-    const uri = Uri.parse(href);
-    const r = await workspace.fs.readDirectory(uri);
-    return r;
+  const uri = Uri.parse(href)
+  const r = await workspace.fs.readDirectory(uri)
+  return r
 }
 
 /**
@@ -33,11 +33,11 @@ export async function vfsReadDirectory(href: UriString): Promise<[string, FileTy
  * @return An array of bytes or a promise that resolves to such.
  */
 export async function vfsReadFile(href: UriString): Promise<FileContent> {
-    const uri = Uri.parse(href);
-    const content = await workspace.fs.readFile(uri);
-    return {
-        uri: href,
-        encoding: 'base64',
-        content: Buffer.from(content).toString('base64'),
-    };
+  const uri = Uri.parse(href)
+  const content = await workspace.fs.readFile(uri)
+  return {
+    uri: href,
+    encoding: 'base64',
+    content: Buffer.from(content).toString('base64'),
+  }
 }

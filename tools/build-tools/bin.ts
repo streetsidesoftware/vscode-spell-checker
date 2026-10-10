@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-import './src/bin.ts';
+import './src/bin.ts'

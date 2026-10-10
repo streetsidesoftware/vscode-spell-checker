@@ -1,12 +1,12 @@
 {
   "name": "build-tools",
   "version": "1.0.0",
-  "description": "Build tools",
   "private": true,
-  "type": "module",
+  "description": "Build tools",
   "bin": {
     "build-tools": "./bin.ts"
   },
+  "type": "module",
   "scripts": {
     "update-package-schema": "node ./bin.ts",
     "build-production": "npm run clean-build",
@@ -17,15 +17,15 @@
     "smoke-test": "npm run build && node ./bin.js update-package-schema -r ../..",
     "watch": "tsc -p . --watch"
   },
-  "devDependencies": {
-    "@types/deep-equal": "^1.0.4",
-    "@types/json-schema": "^7.0.15"
-  },
   "dependencies": {
     "client": "file:../../packages/client",
     "commander": "^15.0.0",
     "json-schema": "0.4.0",
     "json-schema-traverse": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/deep-equal": "^1.0.4",
+    "@types/json-schema": "^7.0.15"
   },
   "engines": {
     "node": ">=22.20.0"

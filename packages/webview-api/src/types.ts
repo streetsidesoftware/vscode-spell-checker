@@ -1,3 +1,3 @@
 export type Mutable<Type> = {
-    -readonly [Property in keyof Type]: Type[Property];
-};
+  -readonly [Property in keyof Type]: Type[Property]
+}

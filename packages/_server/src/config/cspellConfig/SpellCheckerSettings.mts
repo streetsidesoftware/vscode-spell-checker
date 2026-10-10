@@ -573,7 +573,7 @@ type AddToOptions = boolean;
  */
 type DictionaryRef = string;
 
-// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+// oxlint-disable-next-line typescript/consistent-indexed-object-style
 export interface AddToDictionaryTarget {
     /**
      * Custom Add To dictionary targets. The key is the dictionary name prefixed with `#`.

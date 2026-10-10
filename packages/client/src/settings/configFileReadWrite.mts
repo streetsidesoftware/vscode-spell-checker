@@ -160,7 +160,7 @@ interface ContentFormat {
 }
 
 function hasTrailingNewline(content: string): boolean {
-    return /\n$/.test(content);
+    return content.endsWith('\n');
 }
 
 function detectIndent(json: string): string | undefined {

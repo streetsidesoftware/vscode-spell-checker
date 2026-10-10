@@ -138,7 +138,7 @@ const debugCommunication = false;
 const debugServerComms = true;
 const debugClientComms = true;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function log2Sfn<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: string): (...p: P) => Promise<T> {
     return (...params: P) => log2S<P, T>(params, fn(...params), reqName);
 }
@@ -147,7 +147,7 @@ function log2S<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise
     return logCommunication<P, T>('Server R/N', params, value, reqName, debugServerComms);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 function log2Cfn<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: string): (...p: P) => Promise<T> {
     return (...params: P) => log2C<P, T>(params, fn(...params), reqName);
 }

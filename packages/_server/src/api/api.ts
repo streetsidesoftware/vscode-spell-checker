@@ -1,82 +1,87 @@
 import type {
-    ApiPrefix,
-    ApplyNotificationAPI,
-    ApplyRequestAPI,
-    ClientAPIDef,
-    ClientSideMethods,
-    Logger,
-    MessageConnection,
-    RpcAPI,
-    ServerAPIDef,
-    ServerSideMethods,
-} from 'json-rpc-api';
-import { createClientApi, createServerApi } from 'json-rpc-api';
+  ApiPrefix,
+  ApplyNotificationAPI,
+  ApplyRequestAPI,
+  ClientAPIDef,
+  ClientSideMethods,
+  Logger,
+  MessageConnection,
+  RpcAPI,
+  ServerAPIDef,
+  ServerSideMethods,
+} from 'json-rpc-api'
+import { createClientApi, createServerApi } from 'json-rpc-api'
 
 import type {
-    CheckDocumentOptions,
-    CheckDocumentResult,
-    ConfigurationFields,
-    GetConfigurationForDocumentRequest,
-    GetConfigurationForDocumentResult,
-    GetConfigurationTargetsRequest,
-    GetConfigurationTargetsResult,
-    GetSpellCheckingOffsetsResult,
-    IsSpellCheckEnabledResult,
-    OnBlockFile,
-    OnDocumentConfigChange,
-    OnSpellCheckDocumentStep,
-    SpellingSuggestionsResult,
-    SplitTextIntoWordsResult,
-    TextDocumentInfo,
-    TextDocumentRef,
-    TraceWordRequest,
-    TraceWordResult,
-    WorkspaceConfigForDocumentRequest,
-    WorkspaceConfigForDocumentResponse,
-} from './apiModels.js';
-import type { VfsFileSystem } from './models/vfs.mjs';
+  CheckDocumentOptions,
+  CheckDocumentResult,
+  ConfigurationFields,
+  GetConfigurationForDocumentRequest,
+  GetConfigurationForDocumentResult,
+  GetConfigurationTargetsRequest,
+  GetConfigurationTargetsResult,
+  GetSpellCheckingOffsetsResult,
+  IsSpellCheckEnabledResult,
+  OnBlockFile,
+  OnDocumentConfigChange,
+  OnSpellCheckDocumentStep,
+  SpellingSuggestionsResult,
+  SplitTextIntoWordsResult,
+  TextDocumentInfo,
+  TextDocumentRef,
+  TraceWordRequest,
+  TraceWordResult,
+  WorkspaceConfigForDocumentRequest,
+  WorkspaceConfigForDocumentResponse,
+} from './apiModels.js'
+import type { VfsFileSystem } from './models/vfs.mjs'
 
-export type { Logger, MessageConnection } from 'json-rpc-api';
+export type { Logger, MessageConnection } from 'json-rpc-api'
 
 /** Requests that can be made to the server */
 export interface ServerRequestsAPI {
-    getConfigurationForDocument<Fields extends ConfigurationFields>(
-        req: GetConfigurationForDocumentRequest<Fields>,
-    ): GetConfigurationForDocumentResult<Fields>;
-    getConfigurationTargets(req: GetConfigurationTargetsRequest): GetConfigurationTargetsResult;
-    isSpellCheckEnabled(req: TextDocumentInfo): IsSpellCheckEnabledResult;
-    splitTextIntoWords(req: string): SplitTextIntoWordsResult;
-    spellingSuggestions(word: string, doc?: TextDocumentInfo): SpellingSuggestionsResult;
-    /**
-     * Calculate the text ranges that should be spell checked.
-     * @param doc The document to be spell checked.
-     */
-    getSpellCheckingOffsets(doc: TextDocumentRef): GetSpellCheckingOffsetsResult;
-    traceWord(req: TraceWordRequest): TraceWordResult;
-    checkDocument(doc: TextDocumentInfo, options?: CheckDocumentOptions): CheckDocumentResult;
+  getConfigurationForDocument<Fields extends ConfigurationFields>(
+    req: GetConfigurationForDocumentRequest<Fields>,
+  ): GetConfigurationForDocumentResult<Fields>
+  getConfigurationTargets(
+    req: GetConfigurationTargetsRequest,
+  ): GetConfigurationTargetsResult
+  isSpellCheckEnabled(req: TextDocumentInfo): IsSpellCheckEnabledResult
+  splitTextIntoWords(req: string): SplitTextIntoWordsResult
+  spellingSuggestions(word: string, doc?: TextDocumentInfo): SpellingSuggestionsResult
+  /**
+   * Calculate the text ranges that should be spell checked.
+   * @param doc The document to be spell checked.
+   */
+  getSpellCheckingOffsets(doc: TextDocumentRef): GetSpellCheckingOffsetsResult
+  traceWord(req: TraceWordRequest): TraceWordResult
+  checkDocument(
+    doc: TextDocumentInfo,
+    options?: CheckDocumentOptions,
+  ): CheckDocumentResult
 }
 
 /** Notifications that can be sent to the server */
 export interface ServerNotificationsAPI {
-    /**
-     * Tell the server that the configuration has changed. Causes the server to reload the configuration and
-     * check all documents.
-     *
-     * @param isWorkspaceTrusted Indicates the current workspace trust state:
-     * - `true`  — the workspace is trusted; the server should reload configuration using rules for a trusted workspace.
-     * - `false` — the workspace is not trusted; the server should reload configuration using rules for an untrusted workspace.
-     * - `undefined` — the workspace trust state is not provided and should be treated as unchanged; the server should
-     *                 reload configuration without altering its existing notion of workspace trust.
-     * @returns void
-     */
-    notifyConfigChange: (isWorkspaceTrusted: boolean | undefined) => void;
-    /**
-     * Register a configuration file to be loaded.
-     * This is how to add a configuration file to the spell checker. It is mainly used to add language dictionaries.
-     * @param url - The url of the configuration file.
-     * @returns void
-     */
-    registerConfigurationFile: (url: string) => void;
+  /**
+   * Tell the server that the configuration has changed. Causes the server to reload the configuration and
+   * check all documents.
+   *
+   * @param isWorkspaceTrusted Indicates the current workspace trust state:
+   * - `true`  — the workspace is trusted; the server should reload configuration using rules for a trusted workspace.
+   * - `false` — the workspace is not trusted; the server should reload configuration using rules for an untrusted workspace.
+   * - `undefined` — the workspace trust state is not provided and should be treated as unchanged; the server should
+   *                 reload configuration without altering its existing notion of workspace trust.
+   * @returns void
+   */
+  notifyConfigChange: (isWorkspaceTrusted: boolean | undefined) => void
+  /**
+   * Register a configuration file to be loaded.
+   * This is how to add a configuration file to the spell checker. It is mainly used to add language dictionaries.
+   * @param url - The url of the configuration file.
+   * @returns void
+   */
+  registerConfigurationFile: (url: string) => void
 }
 
 /**
@@ -84,87 +89,89 @@ export interface ServerNotificationsAPI {
  * Note: RPC requests to the client/extension is rare.
  */
 export interface ClientRequestsAPI {
-    onWorkspaceConfigForDocumentRequest: (req: WorkspaceConfigForDocumentRequest) => WorkspaceConfigForDocumentResponse;
-    vfsReadFile: VfsFileSystem['readFile'];
-    vfsStat: VfsFileSystem['stat'];
-    vfsReadDirectory: VfsFileSystem['readDirectory'];
+  onWorkspaceConfigForDocumentRequest: (
+    req: WorkspaceConfigForDocumentRequest,
+  ) => WorkspaceConfigForDocumentResponse
+  vfsReadFile: VfsFileSystem['readFile']
+  vfsStat: VfsFileSystem['stat']
+  vfsReadDirectory: VfsFileSystem['readDirectory']
 }
 
 /** Notifications from the server to the client(vscode extension) */
 export interface ClientNotificationsAPI {
-    /**
-     * Notify the client that the document is being spell checked.
-     * @param step - The step in the spell checking process.
-     */
-    onSpellCheckDocument(step: OnSpellCheckDocumentStep): void;
+  /**
+   * Notify the client that the document is being spell checked.
+   * @param step - The step in the spell checking process.
+   */
+  onSpellCheckDocument(step: OnSpellCheckDocumentStep): void
 
-    /**
-     * Notify the client that the configuration has for the listed document URIs.
-     * @param notification - The notification.
-     */
-    onDocumentConfigChange(notification: OnDocumentConfigChange): void;
+  /**
+   * Notify the client that the configuration has for the listed document URIs.
+   * @param notification - The notification.
+   */
+  onDocumentConfigChange(notification: OnDocumentConfigChange): void
 
-    /**
-     * Notify the client that a file is blocked from being spell checked.
-     * @param uri - the uri of the document.
-     * @param block - the reason the file is blocked.
-     */
-    onBlockFile(notification: OnBlockFile): void;
+  /**
+   * Notify the client that a file is blocked from being spell checked.
+   * @param uri - the uri of the document.
+   * @param block - the reason the file is blocked.
+   */
+  onBlockFile(notification: OnBlockFile): void
 }
 
 export interface SpellCheckerServerAPI extends RpcAPI {
-    serverRequests: ApplyRequestAPI<ServerRequestsAPI>;
-    serverNotifications: ApplyNotificationAPI<ServerNotificationsAPI>;
-    clientRequests: ApplyRequestAPI<ClientRequestsAPI>;
-    clientNotifications: ApplyNotificationAPI<ClientNotificationsAPI>;
+  serverRequests: ApplyRequestAPI<ServerRequestsAPI>
+  serverNotifications: ApplyNotificationAPI<ServerNotificationsAPI>
+  clientRequests: ApplyRequestAPI<ClientRequestsAPI>
+  clientNotifications: ApplyNotificationAPI<ClientNotificationsAPI>
 }
 
 /**
  * Used on the server side  to communicate with the client(extension).
  */
-export type ServerSideApi = ServerSideMethods<SpellCheckerServerAPI>;
+export type ServerSideApi = ServerSideMethods<SpellCheckerServerAPI>
 /**
  * Used in the client(extension) to communicate with the server.
  */
-export type ClientSideApi = ClientSideMethods<SpellCheckerServerAPI>;
+export type ClientSideApi = ClientSideMethods<SpellCheckerServerAPI>
 
-export type ServerSideApiDef = ServerAPIDef<SpellCheckerServerAPI>;
-export type ClientSideApiDef = ClientAPIDef<SpellCheckerServerAPI>;
+export type ServerSideApiDef = ServerAPIDef<SpellCheckerServerAPI>
+export type ClientSideApiDef = ClientAPIDef<SpellCheckerServerAPI>
 
 export interface ServerSideHandlers {
-    serverRequests: DefineHandlers<ServerSideApiDef['serverRequests']>;
-    serverNotifications: DefineHandlers<ServerSideApiDef['serverNotifications']>;
+  serverRequests: DefineHandlers<ServerSideApiDef['serverRequests']>
+  serverNotifications: DefineHandlers<ServerSideApiDef['serverNotifications']>
 }
 
 // todo: make '' when all old apis are removed.
-const pfx = '_';
+const pfx = '_'
 
 const apiPrefix: ApiPrefix = {
-    serverNotifications: pfx,
-    serverRequests: pfx,
-    clientNotifications: pfx,
-    clientRequests: pfx,
-};
+  serverNotifications: pfx,
+  serverRequests: pfx,
+  clientNotifications: pfx,
+  clientRequests: pfx,
+}
 
 export function createServerSideApi(
-    connection: MessageConnection,
-    api: ServerAPIDef<SpellCheckerServerAPI>,
-    logger: Logger | undefined,
+  connection: MessageConnection,
+  api: ServerAPIDef<SpellCheckerServerAPI>,
+  logger: Logger | undefined,
 ): ServerSideApi {
-    return createServerApi(connection, api, logger, apiPrefix);
+  return createServerApi(connection, api, logger, apiPrefix)
 }
 
 export function createClientSideApi(
-    connection: MessageConnection,
-    api: ClientAPIDef<SpellCheckerServerAPI>,
-    logger: Logger | undefined,
+  connection: MessageConnection,
+  api: ClientAPIDef<SpellCheckerServerAPI>,
+  logger: Logger | undefined,
 ): ClientSideApi {
-    return createClientApi(connection, api, logger, apiPrefix);
+  return createClientApi(connection, api, logger, apiPrefix)
 }
 
-export type { FileContent, FileStat } from './models/vfs.mjs';
-export { FileType } from './models/vfs.mjs';
+export type { FileContent, FileStat } from './models/vfs.mjs'
+export { FileType } from './models/vfs.mjs'
 
 type DefineHandlers<T> = {
-    [P in keyof T]: Exclude<T[P], boolean>;
-};
+  [P in keyof T]: Exclude<T[P], boolean>
+}

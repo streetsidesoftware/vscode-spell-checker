@@ -284,7 +284,7 @@ function shallowCleanObject<T>(obj: T): T {
     const objMap = obj as Record<string, unknown>;
     for (const key of Object.keys(objMap)) {
         if (objMap[key] === undefined) {
-            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+            // oxlint-disable-next-line typescript/no-dynamic-delete
             delete objMap[key];
         }
     }

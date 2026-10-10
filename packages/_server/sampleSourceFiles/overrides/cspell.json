@@ -1,14 +1,14 @@
 {
-    "overrides": [
+  "overrides": [
+    {
+      "name": "Override Typescript",
+      "filename": "**/*.ts",
+      "dictionaryDefinitions": [
         {
-            "name": "Override Typescript",
-            "filename": "**/*.ts",
-            "dictionaryDefinitions": [
-                {
-                    "name": "Test Dictionary",
-                    "path": "./words.txt"
-                }
-            ]
+          "name": "Test Dictionary",
+          "path": "./words.txt"
         }
-    ]
+      ]
+    }
+  ]
 }

@@ -25,4 +25,4 @@ jobs:
 
       - run: |
           npm i
-          npx prettier -c website
+          npm run oxfmt:check

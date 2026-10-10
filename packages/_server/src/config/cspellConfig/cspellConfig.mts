@@ -1,4 +1,4 @@
-/* eslint-disable no-irregular-whitespace */
+/* oxlint-disable no-irregular-whitespace */
 // Export the cspell settings to the client.
 
 import type {

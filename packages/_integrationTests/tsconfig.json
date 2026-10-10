@@ -1,9 +1,9 @@
 {
-    "extends": "@tsconfig/node22",
-    "compilerOptions": {
-        "outDir": "./out",
-        "esModuleInterop": true,
-        "types": ["node"]
-    },
-    "include": ["src"]
+  "extends": "@tsconfig/node22",
+  "compilerOptions": {
+    "outDir": "./out",
+    "esModuleInterop": true,
+    "types": ["node"]
+  },
+  "include": ["src"]
 }

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
+/* oxlint-disable @typescript-eslint/unified-signatures */
 type ErrorHandler = (e: unknown) => void;
 
 function defaultHandler(e: unknown) {

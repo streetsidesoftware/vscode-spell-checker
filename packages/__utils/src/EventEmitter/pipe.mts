@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
+/* oxlint-disable @typescript-eslint/unified-signatures */
 import type { EmitterEvent, EventListener, EventOperator } from './types.mjs';
 
 export type Subscribable<T> = EmitterEvent<T> | { event: EmitterEvent<T> };
