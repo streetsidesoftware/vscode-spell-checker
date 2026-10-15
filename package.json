@@ -5223,15 +5223,15 @@
     "jest-mock-vscode": "^4.13.0",
     "ovsx": "^1.2.0",
     "patch-package": "^8.0.1",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.64.3",
+    "rollup": "^4.64.5",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
-    "tsdown": "^0.23.0",
+    "tsdown": "^0.23.1",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.2"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.4.0",
