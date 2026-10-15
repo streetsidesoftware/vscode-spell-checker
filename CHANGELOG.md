@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.10.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.9.6...code-spell-checker-v4.10.0) (2026-10-14)
+
+
+### Features
+
+* Update CSpell from `10.3.6` to `10.4.0` and Dictionary Bundle from `2.0.79` to `2.0.80` and other dependencies ([4736d81](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4736d81511376c9fa1cbdd5b490dfee40eab32ad))
+
+
+### Updates and Bug Fixes
+
+* Prepare for Release ([#5579](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5579)) ([d9534cb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d9534cbdf3c7425677adec082c60cd27d47f1a43))
+* wildcard scheme no longer overrides explicit scheme blocks in info view ([#5572](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5572)) ([b684038](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b6840380a571ec1b29c82fbe37267b79337ed9c3))
+
 ## [4.9.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.9.5...code-spell-checker-v4.9.6) (2026-10-05)
 
 
