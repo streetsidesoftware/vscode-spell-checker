@@ -5213,7 +5213,7 @@
     "concurrently": "^10.0.6",
     "cspell": "^10.4.0",
     "esbuild": "^0.28.2",
-    "eslint": "~10.11.0",
+    "eslint": "~10.13.0",
     "eslint-plugin-n": "^18.5.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^77.0.0",
@@ -5224,13 +5224,13 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.9.10",
     "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.64.10",
+    "rollup": "^4.64.12",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
     "tsdown": "^0.23.1",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.71.2"
+    "typescript-eslint": "^8.72.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.4.0",
