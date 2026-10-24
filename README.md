@@ -6,7 +6,7 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
-[![GitHub Sponsor](https://streetsidesoftware.com/img/sponsor/github-sponsor-176px.png)](https://github.com/sponsors/streetsidesoftware) [![PayPal](https://streetsidesoftware.com/img/sponsor/paypal-176px.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY) [![Open Collective](https://streetsidesoftware.com/img/sponsor/open-collective-176px.png)](https://opencollective.com/cspell) [![CSpell](https://streetsidesoftware.com/img/sponsor/cspell-176px.png)](https://streetsidesoftware.com/sponsor/)
+[![GitHub Sponsor](https://streetsidesoftware.com/img/sponsor/github-sponsor-172px.png)](https://github.com/sponsors/streetsidesoftware)&nbsp;[![PayPal](https://streetsidesoftware.com/img/sponsor/paypal-172px.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY) [![Open Collective](https://streetsidesoftware.com/img/sponsor/open-collective-172px.png)](https://opencollective.com/cspell)&nbsp;[![CSpell](https://streetsidesoftware.com/img/sponsor/cspell-172px.png)](https://streetsidesoftware.com/sponsor/)
 
 ## Functionality
 
