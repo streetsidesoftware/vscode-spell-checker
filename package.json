@@ -5216,7 +5216,7 @@
     "eslint": "~10.13.0",
     "eslint-plugin-n": "^18.5.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
-    "eslint-plugin-unicorn": "^77.0.0",
+    "eslint-plugin-unicorn": "^79.0.0",
     "globals": "^17.13.0",
     "inject-markdown": "^6.2.1",
     "jest-mock-vscode": "^4.13.0",
