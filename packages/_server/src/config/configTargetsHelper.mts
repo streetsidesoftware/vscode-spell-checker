@@ -1,5 +1,5 @@
 import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
-import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
+import { toFileUri, toUri, uriToName } from '@internal/common-utils/uriHelper';
 import { capitalize } from '@internal/common-utils/util';
 
 import type { WorkspaceConfigForDocument } from '../api.js';
@@ -81,12 +81,28 @@ function basename(path: string): string {
     return path.split(/[/\\]/g).slice(-1).join('');
 }
 
+// cspell-lib's default name is URL-encoded, ex: 'Source%201.2.09/cspell.json'
+function cspellConfigName(cfg: CSpellSettingsWithFileSource): string {
+    if (!cfg.name) return basename(cfg.source.filename);
+    const decodedName = uriToName(toUri(cfg.source.filename));
+    const isDefaultName = tryDecodeURIComponent(cfg.name) === decodedName;
+    return isDefaultName ? decodedName : cfg.name;
+}
+
+function tryDecodeURIComponent(text: string): string {
+    try {
+        return decodeURIComponent(text);
+    } catch {
+        return text;
+    }
+}
+
 function cspellToTargets(addToTargets: ActionAddToTargets, sources: CSpellSettingsWithFileSource[]): ConfigTargetCSpell[] {
     function toTarget(cfg: CSpellSettingsWithFileSource, index: number): ConfigTargetCSpell {
         return {
             kind: ConfigKinds.Cspell,
             scope: ConfigScopes.Unknown,
-            name: cfg.name || basename(cfg.source.filename),
+            name: cspellConfigName(cfg),
             configUri: toUri(cfg.source.filename).toString(),
             has: {
                 words: cfg.words && true,
