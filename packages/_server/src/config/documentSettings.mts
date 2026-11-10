@@ -140,6 +140,7 @@ export class DocumentSettings {
     readonly configsToImport: Set<string> = new Set();
     private readonly importedSettings = this.createLazy(() => this._importSettings());
     private _version = 0;
+    private warnedInvalidMinWordLength = false;
     private gitIgnore = new GitIgnore();
     private loader = getDefaultConfigLoader();
     private isTrusted: boolean | undefined;
@@ -264,6 +265,7 @@ export class DocumentSettings {
         const waitFor = clearCachedFiles();
         this.valuesToClearOnReset.forEach((fn) => fn());
         this._version += 1;
+        this.warnedInvalidMinWordLength = false;
         this.gitIgnore = new GitIgnore();
         await waitFor;
     }
@@ -514,6 +516,7 @@ export class DocumentSettings {
         );
 
         let fileSettings: CSpellUserAndExtensionSettings = calcOverrideSettings(mergedSettings, uriToGlobPath(searchForUri));
+        fileSettings = this.correctMinWordLength(fileSettings, useUriForConfig);
         fileSettings = applyEnabledFileTypes(fileSettings, enabledFileTypes);
         fileSettings = applyEnabledSchemes(fileSettings, enabledSchemes);
         const { ignorePaths = [], files = [] } = fileSettings;
@@ -542,6 +545,34 @@ export class DocumentSettings {
             includeGlobMatcher,
         };
         return ext;
+    }
+
+    private correctMinWordLength(settings: CSpellUserAndExtensionSettings, documentUri: string): CSpellUserAndExtensionSettings {
+        const { minWordLength, overrides } = settings;
+        const invalidMinimum = isInvalidMinWordLength(minWordLength);
+        const invalidOverride = overrides?.some((override) => isInvalidMinWordLength(override.minWordLength));
+        if (!invalidMinimum && !invalidOverride) return settings;
+
+        const fallback = configDefaults.minWordLength;
+        if (
+            !this.warnedInvalidMinWordLength &&
+            isInvalidMinWordLength(calcOverrideSettings(settings, uriToGlobPath(documentUri)).minWordLength)
+        ) {
+            this.warnedInvalidMinWordLength = true;
+            void this.connection.window.showWarningMessage(`Code Spell Checker: Invalid minWordLength. Using the default of ${fallback}.`);
+        }
+
+        // cspell applies the overrides again when it prepares the document validator.
+        return {
+            ...settings,
+            minWordLength: invalidMinimum ? fallback : minWordLength,
+            overrides:
+                overrides && invalidOverride
+                    ? overrides.map((override) =>
+                          isInvalidMinWordLength(override.minWordLength) ? { ...override, minWordLength: fallback } : override,
+                      )
+                    : overrides,
+        };
     }
 
     private async resolveWorkspacePaths(
@@ -670,6 +701,13 @@ function fixPattern(pat: RegExpPatternDefinition): RegExpPatternDefinition {
         return pat;
     }
     return { ...pat, pattern };
+}
+
+function isInvalidMinWordLength(value: unknown): boolean {
+    if (value === undefined || value === null) return false;
+    // Numeric strings have historically worked through cspell's numeric comparison.
+    if (typeof value === 'string' && value.trim()) return !Number.isFinite(Number(value));
+    return !Number.isFinite(value);
 }
 
 export function correctBadSettings(settings: CSpellUserAndExtensionSettings): CSpellUserAndExtensionSettings {

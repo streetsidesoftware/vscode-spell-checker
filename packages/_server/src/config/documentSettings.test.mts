@@ -1,16 +1,21 @@
+import { mkdtemp, rm, rmdir, writeFile } from 'node:fs/promises';
 import nodeModule from 'node:module';
+import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 
 import type { Pattern } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
 import * as Path from 'path';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, onTestFinished, test, vi } from 'vitest';
 import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import { URI as Uri } from 'vscode-uri';
 
+import { DocumentCheckedRangesStore } from '../DocumentCheckedRangesStore.mjs';
 import { createMockServerSideApi } from '../test/test.api.js';
 import { extendExpect } from '../test/test.matchers.js';
+import { validateTextDocument } from '../validator.mjs';
 import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
 import type { ExcludedByMatch } from './documentSettings.mjs';
 import {
@@ -167,6 +172,82 @@ describe('Validate DocumentSettings', () => {
         await docSettings.registerConfigurationFile(configFile);
         expect(docSettings.version).toEqual(1);
         expect(docSettings.configsToImport).toContain(configFile);
+    });
+
+    test.each(['VS Code', 'cspell.json', 'cspell.json override'])(
+        'reports spelling issues when minWordLength is invalid in %s',
+        async (source) => {
+            const directory = await mkdtemp(Path.join(tmpdir(), 'cspell-min-word-length-'));
+            const configPath = Path.join(directory, 'cspell.json');
+            onTestFinished(async () => {
+                await rm(configPath, { force: true });
+                await rmdir(directory);
+            });
+            mockGetWorkspaceFolders.mockResolvedValue([{ uri: Uri.file(directory).toString(), name: 'test' }]);
+            mockGetConfiguration.mockResolvedValue([source === 'VS Code' ? { minWordLength: 'abc' } : {}, {}]);
+            if (source !== 'VS Code') {
+                const options =
+                    source === 'cspell.json override'
+                        ? {
+                              overrides: [
+                                  { filename: '*.txt', minWordLength: 'abc' },
+                                  { filename: '*.md', minWordLength: 8 },
+                              ],
+                          }
+                        : { minWordLength: 'abc' };
+                await writeFile(configPath, JSON.stringify({ version: '0.2', ...options }));
+            }
+            const docSettings = newDocumentSettings();
+            async function diagnosticsFor(filename: string) {
+                // cspell:ignore recieve definately seperate
+                const doc = TextDocument.create(
+                    Uri.file(Path.join(directory, filename)).toString(),
+                    'plaintext',
+                    1,
+                    'I will recieve it, definately seperate.',
+                );
+                const settings = await docSettings.getSettings(doc);
+                return validateTextDocument(doc, settings, new DocumentCheckedRangesStore());
+            }
+
+            if (source === 'cspell.json override') {
+                expect(await diagnosticsFor('unaffected.md')).toHaveLength(2);
+                expect(docSettings.connection.window.showWarningMessage).not.toHaveBeenCalled();
+            }
+            expect(await diagnosticsFor('test.txt')).toHaveLength(3);
+            expect(await diagnosticsFor('other.txt')).toHaveLength(3);
+            expect(docSettings.connection.window.showWarningMessage).toHaveBeenCalledExactlyOnceWith(
+                expect.stringContaining('Invalid minWordLength'),
+            );
+        },
+    );
+
+    test.each`
+        minWordLength | expected | warns
+        ${undefined}  | ${3}     | ${false}
+        ${null}       | ${3}     | ${false}
+        ${0}          | ${4}     | ${false}
+        ${-1}         | ${4}     | ${false}
+        ${8.5}        | ${1}     | ${false}
+        ${'8'}        | ${2}     | ${false}
+        ${''}         | ${3}     | ${true}
+        ${false}      | ${3}     | ${true}
+        ${Infinity}   | ${3}     | ${true}
+    `('handles a minWordLength of $minWordLength', async ({ minWordLength, expected, warns }) => {
+        mockGetWorkspaceFolders.mockResolvedValue([workspaceFolderServer]);
+        mockGetConfiguration.mockResolvedValue([{ minWordLength, noConfigSearch: true }, {}]);
+        const docSettings = newDocumentSettings();
+        // cspell:ignore recieve definately seperate qzx
+        const doc = TextDocument.create(
+            Uri.file(Path.join(pathSampleSourceFiles, 'test.txt')).toString(),
+            'plaintext',
+            1,
+            'I will recieve it, definately seperate. qzx',
+        );
+        const settings = await docSettings.getSettings(doc);
+        const diagnostics = await validateTextDocument(doc, settings, new DocumentCheckedRangesStore());
+        expect(diagnostics).toHaveLength(expected);
+        expect(docSettings.connection.window.showWarningMessage).toHaveBeenCalledTimes(warns ? 1 : 0);
     });
 
     test('test getSettings', async () => {
