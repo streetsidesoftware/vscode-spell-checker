@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "client": "file:../../packages/client",
-    "commander": "^15.0.0",
+    "commander": "^15.1.0",
     "json-schema": "0.4.0",
     "json-schema-traverse": "1.0.0"
   },
