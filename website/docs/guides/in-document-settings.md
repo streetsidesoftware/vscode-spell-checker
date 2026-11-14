@@ -24,7 +24,7 @@ insensitive, so `cSPELL:DISABLE` also works.
 | `disable-next-line`                            | Skip the following line                                     | One line                  |
 | `ignore <words>`                               | Do not report these words                                   | Entire file               |
 | `words <words>`                                | Treat these words as correct, and offer them as suggestions | Entire file               |
-| `locale <locales>`                             | Set the locale, e.g. `cSpell:locale fr,en`                  | Entire file               |
+| `locale <locales>`                             | Set the locale, e.g. `cSpell:locale en,fr`                  | Entire file               |
 | `ignoreRegExp <pattern>`                       | Do not check text matching the pattern                      | Entire file               |
 | `includeRegExp <pattern>`                      | Check only text matching the pattern                        | Entire file               |
 | `enableCompoundWords` / `disableCompoundWords` | Allow or disallow glued words such as `errormessage`        | Entire file               |
