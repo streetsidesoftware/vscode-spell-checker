@@ -1,0 +1,41 @@
+name: ' 🧹 Fix Lint'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint-fix:
+    if: github.repository_owner == 'streetsidesoftware'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Fix
+        run: |
+          npm ci
+          npm run build
+          npm run lint
+
+      - name: PR
+        uses: streetsidesoftware/actions/.github/actions/pr@v1
+        with:
+          commit-message: 'ci: Fix Lint -- Workflow Bot'
+          branch: fix-lint-main
+          base: main
+          title: 'ci: Fix Lint (main) -- Workflow Bot'
+          body: '`npm run lint` found issues on `main` and fixed them.'
+          app_id: ${{ secrets.AUTOMATION_APP_ID }}
+          app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
