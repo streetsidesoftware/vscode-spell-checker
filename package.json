@@ -1048,23 +1048,6 @@
             },
             "type": "object"
           },
-          "cSpell.ignorePathPresets": {
-            "additionalProperties": false,
-            "markdownDescription": "Skip well-known files that are not meant to be spell checked, such as git's own files and nested git worktrees.\n\nEach preset is enabled with `true` and disabled with `false`. A preset that is not set keeps its default.\n\nExample: check git's own files again.\n\n```json\n\"ignorePathPresets\": { \"git\": false }\n```",
-            "properties": {
-              "git": {
-                "default": true,
-                "markdownDescription": "Skip git's own files inside the root folder:\n- a file named `.git`, which git puts in a worktree or a submodule\n- everything inside a `.git` folder, except git's message files\n\nFiles outside the root folder are not skipped. For example, a submodule's commit message is in the parent\nrepository's `.git` folder.\n\nGit's message files stay checked, so a `commit-msg` hook can spell check the commit message. They are the files\nwhose names end in `MSG`, such as `COMMIT_EDITMSG`, `MERGE_MSG`, and `TAG_EDITMSG`, and `EDIT_DESCRIPTION`.\nThey are kept in two places:\n- directly inside a `.git` folder\n- directly inside a linked worktree's folder in `.git/worktrees`",
-                "type": "boolean"
-              },
-              "nestedWorktrees": {
-                "default": true,
-                "markdownDescription": "Skip git worktrees inside the root folder, such as `.worktrees/feature`. A worktree is another checkout of the\nsame repository, often of another branch.\n\nThe worktrees are found in the repository's own records, in `.git/worktrees`, so finding them does not search\nthe folders. Only the worktrees of the repository that holds the root folder are skipped. Submodules and other\nrepositories inside the root folder are still checked.\n\nWhen the root folder is inside a worktree, that worktree's files are still checked.",
-                "type": "boolean"
-              }
-            },
-            "type": "object"
-          },
           "cSpell.ignoreRandomStrings": {
             "default": true,
             "markdownDescription": "Ignore sequences of characters that look like random strings.",
