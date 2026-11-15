@@ -6,14 +6,22 @@ on: # rebuild any PRs and main branch changes
     branches:
       - main
     paths:
+      - '.github/workflows/lint-docs.yml'
       - 'website/**'
+      - 'docs/**'
+      - '.claude/**'
+      - '.github/copilot-instructions.md'
+      - '*.md'
+
+env:
+  DOCS: website docs .claude .github/copilot-instructions.md *.md
 
 jobs:
   cspell:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - run: npx cspell website
+      - run: npx cspell --dot --no-progress $DOCS
 
   lint:
     runs-on: ubuntu-latest
@@ -25,4 +33,4 @@ jobs:
 
       - run: |
           npm i
-          npx prettier -c website
+          npx prettier -c $DOCS
