@@ -125,29 +125,35 @@ describe('Validate DocumentSettings', () => {
     });
 
     test.each`
-        scheme          | settings                                           | expected
-        ${'file'}       | ${{}}                                              | ${true}
-        ${'memfs'}      | ${{}}                                              | ${false}
-        ${'memfs'}      | ${{ enabledSchemes: { memfs: true } }}             | ${true}
-        ${'memfs'}      | ${{ enabledSchemes: { '*': true } }}               | ${true}
-        ${'memfs'}      | ${{ enabledSchemes: { '*': true, memfs: false } }} | ${false}
-        ${'output'}     | ${{ enabledSchemes: { '*': true } }}               | ${false}
-        ${'debug'}      | ${{ enabledSchemes: { '*': true } }}               | ${false}
-        ${'git'}        | ${{ enabledSchemes: { '*': true } }}               | ${false}
-        ${'file'}       | ${{ enabledSchemes: { '*': false } }}              | ${true}
-        ${'vscode-vfs'} | ${{}}                                              | ${true}
+        scheme           | settings                                           | expected
+        ${'file'}        | ${{}}                                              | ${true}
+        ${'memfs'}       | ${{}}                                              | ${false}
+        ${'memfs'}       | ${{ enabledSchemes: { memfs: true } }}             | ${true}
+        ${'memfs'}       | ${{ enabledSchemes: { '*': true } }}               | ${true}
+        ${'memfs'}       | ${{ enabledSchemes: { '*': true, memfs: false } }} | ${false}
+        ${'output'}      | ${{ enabledSchemes: { '*': true } }}               | ${false}
+        ${'debug'}       | ${{ enabledSchemes: { '*': true } }}               | ${false}
+        ${'git'}         | ${{ enabledSchemes: { '*': true } }}               | ${false}
+        ${'file'}        | ${{ enabledSchemes: { '*': false } }}              | ${true}
+        ${'vscode-vfs'}  | ${{}}                                              | ${true}
+        ${'constructor'} | ${{ enabledSchemes: { '*': true } }}               | ${true}
+        ${'toString'}    | ${{ enabledSchemes: { '*': true } }}               | ${true}
+        ${'__proto__'}   | ${{ enabledSchemes: { '*': true } }}               | ${true}
+        ${'constructor'} | ${{}}                                              | ${false}
+        ${'__proto__'}   | ${{ enabledSchemes: { ['__proto__']: true } }}     | ${true}
     `('isUriAllowedBySettings scheme: $scheme settings: $settings', ({ scheme, settings, expected }) => {
         const uri = Uri.parse(import.meta.url).with({ scheme });
         expect(isUriAllowedBySettings(uri.toString(), settings)).toBe(expected);
     });
 
     test.each`
-        scheme     | settings                              | expected
-        ${'file'}  | ${{}}                                 | ${false}
-        ${'memfs'} | ${{}}                                 | ${false}
-        ${'memfs'} | ${{ enabledSchemes: { '*': false } }} | ${true}
-        ${'memfs'} | ${{ enabledSchemes: { '*': true } }}  | ${false}
-        ${'git'}   | ${{ enabledSchemes: { '*': true } }}  | ${true}
+        scheme           | settings                              | expected
+        ${'file'}        | ${{}}                                 | ${false}
+        ${'memfs'}       | ${{}}                                 | ${false}
+        ${'memfs'}       | ${{ enabledSchemes: { '*': false } }} | ${true}
+        ${'memfs'}       | ${{ enabledSchemes: { '*': true } }}  | ${false}
+        ${'git'}         | ${{ enabledSchemes: { '*': true } }}  | ${true}
+        ${'constructor'} | ${{ enabledSchemes: { '*': false } }} | ${true}
     `('isUriBlockedBySettings scheme: $scheme settings: $settings', ({ scheme, settings, expected }) => {
         const uri = Uri.parse(import.meta.url).with({ scheme });
         expect(isUriBlockedBySettings(uri.toString(), settings)).toBe(expected);
@@ -348,19 +354,22 @@ describe('Validate DocumentSettings', () => {
     });
 
     test.each`
-        languageId      | settings                                                                      | expected
-        ${'typescript'} | ${{}}                                                                         | ${false}
-        ${'typescript'} | ${{ enableFiletypes: ['typescript'] }}                                        | ${true}
-        ${'typescript'} | ${{ enableFiletypes: ['!!!typescript'], enabledLanguageIds: ['typescript'] }} | ${false}
-        ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: false }}      | ${true}
-        ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: true }}       | ${false}
-        ${'javascript'} | ${{ enableFiletypes: ['!javascript'], checkOnlyEnabledFileTypes: false }}     | ${false}
-        ${'typescript'} | ${{ enableFiletypes: ['*'] }}                                                 | ${true}
-        ${'typescript'} | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: true }}                | ${true}
-        ${'typescript'} | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: false }}               | ${true}
-        ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: true }}               | ${false}
-        ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: false }}              | ${true}
-        ${'java'}       | ${{ enableFiletypes: ['!*', 'java'], checkOnlyEnabledFileTypes: true }}       | ${true}
+        languageId       | settings                                                                      | expected
+        ${'typescript'}  | ${{}}                                                                         | ${false}
+        ${'typescript'}  | ${{ enableFiletypes: ['typescript'] }}                                        | ${true}
+        ${'typescript'}  | ${{ enableFiletypes: ['!!!typescript'], enabledLanguageIds: ['typescript'] }} | ${false}
+        ${'javascript'}  | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: false }}      | ${true}
+        ${'javascript'}  | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: true }}       | ${false}
+        ${'javascript'}  | ${{ enableFiletypes: ['!javascript'], checkOnlyEnabledFileTypes: false }}     | ${false}
+        ${'typescript'}  | ${{ enableFiletypes: ['*'] }}                                                 | ${true}
+        ${'typescript'}  | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: true }}                | ${true}
+        ${'typescript'}  | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: false }}               | ${true}
+        ${'typescript'}  | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: true }}               | ${false}
+        ${'typescript'}  | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: false }}              | ${true}
+        ${'java'}        | ${{ enableFiletypes: ['!*', 'java'], checkOnlyEnabledFileTypes: true }}       | ${true}
+        ${'toString'}    | ${{}}                                                                         | ${false}
+        ${'constructor'} | ${{ enableFiletypes: ['typescript'] }}                                        | ${false}
+        ${'__proto__'}   | ${{}}                                                                         | ${false}
     `('isLanguageEnabled $languageId $settings', ({ languageId, settings, expected }) => {
         expect(isFileTypeEnabled(languageId, settings)).toBe(expected);
     });

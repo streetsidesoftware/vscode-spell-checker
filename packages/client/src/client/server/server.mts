@@ -5,9 +5,9 @@ import type {
     GetConfigurationForDocumentResult as APIGetConfigurationForDocumentResult,
 } from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
+import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
+import { CodeActionRequest } from 'vscode-languageclient/node';
 
-import type { CodeAction, CodeActionParams, Command, LanguageClient } from '../../vscode-languageclient/node.cjs';
-import { CodeActionRequest } from '../../vscode-languageclient/node.cjs';
 import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs.js';
 
 export type {

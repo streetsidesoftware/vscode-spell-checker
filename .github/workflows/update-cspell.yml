@@ -52,10 +52,23 @@ jobs:
         run: |
           echo "value=$(jq -r '.dependencies["@cspell/dict-cspell-bundle"][1:]' package.json)" >> $GITHUB_OUTPUT
 
-      - name: Update
+      - name: Update CSpell
         run: |
           npm i
           npm run update-cspell
+
+      - name: Check for CSpell Updates
+        id: cspell-updated
+        run: |
+          if git diff --quiet -- ':(glob)**/package.json'; then
+            echo "value=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        if: steps.cspell-updated.outputs.value == 'true'
+        run: |
           npm i
           npm run build
           npm run build:readme
@@ -63,16 +76,19 @@ jobs:
 
       - name: Get New CSpell Version
         id: cspell-new-version
+        if: steps.cspell-updated.outputs.value == 'true'
         run: |
           echo "value=$(jq -r '.devDependencies.cspell[1:]' package.json)" >> $GITHUB_OUTPUT
 
       - name: Get New CSpell Dictionary Bundle Version
         id: dict-bundle-new-version
+        if: steps.cspell-updated.outputs.value == 'true'
         run: |
           echo "value=$(jq -r '.dependencies["@cspell/dict-cspell-bundle"][1:]' package.json)" >> $GITHUB_OUTPUT
 
       - name: Update Info
         id: update-info
+        if: steps.cspell-updated.outputs.value == 'true'
         uses: actions/github-script@v9
         env:
           CSPELL_CURRENT: ${{ steps.cspell-current-version.outputs.value }}
@@ -127,6 +143,7 @@ jobs:
 
       - name: Get Available CSpell Releases
         id: cspell-release-tags
+        if: steps.cspell-updated.outputs.value == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -134,6 +151,7 @@ jobs:
 
       - name: Build List of CSpell Releases
         id: cspell-releases
+        if: steps.cspell-updated.outputs.value == 'true'
         uses: actions/github-script@v9
         env:
           CURRENT: ${{ steps.cspell-current-version.outputs.value }}
@@ -149,6 +167,7 @@ jobs:
 
       - name: GenBody
         id: body
+        if: steps.cspell-updated.outputs.value == 'true'
         uses: streetsidesoftware/actions/public/pr-body@v1
         with:
           title: Update ALL Dependencies
@@ -166,6 +185,7 @@ jobs:
           path: package.json
 
       - name: PR
+        if: steps.cspell-updated.outputs.value == 'true'
         uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
           commit-message: 'ci: Update CSpell'

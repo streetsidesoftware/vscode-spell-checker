@@ -1048,6 +1048,23 @@
             },
             "type": "object"
           },
+          "cSpell.ignorePathPresets": {
+            "additionalProperties": false,
+            "markdownDescription": "Skip well-known files that are not meant to be spell checked, such as git's own files and nested git worktrees.\n\nEach preset is enabled with `true` and disabled with `false`. A preset that is not set keeps its default.\n\nExample: check git's own files again.\n\n```json\n\"ignorePathPresets\": { \"git\": false }\n```",
+            "properties": {
+              "git": {
+                "default": true,
+                "markdownDescription": "Skip git's own files inside the root folder:\n- a file named `.git`, which git puts in a worktree or a submodule\n- everything inside a `.git` folder, except git's message files\n\nFiles outside the root folder are not skipped. For example, a submodule's commit message is in the parent\nrepository's `.git` folder.\n\nGit's message files stay checked, so a `commit-msg` hook can spell check the commit message. They are the files\nwhose names end in `MSG`, such as `COMMIT_EDITMSG`, `MERGE_MSG`, and `TAG_EDITMSG`, and `EDIT_DESCRIPTION`.\nThey are kept in two places:\n- directly inside a `.git` folder\n- directly inside a linked worktree's folder in `.git/worktrees`",
+                "type": "boolean"
+              },
+              "nestedWorktrees": {
+                "default": true,
+                "markdownDescription": "Skip git worktrees inside the root folder, such as `.worktrees/feature`. A worktree is another checkout of the\nsame repository, often of another branch.\n\nThe worktrees are found in the repository's own records, in `.git/worktrees`, so finding them does not search\nthe folders. Only the worktrees of the repository that holds the root folder are skipped. Submodules and other\nrepositories inside the root folder are still checked.\n\nWhen the root folder is inside a worktree, that worktree's files are still checked.",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
           "cSpell.ignoreRandomStrings": {
             "default": true,
             "markdownDescription": "Ignore sequences of characters that look like random strings.",
@@ -2109,7 +2126,7 @@
                               "type": "string"
                             },
                             {
-                              "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                              "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                               "type": "string"
                             },
                             {
@@ -2120,7 +2137,7 @@
                                     "type": "string"
                                   },
                                   {
-                                    "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                                    "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                                     "type": "string"
                                   }
                                 ]
@@ -2365,7 +2382,7 @@
                         "type": "string"
                       },
                       {
-                        "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                        "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                         "type": "string"
                       },
                       {
@@ -2376,7 +2393,7 @@
                               "type": "string"
                             },
                             {
-                              "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                              "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                               "type": "string"
                             }
                           ]
@@ -2566,7 +2583,7 @@
                   "type": "string"
                 },
                 {
-                  "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                  "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                   "type": "string"
                 },
                 {
@@ -2577,7 +2594,7 @@
                         "type": "string"
                       },
                       {
-                        "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                        "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                         "type": "string"
                       }
                     ]
@@ -3903,7 +3920,7 @@
                         "type": "string"
                       },
                       {
-                        "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                        "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                         "type": "string"
                       },
                       {
@@ -3914,7 +3931,7 @@
                               "type": "string"
                             },
                             {
-                              "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nFor more complicated word break rules, consider using regular expressions with the  {@link  SoftWordBreakRegExp }  type.\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
+                              "markdownDescription": "Defines a word break rule based on a string.\n\nFormat:\n- `\"before|after\"` -- Matches a word break between `before` and `after`\n- `\"before|after$\"` -- Matches a word break between `before` and `after` at the end of a word\n- `\"^before|after\"` -- Matches a word break between `before` at the start of a word and `after`\n- `\"^before|after$\"` -- Matches a word break between `before` at the start of a word and `after` at the end of a word\n- `\"before|\"` -- Matches a word break after `before`\n- `\"^before|\"` -- Matches a word break after `before` at the start of a word\n- `\"|after\"` -- Matches a word break before `after`\n- `\"|after$\"` -- Matches a word break before `after` at the end of a word\n\n\nWhere `before` is the text before the word break and `after` is the text after the word break.\n\nSpecial characters like `|`, `^`, and `$` have specific meanings.\n- `|` -- Represents the position of the word break\n- `^` -- Indicates the start of a word\n- `$` -- Indicates the end of a word\n\nExamples:\n- `\"^ptr|\"` -- Would help with pointer definitions starting with `ptr`, such as `ptrvalue`.\n- `\"^I|\"` -- Would help with interface definitions starting with `I`, such as `IERROR`.",
                               "type": "string"
                             }
                           ]
@@ -5202,41 +5219,41 @@
     "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "~10.0.1",
     "@internal/vitest-config": "file:./tools/vitest-config",
-    "@tsconfig/node22": "^22.0.6",
+    "@tsconfig/node22": "^22.0.7",
     "@types/node": "^22.20.5",
     "@types/vscode": "1.104.0",
     "@types/vscode-webview": "^1.57.5",
-    "@vscode/vsce": "^4.0.0",
+    "@vscode/vsce": "^4.1.1",
     "ansi-styles": "^7.0.0",
     "build-tools": "file:./tools/build-tools",
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^10.0.6",
-    "cspell": "^10.4.0",
+    "concurrently": "^10.0.7",
+    "cspell": "^10.5.1",
     "esbuild": "^0.28.2",
     "eslint": "~10.13.0",
     "eslint-plugin-n": "^18.5.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^77.0.0",
-    "globals": "^17.13.0",
-    "inject-markdown": "^6.2.1",
-    "jest-mock-vscode": "^4.13.0",
-    "ovsx": "^1.3.0",
+    "globals": "^17.14.0",
+    "inject-markdown": "^6.3.0",
+    "jest-mock-vscode": "^4.14.0",
+    "ovsx": "^1.4.0",
     "patch-package": "^8.0.1",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.64.12",
+    "rollup": "^4.68.3",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
-    "tsdown": "^0.23.1",
+    "tsdown": "^0.23.7",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.4.0",
-    "@cspell/cspell-types": "^10.4.0",
-    "@cspell/dict-cspell-bundle": "^2.0.81",
-    "regexp-worker": "^5.0.1"
+    "@cspell/cspell-bundled-dicts": "^10.5.1",
+    "@cspell/cspell-types": "^10.5.1",
+    "@cspell/dict-cspell-bundle": "^2.0.84",
+    "regexp-worker": "^5.0.3"
   },
   "overrides": {
     "mocha@11.8.0": {

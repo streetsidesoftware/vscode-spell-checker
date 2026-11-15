@@ -1,13 +1,13 @@
 import type { Command, Diagnostic } from 'vscode';
 import { CodeAction, CodeActionKind, Position, Range } from 'vscode';
-
-import type { Command as LcCommand } from '../vscode-languageclient/node.cjs';
+import type { Command as LcCommand } from 'vscode-languageclient/node';
 import {
     CodeAction as LcCodeAction,
     Diagnostic as LcDiagnostic,
     Position as LcPosition,
     Range as LcRange,
-} from '../vscode-languageclient/node.cjs';
+} from 'vscode-languageclient/node';
+
 import { diagSeverityMap } from './MapDiagnosticSeverity.js';
 import type { RangeLike } from './models.js';
 

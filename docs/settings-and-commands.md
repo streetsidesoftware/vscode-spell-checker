@@ -113,7 +113,7 @@ working, so a setting is never renamed or removed in one step: the old one is de
 
 - Weigh the change against the [design principles](./design-principles.md).
 - If a decision has more than one reasonable answer with lasting effects (a new name, a new shape, a default that
-  changes what gets flagged), settle the design first. [ADRs](./ADRs/README.md) are a tool for that.
+  changes what gets flagged), settle the design first. See [Designing a feature](./feature-design.md).
 - Pick the commit type by what users notice. See [`CONTRIBUTING.md`](../CONTRIBUTING.md#commit-messages).
 
 ### Changing a default
