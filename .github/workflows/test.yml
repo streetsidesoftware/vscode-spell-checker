@@ -3,11 +3,21 @@ on:
   pull_request:
     paths-ignore:
       - 'website/**'
+      - 'docs/**'
+      - '.claude/**'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - 'CONTRIBUTING.md'
   push:
     branches:
       - main
     paths-ignore:
       - 'website/**'
+      - 'docs/**'
+      - '.claude/**'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - 'CONTRIBUTING.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

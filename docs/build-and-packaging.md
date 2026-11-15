@@ -107,13 +107,17 @@ Never edit these by hand. Change the source, then regenerate.
 
 ## CI
 
-| Workflow               | Runs on                                       | What it does                                                                                   |
-| ---------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `test.yml`             | PRs and `main`                                | `npm ci`, `npm run build`, and `npm run test` on Linux and Windows; `test-vsce-build` on Linux |
-| `lint.yml`             | PRs and `main`                                | `cspell` over the repo, then `npm run build` and `npm run lint`                                |
-| `integration-test.yml` | PRs and `main`                                | The integration tests, on stable, insiders, and the minimum VS Code version                    |
-| `lint-docs.yml`        | All PRs, and `main` when `website/**` changes | cspell and Prettier on the website                                                             |
-| `codeql-analysis.yml`  | PRs, `main`, and a schedule                   | CodeQL                                                                                         |
+| Workflow               | Runs on                                              | What it does                                                                                   |
+| ---------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `test.yml`             | PRs and `main`, except website and docs-only changes | `npm ci`, `npm run build`, and `npm run test` on Linux and Windows; `test-vsce-build` on Linux |
+| `lint.yml`             | PRs and `main`, except website and docs-only changes | `cspell` over the repo, then `npm run build` and `npm run lint`                                |
+| `integration-test.yml` | PRs and `main`, except website and docs-only changes | The integration tests, on stable, insiders, and the minimum VS Code version                    |
+| `lint-docs.yml`        | All PRs, and `main` when the website or docs change  | cspell and Prettier on the website and docs                                                    |
+| `cspell-action.yml`    | All PRs and `main`                                   | cspell on the changed files                                                                    |
+| `codeql-analysis.yml`  | PRs except docs-only changes, `main`, and a schedule | CodeQL                                                                                         |
 
-`test.yml`, `lint.yml`, and `integration-test.yml` skip changes that only touch `website/**`. For the release workflows, see [Releasing](./releasing.md).
+Docs-only changes touch only `docs/`, `.claude/`, `AGENTS.md`, `CLAUDE.md`, and `CONTRIBUTING.md`. The website has code,
+so CodeQL still scans website changes. Each workflow lists these paths in `paths-ignore`; keep the lists in sync.
+
+For the release workflows, see [Releasing](./releasing.md).
 Dependency updates come from Dependabot and from the `update-dependencies.yml` and `update-cspell.yml` workflows.
