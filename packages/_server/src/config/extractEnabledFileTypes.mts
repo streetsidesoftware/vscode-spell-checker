@@ -71,7 +71,7 @@ export function extractEnabledSchemeList(...settings: CSpellUserAndExtensionSett
  * @returns true/false if known or matched by the wildcard, otherwise undefined.
  */
 export function isSchemeEnabled(scheme: string, schemes: EnabledSchemes): boolean | undefined {
-    return schemes[scheme] ?? schemes[schemeWildcard];
+    return (Object.hasOwn(schemes, scheme) ? schemes[scheme] : undefined) ?? schemes[schemeWildcard];
 }
 
 export function applyEnabledSchemes(
@@ -135,7 +135,7 @@ export function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
 
 export function isFileTypeEnabled(languageId: string, settings: CSpellUserAndExtensionSettings): boolean {
     const enabledFileTypes = extractEnabledFileTypes(settings);
-    const enabled = enabledFileTypes[languageId];
+    const enabled = Object.hasOwn(enabledFileTypes, languageId) ? enabledFileTypes[languageId] : undefined;
     if (enabled !== undefined) return enabled;
     const starEnabled = enabledFileTypes['*'];
     if (starEnabled) return true;
