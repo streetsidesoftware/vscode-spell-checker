@@ -93,7 +93,8 @@ Each level has two phases:
 - **Decide:** choose, and write the choice down with its reason.
 
 Finish the overview before starting on the details. A detail decided while the overview is still moving often has to
-be decided again. A design that dives into details early gets lost in them.
+be decided again. A design that dives into details early gets lost in them. Until the overview is agreed, names and
+shapes in an example are placeholders, and a detail question is parked under Open questions until its part comes up.
 
 ### 1. Get to the why
 
@@ -107,9 +108,6 @@ Find the approaches that could solve the why, usually two or three. For each, sk
 what the extension does. Compare them against the overview questions in the [design questions](./design-questions.md),
 which include the [design principles](./design-principles.md). Research what you don't know. Write the approaches
 under Overview while you explore.
-
-This is discussion. Names and shapes in an example are placeholders. When a detail question comes up, park it under
-Open questions, and come back to it when its part comes up.
 
 ### 3. Decide the overview
 

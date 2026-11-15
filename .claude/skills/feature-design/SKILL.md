@@ -13,6 +13,8 @@ Throughout:
 
 - When the level or the phase changes, say so in a line, such as "Overview: exploring approaches" or "Details, config
   targets: deciding".
+- At the overview level, names and shapes in an example are placeholders. Say so, and park each detail question under
+  Open questions in a line, even a hard-to-undo one, without asking it. It comes back with its part.
 - A question with only one reasonable answer, once you look at the code, isn't a decision. Note it and move on.
 - A remark made in passing is often a standing rule. Confirm it, then record it where it applies:
   `docs/design-principles.md` or another doc under `docs/`, `CONTRIBUTING.md`, or `CLAUDE.md`.
@@ -74,11 +76,8 @@ The overview level, exploring. Discuss; don't decide yet.
 - **Do:** lay out the approaches, usually two or three. Give each one example: the `settings.json` or cspell config a
   user writes, or the command or quick fix they use, and what the extension does. Compare them against the overview
   questions.
-- **Do:** treat names and shapes in an example as placeholders. Say so, and park questions about them until their part
-  comes up.
 - **Do:** check facts in the code, or by trying them in the Extension Development Host. When a question turns on facts
   outside the repo, offer to research it, and bring back a short summary with sources.
-- **Do:** park each detail question that comes up under Open questions, in a line, without asking it.
 - **Do:** write `docs/designs/<feature>.md` from the guide's skeleton, with the Why, and the approaches being explored
   under Overview. Add its line to `docs/designs/README.md`, commit, and push.
 
