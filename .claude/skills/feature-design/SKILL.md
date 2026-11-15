@@ -106,8 +106,12 @@ The details level, one part at a time. Say which part you're starting.
 
 - **Explore:** what the part has to handle, what VS Code and cspell allow, and what's unclear. Check facts as in step 4.
   Bring up the part's parked details. Discuss before offering options.
-- **Decide:** go through the groups of detail questions in `docs/design-questions.md` that apply, and ask as in step 5.
-  Give a question time when its answer would be hard to undo. For anything else, propose a default in one line.
+- **Decide:** go through the groups of detail questions in `docs/design-questions.md` that apply.
+    - Ask one at a time, as in step 5, only about a detail that would be hard to undo once it ships, such as a public
+      name, a setting's shape, or a default that changes what gets flagged, or one that could change the overview.
+    - Decide the rest yourself. Write them into the part's section with their reasons, and list them in the chat with a
+      link to the PR, so the user can skim them and correct any.
+    - When you aren't sure which kind a detail is, ask.
 - **Do:** write the part's section as each detail is settled, with its reason. Commit and push.
 
 ### 8. Go back up when a detail challenges the overview

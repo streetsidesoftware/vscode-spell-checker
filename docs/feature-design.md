@@ -123,7 +123,8 @@ Take the parts one at a time, and for each, explore before deciding:
 - **Explore:** what the part has to handle, what VS Code and cspell allow, and what's unclear. Pick up its parked
   details.
 - **Decide:** work through the detail questions in the [design questions](./design-questions.md). Spend time on a detail
-  when it's hard to undo once it ships. Settle the rest with a sensible default.
+  when it's hard to undo once it ships, or could change the overview. Settle the rest with sensible defaults, and list
+  them so a reviewer can check them at a glance.
 
 ### 6. Go back up when a detail challenges the overview
 
