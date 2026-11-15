@@ -36,7 +36,8 @@ Not every design fits in one file. When a part can be read on its own, move the 
 Edit the files in place as the design changes. Git history keeps the earlier versions, so the files don't have to.
 
 Open a draft PR once the design has its first commit, and push each decision as it's settled. Reviewers read the design
-in the PR as it grows, not in pieces elsewhere. PRs are squash-merged, so the number of commits doesn't matter.
+in the PR as it grows, not in pieces in a chat or an issue. PRs are squash-merged, so the number of commits doesn't
+matter.
 
 A small feature can ship its design and code together in one PR, and the code decides the PR's type. When a design is
 worth reviewing before it's built, merge it on its own with a `docs:` PR, so it stays out of the release notes. See
@@ -82,6 +83,9 @@ A design works at two levels:
 - **The overview:** the approach, and the whole shape of the feature.
 - **The details:** how each part works.
 
+A part is a piece of the feature that can be designed on its own, such as a setting, a command, or the config targets
+an action writes to. The overview names the parts.
+
 Each level has two phases:
 
 - **Explore:** discuss the problem and the options, research what you don't know, and try things. Nothing is decided
@@ -89,7 +93,7 @@ Each level has two phases:
 - **Decide:** choose, and write the choice down with its reason.
 
 Finish the overview before starting on the details. A detail decided while the overview is still moving often has to
-be decided again, and a design that dives into details early gets lost in them.
+be decided again. A design that dives into details early gets lost in them.
 
 ### 1. Get to the why
 
@@ -101,20 +105,27 @@ facts. Then ask why now, what success looks like, and what's out of scope.
 
 Find the approaches that could solve the why, usually two or three. For each, sketch what a user writes or does, and
 what the extension does. Compare them against the overview questions in the [design questions](./design-questions.md),
-which include the [design principles](./design-principles.md). Research what you don't know.
+which include the [design principles](./design-principles.md). Research what you don't know. Write the approaches
+under Overview while you explore.
 
-This is discussion. When a detail question comes up, park it under Open questions, and come back to it when its part
-comes up.
+This is discussion. Names and shapes in an example are placeholders. When a detail question comes up, park it under
+Open questions, and come back to it when its part comes up.
 
 ### 3. Decide the overview
 
-Choose an approach, and write the Overview: the shape in a few lines with one example, the main parts, and each
-decision the approach rests on, with its reason.
+Choose an approach, and write the Overview in place of the approaches explored: the shape in a few lines with one
+example, the main parts, and each decision the approach rests on, with its reason.
 
 ### 4. Agree on the whole overview
 
-Read the whole overview together, as one piece. It's ready when the approach, what users see, the parts, and the
-decisions it rests on are all settled. The details start only once it's agreed.
+Read the whole overview as one piece, with whoever reviews the design. It's ready when these are all settled:
+
+- the approach;
+- what users see;
+- the parts;
+- the decisions the approach rests on.
+
+The details start only once it's agreed.
 
 ### 5. Work through each part
 
@@ -124,12 +135,13 @@ Take the parts one at a time, and for each, explore before deciding:
   details.
 - **Decide:** work through the detail questions in the [design questions](./design-questions.md). Spend time on a detail
   when it's hard to undo once it ships, or could change the overview. Settle the rest with sensible defaults, and list
-  them so a reviewer can check them at a glance.
+  them in the part's section, so a reviewer can check them at a glance.
 
 ### 6. Go back up when a detail challenges the overview
 
-When a detail shows the overview is wrong, stop working on the details. Change the overview, and agree on it again as in
-step 4. Then check the details already decided that depend on what changed.
+When a detail shows the overview is wrong, stop working on the details. Change the overview: explore again as in step
+2 if the approach itself is in question, then decide as in step 3. Agree on it again as in step 4. Then go back over the
+details already decided that depend on what changed.
 
 ### 7. Let the code settle the rest
 

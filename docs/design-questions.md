@@ -8,9 +8,9 @@ two levels:
 - **[Detail questions](#detail-questions)** shape each part. Work through them part by part, once the overview is
   agreed.
 
-Most changes touch two or three groups at each level. Go through those one question at a time. Spend time on a question
-when its answer could change the overview or would be hard to undo once it ships. Settle the rest with a proposed
-default, such as "the other settings do Y".
+All the overview groups apply to every change. Most changes touch two or three groups of detail questions. Spend time
+on a question when its answer could change the overview or would be hard to undo once it ships. Settle the rest with a
+proposed default, such as "the other settings do Y".
 
 ## Overview questions
 
@@ -34,8 +34,8 @@ Always first.
 ### The platform's fixed rules
 
 What VS Code and cspell fix and this repo can't change. Every approach has to fit them, and many questions are settled
-by pointing back at them. Check each one rather than assuming it, and note the ones that matter in the Overview, next to
-the decision they shape.
+by pointing back at them. At the overview level, check the ones that could rule out an approach, rather than assuming
+them. The rest come up with their part. Note the ones that matter next to the decision they shape.
 
 - **VS Code settings:** the scopes (`application`, `window`, `resource`, `language-overridable`) and which one wins;
   whether a setting can be changed per folder or per language.
@@ -60,8 +60,8 @@ If the change needs a new principle, agree on it before the decisions that depen
 
 - **What users see.** What does a user write or do, and what does the extension do in return? Is it a setting, a
   command or quick fix, a view, or a change to how documents are checked?
-- **Where it belongs.** Which parts does it touch: the client, the server, the webview? Does it belong in cspell rather
-  than in the extension?
+- **Where it belongs.** Which packages does it touch: the client, the server, the webview? Does it belong in cspell
+  rather than in the extension?
 - **Where the work runs.** Client or server? What has to cross between them, and how often?
 - **What it writes.** Does it write anything? To which [config target](./glossary.md#config-target): settings, a cspell
   config file, or a dictionary file? Who chooses: the user, a setting, or a prompt?
@@ -75,7 +75,8 @@ If the change needs a new principle, agree on it before the decisions that depen
 
 For a new or changed setting (see [Settings and commands](./settings-and-commands.md)):
 
-- **Name.** `cSpell.<name>`. Does it match the naming of related settings? Names are public as soon as they ship.
+- **Name.** Settings are named `cSpell.<name>`. Does it match the naming of related settings? Names are public as soon
+  as they ship.
 - **Type and shape.** A boolean now often becomes an enum later. Would an object or enum leave room to grow?
 - **Default.** Prefer quiet and accurate. Does the default change behavior for existing users?
 - **Scope.** Which scope, and why? Does it need to differ per language?
@@ -88,8 +89,8 @@ For a new or changed setting (see [Settings and commands](./settings-and-command
 
 ### Commands, menus, and actions
 
-- **Command id and title.** `cSpell.<name>`, and the title in the Command Palette. Ids are public: keybindings and other
-  extensions use them.
+- **Command id and title.** The id is `cSpell.<name>`, and the title shows in the Command Palette. Ids are public:
+  keybindings and other extensions use them.
 - **Where it appears.** Command Palette, context menus, the editor title, the status bar, code actions? Which `when`
   clause controls it?
 - **Scope.** At which scope does it write: user, workspace, or folder?

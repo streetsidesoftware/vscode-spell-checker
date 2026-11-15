@@ -9,8 +9,13 @@ Settles a design with the user: the overview first, then the details, each explo
 well-designed feature; the design file is a by-product. Read `docs/feature-design.md` first: it holds the process, and
 this skill adds only how to run it.
 
-When the level or the phase changes, say so in a line, such as "Overview: exploring approaches" or "Details, config
-targets: deciding".
+Throughout:
+
+- When the level or the phase changes, say so in a line, such as "Overview: exploring approaches" or "Details, config
+  targets: deciding".
+- A question with only one reasonable answer, once you look at the code, isn't a decision. Note it and move on.
+- A remark made in passing is often a standing rule. Confirm it, then record it where it applies:
+  `docs/design-principles.md` or another doc under `docs/`, `CONTRIBUTING.md`, or `CLAUDE.md`.
 
 ## Workflow
 
@@ -45,7 +50,8 @@ Keep the design out of the user's checkout, so it never sits as uncommitted chan
     - When the user or the environment named a branch for this work, such as in a cloud session, use it and skip the
       worktree. A session's own unrelated branch doesn't count.
     - Open a draft PR once the design's first commit exists, and tell the user.
-    - Push each decision as it's settled. Keep the PR body's lists of what's settled and what's open current.
+    - Push each decision as it's settled. Keep the PR body's status current: the level and part the design is at, with
+      a link to the design's Open questions. Link to the design rather than copying its decisions.
     - Point the user to the design in the PR, rather than pasting long parts of it in the chat.
 
 ### 3. Get to the why
@@ -68,16 +74,18 @@ The overview level, exploring. Discuss; don't decide yet.
 - **Do:** lay out the approaches, usually two or three. Give each one example: the `settings.json` or cspell config a
   user writes, or the command or quick fix they use, and what the extension does. Compare them against the overview
   questions.
+- **Do:** treat names and shapes in an example as placeholders. Say so, and park questions about them until their part
+  comes up.
 - **Do:** check facts in the code, or by trying them in the Extension Development Host. When a question turns on facts
   outside the repo, offer to research it, and bring back a short summary with sources.
 - **Do:** park each detail question that comes up under Open questions, in a line, without asking it.
-- **Do:** write `docs/designs/<feature>.md` from the guide's skeleton, with the Why and the approaches being explored.
-  Add its line to `docs/designs/README.md`, commit, and push. When a part can be read on its own, move to a folder as
-  the guide's "Where it lives" says.
+- **Do:** write `docs/designs/<feature>.md` from the guide's skeleton, with the Why, and the approaches being explored
+  under Overview. Add its line to `docs/designs/README.md`, commit, and push.
 
 ### 5. Decide the overview
 
-The overview level, deciding. Start with the approach, then the decisions it rests on.
+The overview level, deciding. Start with the approach, then the decisions it rests on. Give a question time when its
+answer could change the approach or would be hard to undo. For anything else, propose a default in one line.
 
 - **Ask** each question this way:
     - One question at a time. Move on only when it's resolved.
@@ -85,40 +93,43 @@ The overview level, deciding. Start with the approach, then the decisions it res
       Command Palette, or the quick fix in the editor, and what happens. Put your recommendation first, and say why.
     - Check facts before asking, and bring the result.
     - "You decide" is an answer: propose a default, and record it.
-    - The user can defer: note it under Open questions, and come back to it before step 10.
-- **Do:**
-    - A question with only one reasonable answer, once you look at the code, isn't a decision. Note it and move on.
-    - A remark made in passing is often a standing rule. Confirm it, then record it where it applies:
-      `docs/design-principles.md` or another doc under `docs/`, `CONTRIBUTING.md`, or `CLAUDE.md`.
-    - Write the Overview as each decision is settled, with its reason. Commit and push.
+    - The user can defer: note it under Open questions, and come back to it before step 6.
+- **Do:** write the Overview as each decision is settled, with its reason, in place of the approaches explored. Keep a
+  rejected approach only when it's a lesson, as the guide's "Before merge" says. Commit and push.
 
 ### 6. Agree on the whole overview
 
 The gate between the levels.
 
-- **Stop and ask:** when the overview is complete, link to it in the PR and summarize it in a few lines: the approach,
-  what users see, the parts, and the decisions it rests on. Ask the user for an explicit OK.
+- **Stop and ask:** when the overview is complete, link to the Overview in the PR and summarize it in a few lines: the
+  approach, what users see, the parts, and the decisions it rests on. Ask the user for an explicit OK.
 - **Don't** start on the details before the OK, even for a detail that looks quick.
 
 ### 7. Work through each part
 
-The details level, one part at a time. Say which part you're starting.
+The details level, one part at a time.
 
 - **Explore:** what the part has to handle, what VS Code and cspell allow, and what's unclear. Check facts as in step 4.
   Bring up the part's parked details. Discuss before offering options.
 - **Decide:** go through the groups of detail questions in `docs/design-questions.md` that apply.
-    - Ask one at a time, as in step 5, only about a detail that would be hard to undo once it ships, such as a public
-      name, a setting's shape, or a default that changes what gets flagged, or one that could change the overview.
+    - Ask one at a time, as in step 5, only about a detail that:
+        - would be hard to undo once it ships, such as a public name, a setting's shape, or a default that changes
+          what gets flagged; or
+        - could change the overview.
+    - When you aren't sure which kind a detail is, treat it as hard to undo, and ask about it.
     - Decide the rest yourself. Write them into the part's section with their reasons, and list them in the chat with a
       link to the PR, so the user can skim them and correct any.
-    - When you aren't sure which kind a detail is, ask.
-- **Do:** write the part's section as each detail is settled, with its reason. Commit and push.
+    - The user can defer a detail until step 10.
+- **Do:** write the part's section as each detail is settled, with its reason. Commit and push. When a part can be read
+  on its own, move the design to a folder as the guide's "Where it lives" says.
 
 ### 8. Go back up when a detail challenges the overview
 
 - **Stop:** when a detail shows the overview is wrong, say so in a line, and stop working on the details.
-- **Do:** settle the change to the overview as in step 5, and get the OK again as in step 6.
-- **Do:** list the details already decided that depend on what changed, and check each with the user before going on.
+- **Do:** if the approach itself is in question, explore again as in step 4. Settle the change to the overview as in
+  step 5, and get the OK again as in step 6.
+- **Do:** re-decide the details that depend on what changed, as in step 7: ask about the hard-to-undo ones, and list
+  the rest.
 
 ### 9. Stop when the code is the easier answer
 
@@ -152,7 +163,7 @@ Turn the working design into what the guide's "Before merge" describes.
 Keep a merged design true when a decision changes.
 
 - **Do:** follow the guide's "Changing a merged design", on a branch set up as in step 2. A change to the overview goes
-  through steps 5, 6, and 8.
+  back up as in step 8.
 
 ## Check a change
 
