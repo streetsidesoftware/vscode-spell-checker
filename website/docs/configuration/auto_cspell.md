@@ -51,6 +51,23 @@ Specify compatible engine versions.
 <tr>
 <td>
 
+[`cSpell.ignorePathPresets`](#cspellignorepathpresets)
+
+</td>
+<td>
+
+
+
+</td>
+<td>
+
+Skip well-known files that are not meant to be spell checked, such as git's own files and nested…
+
+</td>
+</tr>
+<tr>
+<td>
+
 [`cSpell.ignoreRandomStrings`](#cspellignorerandomstrings)
 
 </td>
@@ -445,6 +462,204 @@ CSpell Version
 <dd>
 
 9.6.3
+
+</dd>
+
+</dl>
+
+---
+
+
+### `cSpell.ignorePathPresets`
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`cSpell.ignorePathPresets`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Skip well-known files that are not meant to be spell checked, such as git's own files and nested git worktrees.
+
+Each preset is enabled with `true` and disabled with `false`. A preset that is not set keeps its default.
+
+Example: check git's own files again.
+
+```json
+"ignorePathPresets": { "git": false }
+```
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+<table>
+<thead>
+<tr>
+<th>
+
+Fields
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`git`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Skip git's own files inside the root folder:
+- a file named `.git`, which git puts in a worktree or a submodule
+- everything inside a `.git` folder, except git's message files
+
+Files outside the root folder are not skipped. For example, a submodule's commit message is in the parent
+repository's `.git` folder.
+
+Git's message files stay checked, so a `commit-msg` hook can spell check the commit message. They are the files
+whose names end in `MSG`, such as `COMMIT_EDITMSG`, `MERGE_MSG`, and `TAG_EDITMSG`, and `EDIT_DESCRIPTION`.
+They are kept in two places:
+- directly inside a `.git` folder
+- directly inside a linked worktree's folder in `.git/worktrees`
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<dl>
+
+<dt>
+Name
+</dt>
+<dd>
+
+`nestedWorktrees`
+
+</dd>
+
+<dt>
+Description
+</dt>
+<dd>
+
+Skip git worktrees inside the root folder, such as `.worktrees/feature`. A worktree is another checkout of the
+same repository, often of another branch.
+
+The worktrees are found in the repository's own records, in `.git/worktrees`, so finding them does not search
+the folders. Only the worktrees of the repository that holds the root folder are skipped. Submodules and other
+repositories inside the root folder are still checked.
+
+When the root folder is inside a worktree, that worktree's files are still checked.
+
+</dd>
+
+<dt>
+Type
+</dt>
+<dd>
+
+`boolean`
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_`true`_
+
+</dd>
+
+</dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+```ts
+{
+  git?: boolean;
+  nestedWorktrees?: boolean;
+}
+```
+
+</dd>
+
+<dt>
+Scope
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+Default
+</dt>
+<dd>
+
+_- none -_
+
+</dd>
+
+<dt>
+CSpell Version
+</dt>
+<dd>
+
+10.5.0
 
 </dd>
 

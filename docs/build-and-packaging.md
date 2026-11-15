@@ -1,7 +1,8 @@
 # Build and packaging
 
 How the extension is laid out, built, tested, and packaged into a `.vsix`. For how settings and commands get into
-`package.json`, see [Settings and commands](./settings-and-commands.md).
+`package.json`, see [Settings and commands](./settings-and-commands.md). For the release workflows, see
+[Releasing](./releasing.md).
 
 ## Workspace layout
 
@@ -33,21 +34,12 @@ vitest configuration.
 
 ## Tooling
 
-- **npm only.** `yarn` and `pnpm` are blocked by `engines` in `package.json`. CI installs npm 11 (see
-  `.github/actions/setup-node`).
+- **npm only.** `yarn` and `pnpm` are blocked by `engines` in `package.json`.
 - **Node.js** version is in `.nvmrc`.
 - **Install scripts don't run.** `.npmrc` sets `ignore-scripts = true`, so no `preinstall`, `install`, or `postinstall`
   script runs, including the root `postinstall` (`patch-package`). There is no `patches/` directory.
-- **Builds use tsdown, tsc, or vite, depending on the package:**
-    - `client`, `_server`, and `_serverPatternMatcher` bundle with tsdown. Type declarations come from tsdown's `dts`
-      option.
-    - In `client` and `_server`, `tsc` only type-checks (`noEmit: true`).
-    - `webview-ui` builds with vite. Its `test` script runs `tsc` and `svelte-check`.
-    - The other packages build with `tsc` only.
-- **Tests use vitest**, colocated with the source (`foo.test.mts` next to `foo.mts`). Exceptions:
-    - `webview-ui`'s `test` script runs `tsc` and `svelte-check`.
-    - `webview-rpc` and `tools/build-tools` have no tests yet.
-    - The integration tests run separately; see below.
+- **Tests use vitest**, colocated with the source (`foo.test.mts` next to `foo.mts`). The integration tests run
+  separately; see below.
 - **Lint** is ESLint (`eslint.config.js`) plus Prettier (`.prettierrc.yaml`).
     - `npm run lint` fixes what it can, and writes the fixes.
     - `npm run prettier:check` checks formatting without changing files.
@@ -61,17 +53,12 @@ vitest configuration.
 - `packages/client` and `tools/build-tools` also allow `.ts` extensions in imports. Follow what the surrounding code
   does.
 - TypeScript is strict everywhere.
-- `noUnusedLocals` and `noUnusedParameters` are set in `tsconfig.base.json`. Only the packages that extend it (through
-  `tsconfig.packages.base.json`) fail on unused code: `client`, `_server`, `_serverPatternMatcher`,
-  `__locale-resolver`, and `tools/build-tools`. The others extend `@tsconfig/node22` directly.
 
 ## Build outputs
 
 - `npm run build` builds every workspace and then regenerates the settings schema and `package.json` `contributes`
   (see [Settings and commands](./settings-and-commands.md)). After a build, `git status` should be clean unless you
   changed a setting or a contribution.
-- The client bundles into `packages/client/dist/extension.cjs`, which is the manifest's `main`.
-- The server bundles into `packages/_server/dist/main.cjs`.
 - The client imports the server's shared code as `code-spell-checker-server/api` and `code-spell-checker-server/lib`.
   Both are built output. Build before running the client's tests after changing the server.
 
@@ -104,16 +91,3 @@ Never edit these by hand. Change the source, then regenerate.
 - Run them with `npm run test-client-integration`, after `npm run build`.
 - On Linux without a display, run under `xvfb-run -a`, as CI does.
 - `npm test` does not run them.
-
-## CI
-
-| Workflow               | Runs on                                       | What it does                                                                                   |
-| ---------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `test.yml`             | PRs and `main`                                | `npm ci`, `npm run build`, and `npm run test` on Linux and Windows; `test-vsce-build` on Linux |
-| `lint.yml`             | PRs and `main`                                | `cspell` over the repo, then `npm run build` and `npm run lint`                                |
-| `integration-test.yml` | PRs and `main`                                | The integration tests, on stable, insiders, and the minimum VS Code version                    |
-| `lint-docs.yml`        | All PRs, and `main` when `website/**` changes | cspell and Prettier on the website                                                             |
-| `codeql-analysis.yml`  | PRs, `main`, and a schedule                   | CodeQL                                                                                         |
-
-`test.yml`, `lint.yml`, and `integration-test.yml` skip changes that only touch `website/**`. For the release workflows, see [Releasing](./releasing.md).
-Dependency updates come from Dependabot and from the `update-dependencies.yml` and `update-cspell.yml` workflows.

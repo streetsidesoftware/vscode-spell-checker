@@ -3,6 +3,7 @@ import { format } from 'node:util';
 import { logError } from '@internal/common-utils/log';
 import type { Command, ConfigurationScope, Diagnostic, Disposable, TextEdit, TextEditor, TextEditorEdit } from 'vscode';
 import { commands, NotebookRange, Position, Range, Selection, SnippetString, TextEditorRevealType, Uri, window } from 'vscode';
+import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import {
     addWordToFolderDictionary,
@@ -60,7 +61,6 @@ import { performance, toMilliseconds } from './util/perf.js';
 import { pVoid } from './util/pVoid.js';
 import { scrollToText } from './util/textEditor.js';
 import { toUri } from './util/uriHelper.mjs';
-import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from './vscode-languageclient/node.cjs';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
