@@ -109,16 +109,16 @@ Never edit these by hand. Change the source, then regenerate.
 
 | Workflow               | Runs on                                              | What it does                                                                                   |
 | ---------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `test.yml`             | PRs and `main`, except docs-only changes             | `npm ci`, `npm run build`, and `npm run test` on Linux and Windows; `test-vsce-build` on Linux |
-| `lint.yml`             | PRs and `main`, except docs-only changes             | `cspell` over the repo, then `npm run build` and `npm run lint`                                |
-| `integration-test.yml` | PRs and `main`, except docs-only changes             | The integration tests, on stable, insiders, and the minimum VS Code version                    |
-| `lint-docs.yml`        | All PRs, and `main` when the docs change             | cspell and Prettier on the docs                                                                |
+| `test.yml`             | PRs and `main`, except website and docs-only changes | `npm ci`, `npm run build`, and `npm run test` on Linux and Windows; `test-vsce-build` on Linux |
+| `lint.yml`             | PRs and `main`, except website and docs-only changes | `cspell` over the repo, then `npm run build` and `npm run lint`                                |
+| `integration-test.yml` | PRs and `main`, except website and docs-only changes | The integration tests, on stable, insiders, and the minimum VS Code version                    |
+| `lint-docs.yml`        | All PRs, and `main` when the website or docs change  | cspell and Prettier on the website and docs                                                    |
 | `cspell-action.yml`    | All PRs and `main`                                   | cspell on the changed files                                                                    |
 | `codeql-analysis.yml`  | PRs except docs-only changes, `main`, and a schedule | CodeQL                                                                                         |
 
-The docs are the website, `docs/`, `.claude/`, and the Markdown guides at the root, such as `CONTRIBUTING.md`. The root
-`README.md` and `CHANGELOG.md` are not docs-only: they go into the `.vsix`. Each workflow lists its docs paths in `paths`
-or `paths-ignore`; keep those lists in sync.
+Docs-only changes touch only `docs/`, `.claude/`, and the Markdown guides at the root, such as `CONTRIBUTING.md`. The root
+`README.md` and `CHANGELOG.md` don't count: they go into the `.vsix`. The website has code, so CodeQL still scans website
+changes. Each workflow lists these paths in `paths` or `paths-ignore`; keep the lists in sync.
 
 For the release workflows, see [Releasing](./releasing.md).
 Dependency updates come from Dependabot and from the `update-dependencies.yml` and `update-cspell.yml` workflows.
