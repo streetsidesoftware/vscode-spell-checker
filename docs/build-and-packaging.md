@@ -119,8 +119,8 @@ Never edit these by hand. Change the source, then regenerate.
 Docs-only changes touch only `docs/`, `.claude/`, `AGENTS.md`, `CLAUDE.md`, and `CONTRIBUTING.md`. The website has code,
 so CodeQL still scans website changes. Each workflow lists these paths in `paths-ignore`; keep the lists in sync.
 
-The Update README workflow, `update-readme.yml`, runs `npm run build:readme` weekly and when `README.md` or `static/`
-changes on `main`. When that changes files, it opens a PR with the update.
+The Fix Lint workflow, `lint-fix.yml`, runs `npm run lint` on every push to `main`. When that changes files, it opens a PR
+with the fixes.
 
 For the release workflows, see [Releasing](./releasing.md).
 Dependency updates come from Dependabot and from the `update-dependencies.yml` and `update-cspell.yml` workflows.
