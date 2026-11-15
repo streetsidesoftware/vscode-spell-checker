@@ -31,15 +31,15 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-pipe": "^10.4.0",
-    "@cspell/cspell-types": "^10.4.0",
-    "@cspell/url": "^10.4.0",
+    "@cspell/cspell-pipe": "^10.4.1",
+    "@cspell/cspell-types": "^10.4.1",
+    "@cspell/url": "^10.4.1",
     "@internal/common-utils": "file:../__utils",
-    "cspell-config-lib": "^10.4.0",
-    "cspell-gitignore": "^10.4.0",
-    "cspell-glob": "^10.4.0",
-    "cspell-io": "^10.4.0",
-    "cspell-lib": "^10.4.0",
+    "cspell-config-lib": "^10.4.1",
+    "cspell-gitignore": "^10.4.1",
+    "cspell-glob": "^10.4.1",
+    "cspell-io": "^10.4.1",
+    "cspell-lib": "^10.4.1",
     "gensequence": "^8.0.8",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.2",
@@ -47,13 +47,13 @@
     "ts-json-schema-generator": "^2.9.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
-    "vscode-languageserver-textdocument": "^1.0.15",
-    "vscode-languageserver-types": "^3.18.4",
+    "vscode-languageserver-textdocument": "^1.0.16",
+    "vscode-languageserver-types": "^3.18.5",
     "vscode-languageserver": "^10.1.2",
     "vscode-uri": "^3.2.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.4.0"
+    "@cspell/cspell-bundled-dicts": "^10.4.1"
   },
   "scripts": {
     "build": "tsdown && npm run build:tsc && npm run build-schema",

@@ -1,7 +1,6 @@
 import { DiagnosticSeverity } from 'vscode';
-
-import type { DiagnosticSeverity as DiagnosticSeverityNum } from '../vscode-languageclient/node.cjs';
-import { DiagnosticSeverity as LcDiagnosticSeverity } from '../vscode-languageclient/node.cjs';
+import type { DiagnosticSeverity as DiagnosticSeverityNum } from 'vscode-languageclient/node';
+import { DiagnosticSeverity as LcDiagnosticSeverity } from 'vscode-languageclient/node';
 
 type MapDiagnosticSeverity = Record<DiagnosticSeverity, DiagnosticSeverityNum>;
 
