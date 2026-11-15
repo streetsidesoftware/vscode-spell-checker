@@ -116,11 +116,5 @@ Never edit these by hand. Change the source, then regenerate.
 | `cspell-action.yml`    | All PRs and `main`                                   | cspell on the changed files                                                                    |
 | `codeql-analysis.yml`  | PRs except docs-only changes, `main`, and a schedule | CodeQL                                                                                         |
 
-Docs-only changes touch only `docs/`, `.claude/`, `AGENTS.md`, `CLAUDE.md`, and `CONTRIBUTING.md`. The website has code,
-so CodeQL still scans website changes. Each workflow lists these paths in `paths-ignore`; keep the lists in sync.
-
-The Fix Lint workflow, `lint-fix.yml`, runs `npm run lint` on every push to `main`. When that changes files, it opens a PR
-with the fixes.
-
 For the release workflows, see [Releasing](./releasing.md).
 Dependency updates come from Dependabot and from the `update-dependencies.yml` and `update-cspell.yml` workflows.
