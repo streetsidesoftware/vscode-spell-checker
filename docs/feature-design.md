@@ -30,14 +30,18 @@ line for it to the list in [`docs/designs/README.md`](./designs/README.md) in th
 
 Not every design fits in one file. When a part can be read on its own, move the design to a folder:
 
-- `docs/designs/<feature>/README.md` keeps the why, the sketch, links to the other files, and the open questions.
-- Each other file covers one topic, named by a slug, such as `config-targets.md`.
+- `docs/designs/<feature>/README.md` keeps the why, the overview, links to the other files, and the open questions.
+- Each other file covers one part or topic, named by a slug, such as `config-targets.md`.
 
 Edit the files in place as the design changes. Git history keeps the earlier versions, so the files don't have to.
 
-Open the PR as soon as you want feedback. A small feature can ship its design and code together in one PR, and the code
-decides the PR's type. When a design is worth reviewing before it's built, merge it on its own with a `docs:` PR, so it
-stays out of the release notes. See [Commit messages](../CONTRIBUTING.md#commit-messages).
+Open a draft PR once the design has its first commit, and push each decision as it's settled. Reviewers read the design
+in the PR as it grows, not in pieces in a chat or an issue. PRs are squash-merged, so the number of commits doesn't
+matter.
+
+A small feature can ship its design and code together in one PR, and the code decides the PR's type. When a design is
+worth reviewing before it's built, merge it on its own with a `docs:` PR, so it stays out of the release notes. See
+[Commit messages](../CONTRIBUTING.md#commit-messages).
 
 ## The file
 
@@ -48,15 +52,19 @@ stays out of the release notes. See [Commit messages](../CONTRIBUTING.md#commit-
 
 <The problem, who has it, and what they can't do today. A few lines.>
 
-## Design
+## Overview
 
-<The sketch: the shape of the solution in a few lines, with one example of what a user writes (`settings.json` or a
-cspell config file) or does (a command, a quick fix), and what the extension does. Then each choice that could change
-the sketch or is hard to undo, with its reason.>
+<The approach and the whole shape: what a user writes (`settings.json` or a cspell config file) or does (a command, a
+quick fix), and what the extension does, with one example. The main parts. Each decision the approach rests on, with
+its reason.>
+
+## <Part>
+
+<One section per part of the overview: its details, each with its reason.>
 
 ## Open questions
 
-- <A side question or deferred point, in one line.>
+- <A side question, a deferred point, or a detail parked until its part comes up, in one line.>
 ```
 
 - Add anything else the reader needs to understand the why, such as who it affects, under Why.
@@ -70,31 +78,76 @@ the sketch or is hard to undo, with its reason.>
 
 ## How to design
 
-Work from the top down, and stop when the code is the easier way to answer the rest.
+A design works at two levels:
+
+- **The overview:** the approach, and the whole shape of the feature.
+- **The details:** how each part works.
+
+A part is a piece of the feature that can be designed on its own, such as a setting, a command, or the config targets
+an action writes to. The overview names the parts.
+
+Each level has two phases:
+
+- **Explore:** discuss the problem and the options, research what you don't know, and try things. Nothing is decided
+  yet.
+- **Decide:** choose, and write the choice down with its reason.
+
+Finish the overview before starting on the details. A detail decided while the overview is still moving often has to
+be decided again. A design that dives into details early gets lost in them. Until the overview is agreed, names and
+shapes in an example are placeholders, and a detail question is parked under Open questions until its part comes up.
 
 ### 1. Get to the why
 
 A change usually starts as a problem to solve, or as a solution ("we need a setting"). Ask "why?" until you reach the
 reason: who is affected, and what goes wrong for them today. Look at the issue and the code first, so the why rests on
-facts. Then ask why now, what success looks like, and what's out of scope.
+facts. Then settle why now, what success looks like, and what's out of scope. Answer what the facts answer, and ask
+about the rest.
 
-### 2. Sketch the design
+### 2. Explore approaches
 
-Write the shape of the solution in a few lines, with one example: what a user writes in their settings or cspell config,
-or the command or quick fix they use, and what the extension does.
+Find the approaches that could solve the why, usually two or three. For each, sketch what a user writes or does, and
+what the extension does. Compare them against the overview questions in the [design questions](./design-questions.md),
+which include the [design principles](./design-principles.md). Research what you don't know. Write the approaches
+under Overview while you explore.
 
-### 3. Work through the questions
+### 3. Decide the overview
 
-Go through the [design questions](./design-questions.md), which include the
-[design principles](./design-principles.md). Spend time on a question when its answer could change the sketch, or
-would be hard to undo once it ships. Settle anything else with a sensible default. When a detail shows the sketch is
-wrong, change the sketch.
+Choose an approach, and write the Overview in place of the approaches explored: the shape in a few lines with one
+example, the main parts, and each decision the approach rests on, with its reason.
 
-### 4. Note side questions
+### 4. Agree on the whole overview
 
-Write each in a line under Open questions, and set it aside. The code usually settles them.
+Read the whole overview as one piece, with whoever reviews the design. It's ready when these are all settled:
 
-### 5. Let the code settle the rest
+- the approach;
+- what users see;
+- the parts;
+- the decisions the approach rests on.
+
+The details start only once it's agreed.
+
+### 5. Work through each part
+
+Take the parts one at a time, and for each, explore before deciding:
+
+- **Explore:** what the part has to handle, what VS Code and cspell allow, and what's unclear. Pick up its parked
+  details.
+- **Decide:** work through the detail questions in the [design questions](./design-questions.md). Spend time on a detail
+  when it's hard to undo once it ships, or could change the overview. Settle the rest with sensible defaults, and list
+  them in the part's section, so a reviewer can check them at a glance.
+
+### 6. Go back up when a detail challenges the overview
+
+When a detail shows the overview is wrong, stop working on the details. Change the overview: explore again as in step
+2 if the approach itself is in question, then decide as in step 3. Agree on it again as in step 4. Then go back over the
+details already decided that depend on what changed.
+
+### 7. Settle the whole-feature questions
+
+After the last part, work through the whole-feature questions in the [design questions](./design-questions.md) once:
+how the feature is released, and which docs change. Write the answers in the Overview.
+
+### 8. Let the code settle the rest
 
 When a question is easier to answer by building or trying something, stop designing and build. Update the design when
 the code shows a decision was wrong.
@@ -127,6 +180,7 @@ changed, except to take a finished item off its list of what isn't built yet.
 
 - Rewrite the decision in place. Say what showed the old choice was wrong, if that would save the next person from
   repeating it.
+- When the overview changes, check the details that depend on it.
 - Delete a part that no longer applies. Git history keeps it.
 
 ## With Claude Code
