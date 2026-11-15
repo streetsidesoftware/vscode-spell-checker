@@ -25,7 +25,7 @@ is the root [`README.md`](./README.md). The user documentation is the [website](
 
 ## More docs
 
-- [Build and packaging](./docs/build-and-packaging.md): workspace layout, tooling, the `.vsix`, and CI
+- [Build and packaging](./docs/build-and-packaging.md): workspace layout, tooling, and the `.vsix`
 - [Settings and commands](./docs/settings-and-commands.md): adding a setting or a command
 - [Releasing](./docs/releasing.md): Release Please, prerelease mode, and publishing
 - [Design principles](./docs/design-principles.md)
