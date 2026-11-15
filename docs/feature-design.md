@@ -141,7 +141,12 @@ When a detail shows the overview is wrong, stop working on the details. Change t
 2 if the approach itself is in question, then decide as in step 3. Agree on it again as in step 4. Then go back over the
 details already decided that depend on what changed.
 
-### 7. Let the code settle the rest
+### 7. Settle the whole-feature questions
+
+After the last part, work through the whole-feature questions in the [design questions](./design-questions.md) once:
+how the feature is released, and which docs change. Write the answers in the Overview.
+
+### 8. Let the code settle the rest
 
 When a question is easier to answer by building or trying something, stop designing and build. Update the design when
 the code shows a decision was wrong.

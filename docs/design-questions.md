@@ -1,12 +1,14 @@
 # Design questions
 
-The questions a [design](./feature-design.md) covers, and where this repo's hard-to-undo decisions hide. They come at
-two levels:
+The questions a [design](./feature-design.md) covers, and where this repo's hard-to-undo decisions hide. There are
+three kinds:
 
 - **[Overview questions](#overview-questions)** shape the approach. Work through them while exploring approaches and
   deciding the overview.
 - **[Detail questions](#detail-questions)** shape each part. Work through them part by part, once the overview is
   agreed.
+- **[Whole-feature questions](#whole-feature-questions)** cover the feature as one change. Work through them once,
+  after the last part.
 
 All the overview groups apply to every change. Most changes touch two or three groups of detail questions. Spend time
 on a question when its answer could change the overview or would be hard to undo once it ships. Settle the rest with a
@@ -118,6 +120,8 @@ For changes to the Spell Checker info view or the tree views:
 - Which unit tests cover it, and in which package?
 - Does it need an integration test (`packages/_integrationTests`), or a sample workspace in `fixtures/workspaces/`?
 - Which edge cases from [Behavior and performance](#behavior-and-performance) need a test?
+
+## Whole-feature questions
 
 ### Release surface
 

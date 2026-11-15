@@ -118,7 +118,7 @@ The details level, one part at a time.
     - When you aren't sure which kind a detail is, treat it as hard to undo, and ask about it.
     - Decide the rest yourself. Write them into the part's section with their reasons, and list them in the chat with a
       link to the PR, so the user can skim them and correct any.
-    - The user can defer a detail until step 10.
+    - The user can defer a detail until step 11.
 - **Do:** write the part's section as each detail is settled, with its reason. Commit and push. When a part can be read
   on its own, move the design to a folder as the guide's "Where it lives" says.
 
@@ -130,7 +130,15 @@ The details level, one part at a time.
 - **Do:** re-decide the details that depend on what changed, as in step 7: ask about the hard-to-undo ones, and list
   the rest.
 
-### 9. Stop when the code is the easier answer
+### 9. Settle the whole-feature questions
+
+Once, after the last part.
+
+- **Decide:** go through the whole-feature questions in `docs/design-questions.md`, as in step 7: ask about the
+  hard-to-undo ones, such as whether it's breaking, and decide and list the rest.
+- **Do:** write the answers in the Overview, with their reasons. Commit and push.
+
+### 10. Stop when the code is the easier answer
 
 Hand the user a clear state, and leave building as a separate step.
 
@@ -141,7 +149,7 @@ Hand the user a clear state, and leave building as a separate step.
 - **Do:** stop at the design. A quick prototype is fine when it answers a question faster. Building is a separate step,
   such as with the `setting-change` skill.
 
-### 10. Finish before merge
+### 11. Finish before merge
 
 Turn the working design into what the guide's "Before merge" describes.
 
@@ -157,7 +165,7 @@ Turn the working design into what the guide's "Before merge" describes.
 - **Check:** `npm run lint` and `npx cspell . --dot --no-progress` pass. Fix what they find, and run them again until
   they do.
 
-### 11. Change a merged design
+### 12. Change a merged design
 
 Keep a merged design true when a decision changes.
 
