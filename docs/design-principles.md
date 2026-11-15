@@ -1,7 +1,7 @@
 # Design principles
 
-Principles that guide how the extension behaves. Weigh new features and changes against them. When a feature designed
-with an ADR sets a new principle, add it here with a link to the feature.
+Principles that guide how the extension behaves. Weigh new features and changes against them. When a
+[design](./feature-design.md) sets a principle that holds beyond its feature, add it here with a link to the design.
 
 ## An action changes only what the user picked
 

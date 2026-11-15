@@ -1,35 +1,32 @@
-# Interview guide
+# Design questions
 
-A menu of the decision points that recur in this repo, grouped by theme. Most features touch two or three groups. Ask
-one question, resolve it, write it down (as an ADR if it's a real judgment call, or in another ADR's Context if it's a
-detail), then move on.
+The questions a [design](./feature-design.md) covers, and where this repo's hard-to-undo decisions hide. Most changes
+touch two or three groups. Go through those one question at a time. Spend time on a question when its answer could
+change the sketch or would be hard to undo once it ships. Settle the rest with a proposed default, such as "the other
+settings do Y".
 
-Where a question has an obvious, low-stakes default given the rest of the repo, propose it up front ("I'd default to X
-because the other settings do Y. Any reason to differ here?"). That's still an ADR if the user could reasonably have
-picked differently; it just makes the interview faster.
+## Why and who
 
-## 0. Why, stakeholders, and the goal (always first)
+Always first.
 
-- Why are we doing this? What problem or pain prompted it? Is there an issue?
+- Why are we doing this? What problem prompted it? Is there an issue?
 - Why now: a bug report, a feature request, a limit hit while building something else?
-- If the first answer is a solution ("we need a new setting") rather than a reason, try the five whys. Stop as soon as
-  the reason is clear.
-- Who are the stakeholders, and how is each affected? In this repo that's usually:
+- If the first answer is a solution ("we need a new setting"), ask why until the reason is clear.
+- Who is affected, and how? Usually some of:
     - people who use the extension and edit their settings or a cspell config file;
     - teams that share a cspell config between the extension and the cspell command-line tool, and expect the same
       results from both;
     - other extensions that call the extension's API (`packages/client/src/extensionApi.mts`);
-    - maintainers of this repo;
-    - cspell itself, when the change belongs in cspell rather than in the extension.
+    - cspell itself, when the change belongs in cspell rather than in the extension;
+    - maintainers of this repo.
 - What does success look like, as something a user can do or a setting they can write, that they can't today?
-- What's deliberately out of scope?
+- What's out of scope?
 
-Record the answers in the feature's `README.md` before the first decision.
+## The platform's fixed rules
 
-## 1. The platform's fixed rules
-
-Before any option, list what VS Code and cspell fix and this repo can't change. Write them in the first ADR's Context.
-Many later questions are settled by pointing back at them. Check each one rather than assuming it.
+What VS Code and cspell fix and this repo can't change. The sketch has to fit them, and many questions are settled by
+pointing back at them. Check each one rather than assuming it, and note the ones that matter in the Design section,
+next to the choice they shape.
 
 - **VS Code settings:** the scopes (`application`, `window`, `resource`, `language-overridable`) and which one wins;
   whether a setting can be changed per folder or per language.
@@ -41,19 +38,18 @@ Many later questions are settled by pointing back at them. Check each one rather
 - **cspell's own configuration rules:** how cspell merges config files, and what the command-line tool would do with
   the same config.
 
-## 2. Principles
+## Principles
 
-Read `docs/design-principles.md` and weigh every option against it:
+Check the sketch against the [design principles](./design-principles.md):
 
 - **An action changes only what the user picked.** Does any option write to a place the user didn't choose?
 - **Keep false positives low.** Does any option flag more words by default?
 
-If the feature needs a new principle, agree on it first, record it as ADR `0001`, and add it to
-`docs/design-principles.md` when it holds beyond this feature.
+If the change needs a new principle, agree on it before the decisions that depend on it.
 
-## 3. Settings
+## Settings
 
-For a new or changed setting (see `docs/settings-and-commands.md`):
+For a new or changed setting (see [Settings and commands](./settings-and-commands.md)):
 
 - **Name.** `cSpell.<name>`. Does it match the naming of related settings? Names are public as soon as they ship.
 - **Type and shape.** A boolean now often becomes an enum later. Would an object or enum leave room to grow?
@@ -66,18 +62,18 @@ For a new or changed setting (see `docs/settings-and-commands.md`):
   and when is the old one removed?
 - **Documentation.** The doc comment is the user documentation: what does it say, and what example does it show?
 
-## 4. Commands, menus, and actions
+## Commands, menus, and actions
 
 - **Command id and title.** `cSpell.<name>`, and the title in the Command Palette. Ids are public: keybindings and other
   extensions use them.
 - **Where it appears.** Command Palette, context menus, the editor title, the status bar, code actions? Which `when`
   clause controls it?
-- **What it writes.** Which config target (see `docs/glossary.md`) does it change: settings, a
-  cspell config file, or a dictionary file, and at which scope? Who chooses: the user, a setting, or a prompt?
+- **What it writes.** Which [config target](./glossary.md#config-target) does it change: settings, a cspell config file,
+  or a dictionary file, and at which scope? Who chooses: the user, a setting, or a prompt?
 - **Confirmation.** Does it ask before writing? What does it do when the target doesn't exist yet?
 - **Undo.** Can the user undo it with the editor's undo, or only by hand?
 
-## 5. Behavior and performance
+## Behavior and performance
 
 - **Where the work runs.** Client or server? What has to cross between them, and how often?
 - **Large documents.** How does it behave near the performance limits (`cSpell.checkLimit`, `cSpell.spellCheckDelayMs`,
@@ -86,7 +82,7 @@ For a new or changed setting (see `docs/settings-and-commands.md`):
   development.
 - **Errors.** Which mistakes are reported, where (a notification, the output channel, a diagnostic), and how loudly?
 
-## 6. Webview and views
+## Webview and views
 
 For changes to the Spell Checker info view or the tree views:
 
@@ -94,21 +90,16 @@ For changes to the Spell Checker info view or the tree views:
 - Which data does it need from the extension or the server, and through which API (`packages/webview-api`)?
 - How does it update when settings or documents change?
 
-## 7. Testing and samples
+## Testing and samples
 
 - Which unit tests cover it, and in which package?
 - Does it need an integration test (`packages/_integrationTests`), or a sample workspace in `fixtures/workspaces/`?
-- Which edge cases from group 5 need a test?
+- Which edge cases from [Behavior and performance](#behavior-and-performance) need a test?
 
-## 8. Release surface
+## Release surface
 
-- Is it `feat:` or `fix:`? What will the release note say, for someone who uses the spell checker?
+- Is it `feat:` or `fix:`, and is it breaking (`!`)? What will the release note say, for someone who uses the spell
+  checker? See [Commit messages](../CONTRIBUTING.md#commit-messages).
 - Does it ship in prerelease mode first?
 - Which docs change: the root `README.md`, the website, the generated settings pages?
-- Is any name still provisional? List it in the feature index, with when it must be decided.
-
-## Wrapping a topic into a decision
-
-Not every answer needs its own ADR. Bundle answers from the same group when they only make sense read together (a
-setting's name, type, and default). Split them when they can change independently later (a setting's default and
-where the work runs).
+- Is any name still provisional? Each needs a decision, or an issue saying when it must be decided.

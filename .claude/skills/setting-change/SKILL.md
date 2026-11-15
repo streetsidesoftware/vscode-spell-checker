@@ -1,6 +1,6 @@
 ---
 name: setting-change
-description: 'Add or change a Code Spell Checker extension setting (cSpell.*) end to end: a new setting, a changed default or type, a rename, a deprecation, or a removal. Runs a short design checklist, hands over to feature-adr when a decision is open, then defines the setting, regenerates the schema, package.json and website docs, wires it into the client or server, adds tests, and drafts the commit message and PR description. Use this whenever the user asks to add, change, rename, deprecate, or remove a setting, or to expose an option in VS Code settings, even if they do not say "skill". Do not use it for commands (see docs/settings-and-commands.md) or for designing the planned settings migration command (use feature-adr).'
+description: 'Add or change a Code Spell Checker extension setting (cSpell.*) end to end: a new setting, a changed default or type, a rename, a deprecation, or a removal. Runs a short design checklist, hands over to feature-design when a decision is open, then defines the setting, regenerates the schema, package.json and website docs, wires it into the client or server, adds tests, and drafts the commit message and PR description. Use this whenever the user asks to add, change, rename, deprecate, or remove a setting, or to expose an option in VS Code settings, even if they do not say "skill". Do not use it for commands (see docs/settings-and-commands.md) or for designing the planned settings migration command (use feature-design).'
 ---
 
 # setting-change
@@ -60,9 +60,9 @@ For a change:
 - **Compatibility:** how existing values keep working (see the doc's rename and type sections).
 - **The replacement,** for a deprecation: the new setting, or the reason there is none.
 
-**Hand over to feature-adr** when an answer has more than one reasonable option with lasting effects, for example a new
+**Hand over to feature-design** when an answer has more than one reasonable option with lasting effects, for example a new
 name that other settings will follow, a new object shape, or a default that changes what gets flagged. Say so, and
-offer to run the `feature-adr` skill. Continue here once the design is decided.
+offer to run the `feature-design` skill. Continue here once the design is decided.
 
 Record the answers. They go into the PR description in step 6.
 

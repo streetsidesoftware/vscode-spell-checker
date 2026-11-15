@@ -2,8 +2,6 @@
 
 Terms and concepts a maintainer needs to know: about the extension, cspell, and VS Code. Alphabetical.
 
-Terms introduced by a single feature's ADRs are in the [ADR glossary](./ADRs/glossary.md).
-
 ## Client
 
 The extension code that runs in the VS Code extension host: `packages/client`. It registers commands, menus, views,
