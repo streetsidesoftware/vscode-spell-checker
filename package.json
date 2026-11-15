@@ -5213,7 +5213,7 @@
     "concurrently": "^10.0.7",
     "cspell": "^10.5.1",
     "esbuild": "^0.28.2",
-    "eslint": "~10.13.0",
+    "eslint": "~10.14.0",
     "eslint-plugin-n": "^18.5.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unicorn": "^79.0.0",
