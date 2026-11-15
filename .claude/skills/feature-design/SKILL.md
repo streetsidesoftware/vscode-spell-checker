@@ -63,8 +63,12 @@ Know why the feature exists before deciding anything.
 - **Do:** look up the facts first: the issue, the code, a reproduction.
 - **Do:** propose the why in one or two lines, and let the user correct it. If it still reads like a solution, ask "why
   does that matter?" and redraft.
-- **Ask,** one at a time, with `docs/design-questions.md`'s "Why and who" group: why now, who is affected, what success
-  looks like, and what's out of scope.
+- **Do:** draft answers to the rest of `docs/design-questions.md`'s "Why and who" group from the facts: why now, who is
+  affected, what success looks like, and what's out of scope. Show them in the chat together, and let the user correct
+  them.
+- **Ask,** one at a time, only about the ones the facts don't answer.
+- **Do:** write `docs/designs/<feature>.md` from the guide's skeleton, with the Why. Add its line to
+  `docs/designs/README.md`, commit, and push.
 
 ### 4. Explore approaches
 
@@ -78,8 +82,7 @@ The overview level, exploring. Discuss; don't decide yet.
   questions.
 - **Do:** check facts in the code, or by trying them in the Extension Development Host. When a question turns on facts
   outside the repo, offer to research it, and bring back a short summary with sources.
-- **Do:** write `docs/designs/<feature>.md` from the guide's skeleton, with the Why, and the approaches being explored
-  under Overview. Add its line to `docs/designs/README.md`, commit, and push.
+- **Do:** write the approaches being explored under the design's Overview. Commit and push.
 
 ### 5. Decide the overview
 

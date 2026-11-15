@@ -100,7 +100,8 @@ shapes in an example are placeholders, and a detail question is parked under Ope
 
 A change usually starts as a problem to solve, or as a solution ("we need a setting"). Ask "why?" until you reach the
 reason: who is affected, and what goes wrong for them today. Look at the issue and the code first, so the why rests on
-facts. Then ask why now, what success looks like, and what's out of scope.
+facts. Then settle why now, what success looks like, and what's out of scope. Answer what the facts answer, and ask
+about the rest.
 
 ### 2. Explore approaches
 
