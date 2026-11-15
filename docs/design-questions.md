@@ -1,11 +1,20 @@
 # Design questions
 
-The questions a [design](./feature-design.md) covers, and where this repo's hard-to-undo decisions hide. Most changes
-touch two or three groups. Go through those one question at a time. Spend time on a question when its answer could
-change the sketch or would be hard to undo once it ships. Settle the rest with a proposed default, such as "the other
-settings do Y".
+The questions a [design](./feature-design.md) covers, and where this repo's hard-to-undo decisions hide. They come at
+two levels:
 
-## Why and who
+- **[Overview questions](#overview-questions)** shape the approach. Work through them while exploring approaches and
+  deciding the overview.
+- **[Detail questions](#detail-questions)** shape each part. Work through them part by part, once the overview is
+  agreed.
+
+Most changes touch two or three groups at each level. Go through those one question at a time. Spend time on a question
+when its answer could change the overview or would be hard to undo once it ships. Settle the rest with a proposed
+default, such as "the other settings do Y".
+
+## Overview questions
+
+### Why and who
 
 Always first.
 
@@ -22,11 +31,11 @@ Always first.
 - What does success look like, as something a user can do or a setting they can write, that they can't today?
 - What's out of scope?
 
-## The platform's fixed rules
+### The platform's fixed rules
 
-What VS Code and cspell fix and this repo can't change. The sketch has to fit them, and many questions are settled by
-pointing back at them. Check each one rather than assuming it, and note the ones that matter in the Design section,
-next to the choice they shape.
+What VS Code and cspell fix and this repo can't change. Every approach has to fit them, and many questions are settled
+by pointing back at them. Check each one rather than assuming it, and note the ones that matter in the Overview, next to
+the decision they shape.
 
 - **VS Code settings:** the scopes (`application`, `window`, `resource`, `language-overridable`) and which one wins;
   whether a setting can be changed per folder or per language.
@@ -38,16 +47,31 @@ next to the choice they shape.
 - **cspell's own configuration rules:** how cspell merges config files, and what the command-line tool would do with
   the same config.
 
-## Principles
+### Principles
 
-Check the sketch against the [design principles](./design-principles.md):
+Check each approach against the [design principles](./design-principles.md):
 
-- **An action changes only what the user picked.** Does any option write to a place the user didn't choose?
-- **Keep false positives low.** Does any option flag more words by default?
+- **An action changes only what the user picked.** Does it write to a place the user didn't choose?
+- **Keep false positives low.** Does it flag more words by default?
 
 If the change needs a new principle, agree on it before the decisions that depend on it.
 
-## Settings
+### The approach
+
+- **What users see.** What does a user write or do, and what does the extension do in return? Is it a setting, a
+  command or quick fix, a view, or a change to how documents are checked?
+- **Where it belongs.** Which parts does it touch: the client, the server, the webview? Does it belong in cspell rather
+  than in the extension?
+- **Where the work runs.** Client or server? What has to cross between them, and how often?
+- **What it writes.** Does it write anything? To which [config target](./glossary.md#config-target): settings, a cspell
+  config file, or a dictionary file? Who chooses: the user, a setting, or a prompt?
+- **Existing users.** Does it change a default, what gets flagged, or the meaning of an existing setting or command?
+- **Hard to undo.** Which choices become public as soon as it ships: a setting's name or shape, a command id, what gets
+  flagged?
+
+## Detail questions
+
+### Settings
 
 For a new or changed setting (see [Settings and commands](./settings-and-commands.md)):
 
@@ -62,27 +86,25 @@ For a new or changed setting (see [Settings and commands](./settings-and-command
   and when is the old one removed?
 - **Documentation.** The doc comment is the user documentation: what does it say, and what example does it show?
 
-## Commands, menus, and actions
+### Commands, menus, and actions
 
 - **Command id and title.** `cSpell.<name>`, and the title in the Command Palette. Ids are public: keybindings and other
   extensions use them.
 - **Where it appears.** Command Palette, context menus, the editor title, the status bar, code actions? Which `when`
   clause controls it?
-- **What it writes.** Which [config target](./glossary.md#config-target) does it change: settings, a cspell config file,
-  or a dictionary file, and at which scope? Who chooses: the user, a setting, or a prompt?
+- **Scope.** At which scope does it write: user, workspace, or folder?
 - **Confirmation.** Does it ask before writing? What does it do when the target doesn't exist yet?
 - **Undo.** Can the user undo it with the editor's undo, or only by hand?
 
-## Behavior and performance
+### Behavior and performance
 
-- **Where the work runs.** Client or server? What has to cross between them, and how often?
 - **Large documents.** How does it behave near the performance limits (`cSpell.checkLimit`, `cSpell.spellCheckDelayMs`,
   the `blockChecking…` settings)?
 - **Edge cases.** Multi-root workspaces, no workspace, untitled documents, notebooks, virtual workspaces, remote
   development.
 - **Errors.** Which mistakes are reported, where (a notification, the output channel, a diagnostic), and how loudly?
 
-## Webview and views
+### Webview and views
 
 For changes to the Spell Checker info view or the tree views:
 
@@ -90,13 +112,13 @@ For changes to the Spell Checker info view or the tree views:
 - Which data does it need from the extension or the server, and through which API (`packages/webview-api`)?
 - How does it update when settings or documents change?
 
-## Testing and samples
+### Testing and samples
 
 - Which unit tests cover it, and in which package?
 - Does it need an integration test (`packages/_integrationTests`), or a sample workspace in `fixtures/workspaces/`?
 - Which edge cases from [Behavior and performance](#behavior-and-performance) need a test?
 
-## Release surface
+### Release surface
 
 - Is it `feat:` or `fix:`, and is it breaking (`!`)? What will the release note say, for someone who uses the spell
   checker? See [Commit messages](../CONTRIBUTING.md#commit-messages).
