@@ -1993,7 +1993,122 @@
       ],
       "type": "object"
     },
-    "Prefix<alias-653189051-10240-10543-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-10040-10121-653189051-0-11767,\"cSpell.\">": {
+      "additionalProperties": false,
+      "properties": {
+        "cSpell.allowCompoundWords": {
+          "default": false,
+          "description": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
+          "markdownDescription": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
+          "scope": "resource",
+          "type": "boolean"
+        },
+        "cSpell.allowedSchemas": {
+          "deprecated": true,
+          "deprecationMessage": "- Use `#cSpell.enabledSchemes#` instead.",
+          "description": "Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\n\nSome schemes have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.\n- `vscode-userdata` - Needed to spell check `.code-snippets`\n- `vscode-scm` - Needed to spell check Source Control commit messages.\n- `comment` - Used for new comment editors.",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\n\nSome schemes have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.\n- `vscode-userdata` - Needed to spell check `.code-snippets`\n- `vscode-scm` - Needed to spell check Source Control commit messages.\n- `comment` - Used for new comment editors.",
+          "scope": "window",
+          "title": "Define Allowed Schemes",
+          "type": "array"
+        },
+        "cSpell.customFolderDictionaries": {
+          "deprecated": true,
+          "deprecationMessage": "- Use `#cSpell.customDictionaries#` instead.",
+          "description": "Define custom dictionaries to be included by default for the folder. If `addWords` is `true` words will be added to this dictionary.",
+          "items": {
+            "$ref": "#/definitions/CustomDictionaryEntry"
+          },
+          "markdownDescription": "Define custom dictionaries to be included by default for the folder.\nIf `addWords` is `true` words will be added to this dictionary.",
+          "scope": "resource",
+          "title": "Custom Folder Dictionaries",
+          "type": "array"
+        },
+        "cSpell.customUserDictionaries": {
+          "deprecated": true,
+          "deprecationMessage": "- Use `#cSpell.customDictionaries#` instead.",
+          "description": "Define custom dictionaries to be included by default for the user. If `addWords` is `true` words will be added to this dictionary.",
+          "items": {
+            "$ref": "#/definitions/CustomDictionaryEntry"
+          },
+          "markdownDescription": "Define custom dictionaries to be included by default for the user.\nIf `addWords` is `true` words will be added to this dictionary.",
+          "scope": "application",
+          "title": "Custom User Dictionaries",
+          "type": "array"
+        },
+        "cSpell.customWorkspaceDictionaries": {
+          "deprecated": true,
+          "deprecationMessage": "- Use `#cSpell.customDictionaries#` instead.",
+          "description": "Define custom dictionaries to be included by default for the workspace. If `addWords` is `true` words will be added to this dictionary.",
+          "items": {
+            "$ref": "#/definitions/CustomDictionaryEntry"
+          },
+          "markdownDescription": "Define custom dictionaries to be included by default for the workspace.\nIf `addWords` is `true` words will be added to this dictionary.",
+          "scope": "resource",
+          "title": "Custom Workspace Dictionaries",
+          "type": "array"
+        },
+        "cSpell.enableFiletypes": {
+          "deprecated": true,
+          "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",
+          "description": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `#cSpell.enabledLanguageIds#`. To disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types !json       // except for json ```",
+          "items": {
+            "$ref": "#/definitions/EnableFileTypeId"
+          },
+          "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `#cSpell.enabledLanguageIds#`.\nTo disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types\n!json       // except for json\n```",
+          "scope": "resource",
+          "title": "Enable File Types",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "cSpell.enabledLanguageIds": {
+          "deprecated": true,
+          "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",
+          "description": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
+          "items": {
+            "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+            "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+            "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+            "type": "string"
+          },
+          "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
+          "scope": "resource",
+          "title": "Enabled Language Ids",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "cSpell.showStatus": {
+          "default": true,
+          "deprecationMessage": "No longer used.",
+          "description": "Display the spell checker status on the status bar.",
+          "markdownDescription": "Display the spell checker status on the status bar.",
+          "scope": "application",
+          "type": "boolean"
+        },
+        "cSpell.showStatusAlignment": {
+          "default": "Right",
+          "deprecated": true,
+          "deprecationMessage": "No longer supported.",
+          "description": "The side of the status bar to display the spell checker status.",
+          "enum": [
+            "Left",
+            "Right"
+          ],
+          "enumDescriptions": [
+            "Left Side of Statusbar",
+            "Right Side of Statusbar"
+          ],
+          "markdownDescription": "The side of the status bar to display the spell checker status.",
+          "scope": "application",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Prefix<alias-653189051-10292-10595-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.advanced.feature.useReferenceProviderRemove": {
@@ -2058,7 +2173,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-10740-10948-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-10792-11000-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.experimental.enableRegexpView": {
@@ -2088,7 +2203,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5457-5527-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-5509-5579-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.enabled": {
@@ -2101,7 +2216,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-5753-6147-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-5805-6199-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.caseSensitive": {
@@ -2216,7 +2331,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-6352-6870-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-6404-6922-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.autoFormatConfigFile": {
@@ -2369,7 +2484,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7042-7330-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-7094-7382-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
@@ -2417,7 +2532,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-7551-7644-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-7603-7696-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.allowWordsToBeAddTo": {
@@ -2539,7 +2654,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8499-8581-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-8551-8633-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.engines": {
@@ -2846,7 +2961,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-8799-9259-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-8851-9311-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.checkOnlyEnabledFileTypes": {
@@ -3033,7 +3148,7 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9441-9532-653189051-0-11715,\"cSpell.\">": {
+    "Prefix<alias-653189051-9493-9584-653189051-0-11767,\"cSpell.\">": {
       "additionalProperties": false,
       "properties": {
         "cSpell.dark": {
@@ -3316,153 +3431,38 @@
       },
       "type": "object"
     },
-    "Prefix<alias-653189051-9988-10069-653189051-0-11715,\"cSpell.\">": {
-      "additionalProperties": false,
-      "properties": {
-        "cSpell.allowCompoundWords": {
-          "default": false,
-          "description": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
-          "markdownDescription": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
-          "scope": "resource",
-          "type": "boolean"
-        },
-        "cSpell.allowedSchemas": {
-          "deprecated": true,
-          "deprecationMessage": "- Use `#cSpell.enabledSchemes#` instead.",
-          "description": "Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\n\nSome schemes have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.\n- `vscode-userdata` - Needed to spell check `.code-snippets`\n- `vscode-scm` - Needed to spell check Source Control commit messages.\n- `comment` - Used for new comment editors.",
-          "items": {
-            "type": "string"
-          },
-          "markdownDescription": "Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\n\nSome schemes have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.\n- `vscode-userdata` - Needed to spell check `.code-snippets`\n- `vscode-scm` - Needed to spell check Source Control commit messages.\n- `comment` - Used for new comment editors.",
-          "scope": "window",
-          "title": "Define Allowed Schemes",
-          "type": "array"
-        },
-        "cSpell.customFolderDictionaries": {
-          "deprecated": true,
-          "deprecationMessage": "- Use `#cSpell.customDictionaries#` instead.",
-          "description": "Define custom dictionaries to be included by default for the folder. If `addWords` is `true` words will be added to this dictionary.",
-          "items": {
-            "$ref": "#/definitions/CustomDictionaryEntry"
-          },
-          "markdownDescription": "Define custom dictionaries to be included by default for the folder.\nIf `addWords` is `true` words will be added to this dictionary.",
-          "scope": "resource",
-          "title": "Custom Folder Dictionaries",
-          "type": "array"
-        },
-        "cSpell.customUserDictionaries": {
-          "deprecated": true,
-          "deprecationMessage": "- Use `#cSpell.customDictionaries#` instead.",
-          "description": "Define custom dictionaries to be included by default for the user. If `addWords` is `true` words will be added to this dictionary.",
-          "items": {
-            "$ref": "#/definitions/CustomDictionaryEntry"
-          },
-          "markdownDescription": "Define custom dictionaries to be included by default for the user.\nIf `addWords` is `true` words will be added to this dictionary.",
-          "scope": "application",
-          "title": "Custom User Dictionaries",
-          "type": "array"
-        },
-        "cSpell.customWorkspaceDictionaries": {
-          "deprecated": true,
-          "deprecationMessage": "- Use `#cSpell.customDictionaries#` instead.",
-          "description": "Define custom dictionaries to be included by default for the workspace. If `addWords` is `true` words will be added to this dictionary.",
-          "items": {
-            "$ref": "#/definitions/CustomDictionaryEntry"
-          },
-          "markdownDescription": "Define custom dictionaries to be included by default for the workspace.\nIf `addWords` is `true` words will be added to this dictionary.",
-          "scope": "resource",
-          "title": "Custom Workspace Dictionaries",
-          "type": "array"
-        },
-        "cSpell.enableFiletypes": {
-          "deprecated": true,
-          "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",
-          "description": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `#cSpell.enabledLanguageIds#`. To disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types !json       // except for json ```",
-          "items": {
-            "$ref": "#/definitions/EnableFileTypeId"
-          },
-          "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `#cSpell.enabledLanguageIds#`.\nTo disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types\n!json       // except for json\n```",
-          "scope": "resource",
-          "title": "Enable File Types",
-          "type": "array",
-          "uniqueItems": true
-        },
-        "cSpell.enabledLanguageIds": {
-          "deprecated": true,
-          "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",
-          "description": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
-          "items": {
-            "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
-            "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
-            "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
-            "type": "string"
-          },
-          "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
-          "scope": "resource",
-          "title": "Enabled Language Ids",
-          "type": "array",
-          "uniqueItems": true
-        },
-        "cSpell.showStatus": {
-          "default": true,
-          "deprecationMessage": "No longer used.",
-          "description": "Display the spell checker status on the status bar.",
-          "markdownDescription": "Display the spell checker status on the status bar.",
-          "scope": "application",
-          "type": "boolean"
-        },
-        "cSpell.showStatusAlignment": {
-          "default": "Right",
-          "deprecated": true,
-          "deprecationMessage": "No longer supported.",
-          "description": "The side of the status bar to display the spell checker status.",
-          "enum": [
-            "Left",
-            "Right"
-          ],
-          "enumDescriptions": [
-            "Left Side of Statusbar",
-            "Right Side of Statusbar"
-          ],
-          "markdownDescription": "The side of the status bar to display the spell checker status.",
-          "scope": "application",
-          "type": "string"
-        }
-      },
-      "type": "object"
+    "PrefixWithCspell<alias-653189051-10040-10121-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10040-10121-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-10240-10543-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10240-10543-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10292-10595-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10292-10595-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-10740-10948-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-10740-10948-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-10792-11000-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-10792-11000-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5457-5527-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5457-5527-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5509-5579-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5509-5579-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-5753-6147-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-5753-6147-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-5805-6199-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-5805-6199-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-6352-6870-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-6352-6870-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-6404-6922-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-6404-6922-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7042-7330-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7042-7330-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7094-7382-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7094-7382-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-7551-7644-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-7551-7644-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-7603-7696-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-7603-7696-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8499-8581-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8499-8581-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8551-8633-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8551-8633-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-8799-9259-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-8799-9259-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-8851-9311-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-8851-9311-653189051-0-11767%2C%22cSpell.%22%3E"
     },
-    "PrefixWithCspell<alias-653189051-9441-9532-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9441-9532-653189051-0-11715%2C%22cSpell.%22%3E"
-    },
-    "PrefixWithCspell<alias-653189051-9988-10069-653189051-0-11715>": {
-      "$ref": "#/definitions/Prefix%3Calias-653189051-9988-10069-653189051-0-11715%2C%22cSpell.%22%3E"
+    "PrefixWithCspell<alias-653189051-9493-9584-653189051-0-11767>": {
+      "$ref": "#/definitions/Prefix%3Calias-653189051-9493-9584-653189051-0-11767%2C%22cSpell.%22%3E"
     },
     "RegExpList": {
       "items": {
@@ -3481,61 +3481,61 @@
           "$ref": "#/definitions/VSConfigAdvanced"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9441-9532-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9493-9584-653189051-0-11767%3E",
           "description": "Settings that control the appearance of the spell checker.",
           "order": 6,
           "title": "Appearance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8499-8581-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8551-8633-653189051-0-11767%3E",
           "description": "Settings related to CSpell Command Line Tool.",
           "order": 5,
           "title": "CSpell"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10740-10948-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10792-11000-653189051-0-11767%3E",
           "description": "Experimental settings that may change or be removed in the future.",
           "order": 19,
           "title": "Experimental"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8799-9259-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-8851-9311-653189051-0-11767%3E",
           "description": "Settings that control which files and folders are spell checked.",
           "order": 3,
           "title": "Files, Folders, and Workspaces"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5753-6147-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5805-6199-653189051-0-11767%3E",
           "description": "Settings that control dictionaries and language preferences.",
           "order": 1,
           "title": "Languages and Dictionaries"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-9988-10069-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10040-10121-653189051-0-11767%3E",
           "description": "Legacy settings that have been deprecated or are not commonly used.",
           "order": 20,
           "title": "Legacy"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7551-7644-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7603-7696-653189051-0-11767%3E",
           "description": "Settings that control the menu items and actions available in the spell checker.",
           "order": 7,
           "title": "Menus and Actions"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7042-7330-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-7094-7382-653189051-0-11767%3E",
           "description": "Settings that control the performance of the spell checker.",
           "order": 4,
           "title": "Performance"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6352-6870-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-6404-6922-653189051-0-11767%3E",
           "description": "Settings that control how the spell checker reports and displays errors.",
           "order": 2,
           "title": "Reporting and Display"
         },
         {
-          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5457-5527-653189051-0-11715%3E",
+          "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-5509-5579-653189051-0-11767%3E",
           "description": "Settings that control the behavior of the spell checker.",
           "order": 0,
           "title": "Code Spell Checker"
@@ -3555,7 +3555,7 @@
       "type": "string"
     },
     "VSConfigAdvanced": {
-      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10240-10543-653189051-0-11715%3E",
+      "$ref": "#/definitions/PrefixWithCspell%3Calias-653189051-10292-10595-653189051-0-11767%3E",
       "description": "Advanced settings that are not commonly used.",
       "order": 18,
       "title": "Advanced"
