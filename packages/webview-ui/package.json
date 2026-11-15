@@ -20,7 +20,7 @@
     "test": "npm run check:types && npm run check"
   },
   "dependencies": {
-    "@tanstack/svelte-query": "^6.3.11",
+    "@tanstack/svelte-query": "^6.4.1",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
@@ -29,14 +29,14 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "@tsconfig/svelte": "^5.0.8",
+    "@tsconfig/svelte": "^5.0.9",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.45",
     "svelte": "^5.57.3",
     "svelte-check": "^4.7.8",
     "svelte-preprocess": "^6.0.5",
     "typescript": "~5.9.3",
-    "vite": "^8.3.6"
+    "vite": "^8.3.8"
   },
   "engines": {
     "node": ">=22.20.0"
