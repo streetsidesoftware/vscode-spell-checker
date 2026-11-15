@@ -25,12 +25,13 @@ is the root [`README.md`](./README.md). The user documentation is the [website](
 
 ## More docs
 
-- [Build and packaging](./docs/build-and-packaging.md): workspace layout, tooling, the `.vsix`, and CI
+- [Build and packaging](./docs/build-and-packaging.md): workspace layout, tooling, and the `.vsix`
 - [Settings and commands](./docs/settings-and-commands.md): adding a setting or a command
 - [Releasing](./docs/releasing.md): Release Please, prerelease mode, and publishing
 - [Design principles](./docs/design-principles.md)
 - [Glossary](./docs/glossary.md)
-- [ADRs](./docs/ADRs/README.md): design decisions, one folder per feature
+- [Designing a feature](./docs/feature-design.md): when and how to write a design, and the
+  [designs](./docs/designs/README.md) written so far
 - [Design notes](./docs/design-notes/README.md): exploratory notes and ideas that haven't been decided
 
 ## Getting started

@@ -63,6 +63,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
   Basque (euskara) spell checking to Code Spell Checker.
 - [Belarusian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-belarusian) -
   Adds Belarusian (беларуская) spell checking to Code Spell Checker.
+- [Bengali](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-bengali) - Adds
+  Bengali (বাংলা) spell checking to Code Spell Checker.
 - [British English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-british-english) -
   Adds British English spell checking to Code Spell Checker.
 - [British English](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-british-english-ise) -
@@ -117,6 +119,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
   Adds Mongolian (монгол) spell checking to Code Spell Checker.
 - [Norwegian Bokmål](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-norwegian-bokmal) -
   Adds Norwegian Bokmål (norsk bokmål) spell checking to Code Spell Checker.
+- [Norwegian Nynorsk](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-norwegian-nynorsk) -
+  Adds Norwegian Nynorsk (norsk nynorsk) spell checking to Code Spell Checker.
 - [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian) - Adds
   Persian (فارسی) spell checking to Code Spell Checker.
 - [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish) - Adds
@@ -129,6 +133,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
   Romanian (română) spell checking to Code Spell Checker.
 - [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian) - Adds
   Russian (русский) spell checking to Code Spell Checker.
+- [Scottish Gaelic](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-scottish-gaelic) -
+  Adds Scottish Gaelic (Gàidhlig) spell checking to Code Spell Checker.
 - [Serbian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-serbian) - Adds
   Serbian (српски) spell checking to Code Spell Checker.
 - [Slovak](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-slovak) - Adds
@@ -141,6 +147,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
   Swedish (svenska) spell checking to Code Spell Checker.
 - [Swiss German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swiss-german) -
   Adds Swiss German (Schweizer Hochdeutsch) spell checking to Code Spell Checker.
+- [Thai](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-thai) - Adds Thai
+  (ไทย) spell checking to Code Spell Checker.
 - [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish) - Adds
   Turkish (Türkçe) spell checking to Code Spell Checker.
 - [Ukrainian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ukrainian) -

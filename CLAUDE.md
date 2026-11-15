@@ -43,7 +43,7 @@ cd packages/client && npx vitest run src/settings/configFields.test.mts -t 'Conf
 
 Read the doc before changing that area. These are written for people too.
 
-- [`docs/build-and-packaging.md`](docs/build-and-packaging.md): workspace layout, tooling, imports, the `.vsix`, CI.
+- [`docs/build-and-packaging.md`](docs/build-and-packaging.md): workspace layout, tooling, imports, the `.vsix`.
 - [`docs/settings-and-commands.md`](docs/settings-and-commands.md): how settings and commands are defined and
   generated, and the steps to add one.
 - [`docs/releasing.md`](docs/releasing.md): Release Please, prerelease mode, publishing.
@@ -85,8 +85,8 @@ Follow `CONTRIBUTING.md`'s "Commit messages" and "Pull request descriptions".
 
 ### Designing a feature
 
-For a feature with more than one reasonable design, settle the design before writing code. The
-[ADR README](docs/ADRs/README.md) describes one way to do it, and the `feature-adr` skill runs it as an interview.
+For a feature with more than one reasonable design, settle the design before writing code.
+[Designing a feature](docs/feature-design.md) describes how, and the `feature-design` skill runs it as an interview.
 
 ### Settings
 
