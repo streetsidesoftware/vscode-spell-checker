@@ -62,6 +62,7 @@ overrides:
     dictionaries:
       - lorem-ipsum
 useGitignore: true
+gitignoreRoot: .
 words:
   - dbaeumer
   - esbenp

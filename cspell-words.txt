@@ -130,3 +130,4 @@ worktrees
 xhmikosr
 yandex
 unreadably
+gitdir
