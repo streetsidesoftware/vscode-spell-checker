@@ -10,13 +10,9 @@ on:
     paths-ignore:
       - 'docs/**'
       - '.claude/**'
-      - '.github/copilot-instructions.md'
       - 'AGENTS.md'
       - 'CLAUDE.md'
-      - 'CODE_OF_CONDUCT.md'
       - 'CONTRIBUTING.md'
-      - 'FAQ.md'
-      - 'SECURITY.md'
   schedule:
     - cron: '0 6 * * 2'
 

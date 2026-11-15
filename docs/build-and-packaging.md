@@ -116,9 +116,8 @@ Never edit these by hand. Change the source, then regenerate.
 | `cspell-action.yml`    | All PRs and `main`                                   | cspell on the changed files                                                                    |
 | `codeql-analysis.yml`  | PRs except docs-only changes, `main`, and a schedule | CodeQL                                                                                         |
 
-Docs-only changes touch only `docs/`, `.claude/`, and the Markdown guides at the root, such as `CONTRIBUTING.md`. The root
-`README.md` and `CHANGELOG.md` don't count: they go into the `.vsix`. The website has code, so CodeQL still scans website
-changes. Each workflow lists these paths in `paths` or `paths-ignore`; keep the lists in sync.
+Docs-only changes touch only `docs/`, `.claude/`, `AGENTS.md`, `CLAUDE.md`, and `CONTRIBUTING.md`. The website has code,
+so CodeQL still scans website changes. Each workflow lists these paths in `paths-ignore`; keep the lists in sync.
 
 For the release workflows, see [Releasing](./releasing.md).
 Dependency updates come from Dependabot and from the `update-dependencies.yml` and `update-cspell.yml` workflows.

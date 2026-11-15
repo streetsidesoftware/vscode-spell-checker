@@ -5,13 +5,9 @@ on:
       - 'website/**'
       - 'docs/**'
       - '.claude/**'
-      - '.github/copilot-instructions.md'
       - 'AGENTS.md'
       - 'CLAUDE.md'
-      - 'CODE_OF_CONDUCT.md'
       - 'CONTRIBUTING.md'
-      - 'FAQ.md'
-      - 'SECURITY.md'
   push:
     branches:
       - main
@@ -19,13 +15,9 @@ on:
       - 'website/**'
       - 'docs/**'
       - '.claude/**'
-      - '.github/copilot-instructions.md'
       - 'AGENTS.md'
       - 'CLAUDE.md'
-      - 'CODE_OF_CONDUCT.md'
       - 'CONTRIBUTING.md'
-      - 'FAQ.md'
-      - 'SECURITY.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
