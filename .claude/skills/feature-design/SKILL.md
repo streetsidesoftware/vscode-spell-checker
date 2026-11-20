@@ -64,9 +64,9 @@ Know why the feature exists before deciding anything.
 - **Do:** propose the why in one or two lines, and let the user correct it. If it still reads like a solution, ask "why
   does that matter?" and redraft.
 - **Do:** draft answers to the rest of `docs/design-questions.md`'s "Why and who" group from the facts: why now, who is
-  affected, what success looks like, and what's out of scope. Show them in the chat together, and let the user correct
-  them.
-- **Ask,** one at a time, only about the ones the facts don't answer.
+  affected, what success looks like, and what's out of scope. Show them in the chat together, mark the ones the
+  facts don't answer, and let the user correct the rest.
+- **Ask** about the marked ones, one at a time.
 - **Do:** write `docs/designs/<feature>.md` from the guide's skeleton, with the Why. Add its line to
   `docs/designs/README.md`, commit, and push.
 
@@ -135,11 +135,12 @@ The details level, one part at a time.
 
 ### 9. Settle the whole-feature questions
 
-Once, after the last part.
+Once, after the last part, or before stopping at step 10.
 
 - **Decide:** go through the whole-feature questions in `docs/design-questions.md`, as in step 7: ask about the
   hard-to-undo ones, such as whether it's breaking, and decide and list the rest.
-- **Do:** write the answers in the Overview, with their reasons. Commit and push.
+- **Do:** write the answers in the Overview, with their reasons. Commit and push. Adding them doesn't reopen the
+  overview. If one shows the approach is wrong, go back up as in step 8.
 
 ### 10. Stop when the code is the easier answer
 
@@ -147,7 +148,7 @@ Hand the user a clear state, and leave building as a separate step.
 
 - **Do:** tell the user:
     - what was decided, and what was left open.
-    - which names are still provisional. Each needs a decision, or an issue saying when it must be decided.
+    - the provisional names from step 9. Each needs a decision, or an issue saying when it must be decided.
     - where the work lives: the branch, the worktree's path, and the PR.
 - **Do:** stop at the design. A quick prototype is fine when it answers a question faster. Building is a separate step,
   such as with the `setting-change` skill.

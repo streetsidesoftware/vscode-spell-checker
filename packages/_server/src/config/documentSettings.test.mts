@@ -7,12 +7,13 @@ import type { Pattern } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
 import * as Path from 'path';
-import { beforeEach, describe, expect, onTestFinished, test, vi } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, onTestFinished, test, vi } from 'vitest';
 import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { URI as Uri } from 'vscode-uri';
 
 import { DocumentCheckedRangesStore } from '../DocumentCheckedRangesStore.mjs';
+import { createRepoWithWorktree } from '../test/gitWorktree.mjs';
 import { createMockServerSideApi } from '../test/test.api.js';
 import { extendExpect } from '../test/test.matchers.js';
 import { validateTextDocument } from '../validator.mjs';
@@ -497,6 +498,41 @@ describe('Validate DocumentSettings', () => {
         expect(result).toEqual(expected);
     });
 
+    describe('ignorePathPresets with the repository as the workspace folder', () => {
+        let tempDir = '';
+        let repo = '';
+
+        beforeAll(async () => {
+            tempDir = await mkdtemp(Path.join(tmpdir(), 'document-settings-'));
+            repo = Path.join(tempDir, 'repo');
+            await createRepoWithWorktree(repo, '.claude/worktrees/wt');
+        });
+
+        afterAll(async () => {
+            await rm(tempDir, { recursive: true, force: true });
+        });
+
+        test.each`
+            file                                | cSpell                                               | exclude  | excludedBy
+            ${'README.md'}                      | ${{}}                                                | ${false} | ${[]}
+            ${'.git/config'}                    | ${{}}                                                | ${true}  | ${['ignorePathPresets.git']}
+            ${'.git/COMMIT_EDITMSG'}            | ${{}}                                                | ${false} | ${[]}
+            ${'.claude/worktrees/wt/README.md'} | ${{}}                                                | ${true}  | ${['ignorePathPresets.nestedWorktrees']}
+            ${'.claude/worktrees/wt/README.md'} | ${{ ignorePathPresets: { nestedWorktrees: false } }} | ${false} | ${[]}
+            ${'.claude/worktrees/wt/.git'}      | ${{ ignorePathPresets: { nestedWorktrees: false } }} | ${true}  | ${['ignorePathPresets.git']}
+            ${'.git/config'}                    | ${{ ignorePathPresets: { git: false } }}             | ${false} | ${[]}
+            ${'.git/config'}                    | ${{ ignorePaths: ['config'] }}                       | ${true}  | ${['VS Code Settings', 'ignorePathPresets.git']}
+        `('$file with $cSpell', async ({ file, cSpell, exclude, excludedBy }) => {
+            mockGetWorkspaceFolders.mockReturnValue(Promise.resolve([{ uri: Uri.file(repo).toString(), name: 'repo' }]));
+            mockGetConfiguration.mockReturnValue(Promise.resolve([cSpell, {}]));
+            const docSettings = newDocumentSettings();
+
+            const uri = Uri.file(Path.join(repo, file));
+            expect((await docSettings.calcIncludeExclude(uri)).exclude).toBe(exclude);
+            expect((await docSettings.calcExcludedBy(uri.toString())).map((ex) => ex.settings.name)).toEqual(excludedBy);
+        });
+    });
+
     function uf(f: string | Uri): Uri;
     function uf(f: (string | Uri)[]): Uri[];
     function uf(f: (string | Uri)[] | (string | Uri)): Uri | Uri[] {
@@ -836,3 +872,5 @@ function createMockConnection(): Connection {
         } as unknown as Connection['workspace'],
     } as unknown as Connection;
 }
+
+// cspell:ignore EDITMSG

@@ -56,7 +56,7 @@ worth reviewing before it's built, merge it on its own with a `docs:` PR, so it 
 
 <The approach and the whole shape: what a user writes (`settings.json` or a cspell config file) or does (a command, a
 quick fix), and what the extension does, with one example. The main parts. Each decision the approach rests on, with
-its reason.>
+its reason. After the parts are done, the whole-feature answers, such as how it's released.>
 
 ## <Part>
 
@@ -94,14 +94,14 @@ Each level has two phases:
 
 Finish the overview before starting on the details. A detail decided while the overview is still moving often has to
 be decided again. A design that dives into details early gets lost in them. Until the overview is agreed, names and
-shapes in an example are placeholders, and a detail question is parked under Open questions until its part comes up.
+shapes in an example are placeholders. A detail question is parked under Open questions, and comes back with its part.
 
 ### 1. Get to the why
 
 A change usually starts as a problem to solve, or as a solution ("we need a setting"). Ask "why?" until you reach the
 reason: who is affected, and what goes wrong for them today. Look at the issue and the code first, so the why rests on
-facts. Then settle why now, what success looks like, and what's out of scope. Answer what the facts answer, and ask
-about the rest.
+facts. Then settle why now, what success looks like, and what's out of scope. Fill in what the issue and the code
+show, and ask about the rest.
 
 ### 2. Explore approaches
 
@@ -144,8 +144,9 @@ details already decided that depend on what changed.
 
 ### 7. Settle the whole-feature questions
 
-After the last part, work through the whole-feature questions in the [design questions](./design-questions.md) once:
-how the feature is released, and which docs change. Write the answers in the Overview.
+After the last part, or before you stop designing to build, work through the whole-feature questions in the
+[design questions](./design-questions.md) once, such as how the feature is released and which docs change. Write the
+answers in the Overview. They don't reopen it, unless one shows the approach is wrong: then go back up as in step 6.
 
 ### 8. Let the code settle the rest
 
