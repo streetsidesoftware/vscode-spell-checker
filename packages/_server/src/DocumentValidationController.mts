@@ -90,7 +90,9 @@ export class DocumentValidationController {
             this.docValMap.set(document.uri, this.createDocValEntry(document));
             return;
         }
-        await _docVal.updateDocumentText(document.getText());
+        const fullContent = document.getText();
+        await _docVal.updateDocumentText(fullContent);
+        _docVal.skipValidation = exceedsMaxFileSize(_docVal, fullContent);
         return _docVal;
     }
 }
@@ -108,5 +110,26 @@ export async function createDocumentValidator(
     const doc = createTextDocument(docInfo);
     const docVal = new DocumentValidator(doc, { noConfigSearch: true, recordCheckedRanges: true }, settings);
     await docVal.prepare();
+    docVal.skipValidation = exceedsMaxFileSize(docVal, fullContent);
     return docVal;
+}
+
+const fileSizeUnits: Record<string, number> = {
+    '': 1,
+    b: 1,
+    k: 1024,
+    kb: 1024,
+    m: 1024 ** 2,
+    mb: 1024 ** 2,
+    g: 1024 ** 3,
+    gb: 1024 ** 3,
+};
+
+function exceedsMaxFileSize(validator: DocumentValidator, text: string): boolean {
+    let limit = validator.getFinalizedDocSettings().maxFileSize;
+    if (typeof limit === 'string') {
+        const match = /^(\d+(?:\.\d*)?|\.\d+)([kmg]?b?)$/i.exec(limit);
+        limit = match ? Number(match[1]) * fileSizeUnits[match[2].toLowerCase()] : undefined;
+    }
+    return typeof limit === 'number' && Number.isFinite(limit) && limit > 0 && Buffer.byteLength(text, 'utf8') > limit;
 }
