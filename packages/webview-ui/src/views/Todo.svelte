@@ -80,7 +80,8 @@
               onfocus={() => selectTodo(todo, true)}
               oninput={onInput}
               focus={todo === focusTodo}
-              >{#snippet start()}
+            >
+              {#snippet start()}
                 <section class="slot">
                   <VscodeCheckbox
                     bind:checked={todo.done}
@@ -89,8 +90,8 @@
                     onchange={onInput}
                   />
                 </section>
-              {/snippet}</VscodeTextField
-            >
+              {/snippet}
+            </VscodeTextField>
             {#if todo === currTodo}
               <span>*</span>
             {/if}
