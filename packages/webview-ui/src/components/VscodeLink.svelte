@@ -6,11 +6,32 @@
   }
 
   let { href, children, onclick }: Props = $props();
+
+  function handleClick(e: Event) {
+    if (!onclick) return;
+    e.preventDefault();
+    onclick(e);
+  }
 </script>
 
-<!-- svelte-ignore a11y_autofocus -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<vscode-link {href} {onclick}>
+<a {href} onclick={handleClick}>
   {@render children?.()}
-</vscode-link>
+</a>
+
+<style>
+  a {
+    color: var(--vscode-textLink-foreground);
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: var(--vscode-textLink-activeForeground);
+    text-decoration: underline;
+  }
+
+  a:focus-visible {
+    outline: 1px solid var(--vscode-focusBorder);
+    outline-offset: 1px;
+  }
+</style>

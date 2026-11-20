@@ -1,6 +1,7 @@
-<!-- @migration-task Error while migrating Svelte code: migrating this component would require adding a `$props` rune but there's already a variable named props.
-     Rename the variable and try again or migrate by hand. -->
 <script lang="ts">
+  import '@vscode-elements/elements/dist/vscode-label/index.js';
+  import '@vscode-elements/elements/dist/vscode-textfield/index.js';
+  import type { VscodeTextfield } from '@vscode-elements/elements/dist/vscode-textfield/index.js';
   import type { TextInputEvent } from '../types';
 
   interface Props {
@@ -18,16 +19,15 @@
     name?: string | undefined;
     /** Sets the placeholder value of the component, generally used to provide a hint to the user. */
     placeholder?: string | undefined;
-    /** Sets the width of the element to a specified number of characters. */
-    size?: number | undefined;
     /** Sets the text field type. */
     inputType?: string | undefined;
     /** Set the focus to this element. */
     focus?: boolean | undefined;
     start?: import('svelte').Snippet;
+    /** The label shown above the text field. */
     children?: import('svelte').Snippet;
     end?: import('svelte').Snippet;
-    oninput?: (e: TextInputEvent) => void;
+    oninput?: (e: TextInputEvent<VscodeTextfield>) => void;
     onchange?: (e: Event) => void;
     onfocus?: (e: FocusEvent) => void;
     onblur?: (e: FocusEvent) => void;
@@ -41,7 +41,6 @@
     maxlength = undefined,
     name = undefined,
     placeholder = undefined,
-    size = undefined,
     inputType = undefined,
     focus = undefined,
     start,
@@ -53,35 +52,37 @@
     onfocus,
   }: Props = $props();
 
-  let extraProps = $derived({ autofocus, disabled, readonly: makeReadonly, maxlength, name, placeholder, size, type: inputType });
+  const id = $props.id();
+
+  let extraProps = $derived({ autofocus, disabled, readonly: makeReadonly, maxLength: maxlength, name, placeholder, type: inputType });
   let itemProps = $derived(Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined')));
 
-  function init(node: HTMLInputElement, useFocus: boolean | undefined) {
+  function handleInput(e: TextInputEvent<VscodeTextfield>) {
+    value = e.target.value;
+    oninput?.(e);
+  }
+
+  function init(node: VscodeTextfield, useFocus: boolean | undefined) {
     function update(focus: boolean | undefined) {
       if (!focus) return;
-
-      const sNode = node.shadowRoot?.querySelector('input');
-      sNode?.focus() ?? node?.focus();
+      // The inner input exists only after the element's first render.
+      node.updateComplete.then(() => node.focus()).catch(() => undefined);
     }
 
     update(useFocus);
     return { update };
   }
-
-  const start_render = $derived(start);
-  const end_render = $derived(end);
 </script>
 
+{#if children}
+  <vscode-label for={id}>{@render children()}</vscode-label>
+{/if}
 <!-- svelte-ignore a11y_autofocus -->
-<vscode-text-field {...itemProps} {value} {oninput} {onchange} use:init={focus} {onfocus} {onblur}>
+<vscode-textfield {id} {...itemProps} {value} oninput={handleInput} {onchange} use:init={focus} {onfocus} {onblur}>
   {#if start}
-    <section slot="start">{@render start_render?.()}</section>
+    <section slot="content-before">{@render start()}</section>
   {/if}
-  {@render children?.()}
   {#if end}
-    <section slot="end">{@render end_render?.()}</section>
+    <section slot="content-after">{@render end()}</section>
   {/if}
-</vscode-text-field>
-
-<style>
-</style>
+</vscode-textfield>

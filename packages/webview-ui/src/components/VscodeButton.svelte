@@ -1,4 +1,7 @@
 <script lang="ts">
+  import '@vscode-elements/elements/dist/vscode-button/index.js';
+  import '@vscode-elements/elements/dist/vscode-toolbar-button/index.js';
+
   interface Props {
     /**
      * Determines the visual appearance (primary, secondary, icon) of the button.
@@ -17,21 +20,9 @@
      */
     disabled?: boolean | undefined;
     /** See MDN. */
-    form?: string | undefined;
-    /** See MDN. */
-    formaction?: string | undefined;
-    /** See MDN. */
-    formenctype?: string | undefined;
-    /** See MDN. */
-    formmethod?: string | undefined;
-    /** See MDN. */
-    formnovalidate?: string | undefined;
-    /** See MDN. */
-    formtarget?: string | undefined;
-    /** See MDN. */
     name?: string | undefined;
     /** See MDN. */
-    inputType?: string | undefined;
+    inputType?: 'submit' | 'reset' | 'button' | undefined;
     /** See MDN. */
     value?: string | undefined;
     children?: import('svelte').Snippet;
@@ -43,12 +34,6 @@
     ariaLabel = undefined,
     autofocus = undefined,
     disabled = undefined,
-    form = undefined,
-    formaction = undefined,
-    formenctype = undefined,
-    formmethod = undefined,
-    formnovalidate = undefined,
-    formtarget = undefined,
     name = undefined,
     inputType = undefined,
     value = undefined,
@@ -57,25 +42,20 @@
   }: Props = $props();
 
   let extraProps = $derived({
-    appearance,
+    secondary: appearance === 'secondary' || undefined,
     autofocus,
     disabled,
     name,
     type: inputType,
     'aria-label': ariaLabel,
-    form,
-    formaction,
-    formenctype,
-    formmethod,
-    formnovalidate,
-    formtarget,
     value,
   });
   let itemProps = $derived(Object.fromEntries(Object.entries(extraProps).filter(([_k, v]) => typeof v !== 'undefined')));
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-<vscode-button {...itemProps} {onclick}>{@render children?.()}</vscode-button>
-
-<style>
-</style>
+{#if appearance === 'icon'}
+  <vscode-toolbar-button label={ariaLabel} {onclick}>{@render children?.()}</vscode-toolbar-button>
+{:else}
+  <vscode-button {...itemProps} {onclick}>{@render children?.()}</vscode-button>
+{/if}
