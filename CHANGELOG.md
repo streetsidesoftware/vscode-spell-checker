@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.11.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.10.0...code-spell-checker-v4.11.0) (2026-11-20)
+
+
+### Features
+
+* Skip git's own files and nested git worktrees ([#5639](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5639)) ([b670fd0](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b670fd0cf03d29a47a5c53e068a61dd299e34eb9))
+* Update CSpell from `10.4.1` to `10.5.1` and other dependencies ([80e11ca](https://github.com/streetsidesoftware/vscode-spell-checker/commit/80e11cacfc9f393c0c7f16528a2a7f8149945016))
+
+
+### Updates and Bug Fixes
+
+* settings now apply to schemes and file types named like "constructor" ([#5617](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5617)) ([69a6e10](https://github.com/streetsidesoftware/vscode-spell-checker/commit/69a6e108a250de97ae14c8d61ee92fff97ee8788))
+* Update CSpell Dictionary Bundle from `2.0.80` to `2.0.81` and other dependencies ([f399b7f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f399b7f43ea26544fe3b2f3ef0fe33699b7e0f35))
+* Update CSpell from `10.5.1` to `10.5.2` and other dependencies ([b01c07a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b01c07a3896735a5726c90751ef8682671058f5b))
+* Update sponsor cards to fit marketplace ([#5596](https://github.com/streetsidesoftware/vscode-spell-checker/issues/5596)) ([0e6b331](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0e6b3315679795b30b611ebf5322f4c5a02f5e66))
+
 ## [4.10.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.9.6...code-spell-checker-v4.10.0) (2026-10-14)
 
 
