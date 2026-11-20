@@ -144,9 +144,9 @@
                 {#if excluded.configUri}
                   <dd>
                     Config File:
-                    <VscodeLink href={excluded.configUri} onclick={() => openTextDocument(excluded.configUri || '')}
-                      >{excluded.configUri?.split('/').slice(-2).join('/')}</VscodeLink
-                    >
+                    <VscodeLink href={excluded.configUri} onclick={() => openTextDocument(excluded.configUri || '')}>
+                      {excluded.configUri?.split('/').slice(-2).join('/')}
+                    </VscodeLink>
                   </dd>
                 {/if}
               </dl>
@@ -162,8 +162,10 @@
       checked={languageIdEnabled}
       onchange={(e) => {
         return e.currentTarget.checked === !languageIdEnabled && updateEnabledFileType(languageId, !languageIdEnabled, docUrl);
-      }}>{languageId}</VscodeCheckbox
+      }}
     >
+      {languageId}
+    </VscodeCheckbox>
   {/if}
 
   <!-- <CheckboxLogDebug /> -->
@@ -179,9 +181,9 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <VscodeLink href={dictionary.uri} onclick={() => dictionary.uri && openTextDocument(dictionary.uri)}
-                    >{dictionary.uriName}</VscodeLink
-                  >
+                  <VscodeLink href={dictionary.uri} onclick={() => dictionary.uri && openTextDocument(dictionary.uri)}>
+                    {dictionary.uriName}
+                  </VscodeLink>
                 {:else}
                   {dictionary.uriName}
                 {/if}
@@ -204,9 +206,9 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <VscodeLink href={dictionary.uri} onclick={() => dictionary.uri && openTextDocument(dictionary.uri)}
-                    >{dictionary.uriName}</VscodeLink
-                  >
+                  <VscodeLink href={dictionary.uri} onclick={() => dictionary.uri && openTextDocument(dictionary.uri)}>
+                    {dictionary.uriName}
+                  </VscodeLink>
                 {:else}
                   {dictionary.uriName}
                 {/if}
