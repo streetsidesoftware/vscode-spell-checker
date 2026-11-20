@@ -5236,7 +5236,7 @@
     "@cspell/cspell-bundled-dicts": "^10.5.1",
     "@cspell/cspell-types": "^10.5.1",
     "@cspell/dict-cspell-bundle": "^2.0.84",
-    "regexp-worker": "^5.0.3"
+    "regexp-worker": "^5.0.4"
   },
   "overrides": {
     "mocha@11.8.0": {
