@@ -5240,20 +5240,20 @@
     "ovsx": "^1.4.0",
     "patch-package": "^8.0.1",
     "prettier": "^3.10.1",
-    "prettier-plugin-svelte": "^4.1.1",
-    "rollup": "^4.68.3",
+    "prettier-plugin-svelte": "^4.2.0",
+    "rollup": "^4.68.6",
     "rollup-plugin-dts": "^6.5.1",
     "shx": "^0.4.0",
     "tsdown": "^0.23.7",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.72.2"
+    "typescript-eslint": "^8.73.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.5.2",
     "@cspell/cspell-types": "^10.5.2",
     "@cspell/dict-cspell-bundle": "^2.0.84",
-    "regexp-worker": "^5.0.3"
+    "regexp-worker": "^5.0.4"
   },
   "overrides": {
     "mocha@11.8.0": {
