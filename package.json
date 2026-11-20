@@ -5228,7 +5228,7 @@
     "build-tools": "file:./tools/build-tools",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.7",
-    "cspell": "^10.5.1",
+    "cspell": "^10.5.2",
     "esbuild": "^0.28.2",
     "eslint": "~10.14.0",
     "eslint-plugin-n": "^18.5.0",
@@ -5250,8 +5250,8 @@
     "typescript-eslint": "^8.72.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^10.5.1",
-    "@cspell/cspell-types": "^10.5.1",
+    "@cspell/cspell-bundled-dicts": "^10.5.2",
+    "@cspell/cspell-types": "^10.5.2",
     "@cspell/dict-cspell-bundle": "^2.0.84",
     "regexp-worker": "^5.0.3"
   },
