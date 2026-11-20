@@ -141,7 +141,6 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'gitignoreRoot' // Hide until implemented
     | 'failFast'
     | 'id'
-    | 'ignorePathPresets' // Hide until implemented
     | 'languageId'
     | 'loadDefaultConfiguration'
     | 'name'

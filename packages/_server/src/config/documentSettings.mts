@@ -54,6 +54,8 @@ import {
     extractEnabledSchemes,
     isSchemeEnabled,
 } from './extractEnabledFileTypes.mjs';
+import type { IgnorePathPresetsMatcher } from './ignorePathPresets.mjs';
+import { createIgnorePathPresetsMatcher } from './ignorePathPresets.mjs';
 import { filterUrl, toDirURL, toPathURL, tryJoinURL, tryToPathURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
@@ -81,6 +83,7 @@ interface ExtSettings {
     settings: CSpellUserAndExtensionSettings;
     excludeGlobMatcher: GlobMatcher;
     includeGlobMatcher: GlobMatcher;
+    ignorePathPresetsMatcher: IgnorePathPresetsMatcher;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -460,6 +463,7 @@ export class DocumentSettings {
                     settings: {},
                     excludeGlobMatcher: new GlobMatcher([]),
                     includeGlobMatcher: new GlobMatcher([]),
+                    ignorePathPresetsMatcher: matchNoPreset,
                 };
             }
         };
@@ -532,6 +536,9 @@ export class DocumentSettings {
         const includeOptions: GlobMatchOptions = { root: globRoot, mode: 'include' };
         setIfDefined(includeOptions, 'dot', fileSettings.enableGlobDot);
         const includeGlobMatcher = new GlobMatcher(files, includeOptions);
+        const ignorePathPresetsMatcher = canCheckAgainstGlob(Uri.parse(globRootFolder.uri))
+            ? await createIgnorePathPresetsMatcher(fileSettings, globRootFolder.uri)
+            : matchNoPreset;
 
         const cSpell = vscodeCSpellConfigSettingsForDocument;
         const ext: ExtSettings = {
@@ -540,6 +547,7 @@ export class DocumentSettings {
             settings: fileSettings,
             excludeGlobMatcher,
             includeGlobMatcher,
+            ignorePathPresetsMatcher,
         };
         return ext;
     }
@@ -703,6 +711,12 @@ export interface ExcludedByMatch {
 }
 
 function calcExcludedBy(uri: string, extSettings: ExtSettings): ExcludedByMatch[] {
+    const byIgnorePaths = calcExcludedByIgnorePaths(uri, extSettings);
+    const presetMatch = extSettings.ignorePathPresetsMatcher(toUri(uri));
+    return presetMatch ? byIgnorePaths.concat({ glob: presetMatch.glob, settings: { name: presetMatch.name } }) : byIgnorePaths;
+}
+
+function calcExcludedByIgnorePaths(uri: string, extSettings: ExtSettings): ExcludedByMatch[] {
     const filename = uriToGlobPath(uri);
     const matchResult = extSettings.excludeGlobMatcher.matchEx(filename);
 
@@ -858,7 +872,11 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     if (!canCheckAgainstGlob(uri)) {
         return false;
     }
-    return settings.excludeGlobMatcher.match(uriToGlobPath(uri));
+    return settings.excludeGlobMatcher.match(uriToGlobPath(uri)) || !!settings.ignorePathPresetsMatcher(uri);
+}
+
+function matchNoPreset(): undefined {
+    return undefined;
 }
 
 /**
