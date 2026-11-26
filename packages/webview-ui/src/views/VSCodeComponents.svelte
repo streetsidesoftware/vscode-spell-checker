@@ -1,6 +1,16 @@
 <script lang="ts">
+  import '@vscode-elements/elements/dist/vscode-divider/index.js';
+  import '@vscode-elements/elements/dist/vscode-label/index.js';
+  import '@vscode-elements/elements/dist/vscode-option/index.js';
+  import '@vscode-elements/elements/dist/vscode-single-select/index.js';
+  import '@vscode-elements/elements/dist/vscode-tab-header/index.js';
+  import '@vscode-elements/elements/dist/vscode-tab-panel/index.js';
+  import '@vscode-elements/elements/dist/vscode-tabs/index.js';
+  import '@vscode-elements/elements/dist/vscode-textfield/index.js';
+  import '@vscode-elements/elements/dist/vscode-toolbar-button/index.js';
   import VscodeButton from '../components/VscodeButton.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
+  import VscodeLink from '../components/VscodeLink.svelte';
   import VscodeTextField from '../components/VscodeTextField.svelte';
   import Todo from './Todo.svelte';
 </script>
@@ -12,30 +22,26 @@
     <h3>Samples</h3>
 
     <ul>
-      <li>Link: <vscode-link href="#">Link Text</vscode-link></li>
+      <li>Link: <VscodeLink href="#">Link Text</VscodeLink></li>
       <li>Checkbox: <VscodeCheckbox>Label</VscodeCheckbox></li>
       <li>Divider: <vscode-divider></vscode-divider></li>
       <li>
         <div class="dropdown-container">
-          <label for="my-dropdown">Choose an option:</label>
-          <vscode-dropdown id="my-dropdown">
+          <vscode-label for="my-dropdown">Choose an option:</vscode-label>
+          <vscode-single-select id="my-dropdown">
             <vscode-option>Option Label #1</vscode-option>
             <vscode-option>Option Label #2</vscode-option>
             <vscode-option>Option Label #3</vscode-option>
-          </vscode-dropdown>
+          </vscode-single-select>
         </div>
       </li>
     </ul>
   </section>
 
   <section>
-    <vscode-panels aria-label="Default">
-      <vscode-panel-tab id="tab-1">Buttons</vscode-panel-tab>
-      <vscode-panel-tab id="tab-2">Inputs</vscode-panel-tab>
-      <vscode-panel-tab id="tab-3">More Inputs</vscode-panel-tab>
-      <vscode-panel-tab id="tab-4">Todos</vscode-panel-tab>
-      <vscode-panel-tab id="tab-5">misc</vscode-panel-tab>
-      <vscode-panel-view id="view-1">
+    <vscode-tabs aria-label="Default">
+      <vscode-tab-header slot="header">Buttons</vscode-tab-header>
+      <vscode-tab-panel>
         <section>
           <h3>Buttons</h3>
 
@@ -45,8 +51,9 @@
             <span class="codicon codicon-regex"></span>
           </VscodeButton>
         </section>
-      </vscode-panel-view>
-      <vscode-panel-view id="view-2">
+      </vscode-tab-panel>
+      <vscode-tab-header slot="header">Inputs</vscode-tab-header>
+      <vscode-tab-panel>
         <section>
           <h3>Inputs</h3>
 
@@ -67,78 +74,72 @@
             {/snippet}
           </VscodeTextField>
         </section>
-      </vscode-panel-view>
-      <vscode-panel-view id="view-3">
+      </vscode-tab-panel>
+      <vscode-tab-header slot="header">More Inputs</vscode-tab-header>
+      <vscode-tab-panel>
         <section>
           <!-- Basic text field -->
           <p>Basic text field</p>
-          <vscode-text-field>Text Field Label</vscode-text-field>
+          <vscode-textfield></vscode-textfield>
 
           <!-- Text field with placeholder text -->
           <p>With placeholder text</p>
-          <vscode-text-field placeholder="Placeholder Text"> Text Field Label </vscode-text-field>
+          <vscode-textfield placeholder="Placeholder Text"></vscode-textfield>
 
           <!-- Readonly text field -->
           <p>Readonly text field</p>
-          <vscode-text-field readonly> Text Field Label </vscode-text-field>
+          <vscode-textfield readonly value="Read only"></vscode-textfield>
 
           <!-- Disabled text field -->
           <p>Disabled text field</p>
-          <vscode-text-field disabled> Text Field Label </vscode-text-field>
+          <vscode-textfield disabled value="Disabled"></vscode-textfield>
 
           <!-- Text field with max length -->
           <p>With max length</p>
-          <vscode-text-field maxlength="10"> Text Field Label </vscode-text-field>
+          <vscode-textfield maxLength={10}></vscode-textfield>
 
           <!-- Text field with type email -->
           <p>With type email</p>
-          <vscode-text-field type="email">Text Field Label</vscode-text-field>
+          <vscode-textfield type="email"></vscode-textfield>
 
           <!-- Text field with type password -->
           <p>With type password</p>
-          <vscode-text-field type="password">Text Field Label</vscode-text-field>
+          <vscode-textfield type="password"></vscode-textfield>
 
           <!-- Text field with type tel -->
           <p>With type tel</p>
-          <vscode-text-field type="tel">Text Field Label</vscode-text-field>
+          <vscode-textfield type="tel"></vscode-textfield>
 
           <!-- Text field with type text -->
           <p>With type text</p>
-          <vscode-text-field type="text">Text Field Label</vscode-text-field>
+          <vscode-textfield type="text"></vscode-textfield>
 
           <!-- Text field with type url -->
           <p>With type url</p>
-          <vscode-text-field type="url">Text Field Label</vscode-text-field>
-
-          <!-- Text field with custom size -->
-          <p>With custom size</p>
-          <vscode-text-field size="50"> Text Field Label </vscode-text-field>
+          <vscode-textfield type="url"></vscode-textfield>
 
           <!-- Text field with autofocus -->
           <p>With autofocus</p>
           <!-- svelte-ignore a11y_autofocus -->
-          <vscode-text-field autofocus> Text Field Label </vscode-text-field>
+          <vscode-textfield autofocus></vscode-textfield>
 
           <!-- Text field with start icon -->
           <p>With start icon</p>
-          <vscode-text-field>
-            Text Field Label
-            <span slot="start" class="codicon codicon-search"></span>
-          </vscode-text-field>
+          <vscode-textfield>
+            <span slot="content-before" class="codicon codicon-search"></span>
+          </vscode-textfield>
 
           <!-- Text field with end icon -->
           <p>With end icon</p>
-          <vscode-text-field>
-            Text Field Label
-            <span slot="end" class="codicon codicon-text-size"></span>
-          </vscode-text-field>
+          <vscode-textfield>
+            <span slot="content-after" class="codicon codicon-text-size"></span>
+          </vscode-textfield>
 
           <!-- Text field with multiple icons -->
           <p>With multiple icons</p>
-          <vscode-text-field>
-            Text Field Label
+          <vscode-textfield>
             <section
-              slot="end"
+              slot="content-after"
               style="
             display: flex;
             flex-direction: row;
@@ -146,22 +147,24 @@
             align-items: center;
           "
             >
-              <vscode-button appearance="icon" aria-label="Match Case">
+              <vscode-toolbar-button label="Match Case">
                 <span class="codicon codicon-case-sensitive"></span>
-              </vscode-button>
-              <vscode-button appearance="icon" aria-label="Match Whole Word">
+              </vscode-toolbar-button>
+              <vscode-toolbar-button label="Match Whole Word">
                 <span class="codicon codicon-whole-word"></span>
-              </vscode-button>
-              <vscode-button appearance="icon" aria-label="Use Regular Expression">
+              </vscode-toolbar-button>
+              <vscode-toolbar-button label="Use Regular Expression">
                 <span class="codicon codicon-regex"></span>
-              </vscode-button>
+              </vscode-toolbar-button>
             </section>
-          </vscode-text-field>
+          </vscode-textfield>
         </section>
-      </vscode-panel-view>
-      <vscode-panel-view id="view-4"> <Todo /> </vscode-panel-view>
-      <vscode-panel-view id="view-5"> Terminal Content </vscode-panel-view>
-    </vscode-panels>
+      </vscode-tab-panel>
+      <vscode-tab-header slot="header">Todos</vscode-tab-header>
+      <vscode-tab-panel><Todo /></vscode-tab-panel>
+      <vscode-tab-header slot="header">misc</vscode-tab-header>
+      <vscode-tab-panel>Terminal Content</vscode-tab-panel>
+    </vscode-tabs>
   </section>
 </div>
 
@@ -172,14 +175,5 @@
     flex-flow: column nowrap;
     align-items: flex-start;
     justify-content: flex-start;
-  }
-
-  .dropdown-container label {
-    display: block;
-    color: var(--vscode-foreground);
-    cursor: pointer;
-    font-size: var(--vscode-font-size);
-    line-height: normal;
-    margin-bottom: 2px;
   }
 </style>

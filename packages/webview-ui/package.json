@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@tanstack/svelte-query": "^6.4.3",
-    "@vscode/webview-ui-toolkit": "^1.4.0",
+    "@vscode-elements/elements": "^2.5.1",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-webview-rpc": "file:../webview-rpc",
