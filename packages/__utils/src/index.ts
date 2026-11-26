@@ -1,4 +1,3 @@
-export { autoResolve, AutoResolveCache, createAutoResolveCache, createAutoResolveWeakCache } from './AutoResolve.js';
 export * from './errors.js';
 export * from './EventEmitter/index.mjs';
 export { groupByField, groupByKey } from './groupBy.js';

@@ -1,4 +1,4 @@
-import { createAutoResolveCache } from '@internal/common-utils';
+import { AutoResolveMap } from '@streetsidesoftware/auto-resolve-map';
 import type { ConfigFieldSelector } from 'code-spell-checker-server/api';
 import type { ConfigFields } from 'code-spell-checker-server/lib';
 import type { InlineCompletionContext, InlineCompletionItemProvider, Position, TextDocument } from 'vscode';
@@ -129,7 +129,7 @@ const configFields: ConfigFieldSelector<ConfigFields> = {
 
 class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemProvider {
     private cacheConfig: DocumentConfigCache<GetConfigurationForDocumentResult<ConfigFields>>;
-    private cacheDocDictionaries = createAutoResolveCache<string, DictionaryInfoForDoc>();
+    private cacheDocDictionaries: AutoResolveMap<string, DictionaryInfoForDoc> = new AutoResolveMap();
 
     constructor() {
         this.cacheConfig = new DocumentConfigCache((uri) =>
@@ -206,7 +206,7 @@ class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemPro
         const settings = this.getConfigForDocument(document);
 
         const key = document.uri.toString();
-        const result = this.cacheDocDictionaries.get(key, () => ({ available: undefined, enabled: undefined }));
+        const result = this.cacheDocDictionaries.getOrInsertComputed(key, () => ({ available: undefined, enabled: undefined }));
 
         if (!settings) return result;
         const docSettings = settings.docSettings || settings.settings;
