@@ -1,5 +1,6 @@
 import { IssueType } from '@cspell/cspell-types';
-import { autoResolve, logError } from '@internal/common-utils';
+import { logError } from '@internal/common-utils';
+import { autoResolve } from '@streetsidesoftware/auto-resolve-map';
 import type { GetConfigurationTargetsResult, Suggestion } from 'code-spell-checker-server/api';
 import type { DisposableHybrid } from 'utils-disposables';
 import { createDisposableList } from 'utils-disposables';

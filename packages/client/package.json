@@ -44,6 +44,7 @@
     "@internal/common-utils": "file:../__utils",
     "@internal/locale-resolver": "file:../__locale-resolver",
     "@internal/server-pattern-matcher": "file:../_serverPatternMatcher",
+    "@streetsidesoftware/auto-resolve-map": "^1.0.0",
     "@types/camelize": "^1.0.1",
     "@types/kefir": "^3.8.11",
     "@types/source-map-support": "^0.5.10",

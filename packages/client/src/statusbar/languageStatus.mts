@@ -1,4 +1,4 @@
-import { autoResolve } from '@internal/common-utils';
+import { autoResolve } from '@streetsidesoftware/auto-resolve-map';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable } from 'vscode';
 import vscode from 'vscode';
