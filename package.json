@@ -5252,7 +5252,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^10.5.2",
     "@cspell/cspell-types": "^10.5.2",
-    "@cspell/dict-cspell-bundle": "^2.0.84",
+    "@cspell/dict-cspell-bundle": "^2.0.86",
     "regexp-worker": "^5.0.4"
   },
   "overrides": {
