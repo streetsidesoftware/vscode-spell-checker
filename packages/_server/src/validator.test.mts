@@ -3,10 +3,13 @@ import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
 import { loremIpsum } from 'lorem-ipsum';
 import { describe, expect, test } from 'vitest';
+import { TextDocuments } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { URI } from 'vscode-uri';
 
+import type { DocumentSettings } from './config/documentSettings.mjs';
 import { DocumentCheckedRangesStore } from './DocumentCheckedRangesStore.mjs';
+import { DocumentValidationController } from './DocumentValidationController.mjs';
 import * as Validator from './validator.mjs';
 
 // cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
@@ -16,6 +19,84 @@ const defaultSettings: CSpellSettings = { ...(await getDefaultSettings()), enabl
 const timeout = 30000; // 30 seconds
 
 describe('Validator', () => {
+    test.each([1000, '1KB'])('skips an oversized editor document with maxFileSize %s', async (maxFileSize) => {
+        const text = 'The quick brouwn fox jumpped over the lazzy dog.\n' + 'The quick brown fox.\n'.repeat(35000);
+        const doc = TextDocument.create('file:///example.txt', 'plaintext', 1, text);
+        const results = await Validator.validateTextDocument(doc, { maxFileSize }, new DocumentCheckedRangesStore());
+        expect(results).toEqual([]);
+    });
+
+    test.each([0, '0', undefined, '1M', '1MB', '1G', '1GB', 'invalid', '1TB'])(
+        'checks documents below maxFileSize %s',
+        async (maxFileSize) => {
+            const doc = TextDocument.create('untitled:example.txt', 'plaintext', 1, 'The quick brouwn fox jumpped over the lazzy dog.');
+            const results = await Validator.validateTextDocument(doc, { maxFileSize }, new DocumentCheckedRangesStore());
+            expect(results).toHaveLength(3);
+        },
+    );
+
+    test.each([1, '1', '1B', '0.001K', '0.001KB', '0.000001M', '0.000001MB', '0.000000001G', '0.000000001GB'])(
+        'supports byte and fractional unit limits %s',
+        async (maxFileSize) => {
+            const doc = TextDocument.create('untitled:example.txt', 'plaintext', 1, 'The quick brouwn fox.');
+            const results = await Validator.validateTextDocument(doc, { maxFileSize }, new DocumentCheckedRangesStore());
+            expect(results).toEqual([]);
+        },
+    );
+
+    test.each([-1, 0, 1])('compares the full UTF-8 byte length at threshold offset %s', async (offset) => {
+        const text = 'brouwn é';
+        const maxFileSize = Buffer.byteLength(text, 'utf8') + offset;
+        const doc = TextDocument.create('file:///example.txt', 'plaintext', 1, text);
+        const results = await Validator.validateTextDocument(doc, { maxFileSize }, new DocumentCheckedRangesStore());
+        expect(results).toHaveLength(offset < 0 ? 0 : 1);
+    });
+
+    test('uses the size of the full document before applying checkLimit', async () => {
+        const text = 'brouwn\n' + 'a '.repeat(1024);
+        const doc = TextDocument.create('file:///example.txt', 'plaintext', 1, text);
+        const results = await Validator.validateTextDocument(doc, { checkLimit: 1, maxFileSize: 1500 }, new DocumentCheckedRangesStore());
+        expect(results).toEqual([]);
+    });
+
+    test.each`
+        maximum | override | expected
+        ${1}    | ${0}     | ${1}
+        ${1}    | ${100}   | ${1}
+        ${100}  | ${1}     | ${0}
+    `('respects the effective maxFileSize override $override over $maximum', async ({ maximum, override, expected }) => {
+        const doc = TextDocument.create('file:///example.txt', 'plaintext', 1, 'brouwn');
+        const options = { maxFileSize: maximum, overrides: [{ filename: '**/*.txt', maxFileSize: override }] };
+        const results = await Validator.validateTextDocument(doc, options, new DocumentCheckedRangesStore());
+        expect(results).toHaveLength(expected);
+    });
+
+    test('continues applying checkLimit to documents below maxFileSize', async () => {
+        const text = 'brouwn\n' + 'a '.repeat(1024) + '\njumpped';
+        const doc = TextDocument.create('file:///example.txt', 'plaintext', 1, text);
+        const results = await Validator.validateTextDocument(doc, { checkLimit: 1, maxFileSize: '1MB' }, new DocumentCheckedRangesStore());
+        expect(results.map((diagnostic) => diagnostic.message)).toEqual(['"brouwn": Unknown word.']);
+    });
+
+    test('rechecks the size limit after editing a cached document', async () => {
+        const settings = { maxFileSize: 20 };
+        const documentSettings = { getSettings: async () => settings } as unknown as DocumentSettings;
+        const controller = new DocumentValidationController(documentSettings, new TextDocuments(TextDocument));
+        try {
+            const document = TextDocument.create('file:///example.txt', 'plaintext', 1, 'brouwn');
+            let validator = await controller.getDocumentValidator(document);
+            expect(await validator.checkDocumentAsync(true)).toHaveLength(1);
+            for (const text of ['brouwn ' + 'a '.repeat(20), 'brouwn']) {
+                const updated = TextDocument.update(document, [{ text }], document.version + 1);
+                await controller.updateDocument(updated);
+                validator = await controller.getDocumentValidator(updated);
+                expect(await validator.checkDocumentAsync(true)).toHaveLength(text.length > 20 ? 0 : 1);
+            }
+        } finally {
+            controller.dispose();
+        }
+    });
+
     test(
         'validates the validator',
         async () => {
