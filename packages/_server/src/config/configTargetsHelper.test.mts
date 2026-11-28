@@ -8,6 +8,7 @@ import type { WorkspaceConfigForDocument } from '../api.js';
 import { __testing__, calculateConfigTargets } from './configTargetsHelper.mjs';
 import type { DictionaryDef } from './cspellConfig/CustomDictionary.mjs';
 import type { CSpellUserAndExtensionSettings } from './cspellConfig/index.mjs';
+import type { CSpellSettingsWithFileSource } from './documentSettings.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
 
 const { workspaceConfigToTargets, cspellToTargets, dictionariesToTargets, sortTargets } = __testing__;
@@ -149,6 +150,20 @@ describe('Validate configTargetsHelper', () => {
             }),
         ]);
         expect(cspellToTargets({ cspell: false }, sources)).toEqual([]);
+    });
+
+    test('cspellToTargets decodes a generated name', () => {
+        const filename = Path.resolve('Source 1.2.09/cspell.json');
+        const cfg = { name: 'Source%201.2.09/cspell.json', source: { name: 'cspell.json', filename } } as CSpellSettingsWithFileSource;
+        const [target] = cspellToTargets({ cspell: true }, [cfg]);
+        expect(target.name).toBe('Source 1.2.09/cspell.json');
+    });
+
+    test('cspellToTargets keeps a user name', () => {
+        const filename = Path.resolve('Source 1.2.09/cspell.json');
+        const cfg = { name: 'My 100% config', source: { name: 'cspell.json', filename } } as CSpellSettingsWithFileSource;
+        const [target] = cspellToTargets({ cspell: true }, [cfg]);
+        expect(target.name).toBe('My 100% config');
     });
 
     test('dictionariesToTargets', async () => {
